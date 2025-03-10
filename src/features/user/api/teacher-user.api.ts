@@ -310,7 +310,7 @@ export function setStudentApprovalStatus(
     studentId: number;
     approvalStatus: UserApprovalStatus;
   }): Promise<any> => {
-    const url = `${BASE_URL}/approve/${studentId}`;
+    const url = `${TEACHER_BASE_URL}/students/approve/${studentId}`;
     const json = { approvalStatus };
 
     try {

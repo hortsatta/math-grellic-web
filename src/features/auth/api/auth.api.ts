@@ -6,7 +6,7 @@ import type {
   UseMutationOptions,
   UseQueryOptions,
 } from '@tanstack/react-query';
-import type { User } from '../../user/models/user.model';
+import type { User } from '#/user/models/user.model';
 import type { AuthCredentials, AuthToken } from '../models/auth.model';
 
 const BASE_URL = 'auth';
