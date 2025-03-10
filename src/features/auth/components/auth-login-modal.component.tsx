@@ -10,7 +10,7 @@ import type { ComponentProps } from 'react';
 
 type Props = Omit<ComponentProps<typeof BaseModal>, 'open' | 'onClose'>;
 
-const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.authRegister.to}`;
+const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.userRegister.to}`;
 
 export const AuthLoginModal = memo(function (props: Props) {
   const { pathname } = useLocation();

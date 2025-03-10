@@ -21,20 +21,3 @@ export async function generateApiError(error: HTTPError | TimeoutError) {
   const errorRes = await (error as HTTPError).response.json();
   return new ApiError(errorRes.message, errorRes.statusCode);
 }
-
-export function generateError(
-  errorCodeMessage: { [key: string]: string },
-  statusCode?: number,
-  isExact?: boolean,
-) {
-  if (!statusCode) {
-    return null;
-  }
-
-  if (!isExact) {
-    const code = parseInt(statusCode.toString()[0]);
-    return new Error(errorCodeMessage[code]);
-  }
-
-  return new Error(errorCodeMessage[statusCode]);
-}

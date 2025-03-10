@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { getCurrentUser } from '#/auth/api/auth.api';
 import { transformToUser } from '../helpers/user-transform.helper';
-import { getCurrentUser } from '../api/auth.api';
 
 import type { User } from '../models/user.model';
 

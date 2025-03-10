@@ -27,6 +27,7 @@
       "#/base/*": ["./src/features/base/*"],
       "#/static/*": ["./src/features/static/*"],
       "#/dashboard/*": ["./src/features/dashboard/*"],
+      "#/auth/*": ["./src/features/auth/*"],
       "#/user/*": ["./src/features/user/*"],
       "#/lesson/*": ["./src/features/lesson/*"],
       "#/exam/*": ["./src/features/exam/*"],

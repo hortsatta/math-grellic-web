@@ -3,11 +3,11 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { queryClient } from '#/config/react-query-client.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
+import { getCurrentUser } from '#/auth/api/auth.api';
 import {
   transformToStudentUserAccountFormData,
   transformToUser,
 } from '../helpers/user-transform.helper';
-import { getCurrentUser } from '../api/auth.api';
 import { editCurrentStudentUser as editCurrentStudentUserApi } from '../api/student-user.api';
 
 import type { User } from '../models/user.model';

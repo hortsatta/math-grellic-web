@@ -17,7 +17,7 @@ type Props = ComponentProps<'div'> & {
   onLogin?: () => void;
 };
 
-const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.authRegister.to}`;
+const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.userRegister.to}`;
 
 const menuIconProps = { weight: 'fill' as IconWeight };
 

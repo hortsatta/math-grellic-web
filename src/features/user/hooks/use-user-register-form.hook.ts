@@ -13,7 +13,7 @@ type Result = {
   handleLogin: () => void;
 };
 
-export function useAuthRegister(): Result {
+export function useUserRegisterForm(): Result {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [searchParams] = useSearchParams();

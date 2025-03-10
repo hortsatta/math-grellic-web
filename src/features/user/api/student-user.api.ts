@@ -2,6 +2,7 @@ import { generateApiError } from '#/utils/api.util';
 import { kyInstance } from '#/config/ky.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import {
+  transformToStudentUserCreateDto,
   transformToStudentUserUpdateDto,
   transformToUser,
 } from '../helpers/user-transform.helper';
@@ -11,9 +12,34 @@ import type {
   UseQueryOptions,
 } from '@tanstack/react-query';
 import type { User } from '../models/user.model';
-import type { StudentUserUpdateFormData } from '../models/user-form-data.model';
+import type {
+  StudentUserUpdateFormData,
+  UserRegisterFormData,
+} from '../models/user-form-data.model';
 
 const BASE_URL = 'users/students';
+
+export function registerStudentUser(
+  options?: Omit<
+    UseMutationOptions<User | null, Error, UserRegisterFormData, any>,
+    'mutationFn'
+  >,
+) {
+  const mutationFn = async (data: UserRegisterFormData): Promise<any> => {
+    const url = `${BASE_URL}/register`;
+    const json = transformToStudentUserCreateDto(data);
+
+    try {
+      const user = await kyInstance.post(url, { json }).json();
+      return transformToUser(user);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return { mutationFn, ...options };
+}
 
 export function getAssignedTeacherByCurrentStudentUser(
   options?: Omit<

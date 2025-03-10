@@ -14,7 +14,7 @@ import gridPng from '#/assets/images/grid.png';
 import type { ComponentProps } from 'react';
 
 const META_TITLE = import.meta.env.VITE_META_TITLE;
-const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.authRegister.to}`;
+const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.userRegister.to}`;
 const bgStyle = { backgroundImage: `url(${gridPng})` };
 const currentYear = new Date().getFullYear();
 
@@ -65,7 +65,7 @@ export const CoreStaticFooter = memo(function ({
             alt='student with numbers'
             width={667}
             height={474}
-            className='xs:max-w-lg max-w-full sm:max-w-xl lg:-translate-x-4 xl:max-w-none'
+            className='max-w-full xs:max-w-lg sm:max-w-xl lg:-translate-x-4 xl:max-w-none'
           />
           <div className='flex flex-col items-center pt-6'>
             <h2 className='mb-7 max-w-md text-center font-bold md:max-w-none lg:text-left xl:text-[44px]'>
@@ -91,7 +91,7 @@ export const CoreStaticFooter = memo(function ({
             alt='footer logo'
             width={218}
             height={132}
-            className='xs:max-w-none max-w-[160px]'
+            className='max-w-[160px] xs:max-w-none'
           />
         </Link>
         <span className='text-lg font-medium leading-none'>

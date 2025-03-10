@@ -1,13 +1,13 @@
 import cx from 'classix';
 
 import { BaseStaticScene } from '#/base/components/base-static-scene.component';
-import { useAuthRegister } from '../hooks/use-auth-register.hook';
-import { useAuth } from '../hooks/use-auth.hook';
-import { AuthRegisterDone } from '../components/auth-register-done.component';
-import { AuthRegisterForm } from '../components/auth-register-form.component';
-import { AuthRegisterRoleTab } from '../components/auth-register-role-tab.component';
+import { useUserRegister } from '../hooks/use-user-register.hook';
+import { useUserRegisterForm } from '../hooks/use-user-register-form.hook';
+import { UserRegisterDone } from '../components/user-register-done.component';
+import { UserRegisterForm } from '../components/user-register-form.component';
+import { UserRegisterRoleTab } from '../components/user-register-role-tab.component';
 
-export function AuthRegisterPage() {
+export function UserRegisterPage() {
   const {
     loading,
     isDone,
@@ -15,14 +15,13 @@ export function AuthRegisterPage() {
     selectedUserRole,
     handleRoleChange,
     handleLogin,
-  } = useAuthRegister();
+  } = useUserRegisterForm();
 
-  const { register } = useAuth();
+  const { register } = useUserRegister();
 
   return (
-    <BaseStaticScene id='auth-register'>
+    <BaseStaticScene id='user-register'>
       <section className='mx-auto w-full max-w-full pt-4 lg:max-w-[966px]'>
-        {/* // TODO show loading spinner */}
         {!loading && !!selectedUserRole && (
           <div
             className={cx(
@@ -31,17 +30,17 @@ export function AuthRegisterPage() {
             )}
           >
             {isDone ? (
-              <AuthRegisterDone />
+              <UserRegisterDone />
             ) : (
               <>
-                <AuthRegisterRoleTab
+                <UserRegisterRoleTab
                   className='lg-rounded-t-lg mb-12 overflow-hidden rounded-t-none'
                   userRole={selectedUserRole}
                   isDone={isDone}
                   onChange={handleRoleChange}
                   onLogin={handleLogin}
                 />
-                <AuthRegisterForm
+                <UserRegisterForm
                   className='px-4 lg:px-11'
                   userRole={selectedUserRole}
                   isDone={isDone}

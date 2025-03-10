@@ -6,7 +6,7 @@ import cx from 'classix';
 
 import { generateDashboardPath } from '#/utils/path.util';
 import { staticRouteLinks, staticRoutes } from '#/app/routes/static-routes';
-import { useAuth } from '#/user/hooks/use-auth.hook';
+import { useAuth } from '#/auth/hooks/use-auth.hook';
 import { useBoundStore } from '../hooks/use-store.hook';
 import { CoreStaticLogo } from './core-static-logo.component';
 import { CoreStaticNav } from './core-static-nav.component';
@@ -15,7 +15,7 @@ import type { ComponentProps } from 'react';
 import type { HTTPError } from 'ky';
 
 const SCROLL_Y_THRESHOLD = 40;
-const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.authRegister.to}`;
+const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.userRegister.to}`;
 
 export const CoreStaticHeader = memo(function ({
   className,

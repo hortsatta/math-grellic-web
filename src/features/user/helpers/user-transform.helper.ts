@@ -10,7 +10,6 @@ import {
 import { transformToActivityCategoryCompletion } from '#/activity/helpers/activity-transform.helper';
 import { UserRole } from '../models/user.model';
 
-import type { AuthRegisterFormData } from '../models/auth.model';
 import type {
   StudentUserAccount,
   TeacherUserAccount,
@@ -19,6 +18,7 @@ import type {
 import type {
   StudentUserUpdateFormData,
   TeacherUserUpdateFormData,
+  UserRegisterFormData,
 } from '../models/user-form-data.model';
 
 export function transformToUser({
@@ -309,7 +309,7 @@ export function transformToStudentUserUpdateDto({
   };
 }
 
-export function transformToAuthRegisterFormData({
+export function transformToUserRegisterFormData({
   firstName,
   lastName,
   middleName,
@@ -319,7 +319,7 @@ export function transformToAuthRegisterFormData({
   teacherId,
   email,
   approvalStatus,
-}: any): AuthRegisterFormData {
+}: any): UserRegisterFormData {
   return {
     email,
     firstName,

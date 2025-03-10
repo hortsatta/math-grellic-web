@@ -14,12 +14,12 @@ import {
   studentBaseRoute,
   studentRoutes,
 } from '#/app/routes/student-routes';
-import { useAuth } from '#/user/hooks/use-auth.hook';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
+import { useAuth } from '#/auth/hooks/use-auth.hook';
 import { useBoundStore } from '../hooks/use-store.hook';
 import { useScroll } from '../hooks/use-scroll.hook';
 import { CoreClock } from './core-clock.component';

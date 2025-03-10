@@ -13,7 +13,7 @@ import { UserGender } from '../models/user.model';
 
 import type { ComponentProps } from 'react';
 import type { SelectOption } from '#/base/models/base.model';
-import type { AuthRegisterFormData } from '../models/auth.model';
+import type { UserRegisterFormData } from '../models/user-form-data.model';
 
 type Props = ComponentProps<'div'> & {
   disabled?: boolean;
@@ -34,7 +34,7 @@ export const StudentUserUpsertFormStep1 = memo(function ({
   disabled,
   ...moreProps
 }: Props) {
-  const { control } = useFormContext<AuthRegisterFormData>();
+  const { control } = useFormContext<UserRegisterFormData>();
 
   return (
     <div {...moreProps}>

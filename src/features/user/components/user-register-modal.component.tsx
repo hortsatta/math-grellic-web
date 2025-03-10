@@ -4,16 +4,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { staticRoutes } from '#/app/routes/static-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseModal } from '#/base/components/base-modal.component';
-import { AuthRegisterRolePicker } from './auth-register-role-picker.component';
+import { UserRegisterRolePicker } from './user-register-role-picker.component';
 
 import type { ComponentProps } from 'react';
 import type { UserRole } from '../models/user.model';
 
 type Props = Omit<ComponentProps<typeof BaseModal>, 'open' | 'onClose'>;
 
-const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.authRegister.to}`;
+const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.userRegister.to}`;
 
-export const AuthRegisterModal = memo(function (props: Props) {
+export const UserRegisterModal = memo(function (props: Props) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const openRegister = useBoundStore((state) => state.openRegister);
@@ -50,7 +50,7 @@ export const AuthRegisterModal = memo(function (props: Props) {
 
   return (
     <BaseModal {...props} open={!!openRegister} onClose={closeModal}>
-      <AuthRegisterRolePicker
+      <UserRegisterRolePicker
         onRoleChange={handleRoleChange}
         loading={loading}
       />

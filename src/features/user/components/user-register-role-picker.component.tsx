@@ -49,7 +49,7 @@ const Button = memo(function ({
   );
 });
 
-export const AuthRegisterRolePicker = memo(function ({
+export const UserRegisterRolePicker = memo(function ({
   className,
   loading,
   onRoleChange,

@@ -5,7 +5,7 @@ import { UserRole } from '#/user/models/user.model';
 
 export function interceptGetStarted(pathname: string) {
   // If already on register page, just scroll to top
-  if (pathname !== `/${staticRoutes.authRegister.to}`) {
+  if (pathname !== `/${staticRoutes.userRegister.to}`) {
     return;
   }
 

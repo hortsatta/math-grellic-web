@@ -129,6 +129,7 @@ export const BaseInput = memo(
                   rightIconBtnClassName,
                 )}
                 disabled={disabled}
+                tabIndex={-1}
                 {...moreRightIconBtnProps}
               />
             </BaseTooltip>

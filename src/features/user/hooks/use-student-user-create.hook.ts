@@ -4,15 +4,15 @@ import { useMutation } from '@tanstack/react-query';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import { queryClient } from '#/config/react-query-client.config';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
-import { registerStudentUser } from '../api/auth.api';
+import { registerStudentUser } from '../api/student-user.api';
 
-import type { AuthRegisterFormData } from '../models/auth.model';
 import type { User } from '../models/user.model';
+import type { UserRegisterFormData } from '../models/user-form-data.model';
 
 type Result = {
   isDone: boolean;
   setIsDone: (isDone: boolean) => void;
-  register: (data: AuthRegisterFormData) => Promise<User | null>;
+  register: (data: UserRegisterFormData) => Promise<User | null>;
 };
 
 export function useStudentUserCreate(): Result {
@@ -30,7 +30,7 @@ export function useStudentUserCreate(): Result {
   );
 
   const register = useCallback(
-    (data: AuthRegisterFormData) => {
+    (data: UserRegisterFormData) => {
       if (!user) {
         return Promise.resolve(null);
       }

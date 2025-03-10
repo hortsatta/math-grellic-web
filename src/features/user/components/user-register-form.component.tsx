@@ -21,15 +21,15 @@ import { UserApprovalStatus, UserGender, UserRole } from '../models/user.model';
 
 import type { FormProps, SelectOption } from '#/base/models/base.model';
 import type { User } from '../models/user.model';
-import type { AuthRegisterFormData } from '../models/auth.model';
+import type { UserRegisterFormData } from '../models/user-form-data.model';
 
 type Props = Omit<
-  FormProps<'div', AuthRegisterFormData, Promise<User | null>>,
+  FormProps<'div', UserRegisterFormData, Promise<User | null>>,
   'onSubmit'
 > & {
   userRole: UserRole;
   onSubmit: (
-    data: AuthRegisterFormData,
+    data: UserRegisterFormData,
     role: UserRole,
   ) => Promise<User | null>;
 };
@@ -91,7 +91,7 @@ const schema = z
     path: ['confirmPassword'],
   });
 
-const defaultValues: Partial<AuthRegisterFormData> = {
+const defaultValues: Partial<UserRegisterFormData> = {
   email: '',
   password: '',
   confirmPassword: '',
@@ -105,7 +105,7 @@ const defaultValues: Partial<AuthRegisterFormData> = {
   approvalStatus: UserApprovalStatus.Pending,
 };
 
-export const AuthRegisterForm = memo(function ({
+export const UserRegisterForm = memo(function ({
   className,
   userRole,
   isDone,
@@ -118,7 +118,7 @@ export const AuthRegisterForm = memo(function ({
     formState: { isSubmitting },
     handleSubmit,
     reset,
-  } = useForm<AuthRegisterFormData>({
+  } = useForm<UserRegisterFormData>({
     shouldFocusError: false,
     defaultValues,
     resolver: zodResolver(schema),
@@ -135,7 +135,7 @@ export const AuthRegisterForm = memo(function ({
   const handleReset = useCallback(() => reset(), [reset]);
 
   const submitForm = useCallback(
-    async (data: AuthRegisterFormData) => {
+    async (data: UserRegisterFormData) => {
       try {
         await onSubmit(data, userRole);
         onDone && onDone(true);
@@ -255,7 +255,7 @@ export const AuthRegisterForm = memo(function ({
             />
           </div>
         </fieldset>
-        <div className='xs:flex-row mt-8 flex flex-col items-center justify-between gap-5'>
+        <div className='mt-8 flex flex-col items-center justify-between gap-5 xs:flex-row'>
           <BaseButton
             variant='link'
             rightIconName='arrow-counter-clockwise'
@@ -266,7 +266,7 @@ export const AuthRegisterForm = memo(function ({
           </BaseButton>
           <BaseButton
             type='submit'
-            className='xs:w-auto !h-16 w-full px-8 !text-xl'
+            className='!h-16 w-full px-8 !text-xl xs:w-auto'
             size='base'
             loading={isSubmitting || isDone}
           >

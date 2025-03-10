@@ -50,6 +50,12 @@ export default defineConfig({
         ),
       },
       {
+        find: '#/auth',
+        replacement: fileURLToPath(
+          new URL('./src/features/auth', import.meta.url),
+        ),
+      },
+      {
         find: '#/user',
         replacement: fileURLToPath(
           new URL('./src/features/user', import.meta.url),

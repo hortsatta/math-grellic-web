@@ -22,13 +22,13 @@ import { StudentUserUpsertFormStep1 } from './student-user-upsert-form-step-1.co
 import type { FieldErrors } from 'react-hook-form';
 import type { FormProps, IconName } from '#/base/models/base.model';
 import type { User } from '../models/user.model';
-import type { AuthRegisterFormData } from '../models/auth.model';
+import type { UserRegisterFormData } from '../models/user-form-data.model';
 
 type Props = Omit<
-  FormProps<'div', AuthRegisterFormData, Promise<User | null>>,
+  FormProps<'div', UserRegisterFormData, Promise<User | null>>,
   'onSubmit'
 > & {
-  onSubmit: (data: AuthRegisterFormData) => Promise<User | null>;
+  onSubmit: (data: UserRegisterFormData) => Promise<User | null>;
 };
 
 const STUDENT_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
@@ -62,7 +62,7 @@ const schema = z.object({
   approvalStatus: z.nativeEnum(UserApprovalStatus).optional(),
 });
 
-const defaultValues: Partial<AuthRegisterFormData> = {
+const defaultValues: Partial<UserRegisterFormData> = {
   email: '',
   firstName: '',
   lastName: '',
@@ -86,7 +86,7 @@ export const StudentUserUpsertForm = memo(function ({
 }: Props) {
   const navigate = useNavigate();
 
-  const methods = useForm<AuthRegisterFormData>({
+  const methods = useForm<UserRegisterFormData>({
     shouldFocusError: false,
     defaultValues: formData || defaultValues,
     resolver: zodResolver(schema),
@@ -126,7 +126,7 @@ export const StudentUserUpsertForm = memo(function ({
   }, [isEdit, formData, reset]);
 
   const handleSubmitError = useCallback(
-    (errors: FieldErrors<AuthRegisterFormData>) => {
+    (errors: FieldErrors<UserRegisterFormData>) => {
       const errorMessage = getErrorMessage(errors);
       toast.error(errorMessage || '');
     },
@@ -134,7 +134,7 @@ export const StudentUserUpsertForm = memo(function ({
   );
 
   const submitForm = useCallback(
-    async (data: AuthRegisterFormData, approvalStatus?: UserApprovalStatus) => {
+    async (data: UserRegisterFormData, approvalStatus?: UserApprovalStatus) => {
       // TODO check if edit, delete, back to pending or rejecting if student has completions
 
       try {

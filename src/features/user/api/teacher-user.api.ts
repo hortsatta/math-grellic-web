@@ -3,9 +3,11 @@ import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import {
   transformToStudentUserUpdateDto,
+  transformToTeacherUserCreateDto,
   transformToTeacherUserUpdateDto,
   transformToUser,
 } from '../helpers/user-transform.helper';
+import { UserApprovalStatus } from '../models/user.model';
 
 import type {
   UseMutationOptions,
@@ -13,16 +15,36 @@ import type {
 } from '@tanstack/react-query';
 import type { QueryPagination } from '#/base/models/base.model';
 import type { PaginatedQueryData } from '#/core/models/core.model';
-import type { AuthRegisterFormData } from '../models/auth.model';
+import type { StudentUserAccount, User } from '../models/user.model';
 import type {
-  StudentUserAccount,
-  User,
-  UserApprovalStatus,
-} from '../models/user.model';
-import type { TeacherUserUpdateFormData } from '../models/user-form-data.model';
+  TeacherUserUpdateFormData,
+  UserRegisterFormData,
+} from '../models/user-form-data.model';
 
 const BASE_URL = 'users';
 const TEACHER_BASE_URL = `${BASE_URL}/teachers`;
+
+export function registerTeacherUser(
+  options?: Omit<
+    UseMutationOptions<User | null, Error, UserRegisterFormData, any>,
+    'mutationFn'
+  >,
+) {
+  const mutationFn = async (data: UserRegisterFormData): Promise<any> => {
+    const url = `${TEACHER_BASE_URL}/register`;
+    const json = transformToTeacherUserCreateDto(data);
+
+    try {
+      const user = await kyInstance.post(url, { json }).json();
+      return transformToUser(user);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return { mutationFn, ...options };
+}
 
 export function getPaginatedStudentsByCurrentTeacherUser(
   keys?: {
@@ -222,7 +244,7 @@ export function editStudent(
     UseMutationOptions<
       User,
       Error,
-      { studentId: number; data: AuthRegisterFormData },
+      { studentId: number; data: UserRegisterFormData },
       any
     >,
     'mutationFn'
@@ -233,7 +255,7 @@ export function editStudent(
     data,
   }: {
     studentId: number;
-    data: AuthRegisterFormData;
+    data: UserRegisterFormData;
   }): Promise<any> => {
     const url = `${TEACHER_BASE_URL}/students/${studentId}`;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

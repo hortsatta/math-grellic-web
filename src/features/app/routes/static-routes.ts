@@ -24,10 +24,11 @@ export const staticRoutes = {
     to: 'training',
     label: 'Training',
   },
-  authRegister: {
+  userRegister: {
     name: 'register',
-    to: 'auth/register',
+    to: 'user/register',
     label: 'Register',
+    confirmTo: 'confirm',
   },
 };
 

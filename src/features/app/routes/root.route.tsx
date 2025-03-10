@@ -14,11 +14,12 @@ import { CoreStaticLayout } from '#/core/components/core-static-layout.component
 import { CoreLayout } from '#/core/components/core-layout.component';
 
 import { UserRole } from '#/user/models/user.model';
-import { AuthProtectedRoute } from '#/user/components/auth-protected-route.component';
+import { AuthProtectedRoute } from '#/auth/components/auth-protected-route.component';
 
 import { HomePage } from '#/static/pages/home.page';
 import { AboutPage } from '#/static/pages/about.page';
-import { AuthRegisterPage } from '#/user/pages/auth-register.page';
+import { UserRegisterPage } from '#/user/pages/user-register.page';
+import { UserRegisterEmailConfirmationPage } from '#/user/pages/user-register-email-confirmation.page';
 
 import { dashboardRouteHandle } from '#/dashboard/route/dashboard-handle.route';
 import { TeacherDashboardPage } from '#/dashboard/pages/teacher-dashboard.page';
@@ -147,10 +148,14 @@ const rootRoutes = createRoutesFromElements(
           <div className='hidden'>TRAINING PAGE</div>
         }
       />
-      <Route
-        path={staticRoutes.authRegister.to}
-        element={<AuthRegisterPage />}
-      />
+      <Route path={staticRoutes.userRegister.to} element={<Outlet />}>
+        <Route index element={<UserRegisterPage />} />
+        <Route
+          path={staticRoutes.userRegister.confirmTo}
+          element={<UserRegisterEmailConfirmationPage />}
+        />
+      </Route>
+
       <Route
         path='*'
         element={

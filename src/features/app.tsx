@@ -5,7 +5,7 @@ import t, { Toaster, useToasterStore } from 'react-hot-toast';
 import { useOverlayScrollbars } from 'overlayscrollbars-react';
 
 import { queryClient } from '#/config/react-query-client.config';
-import { AuthSessionSubscriber } from './user/components/auth-session-subscriber.component';
+import { AuthSessionSubscriber } from './auth/components/auth-session-subscriber.component';
 import { router } from './app/routes/root.route';
 import '#/config/dayjs.config';
 

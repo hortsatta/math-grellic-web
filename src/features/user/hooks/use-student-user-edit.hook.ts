@@ -4,8 +4,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryClient } from '#/config/react-query-client.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import {
-  transformToAuthRegisterFormData,
   transformToStudentUserAccount,
+  transformToUserRegisterFormData,
 } from '../helpers/user-transform.helper';
 import {
   deleteStudent as deleteStudentApi,
@@ -13,15 +13,15 @@ import {
   getStudentByIdAndCurrentTeacherUser as getStudentByIdAndCurrentTeacherUserApi,
 } from '../api/teacher-user.api';
 
-import type { AuthRegisterFormData } from '../models/auth.model';
 import type { User } from '../models/user.model';
+import type { UserRegisterFormData } from '../models/user-form-data.model';
 
 type Result = {
   loading: boolean;
   isDone: boolean;
   setIsDone: (isDone: boolean) => void;
-  studentFormData: AuthRegisterFormData | undefined;
-  editStudent: (data: AuthRegisterFormData) => Promise<User>;
+  studentFormData: UserRegisterFormData | undefined;
+  editStudent: (data: UserRegisterFormData) => Promise<User>;
   deleteStudent: () => Promise<boolean>;
 };
 
@@ -75,12 +75,12 @@ export function useStudentUserEdit(id?: number): Result {
   );
 
   const studentFormData = useMemo(
-    () => (student ? transformToAuthRegisterFormData(student) : undefined),
+    () => (student ? transformToUserRegisterFormData(student) : undefined),
     [student],
   );
 
   const editStudent = useCallback(
-    async (data: AuthRegisterFormData) => {
+    async (data: UserRegisterFormData) => {
       const updatedStudent = await mutateEditStudent({
         studentId: +(id || 0),
         data,
