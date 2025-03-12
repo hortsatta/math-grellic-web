@@ -111,7 +111,7 @@ export function transformToLessonFormData({
   // Convert schedule
   let startDate = undefined;
   let startTime = undefined;
-  let studentIds = undefined;
+  let studentIds = [];
 
   if (schedules?.length === 1) {
     const dayJsStartDate = dayjs(schedules[0].startDate);
