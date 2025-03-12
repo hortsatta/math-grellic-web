@@ -24,6 +24,8 @@ type Props = ComponentProps<'div'> & {
 
 const TEACHER_ACCOUNT_PATH = `/${studentBaseRoute}/${studentRoutes.account.to}/${studentRoutes.account.teacherAccountTo}`;
 
+const FIELD_TITLE_CLASSNAME = 'mb-2.5 text-base';
+
 export const StudentUserAccountSingle = memo(function ({
   userAccount,
   assignedTeacher,
@@ -55,10 +57,15 @@ export const StudentUserAccountSingle = memo(function ({
 
   return (
     <div {...moreProps}>
-      <BaseSurface className='mb-2.5' rounded='sm'>
+      <BaseSurface className='flex flex-col gap-4' rounded='sm'>
+        <div>
+          <h3 className={FIELD_TITLE_CLASSNAME}>About Me</h3>
+          <p className={cx(!aboutMe && 'pl-2')}>{aboutMe || '—'}</p>
+        </div>
+        <BaseDivider />
         <div>
           <div className='mb-2.5 flex items-center justify-between '>
-            <h3 className='text-base'>Teacher</h3>
+            <h3 className={FIELD_TITLE_CLASSNAME}>Assigned Teacher</h3>
             <BaseLink
               to={TEACHER_ACCOUNT_PATH}
               rightIconName='arrow-circle-right'
@@ -86,14 +93,8 @@ export const StudentUserAccountSingle = memo(function ({
                 </div>
               </div>
             </div>
-            <UserMessengerLink to={teacherMessengerLink || ''} />
+            <UserMessengerLink userId={teacherMessengerLink} />
           </div>
-        </div>
-      </BaseSurface>
-      <BaseSurface className='flex flex-col gap-4' rounded='sm'>
-        <div>
-          <h3 className='mb-2.5 text-base'>About Me</h3>
-          <p className={cx(!aboutMe && 'pl-2')}>{aboutMe || '—'}</p>
         </div>
       </BaseSurface>
     </div>
