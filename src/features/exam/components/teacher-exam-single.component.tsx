@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { Fragment, memo, useMemo } from 'react';
 import DOMPurify from 'dompurify';
 import cx from 'classix';
 
@@ -167,11 +167,9 @@ export const TeacherExamSingle = memo(function ({
           {schedules.length ? (
             <div className='flex w-full flex-col gap-2.5 sm:gap-y-4'>
               {schedules.map(({ date, time, duration }, index) => (
-                <>
-                  <div
-                    key={`sched-${index}`}
-                    className='flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2.5'
-                  >
+                <Fragment key={`sched-${index}`}>
+                  <div className='flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2.5'>
+                    schedule-{index}
                     <BaseChip iconName='calendar-check'>{date}</BaseChip>
                     <BaseDivider className='hidden !h-6 sm:block' vertical />
                     <BaseChip iconName='clock'>{time}</BaseChip>
@@ -179,7 +177,7 @@ export const TeacherExamSingle = memo(function ({
                     <BaseChip iconName='hourglass'>{duration}</BaseChip>
                   </div>
                   {index < schedules.length - 1 && <BaseDivider />}
-                </>
+                </Fragment>
               ))}
             </div>
           ) : (
