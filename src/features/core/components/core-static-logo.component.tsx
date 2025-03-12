@@ -11,7 +11,7 @@ type Props = ComponentProps<typeof Link> & {
   isCompact?: boolean;
 };
 
-const META_TITLE = import.meta.env.NEXT_PUBLIC_META_TITLE;
+const META_TITLE = import.meta.env.VITE_META_TITLE;
 
 export const CoreStaticLogo = memo(function ({
   className,
