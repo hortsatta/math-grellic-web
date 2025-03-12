@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import cx from 'classix';
 
 import dayjs from '#/config/dayjs.config';
@@ -25,6 +25,9 @@ export const AnnouncementCard = memo(function ({
   onClick,
   ...moreProps
 }: Props) {
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const [isDescriptionClamped, setIsDescriptionClamped] = useState(false);
+
   const [title, description, startDate] = useMemo(
     () => [
       announcement?.title,
@@ -79,17 +82,29 @@ export const AnnouncementCard = memo(function ({
           {title}
         </h4>
         <p
+          ref={descriptionRef}
           className={cx(
-            'flex-1 font-medium leading-5',
+            'relative flex-1 font-medium leading-5',
             !fullSize ? 'line-clamp-3 max-h-16' : 'min-h-[64px]',
           )}
         >
           {description}
+          {isDescriptionClamped && (
+            <span className='absolute bottom-0 left-0 inline-block h-5 w-full bg-gradient-to-b from-transparent to-white' />
+          )}
         </p>
         <div className='w-full text-center text-sm uppercase'>{dateText}</div>
       </div>
     );
-  }, [announcement, loading, title, fullSize, description, dateText]);
+  }, [
+    announcement,
+    loading,
+    title,
+    fullSize,
+    description,
+    dateText,
+    isDescriptionClamped,
+  ]);
 
   const handleClick = useCallback(() => {
     if (!onClick || !announcement) {
@@ -99,11 +114,18 @@ export const AnnouncementCard = memo(function ({
     onClick(announcement);
   }, [announcement, onClick]);
 
+  useEffect(() => {
+    // Show white gradient to hide text after clamp
+    const visibleHeight = descriptionRef.current?.clientHeight || 0;
+    const fullHeight = descriptionRef.current?.scrollHeight || 0;
+    setIsDescriptionClamped(visibleHeight < fullHeight);
+  }, [contentComponent]);
+
   return (
     <div
       className={cx(
         'group/announcement relative flex rounded-xl border-[3px] bg-inherit',
-        fullSize ? 'w-full' : '-2lg:w-[396px] h-[154px] w-full',
+        fullSize ? 'w-full' : 'h-[154px] w-full -2lg:w-[396px]',
         loading && 'items-center !justify-center',
         ...wrapperClassName,
         className,
