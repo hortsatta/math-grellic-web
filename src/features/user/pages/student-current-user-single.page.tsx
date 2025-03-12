@@ -60,11 +60,6 @@ export function StudentCurrentUserSinglePage() {
     [userLoading, assignedTeacherLoading],
   );
 
-  const messengerLinkText = useMemo(
-    () => messengerLink?.replace('https://', ''),
-    [messengerLink],
-  );
-
   if (!isStudent) {
     return null;
   }
@@ -100,8 +95,8 @@ export function StudentCurrentUserSinglePage() {
                 <BaseDivider className='hidden !h-6 sm:block' vertical />
                 <BaseChip iconName='device-mobile'>{phoneNumber}</BaseChip>
               </div>
-              <UserMessengerLink to={messengerLink || ''} isLight>
-                {messengerLinkText}
+              <UserMessengerLink userId={messengerLink} isLight>
+                {messengerLink}
               </UserMessengerLink>
             </div>
           </div>

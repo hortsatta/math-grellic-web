@@ -71,7 +71,7 @@ export function StudentHelpPage() {
               </div>
             </BaseSurface>
             <UserMessengerLink
-              to={teacherMessengerLink || ''}
+              userId={teacherMessengerLink}
               className='w-full'
             />
           </div>

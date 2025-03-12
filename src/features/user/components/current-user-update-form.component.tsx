@@ -65,8 +65,8 @@ const schema = z.object({
     .optional(),
   messengerLink: z
     .string()
-    .url('Url is invalid')
-    .max(255, 'Url is too long')
+    .min(3, 'Id is too short')
+    .max(50, 'Id is too long')
     .optional(),
   emails: z.array(z.string().email('Email address is invalid')).optional(),
   profileImageUrl: z
@@ -180,7 +180,7 @@ export const CurrentUserUpdateForm = memo(function ({
                 asterisk
               />
               <BaseControlledInput
-                label='Messenger Link'
+                label='Messenger Id'
                 name='messengerLink'
                 control={control}
                 fullWidth

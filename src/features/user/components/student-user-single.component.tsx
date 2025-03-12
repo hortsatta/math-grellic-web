@@ -76,7 +76,7 @@ export const StudentUserSingle = memo(function ({
             <BaseDivider className='!h-6' vertical />
             <BaseChip iconName='device-mobile'>{phoneNumber}</BaseChip>
           </div>
-          <UserMessengerLink to={messengerLink || ''} />
+          <UserMessengerLink userId={messengerLink} />
         </div>
       </div>
       <BaseDivider className='mb-2.5' />

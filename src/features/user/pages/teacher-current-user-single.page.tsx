@@ -50,11 +50,6 @@ export function TeacherCurrentUserSinglePage() {
     [user],
   );
 
-  const messengerLinkText = useMemo(
-    () => messengerLink?.replace('https://', ''),
-    [messengerLink],
-  );
-
   if (!isTeacher) {
     return null;
   }
@@ -90,8 +85,8 @@ export function TeacherCurrentUserSinglePage() {
                 <BaseDivider className='!h-6' vertical />
                 <BaseChip iconName='device-mobile'>{phoneNumber}</BaseChip>
               </div>
-              <UserMessengerLink to={messengerLink || ''} size='xs' isLight>
-                {messengerLinkText}
+              <UserMessengerLink userId={messengerLink} size='xs' isLight>
+                {messengerLink}
               </UserMessengerLink>
             </div>
           </div>

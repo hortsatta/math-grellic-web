@@ -66,7 +66,7 @@ export function StudentAssignedTeacherPage() {
                 <BaseDivider className='!h-6' vertical />
                 <BaseChip iconName='device-mobile'>{phoneNumber}</BaseChip>
               </div>
-              <UserMessengerLink to={messengerLink || ''} size='xs' />
+              <UserMessengerLink userId={messengerLink} size='xs' />
             </div>
           </div>
           <BaseDivider className='mb-2.5' />

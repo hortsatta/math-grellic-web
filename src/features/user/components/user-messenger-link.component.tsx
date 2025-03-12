@@ -1,5 +1,4 @@
 import { memo, useMemo } from 'react';
-import isURL from 'validator/lib/isURL';
 import cx from 'classix';
 
 import { BaseLink } from '#/base/components/base-link.component';
@@ -7,24 +6,32 @@ import { BaseLink } from '#/base/components/base-link.component';
 import type { ComponentProps } from 'react';
 import { BaseIcon } from '#/base/components/base-icon.component';
 
-type Props = ComponentProps<typeof BaseLink> & {
+const VITE_MESSENGER_BASE_URL = import.meta.env.VITE_MESSENGER_BASE_URL;
+
+type Props = Omit<ComponentProps<typeof BaseLink>, 'to'> & {
+  userId?: string;
   isLight?: boolean;
 };
 
 export const UserMessengerLink = memo(function ({
   className,
   children,
-  to,
+  userId,
   isLight,
   ...moreProps
 }: Props) {
   const linkClassName = useMemo(() => {
-    if (!isURL(to as string)) {
+    if (!userId || !userId.length) {
       return '!pointer-events-none !bg-accent/40 !text-white';
     }
 
     return isLight ? '!bg-white !text-blue-400' : '!bg-blue-500 !text-white';
-  }, [to, isLight]);
+  }, [userId, isLight]);
+
+  const to = useMemo(
+    () => (userId ? `${VITE_MESSENGER_BASE_URL}/${userId}` : '/'),
+    [userId],
+  );
 
   return (
     <BaseLink
@@ -36,7 +43,7 @@ export const UserMessengerLink = memo(function ({
       {...moreProps}
     >
       <BaseIcon name='messenger-logo' weight='fill' size={22} />
-      {children || 'Send to Messenger'}
+      {children || 'Message Me'}
     </BaseLink>
   );
 });
