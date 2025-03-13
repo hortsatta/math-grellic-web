@@ -36,6 +36,11 @@ export type LessonCompletion = Partial<AuditTrail> & {
   student: StudentUserAccount;
 };
 
+export type LessonVideoData = {
+  duration: string | null;
+  embeddable: boolean;
+};
+
 export type LessonSlice = {
   lessonFormData?: LessonUpsertFormData | null;
   setLessonFormData: (lessonFormData?: LessonUpsertFormData) => void;

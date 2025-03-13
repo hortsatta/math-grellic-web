@@ -1,7 +1,11 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import cx from 'classix';
 
+import { getVideoId } from '#/utils/video.util';
+
 import type { ComponentProps } from 'react';
+
+const VITE_YOUTUBE_EMBED_BASE_URL = import.meta.env.VITE_YOUTUBE_EMBED_BASE_URL;
 
 type Props = ComponentProps<'div'> & {
   url: string;
@@ -14,7 +18,15 @@ export const LessonVideo = memo(function ({
   title,
   ...moreProps
 }: Props) {
-  const videoSrc = `${url}?rel=0&modestbranding=1`;
+  // Since youtube url from db is either embed or watch url,
+  // extract video id and apply embed url
+  const videoSrc = useMemo(
+    () =>
+      `${VITE_YOUTUBE_EMBED_BASE_URL}/${getVideoId(
+        url,
+      )}?rel=0&modestbranding=1`,
+    [url],
+  );
 
   return (
     <div

@@ -1,7 +1,7 @@
-import { memo, useCallback, useEffect, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu } from '@headlessui/react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import isTime from 'validator/lib/isTime';
@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { getErrorMessage } from '#/utils/string.util';
+import { getVideoData } from '#/utils/video.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
@@ -20,6 +21,7 @@ import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
 import { LessonUpsertFormStep1 } from './lesson-upsert-form-step-1.component';
 import { LessonUpsertFormStep2 } from './lesson-upsert-form-step-2.component';
+import { LessonVideoPreviewModal } from './lesson-video-preview-modal.component';
 
 import type { FieldErrors } from 'react-hook-form';
 import type { FormProps, IconName } from '#/base/models/base.model';
@@ -128,6 +130,9 @@ export const LessonUpsertForm = memo(function ({
 }: Props) {
   const navigate = useNavigate();
   const setLessonFormData = useBoundStore((state) => state.setLessonFormData);
+  const [isDetectDuration, setIsDetectDuration] = useState(!formData);
+  const [isEmbeddable, setIsEmbeddable] = useState(true);
+  const [openVideoPreview, setOpenVideoPreview] = useState(false);
 
   const [isEdit, isEditPublished] = useMemo(
     () => [!!formData, formData?.status === RecordStatus.Published],
@@ -141,10 +146,12 @@ export const LessonUpsertForm = memo(function ({
   });
 
   const {
-    formState: { isSubmitting },
+    control,
+    formState: { isSubmitting, isDirty },
     trigger,
     reset,
     getValues,
+    setValue,
     handleSubmit,
   } = methods;
 
@@ -162,6 +169,20 @@ export const LessonUpsertForm = memo(function ({
       [isEditPublished],
     );
 
+  const [videoUrl, title] = useWatch({ control, name: ['videoUrl', 'title'] });
+
+  const handleIsDetectDuration = useCallback(
+    () => setIsDetectDuration(!isDetectDuration),
+    [isDetectDuration],
+  );
+
+  const toggleVideoPreviewModal = useCallback(
+    (open?: boolean) => () => {
+      setOpenVideoPreview(open == null ? !openVideoPreview : open);
+    },
+    [openVideoPreview],
+  );
+
   const handleReset = useCallback(() => {
     reset(isEdit ? formData : defaultValues);
   }, [isEdit, formData, reset]);
@@ -177,6 +198,12 @@ export const LessonUpsertForm = memo(function ({
   const submitForm = useCallback(
     async (data: LessonUpsertFormData, status?: RecordStatus) => {
       try {
+        // check if video is embeddable, else return error
+        if (!isEmbeddable) {
+          toast.error('Cannot embed video, please check url or privacy');
+          return;
+        }
+
         const targetData = status ? { ...data, status } : data;
         const lesson = await onSubmit(targetData);
 
@@ -192,7 +219,7 @@ export const LessonUpsertForm = memo(function ({
         toast.error(error.message);
       }
     },
-    [isEdit, onSubmit, onDone, navigate],
+    [isEdit, isEmbeddable, onSubmit, onDone, navigate],
   );
 
   const handlePreview = useCallback(async () => {
@@ -215,77 +242,108 @@ export const LessonUpsertForm = memo(function ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      if (!isDirty) return;
+
+      const { duration, embeddable } = await getVideoData(videoUrl);
+      setIsEmbeddable(embeddable);
+      // If auto detect duration is disable then return
+      if (!isDetectDuration) return;
+      // Set value of duration from video data
+      setValue('duration', duration || '00:00:00');
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDetectDuration, videoUrl]);
+
   return (
-    <div className={cx('w-full', className)} {...moreProps}>
-      <FormProvider {...methods}>
-        <form
-          onSubmit={handleSubmit((data) => submitForm(data), handleSubmitError)}
-        >
-          <BaseStepper
-            disabled={loading}
-            onReset={handleReset}
-            controlsRightContent={
-              <div className='group-button w-full sm:w-auto'>
-                <BaseButton
-                  className='w-full'
-                  rightIconName={publishButtonIconName}
-                  loading={isSubmitting || loading}
-                  disabled={isDone}
-                  onClick={handleSubmit(
-                    (data) => submitForm(data, RecordStatus.Published),
-                    handleSubmitError,
-                  )}
-                >
-                  {publishButtonLabel}
-                </BaseButton>
-                <BaseDropdownMenu disabled={loading}>
-                  {(!isEdit || !isEditPublished) && (
-                    <Menu.Item
-                      as={BaseDropdownButton}
-                      type='submit'
-                      iconName='floppy-disk-back'
-                      disabled={loading}
-                    >
-                      Save as Draft
-                    </Menu.Item>
-                  )}
-                  <Menu.Item
-                    as={BaseDropdownButton}
-                    iconName='file-text'
-                    onClick={handlePreview}
-                    disabled={loading}
+    <>
+      <div className={cx('w-full', className)} {...moreProps}>
+        <FormProvider {...methods}>
+          <form
+            onSubmit={handleSubmit(
+              (data) => submitForm(data),
+              handleSubmitError,
+            )}
+          >
+            <BaseStepper
+              disabled={loading}
+              onReset={handleReset}
+              controlsRightContent={
+                <div className='group-button w-full sm:w-auto'>
+                  <BaseButton
+                    className='w-full'
+                    rightIconName={publishButtonIconName}
+                    loading={isSubmitting || loading}
+                    disabled={isDone}
+                    onClick={handleSubmit(
+                      (data) => submitForm(data, RecordStatus.Published),
+                      handleSubmitError,
+                    )}
                   >
-                    Preview
-                  </Menu.Item>
-                  {isEdit && (
-                    <>
-                      <BaseDivider className='my-1' />
+                    {publishButtonLabel}
+                  </BaseButton>
+                  <BaseDropdownMenu disabled={loading}>
+                    {(!isEdit || !isEditPublished) && (
                       <Menu.Item
                         as={BaseDropdownButton}
-                        className='text-red-500'
-                        iconName='trash'
-                        onClick={onDelete}
+                        type='submit'
+                        iconName='floppy-disk-back'
                         disabled={loading}
                       >
-                        Delete
+                        Save as Draft
                       </Menu.Item>
-                    </>
-                  )}
-                </BaseDropdownMenu>
-              </div>
-            }
-          >
-            <BaseStepperStep label='Lesson Info'>
-              <LessonUpsertFormStep1 disabled={loading} />
-            </BaseStepperStep>
-            {(!isEdit || !isEditPublished) && (
-              <BaseStepperStep label='Lesson Schedule'>
-                <LessonUpsertFormStep2 disabled={loading} />
+                    )}
+                    <Menu.Item
+                      as={BaseDropdownButton}
+                      iconName='file-text'
+                      onClick={handlePreview}
+                      disabled={loading}
+                    >
+                      Preview
+                    </Menu.Item>
+                    {isEdit && (
+                      <>
+                        <BaseDivider className='my-1' />
+                        <Menu.Item
+                          as={BaseDropdownButton}
+                          className='text-red-500'
+                          iconName='trash'
+                          onClick={onDelete}
+                          disabled={loading}
+                        >
+                          Delete
+                        </Menu.Item>
+                      </>
+                    )}
+                  </BaseDropdownMenu>
+                </div>
+              }
+            >
+              <BaseStepperStep label='Lesson Info'>
+                <LessonUpsertFormStep1
+                  isDetectDuration={isDetectDuration}
+                  isEmbeddable={isEmbeddable}
+                  disabled={loading}
+                  onIsDetectDuration={handleIsDetectDuration}
+                  onEmbedPreview={toggleVideoPreviewModal()}
+                />
               </BaseStepperStep>
-            )}
-          </BaseStepper>
-        </form>
-      </FormProvider>
-    </div>
+              {(!isEdit || !isEditPublished) && (
+                <BaseStepperStep label='Lesson Schedule'>
+                  <LessonUpsertFormStep2 disabled={loading} />
+                </BaseStepperStep>
+              )}
+            </BaseStepper>
+          </form>
+        </FormProvider>
+      </div>
+      <LessonVideoPreviewModal
+        videoUrl={videoUrl}
+        title={title}
+        open={openVideoPreview}
+        onClose={toggleVideoPreviewModal(false)}
+      />
+    </>
   );
 });

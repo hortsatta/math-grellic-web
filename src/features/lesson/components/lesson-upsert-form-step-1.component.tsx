@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import {
@@ -9,20 +9,56 @@ import { BaseControlledDurationInput } from '#/base/components/base-duration-inp
 import { BaseControlledRichTextEditor } from '#/base/components/base-rich-text-editor.component';
 
 import type { ComponentProps } from 'react';
+import type { IconName } from '#/base/models/base.model';
 import type { LessonUpsertFormData } from '../models/lesson-form-data.model';
 
 type Props = ComponentProps<'div'> & {
+  isDetectDuration: boolean;
+  isEmbeddable: boolean;
   disabled?: boolean;
+  onIsDetectDuration: () => void;
+  onEmbedPreview: () => void;
 };
 
 const FIELD_GROUP_CLASSNAME =
   'flex sm:flex-row flex-col w-full items-start justify-between gap-5';
 
 export const LessonUpsertFormStep1 = memo(function ({
+  isDetectDuration,
+  isEmbeddable,
   disabled,
+  onIsDetectDuration,
+  onEmbedPreview,
   ...moreProps
 }: Props) {
   const { control } = useFormContext<LessonUpsertFormData>();
+
+  const durationIconButtonProps = useMemo(
+    () => ({
+      name: (!isDetectDuration ? 'gps-slash' : 'crosshair') as IconName,
+      isInput: true,
+      tooltip: isDetectDuration
+        ? 'Disable auto-detect duration'
+        : 'Auto-detect duration',
+      onClick: () => onIsDetectDuration(),
+    }),
+    [isDetectDuration, onIsDetectDuration],
+  );
+
+  const embedIconButtonProps = useMemo(
+    () => ({
+      name: 'scan' as IconName,
+      isInput: true,
+      tooltip: isEmbeddable
+        ? 'Show preview'
+        : 'Show preview, cannot embed video',
+      iconProps: {
+        color: isEmbeddable ? 'currentColor' : 'red',
+      },
+      onClick: () => onEmbedPreview(),
+    }),
+    [isEmbeddable, onEmbedPreview],
+  );
 
   return (
     <div {...moreProps}>
@@ -51,6 +87,7 @@ export const LessonUpsertFormStep1 = memo(function ({
             label='Video Url'
             name='videoUrl'
             control={control}
+            rightButtonProps={embedIconButtonProps}
             fullWidth
             asterisk
           />
@@ -58,6 +95,8 @@ export const LessonUpsertFormStep1 = memo(function ({
             label='Duration (hh:mm:ss)'
             name='duration'
             control={control}
+            inputDisabled={isDetectDuration}
+            rightButtonProps={durationIconButtonProps}
             fullWidth
           />
         </div>
