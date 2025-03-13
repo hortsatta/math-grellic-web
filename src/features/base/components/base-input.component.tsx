@@ -20,6 +20,7 @@ type Props = ComponentProps<'input'> & {
   leftContent?: ReactNode;
   fullWidth?: boolean;
   asterisk?: boolean;
+  inputDisabled?: boolean;
   wrapperProps?: ComponentProps<'div'>;
   rightButtonProps?: ComponentProps<typeof BaseIconButton> & {
     tooltip?: ReactNode;
@@ -45,6 +46,7 @@ export const BaseInput = memo(
       fullWidth,
       asterisk,
       required,
+      inputDisabled,
       disabled,
       wrapperProps: { className: wrapperClassName, ...moreWrapperProps } = {},
       rightButtonProps: {
@@ -83,12 +85,12 @@ export const BaseInput = memo(
               !!errorMessage && '!border-red-500/60',
               !!rightIconBtnName && '!pr-11',
               className,
-              disabled && '!bg-backdrop-gray',
+              (inputDisabled || disabled) && '!bg-backdrop-gray',
             )}
             value={value}
             placeholder={placeholder}
             required={required}
-            disabled={disabled}
+            disabled={inputDisabled || disabled}
             {...moreProps}
           />
           {leftContent}
