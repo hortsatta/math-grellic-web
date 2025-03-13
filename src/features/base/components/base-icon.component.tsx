@@ -40,6 +40,7 @@ import {
   Clock,
   ClockCountdown,
   Crop,
+  Crosshair,
   DeviceMobile,
   DiceThree,
   DoorOpen,
@@ -58,6 +59,7 @@ import {
   GameController,
   GenderFemale,
   GenderMale,
+  GpsSlash,
   Hourglass,
   House,
   IdentificationBadge,
@@ -85,6 +87,7 @@ import {
   Quotes,
   RadioButton,
   RocketLaunch,
+  Scan,
   ShareFat,
   SignOut,
   SortAscending,
@@ -202,6 +205,8 @@ export const BaseIcon = memo(
           return ClockCountdown;
         case 'crop':
           return Crop;
+        case 'crosshair':
+          return Crosshair;
         case 'device-mobile':
           return DeviceMobile;
         case 'dice-three':
@@ -238,6 +243,8 @@ export const BaseIcon = memo(
           return GenderFemale;
         case 'gender-male':
           return GenderMale;
+        case 'gps-slash':
+          return GpsSlash;
         case 'hourglass':
           return Hourglass;
         case 'house':
@@ -292,6 +299,8 @@ export const BaseIcon = memo(
           return RadioButton;
         case 'rocket-launch':
           return RocketLaunch;
+        case 'scan':
+          return Scan;
         case 'share-fat':
           return ShareFat;
         case 'sign-out':
