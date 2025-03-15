@@ -51,7 +51,7 @@
   }
 
   .base-rich-text.rt-output p {
-    @apply my-2;
+    min-height: 24px;
   }
 
   .base-rich-text hr {
@@ -74,6 +74,14 @@
 
   .base-rich-text ul {
     @apply list-disc;
+  }
+
+  .base-rich-text img {
+    @apply inline-block overflow-hidden rounded-md border-2 border-transparent;
+  }
+
+  .base-rich-text img.ProseMirror-selectednode {
+    @apply border-primary-focus;
   }
 
   .group-button {

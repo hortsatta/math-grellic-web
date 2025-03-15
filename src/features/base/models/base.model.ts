@@ -55,6 +55,7 @@ export type IconName =
   | 'exam'
   | 'eye'
   | 'eye-slash'
+  | 'eyes'
   | 'feather'
   | 'file-dashed'
   | 'file-text'

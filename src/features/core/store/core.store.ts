@@ -14,10 +14,12 @@ export const createCoreSlice: StateCreator<CoreSlice, [], [], CoreSlice> = (
   openRegister: undefined,
   openLogin: undefined,
   exActImageEdit: undefined,
+  exActFocusedIndex: undefined,
   setSocket: (socket: Socket) => set({ socket }),
   setSidebarMode: (sidebarMode: SidebarMode) => set({ sidebarMode }),
   setExActImageEdit: (exActImageEdit?: ExActImageEdit) =>
     set({ exActImageEdit }),
+  setExActFocusedIndex: (index?: string) => set({ exActFocusedIndex: index }),
   setOpenRegister: (openRegister?: boolean) =>
     set({ openRegister, openLogin: false }),
   setOpenLogin: (openLogin?: boolean) =>

@@ -30,12 +30,14 @@ export type CoreSlice = {
   openRegister?: boolean;
   openLogin?: boolean;
   exActImageEdit?: ExActImageEdit;
+  exActFocusedIndex?: string;
   sidebarMode: SidebarMode;
   rightSidebarMode: Omit<SidebarMode, 'Hidden'>;
   setSocket: (socket: Socket) => void;
   setOpenRegister: (openRegister?: boolean) => void;
   setOpenLogin: (openLogin?: boolean) => void;
   setExActImageEdit: (exActImageEdit?: ExActImageEdit) => void;
+  setExActFocusedIndex: (index?: string) => void;
   setSidebarMode: (sidebarMode: SidebarMode) => void;
   toggleRightSidebarMode: () => void;
 };

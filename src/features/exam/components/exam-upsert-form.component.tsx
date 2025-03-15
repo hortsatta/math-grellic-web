@@ -12,6 +12,7 @@ import cx from 'classix';
 import dayjs from '#/config/dayjs.config';
 import { getErrorMessage } from '#/utils/string.util';
 import { getDayJsDuration } from '#/utils/time.util';
+import { stripHtml } from '#/utils/rich-text.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { ExActTextType, RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
@@ -141,6 +142,7 @@ const schema = z
     }
 
     data.questions.forEach((question, index) => {
+      // Check if an answer is selected from one of the choices
       const isValid = question.choices.some((choice) => choice.isCorrect);
       if (!isValid) {
         ctx.addIssue({
@@ -150,29 +152,51 @@ const schema = z
         });
       }
 
-      if (
-        question.textType === ExActTextType.Text &&
-        !question.text?.trim().length
-      ) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Question is invalid',
-          path: [`questions.${index}.text`],
-        });
-      } else if (
-        question.textType === ExActTextType.Image &&
-        (!question.imageData ||
-          (!data.slug?.trim() &&
-            !isBase64(question.imageData?.split(',').pop() || '')))
-      ) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Image is invalid',
-          path: [`questions.${index}.imageData`],
-        });
-      }
+      stripHtml(
+        question.text || '',
+        () =>
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Question is invalid',
+            path: [`questions.${index}.text`],
+          }),
+        () =>
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Question is invalid',
+            path: [`questions.${index}.text`],
+          }),
+        () =>
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Question is invalid',
+            path: [`questions.${index}.text`],
+          }),
+      );
 
       question.choices.forEach((choice, cIndex) => {
+        stripHtml(
+          choice.text || '',
+          () =>
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Choice is invalid',
+              path: [`questions.${index}.choices.${cIndex}.text`],
+            }),
+          () =>
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Choice is invalid',
+              path: [`questions.${index}.choices.${cIndex}.text`],
+            }),
+          () =>
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Choice is invalid',
+              path: [`questions.${index}.choices.${cIndex}.text`],
+            }),
+        );
+
         if (
           choice.textType === ExActTextType.Text &&
           !choice.text?.trim().length

@@ -49,6 +49,7 @@ import {
   Exam,
   Eye,
   EyeSlash,
+  Eyes,
   Feather,
   FileDashed,
   FileText,
@@ -223,6 +224,8 @@ export const BaseIcon = memo(
           return Eye;
         case 'eye-slash':
           return EyeSlash;
+        case 'eyes':
+          return Eyes;
         case 'feather':
           return Feather;
         case 'file-dashed':
