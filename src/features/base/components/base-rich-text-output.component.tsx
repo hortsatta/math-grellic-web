@@ -3,7 +3,7 @@ import { StaticMathField } from 'react-mathquill';
 import { useController } from 'react-hook-form';
 import cx from 'classix';
 
-import { stripHtml } from '#/utils/rich-text.util';
+import { stripHtml } from '#/utils/html.util';
 
 import type { ComponentProps } from 'react';
 import type { UseControllerProps } from 'react-hook-form';
@@ -12,6 +12,7 @@ type Props = Omit<ComponentProps<'div'>, 'dangerouslySetInnerHTML'> & {
   label: string;
   text: string;
   keyPrefix?: string;
+  active?: boolean;
   errorMessage?: string;
   wrapperProps?: ComponentProps<'div'>;
 };
@@ -25,8 +26,9 @@ export const BaseRichTextOutput = memo(
       keyPrefix = 'rt',
       label,
       text,
+      active,
       errorMessage,
-      wrapperProps,
+      wrapperProps: { className: wrapperClassName, ...moreWrapperProps } = {},
       ...moreProps
     },
     ref,
@@ -101,11 +103,17 @@ export const BaseRichTextOutput = memo(
     }, [keyPrefix, label, text, isEmpty, createComponent]);
 
     return (
-      <div {...wrapperProps}>
+      <div
+        className={cx(active && 'w-full', wrapperClassName)}
+        {...moreWrapperProps}
+      >
         <div
           ref={ref}
           className={cx(
-            'rt-output base-rich-text flex min-h-[48px] w-full cursor-text items-center rounded-md border-2 border-accent/40 pb-2 pl-18px pr-5 pt-2 text-accent',
+            'rt-output base-rich-text flex min-h-[48px] w-full cursor-text items-center rounded-md border-2 py-2 text-accent',
+            active
+              ? 'cursor-pointer border-transparent px-0'
+              : 'border-accent/40 pl-18px pr-5',
             isEmpty && 'font-medium text-accent/50',
             !!errorMessage && '!border-red-500/60',
             className,

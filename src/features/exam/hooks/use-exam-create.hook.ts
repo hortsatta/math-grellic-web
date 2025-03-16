@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 
+import { hasImage, replaceImageSrcs } from '#/utils/html.util';
 import { queryClient } from '#/config/react-query-client.config';
 import { queryExamKey } from '#/config/react-query-keys.config';
 import {
@@ -11,6 +12,12 @@ import {
 
 import type { Exam } from '../models/exam.model';
 import type { ExamUpsertFormData } from '../models/exam-form-data.model';
+
+const VITE_SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const VITE_SUPABASE_STORAGE_BASE_PATH = import.meta.env
+  .VITE_SUPABASE_STORAGE_BASE_PATH;
+
+const imgBaseUrl = `${VITE_SUPABASE_URL}${VITE_SUPABASE_STORAGE_BASE_PATH}/`;
 
 type Result = {
   isDone: boolean;
@@ -43,44 +50,46 @@ export function useExamCreate(): Result {
 
   const createExam = useCallback(
     async (data: ExamUpsertFormData) => {
-      const hasImages = data.questions.some(
-        (question) =>
-          !!question.imageData ||
-          question.choices.some((choice) => !!choice.imageData),
-      );
+      // Validate exam data before creation
+      await validateUpsertExam({ data });
+      // If includes any image, then upload image first
+      const htmls = data.questions.flatMap((q) => [
+        q.text,
+        ...q.choices.map((c) => c.text),
+      ]);
 
-      if (!hasImages) {
-        return mutateCreateExam(data);
+      if (hasImage(htmls)) {
+        const images = await mutateUploadExamImages({ data });
+        // Replace base64 images from text field with uploaded images url
+        data.questions.forEach((question) => {
+          // Filter images by question order number and no 'c' character present in filename
+          const qImages = images.filter((img) => {
+            const filename = img.split('/').pop() || '';
+            return (
+              !filename.includes('c') &&
+              filename.split('-')[1] === `q${question.orderNumber}`
+            );
+          });
+          question.text = replaceImageSrcs(question.text, qImages, imgBaseUrl);
+
+          question.choices.forEach((choice) => {
+            // Filter images by question and choice order number
+            const cImages = images.filter((img) => {
+              const imgSplitNames = (img.split('/').pop() || '').split('-');
+              return (
+                imgSplitNames[1] === `q${question.orderNumber}` &&
+                imgSplitNames[2] === `c${choice.orderNumber}`
+              );
+            });
+
+            choice.text = replaceImageSrcs(choice.text, cImages, imgBaseUrl);
+          });
+        });
       }
 
-      await validateUpsertExam({ data });
-      const images = await mutateUploadExamImages({ data });
-      // Clone value for shifting of array
-      const clonedImages = images;
-      // Apply image url to question/choice text for exam creation
-      const transformedFormData: ExamUpsertFormData = {
-        ...data,
-        questions: data.questions.map((question) => {
-          const text = question.imageData
-            ? clonedImages.shift() || ''
-            : question.text;
-
-          const choices = question.choices.map((choice) => ({
-            ...choice,
-            text: choice.imageData ? clonedImages.shift() || '' : choice.text,
-          }));
-
-          return {
-            ...question,
-            text,
-            choices,
-          };
-        }),
-      };
-
-      return mutateCreateExam(transformedFormData);
+      return mutateCreateExam(data);
     },
-    [validateUpsertExam, mutateCreateExam, mutateUploadExamImages],
+    [validateUpsertExam, mutateUploadExamImages, mutateCreateExam],
   );
 
   return {

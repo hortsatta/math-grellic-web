@@ -57,3 +57,39 @@ export function stripHtml(
 
   return result;
 }
+
+export function hasImage(htmls: string[]): boolean {
+  return htmls.some((html) => html.includes('<img'));
+}
+
+export function getImageSrcs(html: string): string[] {
+  // Parse the HTML string into a DOM document
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  // Query for all <img> elements
+  const elements = doc.querySelectorAll('img');
+  // Extract the `src` attribute from each <img> element
+  const srcs = Array.from(elements).map((img) => img.getAttribute('src') || '');
+  return srcs.filter((src) => src.trim().length);
+}
+
+export function replaceImageSrcs(
+  html: string,
+  srcs: string[],
+  baseUrl?: string,
+): string {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  // Query for all <img> elements
+  const elements = doc.querySelectorAll('img');
+  // Replace the `src` attribute of each <img> element with values from the targetSrcs array
+  elements.forEach((img, index) => {
+    if (srcs[index]) {
+      img.setAttribute('src', `${baseUrl}${srcs[index]}?${Date.now()}`);
+    }
+  });
+  // Serialize the updated DOM back into an HTML string
+  const serializer = new XMLSerializer();
+  return serializer
+    .serializeToString(doc.body)
+    .replace(/<body[^>]*>|<\/body>/g, '')
+    .trim();
+}

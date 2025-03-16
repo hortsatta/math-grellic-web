@@ -15,10 +15,7 @@ import type { PaginatedQueryData } from '#/core/models/core.model';
 import type { QueryPagination } from '#/base/models/base.model';
 import type { Activity, Game } from '../models/activity.model';
 import type { ActivityUpsertFormData } from '../models/activity-form-data.model';
-import {
-  generateImageFormDataStrict,
-  generateImageFormData,
-} from '../helpers/activity-form.helper';
+import { generateImageFormData } from '../helpers/activity-form.helper';
 
 const BASE_URL = 'activities';
 
@@ -273,9 +270,7 @@ export function uploadActivityImages(
   }): Promise<any> => {
     const { data, strict } = options;
     const url = `upload/${BASE_URL}/images`;
-    const formData = await (strict
-      ? generateImageFormDataStrict(data)
-      : generateImageFormData(data));
+    const formData = await generateImageFormData(data, strict);
 
     try {
       return kyInstance.post(url, { body: formData }).json();

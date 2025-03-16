@@ -4,10 +4,7 @@ import {
   convertSecondsToDuration,
 } from '#/utils/time.util';
 import { ExActTextType } from '#/core/models/core.model';
-import {
-  getQuestionImageUrl,
-  transformToBaseModel,
-} from '#/base/helpers/base.helper';
+import { transformToBaseModel } from '#/base/helpers/base.helper';
 import { ActivityCategoryType } from '../models/activity.model';
 
 import type { StudentUserAccount } from '#/user/models/user.model';
@@ -28,6 +25,13 @@ import type {
   ActivityCategoryQuestionFormData,
   ActivityUpsertFormData,
 } from '../models/activity-form-data.model';
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const STORAGE_BASE_PATH = import.meta.env.VITE_SUPABASE_STORAGE_BASE_PATH;
+
+export function getQuestionImageUrl(filePath: string) {
+  return `${SUPABASE_URL}/${STORAGE_BASE_PATH}/${filePath}?${Date.now()}`;
+}
 
 export function transformToActivity({
   id,

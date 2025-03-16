@@ -104,10 +104,17 @@ export const BaseAdvancedRichTextEditorMenubar = function ({
   useEffect(() => {
     if (!imageData?.trim().length || !isImageEmbedding) return;
 
-    editor.chain().focus().setImage({ src: imageData }).run();
-    setIsImageEmbedding(false);
+    setTimeout(() => {
+      editor.chain().focus().setImage({ src: imageData }).run();
+      setIsImageEmbedding(false);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageData]);
+
+  useEffect(() => {
+    editor.view.dom.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className='w-full'>

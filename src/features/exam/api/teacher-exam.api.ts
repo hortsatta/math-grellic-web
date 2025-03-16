@@ -7,10 +7,7 @@ import {
   transformToExam,
   transformToExamUpsertDto,
 } from '../helpers/exam-transform.helper';
-import {
-  generateImageFormData,
-  generateImageFormDataStrict,
-} from '../helpers/exam-form.helper';
+import { generateImageFormData } from '../helpers/exam-form.helper';
 
 import type {
   UseMutationOptions,
@@ -251,9 +248,7 @@ export function uploadExamImages(
     const { data, strict } = options;
     const url = `upload/${BASE_URL}/images`;
     const { orderNumber, questions } = data;
-    const formData = await (strict
-      ? generateImageFormDataStrict(orderNumber || 0, questions)
-      : generateImageFormData(orderNumber || 0, questions));
+    const formData = await generateImageFormData(orderNumber || 0, questions);
 
     try {
       return kyInstance.post(url, { body: formData }).json();

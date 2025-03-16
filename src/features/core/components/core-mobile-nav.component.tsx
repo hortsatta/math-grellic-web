@@ -39,10 +39,6 @@ const logoStyle = {
   backgroundRepeat: 'no-repeat',
 };
 
-const menuIconProps = {
-  weight: 'fill' as IconWeight,
-};
-
 const sidebarIconProps = {
   weight: 'bold' as IconWeight,
 };
@@ -113,7 +109,6 @@ export const CoreMobileNav = memo(function ({
           className='box-content !h-full !w-7 px-4'
           name='list'
           variant='link'
-          iconProps={menuIconProps}
           onClick={handleSetModal(true)}
         />
         <Link

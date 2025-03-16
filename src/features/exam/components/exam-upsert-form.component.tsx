@@ -12,7 +12,7 @@ import cx from 'classix';
 import dayjs from '#/config/dayjs.config';
 import { getErrorMessage } from '#/utils/string.util';
 import { getDayJsDuration } from '#/utils/time.util';
-import { stripHtml } from '#/utils/rich-text.util';
+import { stripHtml } from '#/utils/html.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { ExActTextType, RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';

@@ -1,9 +1,5 @@
 import dayjs from '#/config/dayjs.config';
-import { ExActTextType } from '#/core/models/core.model';
-import {
-  getQuestionImageUrl,
-  transformToBaseModel,
-} from '#/base/helpers/base.helper';
+import { transformToBaseModel } from '#/base/helpers/base.helper';
 import { transformToStudentUserAccount } from '#/user/helpers/user-transform.helper';
 import { transformToLesson } from '#/lesson/helpers/lesson-transform.helper';
 
@@ -270,16 +266,12 @@ export function transformToExamQuestionFormData({
       transformToExamQuestionChoiceFormData(choice),
     ) || [];
 
-  const imageData =
-    textType === ExActTextType.Image ? getQuestionImageUrl(text) : undefined;
-
   return {
     id,
     orderNumber,
     text,
     textType,
     choices: transformedChoices,
-    imageData,
   };
 }
 
@@ -290,16 +282,12 @@ export function transformToExamQuestionChoiceFormData({
   textType,
   isCorrect,
 }: any): ExamQuestionChoiceFormData {
-  const imageData =
-    textType === ExActTextType.Image ? getQuestionImageUrl(text) : undefined;
-
   return {
     id,
     orderNumber,
     text,
     textType,
     isCorrect,
-    imageData,
   };
 }
 

@@ -4,10 +4,10 @@ import cx from 'classix';
 
 import { alphabet } from '#/utils/string.util';
 import { ExActTextType } from '#/core/models/core.model';
-import { getQuestionImageUrl } from '#/base/helpers/base.helper';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { getQuestionImageUrl } from '../helpers/activity-transform.helper';
 
 import type { ComponentProps } from 'react';
 import type { IconName } from '#/base/models/base.model';
