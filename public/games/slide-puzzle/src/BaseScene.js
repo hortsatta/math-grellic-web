@@ -165,7 +165,6 @@ class BaseScene extends Phaser.Scene {
   }
 
   setLevelQuestions(qAndA = this.getLevelQuestions()){
-    console.log("setLevelQuestions called");
     BaseScene.levelQuestions = qAndA;
   }
 
@@ -278,82 +277,23 @@ class BaseScene extends Phaser.Scene {
     BaseScene.levelData = BaseScene.serverData.categories[0];
   }
 
-  // setQandAData = async() => {
-
-  //   const sortedQuestionById = BaseScene.levelData.questions.slice().sort((a, b) => a.id - b.id);
-
-  //   if(!BaseScene.levelData.randomizeQuestions){
-
-  //     sortedQuestionById.forEach(item => {
-
-  //       const stageIndex = item.stageNumber - 1; // Use stageNumber as index (0-based)
-       
-  //       if (!BaseScene.qAndAData[stageIndex]) {
-  //         BaseScene.qAndAData[stageIndex] = [];
-  //       }
-  
-  //       BaseScene.qAndAData[stageIndex].push(item);
-  
-  //     });
-
-  //     console.log("not random question BaseScene.qAndAData: ", BaseScene.qAndAData);
-
-  //     //load initial q & a images
-  //     await this.loadImageArray(this.getLevelQuestions(), { sync: true });
-
-  //     //load remaining q & a images
-  //     this.loadImagesAsynchronously();
-
-  //   } else {
-
-  //     //if random question
-
-  //     BaseScene.qAndAData = sortedQuestionById;
-
-  //     this.setRandomNumArray(BaseScene.qAndAData.length);
-
-  //     const targetArrayPercentage = 0.2;
-  //     const targetFirstArrayIndex = Math.ceil(this.randomNumArray.length * targetArrayPercentage);
-
-  //     //gets q&a array slice for synchronous image loading
-  //     const targetFirstArray = this.randomNumArray
-  //       .slice(0, targetFirstArrayIndex)
-  //       .map(index => BaseScene.qAndAData[index]);
-
-  //     //gets q&a array slice for asynchronous image loading
-  //     const targetSecondArray = this.randomNumArray
-  //       .slice(targetFirstArrayIndex)
-  //       .map(index => BaseScene.qAndAData[index]);
-
-  //     //load initial q & a images
-  //     await this.loadImageArray(targetFirstArray, { sync: true });
-
-  //     //load remaining q & a  images
-  //     this.loadImageArray(targetSecondArray);    
-
-  //   }
-
-  // }
-
   setQandAData = async() => {
-
-    console.log("BaseScene.levelData.randomizeQuestions: ", BaseScene.levelData.randomizeQuestions);
 
     const sortedQuestionById = BaseScene.levelData.questions.slice().sort((a, b) => a.id - b.id);
 
-    sortedQuestionById.forEach(item => {
-
-      const stageIndex = item.stageNumber - 1; // Use stageNumber as index (0-based)
-     
-      if (!BaseScene.qAndAData[stageIndex]) {
-        BaseScene.qAndAData[stageIndex] = [];
-      }
-
-      BaseScene.qAndAData[stageIndex].push(item);
-
-    });
-
     if(!BaseScene.levelData.randomizeQuestions){
+
+      sortedQuestionById.forEach(item => {
+
+        const stageIndex = item.stageNumber - 1; // Use stageNumber as index (0-based)
+       
+        if (!BaseScene.qAndAData[stageIndex]) {
+          BaseScene.qAndAData[stageIndex] = [];
+        }
+  
+        BaseScene.qAndAData[stageIndex].push(item);
+  
+      });
 
       //load initial q & a images
       await this.loadImageArray(this.getLevelQuestions(), { sync: true });
@@ -363,41 +303,30 @@ class BaseScene extends Phaser.Scene {
 
     } else {
 
-      //if random question
+      BaseScene.qAndAData = sortedQuestionById;
 
-      //BaseScene.qAndAData = sortedQuestionById;
+      this.setLevelQuestions(BaseScene.qAndAData);
 
-      //this.setRandomNumArray(BaseScene.qAndAData.length);
-
-      console.log("Before BaseScene.qAndAData.forEach");
-      
-      BaseScene.qAndAData.forEach((row, index) => {
-        console.log("index: ", index);
-        console.log("row.length: ", row.length);
-        this.setRandomNumArray(index, row.length)
-      });
-
-      console.log("After BaseScene.qAndAData.forEach");
-      console.log("this.randomNumArray: ", this.randomNumArray);
+      this.setRandomNumArray(BaseScene.qAndAData.length);
 
       const targetArrayPercentage = 0.2;
-      const targetFirstArrayIndex = Math.ceil(this.questionSceneRef.randomNumArray.length * targetArrayPercentage);
+      const targetFirstArrayIndex = Math.ceil(this.randomNumArray.length * targetArrayPercentage);
 
       //gets q&a array slice for synchronous image loading
-      const targetFirstArray = this.questionSceneRef.randomNumArray
+      const targetFirstArray = this.randomNumArray
         .slice(0, targetFirstArrayIndex)
         .map(index => BaseScene.qAndAData[index]);
 
-      // //gets q&a array slice for asynchronous image loading
-      // const targetSecondArray = this.questionSceneRef.randomNumArray
-      //   .slice(targetFirstArrayIndex)
-      //   .map(index => BaseScene.qAndAData[index]);
+      //gets q&a array slice for asynchronous image loading
+      const targetSecondArray = this.randomNumArray
+        .slice(targetFirstArrayIndex)
+        .map(index => BaseScene.qAndAData[index]);
 
-      // //load initial q & a images
-      // await this.loadImageArray(targetFirstArray, { sync: true });
+      //load initial q & a images
+      await this.loadImageArray(targetFirstArray, { sync: true });
 
-      // //load remaining q & a  images
-      // this.loadImageArray(targetSecondArray);    
+      //load remaining q & a  images
+      this.loadImageArray(targetSecondArray);    
 
     }
 

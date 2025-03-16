@@ -73,8 +73,6 @@ class QuestionScene extends BaseScene
     this.qAndLevelMultiplier = 0
 
     this.blockKeyValues = blockKeyArray();
-
-    this.randomNumArray = [];
     
   }
 
@@ -84,11 +82,7 @@ class QuestionScene extends BaseScene
 
     this.setQandABanner();
 
-    console.log("before initial this.setQandAData");
-
     await this.setQandAData();
-
-    console.log("after initial this.setQandAData");
     
     BaseScene.playSceneRef.startGameLevel();
 
@@ -610,8 +604,6 @@ class QuestionScene extends BaseScene
 
   updateQandAData(blockKey){
 
-    console.log("BaseScene.levelQuestions: ", BaseScene.levelQuestions);
-
     const blockKeyValue = this.blockKeyValues.indexOf(blockKey);
 
     const questionsTotalCount = BaseScene.levelQuestions.length;
@@ -634,20 +626,16 @@ class QuestionScene extends BaseScene
       ? qandAIndex 
       : this.randomNumArray[qandAIndex];
 
-    console.log("targetQuestionIndex: ", targetQuestionIndex);
-    
     this.chosenQandA = BaseScene.levelQuestions[targetQuestionIndex];
 
     this.chosenQandA.correctAnswerIndex = this.chosenQandA.choices.findIndex(item => item.isCorrect === true);
 
   }
 
-  setRandomNumArray(stageIndex, length){
-    if (!this.randomNumArray[stageIndex]) {
-      this.randomNumArray[stageIndex] = [];
-    }
+  setRandomNumArray(length){
 
-    this.randomNumArray[stageIndex].push(randomNumsArray(length));
+    this.randomNumArray = randomNumsArray(length);
+
   }
 
   incrementQAndLevelMultiplier(){
@@ -814,6 +802,7 @@ class QuestionScene extends BaseScene
   
           if (svgFile) {
             const textureKey = "expression_" + choice.id; // Ensure a unique texture key
+            console.log("initial load textureKey: ", textureKey)
             this.convertInlineSvgToPhaserTexture(
               svgFile,
               textureKey,
@@ -846,8 +835,6 @@ class QuestionScene extends BaseScene
       const filePath = imagePathArr[imageIndex];
       const fileName = this.extractFileName(filePath);
       const fileUrl = getQuestionImageUrl(filePath);
-
-      console.log("fileName: ", fileName);
 
       if (!this.textures.exists(fileName)) {
         this.load.image(fileName, fileUrl);

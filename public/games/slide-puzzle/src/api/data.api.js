@@ -1,26 +1,16 @@
+
 // _ADD
 import { kyInstance } from './instance.api';
 
 const BASE_URL = 'activities';
 
 function getActivitySlug() {
-  // const query = window.location.search;
+  const query = window.location.search;
 
-  // console.log("Query string: ", query);
+  const params = new URLSearchParams(query);
 
-  // const params = new URLSearchParams(query);
-
-  // const gameSlug = params.get('gameSlug');
-  // const preview = params.get('preview') === 'true';
-
-  // console.log("Game Slug: ", gameSlug);
-  // console.log("Preview: ", preview);
-
-  //return {gameSlug, preview};
-
-  const gameSlug = "1-test-puzzle";
-
-  const preview = false;
+  const gameSlug = params.get('gameSlug');
+  const preview = params.get('preview') === 'true';
 
   return {gameSlug, preview};
 }
@@ -32,22 +22,6 @@ export class ApiError extends Error {
   }
 }
 
-// export async function getActivityBySlugAndCurrentStudentUser() {
-//   try {
-//     const slug = getActivitySlug();
-//     const url = `${BASE_URL}/${slug}/students`
-
-//     const activity = await kyInstance.get(url).json();
-
-//     consol;
-
-//     return activity;
-//   } catch (error) {
-//     console.log("getActivityBySlugAndCurrentStudentUser error: ", error);
-//     return null
-//   }
-// }
-
 export async function getActivityBySlugAndCurrentStudentUser() {
   try {
 
@@ -55,15 +29,10 @@ export async function getActivityBySlugAndCurrentStudentUser() {
 
     const url = `${BASE_URL}/${gameSlug}/${preview ? 'teachers' : 'students'}`;
 
-    console.log("url: ", url);
-
     const activity = await kyInstance.get(url).json();
-
-    console.log("getActivityBySlugAndCurrentStudentUser activity: ", activity);
 
     return activity;
   } catch (error) {
-    console.log("getActivityBySlugAndCurrentStudentUser error: ", error);
     return null
   }
 }
@@ -95,7 +64,7 @@ export async function updateActivityCategoryCompletionBySlugAndCurrentStudentUse
 
     const json = {
       questionAnswers: data,
-      timeCompletedSeconds: data.timeCompletedSeconds || 0,
+      timeCompletedSeconds: 0,
     };
 
     const completion = await kyInstance.patch(url, { json }).json();
@@ -105,3 +74,4 @@ export async function updateActivityCategoryCompletionBySlugAndCurrentStudentUse
     return null;
   }
 }
+

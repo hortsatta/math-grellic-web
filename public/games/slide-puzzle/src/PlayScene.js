@@ -154,7 +154,9 @@ class PlayScene extends BaseScene{
     this.updateLevelInfoData(this.isNextStageNumber());
 
     if (!BaseScene.levelData.randomizeQuestions){
+
       this.setLevelQuestions();
+
     }
 
     this.updateGameLevelText();
