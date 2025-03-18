@@ -120,8 +120,8 @@ export const ExamUpsertQuestion = memo(function ({
         </div>
       </div>
       <div className='px-2.5'>
-        <div className='flex items-start gap-x-2.5'>
-          <div className='flex h-input items-center justify-center'>
+        <div className='flex items-start'>
+          <div className='flex h-input items-center justify-center pr-2'>
             <BaseIconButton
               name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
               variant='link'
@@ -129,10 +129,10 @@ export const ExamUpsertQuestion = memo(function ({
               onClick={handleIsCollapsed}
             />
           </div>
-          <div className='relative w-full'>
+          <div className='relative w-full max-w-[485px]'>
             {exActFocusedIndex === focusedIndex ? (
               <BaseControlledAdvancedRichTextEditor
-                className='max-w-[478px]'
+                className='max-w-[485px]'
                 label={`Question ${orderNumber}`}
                 name={name}
                 control={control}
@@ -154,7 +154,7 @@ export const ExamUpsertQuestion = memo(function ({
               />
             )}
           </div>
-          <div className='flex h-input items-center justify-center'>
+          <div className='ml-1 flex h-input items-center justify-center'>
             <BaseIconButton
               name='x'
               variant='link'

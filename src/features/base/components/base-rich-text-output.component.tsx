@@ -123,7 +123,7 @@ export const BaseRichTextOutput = memo(
           )}
           {...moreProps}
         >
-          <div>{output}</div>
+          <div className='w-full break-words'>{output}</div>
         </div>
         {!!errorMessage && (
           <small className='mt-0.5 inline-block px-1 text-red-500'>

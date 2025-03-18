@@ -152,8 +152,8 @@ export const ActivityUpsertPointTimeQuestion = memo(function ({
         </div>
       </div>
       <div className='px-2.5'>
-        <div className='flex items-start gap-x-2.5'>
-          <div className='flex h-input items-center justify-center'>
+        <div className='flex items-start'>
+          <div className='flex h-input items-center justify-center pr-2'>
             <BaseIconButton
               name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
               variant='link'
@@ -161,9 +161,10 @@ export const ActivityUpsertPointTimeQuestion = memo(function ({
               onClick={handleIsCollapsed}
             />
           </div>
-          <div className='relative w-full'>
+          <div className='relative w-full max-w-[485px]'>
             {textType === ExActTextType.Text ? (
               <BaseControlledTextArea
+                className='w-full'
                 name={`categories.${categoryIndex}.questions.${index}.text`}
                 placeholder='Question'
                 control={control}
@@ -171,6 +172,7 @@ export const ActivityUpsertPointTimeQuestion = memo(function ({
               />
             ) : (
               <BaseImageUploader
+                className='w-full'
                 name={`categories.${categoryIndex}.questions.${index}.imageData`}
                 value={imageData}
                 errorMessage={errorMessage}
@@ -191,7 +193,7 @@ export const ActivityUpsertPointTimeQuestion = memo(function ({
               </BaseTooltip>
             </div>
           </div>
-          <div className='flex h-input items-center justify-center'>
+          <div className='ml-1 flex h-input items-center justify-center'>
             <BaseIconButton
               name='x'
               variant='link'

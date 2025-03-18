@@ -110,10 +110,10 @@ export const ExamUpsertQuestionChoice = memo(function ({
           {...iconButtonProps}
         />
       </div>
-      <div className='relative w-full'>
+      <div className='relative w-full max-w-[485px]'>
         {exActFocusedIndex === focusedIndex ? (
           <BaseControlledAdvancedRichTextEditor
-            className='max-w-[478px]'
+            className='max-w-[485px]'
             name={name}
             label={choiceLabel}
             control={control}

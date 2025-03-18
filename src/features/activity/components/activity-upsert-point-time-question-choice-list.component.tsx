@@ -146,11 +146,12 @@ const Choice = memo(function ({
           {...iconButtonProps}
         />
       </div>
-      <div className='relative w-full'>
+      <div className='relative w-full max-w-[485px]'>
         {textType !== ExActTextType.Image ? (
           <div className='flex h-fit flex-1 basis-full items-center gap-x-2.5 overflow-hidden'>
             {textType === ExActTextType.Text ? (
               <BaseControlledInput
+                className='w-full pr-[43px]'
                 name={choiceName}
                 control={control}
                 leftContent={
@@ -167,7 +168,7 @@ const Choice = memo(function ({
               />
             ) : (
               <BaseControlledMathInput
-                className='flex min-h-[48px] items-center'
+                className='flex min-h-[48px] w-full items-center pr-[43px]'
                 name={choiceName}
                 control={control}
                 leftContent={
@@ -187,6 +188,7 @@ const Choice = memo(function ({
         ) : (
           <div className='group/image relative'>
             <BaseImageUploader
+              className='w-full'
               name={choiceName}
               value={imageData}
               errorMessage={errorMessage}
