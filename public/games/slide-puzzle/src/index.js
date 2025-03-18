@@ -21,8 +21,14 @@ const createScene = Scene => new Scene()
 const initScenes = () => Scenes.map(createScene)
 
 const { screen, innerWidth, innerHeight, devicePixelRatio: dpr } = window;
-const width = dpr === 1 ? screen.width : innerWidth * dpr;
-const height = dpr === 1 ? screen.height : innerHeight * dpr;
+
+const width = dpr === 1 
+  ? screen.width 
+  : innerWidth * dpr;
+
+const height = dpr === 1 
+  ? screen.height 
+  : innerHeight * dpr;
 
 const config = {
   type: Phaser.CANVAS,

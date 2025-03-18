@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 import { checkInternetConnection, waitForInternetConnection } from './Utils.js';
 
+import { shuffleArray } from './GameHelpers.js';
+
 class BaseScene extends Phaser.Scene {
 
   static questionSceneRef = null;
@@ -143,8 +145,7 @@ class BaseScene extends Phaser.Scene {
 
       BaseScene.questionSceneRef.incrementQAndLevelMultiplier();
 
-      if (!BaseScene.levelData.randomizeQuestions
-        && isNextStageNumber){
+      if (isNextStageNumber){
 
         this.increaseCurrentStageNumber();
 
@@ -153,9 +154,7 @@ class BaseScene extends Phaser.Scene {
       }
 
     } else if (BaseScene.currentStageNumber > 1){
-      
       this.resetCurrentStageNumber();
-
     }
 
   }
@@ -168,13 +167,9 @@ class BaseScene extends Phaser.Scene {
     BaseScene.levelQuestions = qAndA;
   }
 
-  getLevelQuestions(targetLevel = BaseScene.currentStageNumber){
-
-    return BaseScene.levelData.randomizeQuestions 
-      ? BaseScene.qAndAData
-      : BaseScene.qAndAData[targetLevel - 1];
-
-  }
+  // getLevelQuestions(targetLevel = BaseScene.currentStageNumber){
+  //   return BaseScene.qAndAData[targetLevel - 1];
+  // }
 
   totalQuestionsCount(gameLevel = BaseScene.currentGameLevel){
 
@@ -194,60 +189,7 @@ class BaseScene extends Phaser.Scene {
     return BaseScene.stageNumberCheckPoint.includes(gameLevel);
   }
 
-  getRandomQuestionIndex(gameLevel = BaseScene.currentGameLevel){
-
-    const stageNumberCheckPoint = BaseScene.stageNumberCheckPoint; 
-
-    const targetLevel = gameLevel < stageNumberCheckPoint[0]
-      ? gameLevel - 1
-      : stageNumberCheckPoint[0] - 1;
-
-    let answeredQuestionCount =  this.totalQuestionsCount(targetLevel) * targetLevel;
-
-    const index = stageNumberCheckPoint.findIndex(value => value < gameLevel);
-
-    if (index >= 0){
-
-        const curStageNumberValue = stageNumberCheckPoint[index];
-
-        const curStageQuestionCount = this.totalQuestionsCount(curStageNumberValue);
-
-        const gameLevelAndStageNumberDifference = gameLevel - curStageNumberValue;
-
-        const gameLevelAndStageNumberQuestionTotalCount = gameLevelAndStageNumberDifference * curStageQuestionCount;
-
-        answeredQuestionCount += gameLevelAndStageNumberQuestionTotalCount;
-
-        if (index > 0) {
-
-          const prevStageNumberValue = stageNumberCheckPoint[index - 1];
-
-          const inBetweenStageNumberDifference = curStageNumberValue - prevStageNumberValue;
-
-          const prevStageQuestionCount = this.totalQuestionsCount(prevStageNumberValue);
-
-          const inBetweenStageQuestionTotalCount = prevStageQuestionCount * inBetweenStageNumberDifference;
-
-          const gameLevelAndStageNumberDifference = gameLevel - curStageNumberValue;
-
-          const gameLevelAndStageNumberQuestionTotalCount = gameLevelAndStageNumberDifference * curStageQuestionCount;
-
-          answeredQuestionCount += inBetweenStageQuestionTotalCount;
-
-          answeredQuestionCount += gameLevelAndStageNumberQuestionTotalCount;
-
-        }
-      }
-
-      return answeredQuestionCount;
-
-  }
-
   playBackgroundAudio(key) {
-    console.log("key", key);
-    console.log("this.cache.audio.has(key): ", this.cache.audio.has(key));
-    console.log("BaseScene.backgroundAudio: ", BaseScene.backgroundAudio);
-    console.log("BaseScene.backgroundAudio.isPlaying: ", BaseScene.backgroundAudio.isPlaying);
 
     if (
       this.cache.audio.has(key) &&
@@ -279,59 +221,44 @@ class BaseScene extends Phaser.Scene {
 
   setQandAData = async() => {
 
-    const sortedQuestionById = BaseScene.levelData.questions.slice().sort((a, b) => a.id - b.id);
+    const { qAndAData, levelData, currentStageNumber } = BaseScene;
 
-    if(!BaseScene.levelData.randomizeQuestions){
-
-      sortedQuestionById.forEach(item => {
-
-        const stageIndex = item.stageNumber - 1; // Use stageNumber as index (0-based)
-       
-        if (!BaseScene.qAndAData[stageIndex]) {
-          BaseScene.qAndAData[stageIndex] = [];
-        }
-  
-        BaseScene.qAndAData[stageIndex].push(item);
-  
-      });
-
-      //load initial q & a images
-      await this.loadImageArray(this.getLevelQuestions(), { sync: true });
-
-      //load remaining q & a images
-      this.loadImagesAsynchronously();
-
+    //separate by stage number
+    levelData.questions.forEach(item => {
+      const stageIndex = item.stageNumber - 1;
+      qAndAData[stageIndex] ??= [];
+      qAndAData[stageIndex].push(item);
+    });
+    
+    //sort or random question
+    if (!levelData.randomizeQuestions) {
+      qAndAData.forEach(stage => stage.sort((a, b) => a.orderNumber - b.orderNumber));
     } else {
-
-      BaseScene.qAndAData = sortedQuestionById;
-
-      this.setLevelQuestions(BaseScene.qAndAData);
-
-      this.setRandomNumArray(BaseScene.qAndAData.length);
-
-      const targetArrayPercentage = 0.2;
-      const targetFirstArrayIndex = Math.ceil(this.randomNumArray.length * targetArrayPercentage);
-
-      //gets q&a array slice for synchronous image loading
-      const targetFirstArray = this.randomNumArray
-        .slice(0, targetFirstArrayIndex)
-        .map(index => BaseScene.qAndAData[index]);
-
-      //gets q&a array slice for asynchronous image loading
-      const targetSecondArray = this.randomNumArray
-        .slice(targetFirstArrayIndex)
-        .map(index => BaseScene.qAndAData[index]);
-
-      //load initial q & a images
-      await this.loadImageArray(targetFirstArray, { sync: true });
-
-      //load remaining q & a  images
-      this.loadImageArray(targetSecondArray);    
-
+      qAndAData.forEach(shuffleArray);
     }
+    
+    const currentStageIndex = currentStageNumber - 1;
+    const currentQandAData = qAndAData[currentStageIndex] || [];
+    const remainingStageLevelData = qAndAData.slice(currentStageIndex + 1).flat();
+    
+    //check if initial question is greater than 1
+    if (currentQandAData.length > this.totalQuestionsCount(1)) {
+      const targetArrayPercentage = 0.2;
+      const targetFirstArrayIndex = Math.ceil(currentQandAData.length * targetArrayPercentage);
+      
+      const [targetFirstArray, targetSecondArray] = [
+        currentQandAData.slice(0, targetFirstArrayIndex),
+        currentQandAData.slice(targetFirstArrayIndex)
+      ];
+    
+      await this.loadImageArray(targetFirstArray, { sync: true });
+      this.loadImageArray([...targetSecondArray, ...remainingStageLevelData]);
+    } else {
+      await this.loadImageArray(currentQandAData, { sync: true });
+      this.loadImageArray(remainingStageLevelData);
+    } 
 
   }
-
 
 }
 

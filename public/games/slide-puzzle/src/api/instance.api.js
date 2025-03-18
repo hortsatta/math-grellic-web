@@ -1,6 +1,11 @@
 // _ADD
 import ky from 'ky';
 
+// const prefixUrl = process.env.API_BASE_URL;
+// const TOKEN_KEY = process.env.TOKEN_KEY || '';
+// const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
+// const STORAGE_BASE_PATH = process.env.VITE_SUPABASE_STORAGE_BASE_PATH;
+
 const prefixUrl = process.env.VITE_API_BASE_URL;
 const TOKEN_KEY = process.env.VITE_TOKEN_KEY || '';
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
@@ -16,6 +21,12 @@ export const kyInstance = ky.extend({
         const token = JSON.parse(localStorage.getItem(TOKEN_KEY) || '{}') || {};
         const { access_token: accessToken } = token;
 
+        console.log("localStorage: ", localStorage);
+
+        console.log("token: ", token);
+
+        console.log("API Base URL (prefixUrl) phaser:", prefixUrl);
+
         // If token is present then add authorization to header
         if (accessToken) {
           options.headers.set('Authorization', `Bearer ${accessToken}`);
@@ -29,5 +40,3 @@ export const kyInstance = ky.extend({
 export const getQuestionImageUrl = (filePath) => {
   return `${SUPABASE_URL}/${STORAGE_BASE_PATH}/${filePath}?${Date.now()}`;
 }
-
-

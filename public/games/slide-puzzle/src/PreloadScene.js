@@ -53,9 +53,7 @@ import wrongAnswerAudioM4A from './assets/audio/wrongAnswerAudio.m4a';
 class PreloadScene extends BaseScene{
 
   constructor(){
-
     super('PreloadScene');
-
   }
 
   preload () {
@@ -128,7 +126,7 @@ class PreloadScene extends BaseScene{
 
     const data = await getActivityBySlugAndCurrentStudentUser();
 
-    console.log("server Data: ", data);
+    console.log("preloadscene data: ", data);
 
     this.setServerData(data);
 

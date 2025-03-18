@@ -41,11 +41,11 @@ export async function setActivityCategoryCompletionBySlugAndCurrentStudentUser(d
   try {
 
     const slug = getActivitySlug();
-    const url = `${BASE_URL}/${slug}/students/completion/${categoryId}`
+    const url = `${BASE_URL}/${slug.gameSlug}/students/completion/${categoryId}`;
 
     const json = {
       questionAnswers: data,
-      timeCompletedSeconds: data.timeCompletedSeconds || 0,
+      timeCompletedSeconds: 0,
     };
 
     const completion = await kyInstance.post(url, { json }).json();
@@ -60,7 +60,7 @@ export async function setActivityCategoryCompletionBySlugAndCurrentStudentUser(d
 export async function updateActivityCategoryCompletionBySlugAndCurrentStudentUser(data, categoryId) {
   try {
     const slug = getActivitySlug();
-    const url = `${BASE_URL}/${slug}/students/completion/${categoryId}`
+    const url = `${BASE_URL}/${slug.gameSlug}/students/completion/${categoryId}`;
 
     const json = {
       questionAnswers: data,

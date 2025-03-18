@@ -144,20 +144,12 @@ class PlayScene extends BaseScene{
   startGameLevel() {
 
     if (this.blocksGroup.getLength()){
-
-      this.blocksGroup.clear(true, true);      
-
+      this.blocksGroup.clear(true, true);
     }
 
     BaseScene.currentGameLevel = (BaseScene.currentGameLevel % BaseScene.maxGameLevel) + 1;
 
     this.updateLevelInfoData(this.isNextStageNumber());
-
-    if (!BaseScene.levelData.randomizeQuestions){
-
-      this.setLevelQuestions();
-
-    }
 
     this.updateGameLevelText();
     
@@ -580,9 +572,7 @@ class PlayScene extends BaseScene{
   }
   
   initializeGenerateRandomBlocks = () => {
-
     this.blockManager = new blockManager();
-
   }
 
   columnPosition(totalMarginWidth){
