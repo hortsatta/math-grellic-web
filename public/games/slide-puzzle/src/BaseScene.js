@@ -34,6 +34,8 @@ class BaseScene extends Phaser.Scene {
 
   static fontFamilyStyle = null;
 
+  static isGamePreview = false;
+
   //Audio
 
   static blockEndMoveAudio = null;

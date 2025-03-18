@@ -38,5 +38,22 @@ export const kyInstance = ky.extend({
 });
 
 export const getQuestionImageUrl = (filePath) => {
+
   return `${SUPABASE_URL}/${STORAGE_BASE_PATH}/${filePath}?${Date.now()}`;
+
 }
+
+// export function generateSearchParams(query: {
+//   [x: string]: string | null | undefined;
+// }) {
+//   const searchParams: string[][] = [];
+//   Object.keys(query).forEach((key) => {
+//     const value = query[key]?.trim();
+
+//     if (value) {
+//       searchParams.push([key, value]);
+//     }
+//   });
+
+//   return searchParams;
+// }
