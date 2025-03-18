@@ -1,10 +1,9 @@
-import type { ExActTextType, RecordStatus } from '#/core/models/core.model';
+import type { RecordStatus } from '#/core/models/core.model';
 
 export type ExamQuestionChoiceFormData = {
   id: number;
   orderNumber: number;
   text: string;
-  textType: ExActTextType;
   isCorrect: boolean;
   imageData?: string;
 };
@@ -13,7 +12,6 @@ export type ExamQuestionFormData = {
   id: number;
   orderNumber: number;
   text: string;
-  textType: ExActTextType;
   choices: ExamQuestionChoiceFormData[];
   imageData?: string;
 };

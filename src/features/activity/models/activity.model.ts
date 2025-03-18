@@ -1,8 +1,4 @@
-import type {
-  AuditTrail,
-  ExActTextType,
-  RecordStatus,
-} from '#/core/models/core.model';
+import type { AuditTrail, RecordStatus } from '#/core/models/core.model';
 import type { StudentUserAccount } from '#/user/models/user.model';
 import type { ActivityUpsertFormData } from './activity-form-data.model';
 
@@ -18,6 +14,12 @@ export enum ActivityCategoryType {
   Point = 'point',
   Time = 'time',
   Stage = 'stage',
+}
+
+export enum ActivityTextType {
+  Text = 'text',
+  Expression = 'expression',
+  Image = 'image',
 }
 
 export enum ActivityCategoryLevel {
@@ -81,7 +83,7 @@ export type ActivityCategoryQuestion = Partial<AuditTrail> & {
   id: number;
   orderNumber: number;
   text: string;
-  textType: ExActTextType;
+  textType: ActivityTextType;
   choices: ActivityCategoryQuestionChoice[];
   stageNumber?: number;
   hintText?: string;
@@ -91,7 +93,7 @@ export type ActivityCategoryQuestionChoice = Partial<AuditTrail> & {
   id: number;
   orderNumber: number;
   text: string;
-  textType: ExActTextType;
+  textType: ActivityTextType;
   isCorrect: boolean;
 };
 

@@ -13,7 +13,7 @@ import { getErrorMessage } from '#/utils/string.util';
 import { getDayJsDuration } from '#/utils/time.util';
 import { stripHtml } from '#/utils/html.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
-import { ExActTextType, RecordStatus } from '#/core/models/core.model';
+import { RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
@@ -42,7 +42,6 @@ const choiceSchema = z.object({
     .int()
     .gt(0, 'Choice number is invalid'),
   text: z.string().optional(),
-  textType: z.nativeEnum(ExActTextType),
   isCorrect: z.boolean(),
   imageData: z.string().optional(),
 });
@@ -54,7 +53,6 @@ const questionSchema = z.object({
     .int()
     .gt(0, 'Question number is invalid'),
   text: z.string().optional(),
-  textType: z.nativeEnum(ExActTextType),
   choices: z.array(choiceSchema).min(2),
   imageData: z.string().optional(),
 });

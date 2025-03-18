@@ -6,12 +6,6 @@ export enum RecordStatus {
   Published = 'published',
 }
 
-export enum ExActTextType {
-  Text = 'text',
-  Expression = 'expression',
-  Image = 'image',
-}
-
 export type AuditTrail = {
   createdAt: Date;
   updatedAt: Date;

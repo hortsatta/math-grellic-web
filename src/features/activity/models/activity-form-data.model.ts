@@ -1,11 +1,15 @@
-import type { ExActTextType, RecordStatus } from '#/core/models/core.model';
-import type { ActivityCategoryLevel, Game } from './activity.model';
+import type { RecordStatus } from '#/core/models/core.model';
+import type {
+  ActivityCategoryLevel,
+  ActivityTextType,
+  Game,
+} from './activity.model';
 
 export type ActivityCategoryQuestionChoiceFormData = {
   id: number;
   orderNumber: number;
   text: string;
-  textType: ExActTextType;
+  textType: ActivityTextType;
   isCorrect: boolean;
   imageData?: string;
 };
@@ -14,7 +18,7 @@ export type ActivityCategoryQuestionFormData = {
   id: number;
   orderNumber: number;
   text: string;
-  textType: ExActTextType;
+  textType: ActivityTextType;
   choices: ActivityCategoryQuestionChoiceFormData[];
   stageNumber?: number;
   hintText?: string;

@@ -20,7 +20,6 @@ type Props = ComponentProps<'div'> & {
   choiceName: string;
   choiceLabel: string;
   onSetAnswer: () => void;
-  onSetTextType: () => void;
   onUploadChange: (file: any) => void;
   onRemove: () => void;
   disabled?: boolean;

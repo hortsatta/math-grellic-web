@@ -5,7 +5,6 @@ import cx from 'classix';
 
 import { alphabet } from '#/utils/string.util';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
-import { ExActTextType } from '#/core/models/core.model';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { ExamUpsertQuestionChoice } from './exam-upsert-question-choice.component';
@@ -63,12 +62,8 @@ export const ExamUpsertQuestionChoiceList = memo(function ({
 
   const getChoiceName = useCallback(
     (key: string) => {
-      const choice = fields.find((field) => field.key === key);
       const choiceIndex = fields.findIndex((field) => field.key === key);
-
-      return choice?.textType === ExActTextType.Image
-        ? `questions.${questionIndex}.choices.${choiceIndex}.imageData`
-        : `questions.${questionIndex}.choices.${choiceIndex}.text`;
+      return `questions.${questionIndex}.choices.${choiceIndex}.text`;
     },
     [fields, questionIndex],
   );
@@ -93,30 +88,6 @@ export const ExamUpsertQuestionChoiceList = memo(function ({
     [fields, choices, update],
   );
 
-  const setTextType = useCallback(
-    (key: string) => () => {
-      const choice = fields.find((field) => field.key === key);
-      const choiceIndex = fields.findIndex((field) => field.key === key);
-
-      if (!choice) {
-        return;
-      }
-
-      let textType = ExActTextType.Text;
-      if (choice.textType === ExActTextType.Text) {
-        textType = ExActTextType.Expression;
-      } else if (choice.textType === ExActTextType.Expression) {
-        textType = ExActTextType.Image;
-      }
-
-      update(choiceIndex, {
-        ...choices[choiceIndex],
-        textType,
-      });
-    },
-    [fields, choices, update],
-  );
-
   const handleUploadChange = useCallback(
     (key: string) => (file: any) => {
       const cIndex = fields.findIndex((field) => field.key === key);
@@ -131,7 +102,7 @@ export const ExamUpsertQuestionChoiceList = memo(function ({
   );
 
   const handleAppend = useCallback(() => {
-    append({ text: '', textType: ExActTextType.Text, isCorrect: false } as any);
+    append({ text: '', isCorrect: false } as any);
   }, [append]);
 
   const handleRemove = useCallback(
@@ -170,7 +141,6 @@ export const ExamUpsertQuestionChoiceList = memo(function ({
             choiceName={getChoiceName(key)}
             choiceLabel={getChoiceLabel(key)}
             onSetAnswer={setAnswer(key)}
-            onSetTextType={setTextType(key)}
             onUploadChange={handleUploadChange(key)}
             onRemove={handleRemove(key)}
             disabled={disabled}

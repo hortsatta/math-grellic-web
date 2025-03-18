@@ -2,12 +2,12 @@ import { memo, useCallback, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import cx from 'classix';
 
-import { ExActTextType } from '#/core/models/core.model';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseControlledTextArea } from '#/base/components/base-textarea.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { BaseImageUploader } from '#/base/components/base-image-uploader.component';
+import { ActivityTextType } from '../models/activity.model';
 import { ActivityUpsertPointTimeQuestionChoiceList } from './activity-upsert-point-time-question-choice-list.component';
 
 import type { ChangeEvent, ComponentProps } from 'react';
@@ -53,7 +53,7 @@ export const ActivityUpsertPointTimeQuestion = memo(function ({
   });
 
   const questionTextTypeIconName = useMemo(
-    () => (textType !== ExActTextType.Text ? 'text-t' : 'image-square'),
+    () => (textType !== ActivityTextType.Text ? 'text-t' : 'image-square'),
     [textType],
   );
 
@@ -80,7 +80,7 @@ export const ActivityUpsertPointTimeQuestion = memo(function ({
   }, [formState, index, categoryIndex]);
 
   const textTypeTooltipText = useMemo(() => {
-    if (textType === ExActTextType.Text) {
+    if (textType === ActivityTextType.Text) {
       return 'Switch to image input';
     } else {
       return 'Switch to text input';
@@ -93,9 +93,9 @@ export const ActivityUpsertPointTimeQuestion = memo(function ({
 
   const setTextType = useCallback(() => {
     const value =
-      textType === ExActTextType.Text
-        ? ExActTextType.Image
-        : ExActTextType.Text;
+      textType === ActivityTextType.Text
+        ? ActivityTextType.Image
+        : ActivityTextType.Text;
 
     setValue(`categories.${categoryIndex}.questions.${index}.textType`, value);
   }, [index, categoryIndex, textType, setValue]);
@@ -162,7 +162,7 @@ export const ActivityUpsertPointTimeQuestion = memo(function ({
             />
           </div>
           <div className='relative w-full max-w-[485px]'>
-            {textType === ExActTextType.Text ? (
+            {textType === ActivityTextType.Text ? (
               <BaseControlledTextArea
                 className='w-full'
                 name={`categories.${categoryIndex}.questions.${index}.text`}

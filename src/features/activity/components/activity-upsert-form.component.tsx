@@ -11,7 +11,7 @@ import cx from 'classix';
 
 import { getErrorMessage } from '#/utils/string.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
-import { ExActTextType, RecordStatus } from '#/core/models/core.model';
+import { RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
@@ -27,6 +27,7 @@ import {
   ActivityCategoryLevel,
   ActivityCategoryType,
   ActivityGame,
+  ActivityTextType,
 } from '../models/activity.model';
 
 import type { FormProps, IconName } from '#/base/models/base.model';
@@ -47,7 +48,7 @@ const choiceSchema = z.object({
     .int()
     .gt(0, 'Choice number is invalid'),
   text: z.string().optional(),
-  textType: z.nativeEnum(ExActTextType),
+  textType: z.nativeEnum(ActivityTextType),
   isCorrect: z.boolean(),
   imageData: z.string().optional(),
 });
@@ -59,7 +60,7 @@ const questionSchema = z.object({
     .int()
     .gt(0, 'Question number is invalid'),
   text: z.string().optional(),
-  textType: z.nativeEnum(ExActTextType),
+  textType: z.nativeEnum(ActivityTextType),
   choices: z.array(choiceSchema).min(2),
   stageNumber: z.number().optional(),
   hintText: z.string().optional(),
@@ -192,7 +193,7 @@ const schema = z
             }
             // Check question types
             if (
-              question.textType === ExActTextType.Text &&
+              question.textType === ActivityTextType.Text &&
               !question.text?.trim().length
             ) {
               ctx.addIssue({
@@ -203,7 +204,7 @@ const schema = z
                 ],
               });
             } else if (
-              question.textType === ExActTextType.Image &&
+              question.textType === ActivityTextType.Image &&
               (!question.imageData ||
                 (!data.slug?.trim() &&
                   !isBase64(question.imageData?.split(',').pop() || '')))
@@ -219,7 +220,7 @@ const schema = z
             // Check choices types
             question.choices.forEach((choice, cIndex) => {
               if (
-                choice.textType === ExActTextType.Text &&
+                choice.textType === ActivityTextType.Text &&
                 !choice.text?.trim().length
               ) {
                 ctx.addIssue({
@@ -230,7 +231,7 @@ const schema = z
                   ],
                 });
               } else if (
-                choice.textType === ExActTextType.Image &&
+                choice.textType === ActivityTextType.Image &&
                 (!choice.imageData ||
                   (!data.slug?.trim() &&
                     !isBase64(choice.imageData?.split(',').pop() || '')))
@@ -271,7 +272,7 @@ const schema = z
 
           // Check question types
           if (
-            question.textType === ExActTextType.Text &&
+            question.textType === ActivityTextType.Text &&
             !question.text?.trim().length
           ) {
             ctx.addIssue({
@@ -280,7 +281,7 @@ const schema = z
               path: [`categories.${index}.questions.${qIndex}.text`],
             });
           } else if (
-            question.textType === ExActTextType.Image &&
+            question.textType === ActivityTextType.Image &&
             (!question.imageData ||
               (!data.slug?.trim() &&
                 !isBase64(question.imageData?.split(',').pop() || '')))
@@ -294,7 +295,7 @@ const schema = z
           // Check choices types
           question.choices.forEach((choice, cIndex) => {
             if (
-              choice.textType === ExActTextType.Text &&
+              choice.textType === ActivityTextType.Text &&
               !choice.text?.trim().length
             ) {
               ctx.addIssue({
@@ -305,7 +306,7 @@ const schema = z
                 ],
               });
             } else if (
-              choice.textType === ExActTextType.Image &&
+              choice.textType === ActivityTextType.Image &&
               (!choice.imageData ||
                 (!data.slug?.trim() &&
                   !isBase64(choice.imageData?.split(',').pop() || '')))

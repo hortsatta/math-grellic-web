@@ -95,7 +95,6 @@ export function transformToExamQuestion({
   updatedAt,
   orderNumber,
   text,
-  textType,
   choices,
 }: any): ExamQuestion {
   const updatedText = hasImage(text)
@@ -109,7 +108,6 @@ export function transformToExamQuestion({
   return {
     orderNumber,
     text: updatedText,
-    textType,
     choices: transformedChoices,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
@@ -121,7 +119,6 @@ export function transformToExamQuestionChoice({
   updatedAt,
   orderNumber,
   text,
-  textType,
   isCorrect,
 }: any): ExamQuestionChoice {
   const updatedText = hasImage(text)
@@ -131,7 +128,6 @@ export function transformToExamQuestionChoice({
   return {
     orderNumber,
     text: updatedText,
-    textType,
     isCorrect,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
@@ -273,7 +269,6 @@ export function transformToExamQuestionFormData({
   id,
   orderNumber,
   text,
-  textType,
   choices,
 }: any): ExamQuestionFormData {
   const transformedChoices =
@@ -285,7 +280,6 @@ export function transformToExamQuestionFormData({
     id,
     orderNumber,
     text,
-    textType,
     choices: transformedChoices,
   };
 }
@@ -294,14 +288,12 @@ export function transformToExamQuestionChoiceFormData({
   id,
   orderNumber,
   text,
-  textType,
   isCorrect,
 }: any): ExamQuestionChoiceFormData {
   return {
     id,
     orderNumber,
     text,
-    textType,
     isCorrect,
   };
 }
@@ -361,7 +353,6 @@ export function transformToExamQuestionUpsertDto({
   id,
   orderNumber,
   text,
-  textType,
   choices,
 }: any) {
   const choicesDto =
@@ -373,7 +364,6 @@ export function transformToExamQuestionUpsertDto({
     id,
     orderNumber,
     text,
-    textType,
     choices: choicesDto,
   };
 }
@@ -382,14 +372,12 @@ export function transformToExamQuestionChoiceUpsertDto({
   id,
   orderNumber,
   text,
-  textType,
   isCorrect,
 }: any) {
   return {
     id,
     orderNumber,
     text,
-    textType,
     isCorrect,
   };
 }

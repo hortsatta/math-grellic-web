@@ -3,9 +3,11 @@ import {
   convertDurationToSeconds,
   convertSecondsToDuration,
 } from '#/utils/time.util';
-import { ExActTextType } from '#/core/models/core.model';
 import { transformToBaseModel } from '#/base/helpers/base.helper';
-import { ActivityCategoryType } from '../models/activity.model';
+import {
+  ActivityCategoryType,
+  ActivityTextType,
+} from '../models/activity.model';
 
 import type { StudentUserAccount } from '#/user/models/user.model';
 import type {
@@ -347,7 +349,7 @@ export function transformToCategoryQuestionFormData({
     ) || [];
 
   const imageData =
-    textType === ExActTextType.Image ? getQuestionImageUrl(text) : undefined;
+    textType === ActivityTextType.Image ? getQuestionImageUrl(text) : undefined;
 
   return {
     id,
@@ -369,7 +371,7 @@ export function transformToCategoryQuestionChoiceFormData({
   isCorrect,
 }: any): ActivityCategoryQuestionChoiceFormData {
   const imageData =
-    textType === ExActTextType.Image ? getQuestionImageUrl(text) : undefined;
+    textType === ActivityTextType.Image ? getQuestionImageUrl(text) : undefined;
 
   return {
     id,

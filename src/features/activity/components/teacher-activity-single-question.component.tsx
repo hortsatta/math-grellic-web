@@ -3,11 +3,11 @@ import { StaticMathField } from 'react-mathquill';
 import cx from 'classix';
 
 import { alphabet } from '#/utils/string.util';
-import { ExActTextType } from '#/core/models/core.model';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { getQuestionImageUrl } from '../helpers/activity-transform.helper';
+import { ActivityTextType } from '../models/activity.model';
 
 import type { ComponentProps } from 'react';
 import type { IconName } from '#/base/models/base.model';
@@ -28,12 +28,12 @@ const Choice = memo(function ({
 }) {
   const textComponent = useMemo(() => {
     const value =
-      textType === ExActTextType.Image ? getQuestionImageUrl(text) : text;
+      textType === ActivityTextType.Image ? getQuestionImageUrl(text) : text;
 
     switch (textType) {
-      case ExActTextType.Text:
+      case ActivityTextType.Text:
         return <span>{value}</span>;
-      case ExActTextType.Expression:
+      case ActivityTextType.Expression:
         return <StaticMathField>{value}</StaticMathField>;
       default:
         return (
@@ -61,8 +61,10 @@ const Choice = memo(function ({
         <div
           className={cx(
             'flex min-h-[40px] flex-1 flex-wrap bg-white pl-5 pr-5 transition-[padding] group-hover/choice:bg-green-100 xs:flex-nowrap xs:pl-10',
-            textType === ExActTextType.Image ? 'items-start' : 'items-center',
-            textType === ExActTextType.Expression ? 'pb-1 pt-2' : 'py-2',
+            textType === ActivityTextType.Image
+              ? 'items-start'
+              : 'items-center',
+            textType === ActivityTextType.Expression ? 'pb-1 pt-2' : 'py-2',
           )}
         >
           <span
@@ -91,10 +93,10 @@ export const TeacherActivitySingleQuestion = memo(function ({
   const [orderNumber, text, isImage, choices, hintText] = useMemo(
     () => [
       question.orderNumber,
-      question.textType === ExActTextType.Image
+      question.textType === ActivityTextType.Image
         ? getQuestionImageUrl(question.text)
         : question.text,
-      question.textType === ExActTextType.Image,
+      question.textType === ActivityTextType.Image,
       question.choices,
       question.hintText,
     ],

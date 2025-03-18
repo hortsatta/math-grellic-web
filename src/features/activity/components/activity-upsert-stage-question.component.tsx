@@ -2,14 +2,13 @@ import { memo, useCallback, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import cx from 'classix';
 
-import { ExActTextType } from '#/core/models/core.model';
 import { BaseControlledInput } from '#/base/components/base-input.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseControlledTextArea } from '#/base/components/base-textarea.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { BaseImageUploader } from '#/base/components/base-image-uploader.component';
-import { ActivityGame } from '../models/activity.model';
+import { ActivityGame, ActivityTextType } from '../models/activity.model';
 import { ActivityUpsertStageQuestionChoiceList } from './activity-upsert-stage-question-choice-list.component';
 
 import type { ChangeEvent, ComponentProps } from 'react';
@@ -59,7 +58,7 @@ export const ActivityUpsertStageQuestion = memo(function ({
   });
 
   const questionTextTypeIconName = useMemo(
-    () => (textType !== ExActTextType.Text ? 'text-t' : 'image-square'),
+    () => (textType !== ActivityTextType.Text ? 'text-t' : 'image-square'),
     [textType],
   );
 
@@ -93,7 +92,7 @@ export const ActivityUpsertStageQuestion = memo(function ({
   }, [formState, index, stageIndex, categoryIndex]);
 
   const textTypeTooltipText = useMemo(() => {
-    if (textType === ExActTextType.Text) {
+    if (textType === ActivityTextType.Text) {
       return 'Switch to image input';
     } else {
       return 'Switch to text input';
@@ -106,9 +105,9 @@ export const ActivityUpsertStageQuestion = memo(function ({
 
   const setTextType = useCallback(() => {
     const value =
-      textType === ExActTextType.Text
-        ? ExActTextType.Image
-        : ExActTextType.Text;
+      textType === ActivityTextType.Text
+        ? ActivityTextType.Image
+        : ActivityTextType.Text;
 
     setValue(
       `categories.${categoryIndex}.stageQuestions.${stageIndex}.questions.${index}.textType`,
@@ -178,7 +177,7 @@ export const ActivityUpsertStageQuestion = memo(function ({
             />
           </div>
           <div className='relative w-full'>
-            {textType === ExActTextType.Text ? (
+            {textType === ActivityTextType.Text ? (
               <BaseControlledTextArea
                 name={`categories.${categoryIndex}.stageQuestions.${stageIndex}.questions.${index}.text`}
                 placeholder='Question'

@@ -4,7 +4,6 @@ import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { alphabet } from '#/utils/string.util';
-import { ExActTextType } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
@@ -13,6 +12,7 @@ import { BaseControlledInput } from '#/base/components/base-input.component';
 import { BaseControlledMathInput } from '#/base/components/base-math-input.component';
 import { BaseImageUploader } from '#/base/components/base-image-uploader.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';
+import { ActivityTextType } from '../models/activity.model';
 
 import type { ChangeEvent, ComponentProps } from 'react';
 import type {
@@ -81,9 +81,9 @@ const Choice = memo(function ({
 
   const choiceTextTypeIconName = useMemo(() => {
     switch (textType) {
-      case ExActTextType.Text:
+      case ActivityTextType.Text:
         return 'function';
-      case ExActTextType.Expression:
+      case ActivityTextType.Expression:
         return 'image-square';
       default:
         return 'text-t';
@@ -92,9 +92,9 @@ const Choice = memo(function ({
 
   const textTypeTooltipText = useMemo(() => {
     switch (textType) {
-      case ExActTextType.Text:
+      case ActivityTextType.Text:
         return 'Switch to expression input';
-      case ExActTextType.Expression:
+      case ActivityTextType.Expression:
         return 'Switch to image input';
       default:
         return 'Switch to text input';
@@ -147,9 +147,9 @@ const Choice = memo(function ({
         />
       </div>
       <div className='relative w-full max-w-[485px]'>
-        {textType !== ExActTextType.Image ? (
+        {textType !== ActivityTextType.Image ? (
           <div className='flex h-fit flex-1 basis-full items-center gap-x-2.5 overflow-hidden'>
-            {textType === ExActTextType.Text ? (
+            {textType === ActivityTextType.Text ? (
               <BaseControlledInput
                 className='w-full pr-[43px]'
                 name={choiceName}
@@ -282,7 +282,7 @@ export const ActivityUpsertPointTimeQuestionChoiceList = memo(function ({
       const choice = fields.find((field) => field.key === key);
       const choiceIndex = fields.findIndex((field) => field.key === key);
 
-      return choice?.textType === ExActTextType.Image
+      return choice?.textType === ActivityTextType.Image
         ? `categories.${categoryIndex}.questions.${questionIndex}.choices.${choiceIndex}.imageData`
         : `categories.${categoryIndex}.questions.${questionIndex}.choices.${choiceIndex}.text`;
     },
@@ -321,11 +321,11 @@ export const ActivityUpsertPointTimeQuestionChoiceList = memo(function ({
         return;
       }
 
-      let textType = ExActTextType.Text;
-      if (choice.textType === ExActTextType.Text) {
-        textType = ExActTextType.Expression;
-      } else if (choice.textType === ExActTextType.Expression) {
-        textType = ExActTextType.Image;
+      let textType = ActivityTextType.Text;
+      if (choice.textType === ActivityTextType.Text) {
+        textType = ActivityTextType.Expression;
+      } else if (choice.textType === ActivityTextType.Expression) {
+        textType = ActivityTextType.Image;
       }
 
       update(choiceIndex, { ...choices[choiceIndex], textType });
@@ -347,7 +347,11 @@ export const ActivityUpsertPointTimeQuestionChoiceList = memo(function ({
   );
 
   const handleAppend = useCallback(() => {
-    append({ text: '', textType: ExActTextType.Text, isCorrect: false } as any);
+    append({
+      text: '',
+      textType: ActivityTextType.Text,
+      isCorrect: false,
+    } as any);
   }, [append]);
 
   const handleRemove = useCallback(
