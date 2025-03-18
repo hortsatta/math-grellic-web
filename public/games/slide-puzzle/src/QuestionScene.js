@@ -4,7 +4,7 @@ import { blockKeyArray } from './GameInternalData.js';
 
 import { getQuestionImageUrl } from './api/instance.api.js';
 
-import { updateActivityCategoryCompletionBySlugAndCurrentStudentUser } from './api/data.api';
+import { updateActivityCategoryCompletionBySlugAndCurrentStudentUser, setActivityCategoryCompletionBySlugAndCurrentStudentUser } from './api/data.api';
 
 class QuestionScene extends BaseScene 
 {
@@ -587,9 +587,7 @@ class QuestionScene extends BaseScene
     const getCurrentQandAData = () => {
       const { qAndAData, levelData, currentStageNumber } = BaseScene;
 
-      console.log("levelData.typeStage.totalStageCount: ", levelData.typeStage.totalStageCount);
-
-      return qAndAData[Math.min(currentStageNumber - 1, qAndAData.length - 1)];
+      return qAndAData[Math.min(currentStageNumber - 1, levelData.typeStage.totalStageCount - 1)];
     };
 
     const currentQandAData = getCurrentQandAData();
@@ -708,7 +706,7 @@ class QuestionScene extends BaseScene
 
       if (this.selectedCheckBoxIndex === this.chosenQandA.correctAnswerIndex){
 
-        if(!serverData.isPreview){
+        if(!BaseScene.isGamePreview){
 
           this.addSelectedQandA(questionId, selectedAnswerId);
 

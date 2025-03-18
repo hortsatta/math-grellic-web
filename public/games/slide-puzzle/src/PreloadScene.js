@@ -124,15 +124,15 @@ class PreloadScene extends BaseScene{
 
     await this.checkInternetConnectionBanner(); //check and wait for internet connection
 
-    const data = await getActivityBySlugAndCurrentStudentUser();
+    const { activity, isPreview } = await getActivityBySlugAndCurrentStudentUser();
 
-    console.log("preloadscene data: ", data);
+    BaseScene.isGamePreview = isPreview;
 
-    this.setServerData(data);
+    this.setServerData(activity);
 
     this.setLevelData();
 
-    this.scene.start('PlayScene')
+    this.scene.start('PlayScene');
 
   }
 
