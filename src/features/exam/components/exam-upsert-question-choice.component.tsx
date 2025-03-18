@@ -23,6 +23,7 @@ type Props = ComponentProps<'div'> & {
   onSetTextType: () => void;
   onUploadChange: (file: any) => void;
   onRemove: () => void;
+  disabled?: boolean;
 };
 
 export const ExamUpsertQuestionChoice = memo(function ({
@@ -30,6 +31,7 @@ export const ExamUpsertQuestionChoice = memo(function ({
   index,
   questionIndex,
   choiceLabel,
+  disabled,
   onSetAnswer,
   onUploadChange,
   onRemove,
@@ -118,6 +120,7 @@ export const ExamUpsertQuestionChoice = memo(function ({
             imageData={imageData}
             imageInputProps={imageInputProps}
             close={handleCloseEditor}
+            disabled={disabled}
             small
           />
         ) : (
@@ -127,6 +130,7 @@ export const ExamUpsertQuestionChoice = memo(function ({
             label={choiceLabel}
             text={text}
             control={control}
+            disabled={disabled}
             onClick={handleFocus}
           />
         )}

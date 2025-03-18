@@ -71,7 +71,7 @@ export const StudentExamTakeQuestion = memo(function ({
   return (
     <BaseSurface
       id={`q-${orderNumber}`}
-      className={cx('w-full overflow-hidden !p-0', className)}
+      className={cx('q-strict w-full overflow-hidden !p-0', className)}
       rounded='sm'
       {...moreProps}
     >
@@ -123,7 +123,7 @@ export const StudentExamTakeQuestion = memo(function ({
                 >
                   {getChoiceLabel(orderNumber - 1)}.
                 </span>
-                <div className='w-full'>
+                <div className='c-strict w-full'>
                   <BaseRichTextOutput
                     label={getChoiceLabel(orderNumber - 1)}
                     text={text}

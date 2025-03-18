@@ -13,12 +13,6 @@ import {
 import type { Exam } from '../models/exam.model';
 import type { ExamUpsertFormData } from '../models/exam-form-data.model';
 
-const VITE_SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const VITE_SUPABASE_STORAGE_BASE_PATH = import.meta.env
-  .VITE_SUPABASE_STORAGE_BASE_PATH;
-
-const imgBaseUrl = `${VITE_SUPABASE_URL}${VITE_SUPABASE_STORAGE_BASE_PATH}/`;
-
 type Result = {
   isDone: boolean;
   setIsDone: (isDone: boolean) => void;
@@ -70,7 +64,7 @@ export function useExamCreate(): Result {
               filename.split('-')[1] === `q${question.orderNumber}`
             );
           });
-          question.text = replaceImageSrcs(question.text, qImages, imgBaseUrl);
+          question.text = replaceImageSrcs(question.text, qImages);
 
           question.choices.forEach((choice) => {
             // Filter images by question and choice order number
@@ -82,7 +76,7 @@ export function useExamCreate(): Result {
               );
             });
 
-            choice.text = replaceImageSrcs(choice.text, cImages, imgBaseUrl);
+            choice.text = replaceImageSrcs(choice.text, cImages);
           });
         });
       }

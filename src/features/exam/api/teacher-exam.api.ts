@@ -179,7 +179,12 @@ export function editExam(
     UseMutationOptions<
       Exam,
       Error,
-      { slug: string; data: ExamUpsertFormData; scheduleId?: number },
+      {
+        slug: string;
+        data: ExamUpsertFormData;
+        scheduleId?: number;
+        strict?: boolean;
+      },
       any
     >,
     'mutationFn'
@@ -189,15 +194,18 @@ export function editExam(
     slug,
     data,
     scheduleId,
+    strict,
   }: {
     slug: string;
     data: ExamUpsertFormData;
     scheduleId?: number;
+    strict?: boolean;
   }): Promise<any> => {
     const url = `${BASE_URL}/${slug}`;
     const json = transformToExamUpsertDto(data);
     const searchParams = generateSearchParams({
       schedule: scheduleId?.toString(),
+      strict: (+(strict || 0)).toString(),
     });
 
     try {
@@ -249,9 +257,15 @@ export function uploadExamImages(
     const url = `upload/${BASE_URL}/images`;
     const { orderNumber, questions } = data;
     const formData = await generateImageFormData(orderNumber || 0, questions);
+    const searchParams =
+      strict != null
+        ? generateSearchParams({
+            strict: (+strict).toString(),
+          })
+        : undefined;
 
     try {
-      return kyInstance.post(url, { body: formData }).json();
+      return kyInstance.post(url, { body: formData, searchParams }).json();
     } catch (error: any) {
       const apiError = await generateApiError(error);
       throw apiError;

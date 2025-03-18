@@ -296,7 +296,7 @@ export const LessonUpsertForm = memo(function ({
                     )}
                     <Menu.Item
                       as={BaseDropdownButton}
-                      iconName='file-text'
+                      iconName='eyes'
                       onClick={handlePreview}
                       disabled={loading}
                     >

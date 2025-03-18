@@ -155,7 +155,7 @@ export const ExamUpsertFormStep2 = memo(function ({
               control={control}
             />
           </BaseSurface>
-          <ExamUpsertQuestionList />
+          <ExamUpsertQuestionList disabled={disabled} />
         </fieldset>
       </div>
       <BaseModal

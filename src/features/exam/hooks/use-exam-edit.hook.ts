@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import isBase64 from 'validator/lib/isBase64';
 
+import { hasImage, replaceImageSrcs } from '#/utils/html.util';
 import { queryClient } from '#/config/react-query-client.config';
 import { queryExamKey } from '#/config/react-query-keys.config';
 import {
@@ -96,60 +96,56 @@ export function useExamEdit(slug?: string): Result {
       const scheduleId = exam?.schedules?.length
         ? exam?.schedules[0]?.id
         : undefined;
-      // Check is question/choices has new images
-      const hasImages = data.questions.some(
-        (question) =>
-          (question.imageData &&
-            isBase64(question.imageData?.split(',').pop() || '')) ||
-          question.choices.some(
-            (choice) =>
-              choice.imageData &&
-              isBase64(choice.imageData?.split(',').pop() || ''),
-          ),
-      );
-      // If no images then proceed to update exam
-      if (!hasImages) {
-        return mutateEditExam({ slug: slug || '', data, scheduleId });
-      }
-
+      // Validate exam data before creation
       await validateUpsertExam({ data, slug, scheduleId });
-      const images = await mutateUploadExamImages({ data, strict: true });
-      // Clone value for shifting of array
-      const clonedImages = images;
-      // Apply image url to question/choice text for exam creation
-      const transformedFormData: ExamUpsertFormData = {
-        ...data,
-        questions: data.questions.map((question) => {
-          const text =
-            question.imageData &&
-            isBase64(question.imageData?.split(',').pop() || '')
-              ? clonedImages.shift() || ''
-              : question.text;
+      // If includes any image, then upload image first
+      const htmls = data.questions.flatMap((q) => [
+        q.text,
+        ...q.choices.map((c) => c.text),
+      ]);
 
-          const choices = question.choices.map((choice) => ({
-            ...choice,
-            text:
-              choice.imageData &&
-              isBase64(choice.imageData?.split(',').pop() || '')
-                ? clonedImages.shift() || ''
-                : choice.text,
-          }));
+      // If with images then upload with strict true and update exam with strict false
+      // else then update exam with strict true to delete unused images
 
-          return {
-            ...question,
-            text,
-            choices,
-          };
-        }),
-      };
+      const hasExamImages = hasImage(htmls);
+
+      if (hasExamImages) {
+        const images = await mutateUploadExamImages({ data, strict: true });
+        // Replace base64 images from text field with uploaded images url
+        data.questions.forEach((question) => {
+          // Filter images by question order number and no 'c' character present in filename
+          const qImages = images.filter((img) => {
+            const filename = img.split('/').pop() || '';
+            return (
+              !filename.includes('c') &&
+              filename.split('-')[1] === `q${question.orderNumber}`
+            );
+          });
+          question.text = replaceImageSrcs(question.text, qImages);
+
+          question.choices.forEach((choice) => {
+            // Filter images by question and choice order number
+            const cImages = images.filter((img) => {
+              const imgSplitNames = (img.split('/').pop() || '').split('-');
+              return (
+                imgSplitNames[1] === `q${question.orderNumber}` &&
+                imgSplitNames[2] === `c${choice.orderNumber}`
+              );
+            });
+
+            choice.text = replaceImageSrcs(choice.text, cImages);
+          });
+        });
+      }
 
       return mutateEditExam({
         slug: slug || '',
-        data: transformedFormData,
+        data,
         scheduleId,
+        strict: !hasExamImages,
       });
     },
-    [slug, exam, validateUpsertExam, mutateUploadExamImages, mutateEditExam],
+    [exam, slug, validateUpsertExam, mutateEditExam, mutateUploadExamImages],
   );
 
   const deleteExam = useCallback(async () => {

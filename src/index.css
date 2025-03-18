@@ -126,3 +126,25 @@
   height: 0;
   pointer-events: none;
 }
+
+.q-strict {
+  cursor: default;
+}
+
+.q-strict *:not(.c-strict) {
+  user-select: none !important;
+  cursor: inherit !important;
+}
+
+.q-strict img {
+  pointer-events: none !important;
+}
+
+.q-strict .c-strict {
+  cursor: pointer;
+}
+
+.q-strict .c-strict * {
+  user-select: none !important;
+  cursor: inherit !important;
+}

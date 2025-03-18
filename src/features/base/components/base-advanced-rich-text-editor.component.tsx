@@ -119,6 +119,7 @@ export const BaseAdvancedRichTextEditor = memo(function ({
           <EditorContent
             editor={editor}
             className={cx('h-full w-full', disabled && 'pointer-events-none')}
+            disabled={disabled}
           />
         </OverlayScrollbarsComponent>
       </div>

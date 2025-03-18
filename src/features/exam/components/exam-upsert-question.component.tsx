@@ -22,6 +22,7 @@ type Props = ComponentProps<typeof BaseSurface> & {
   onUploadChange: (file: any) => void;
   moveUpDisabled?: boolean;
   moveDownDisabled?: boolean;
+  disabled?: boolean;
 };
 
 export const ExamUpsertQuestion = memo(function ({
@@ -34,6 +35,7 @@ export const ExamUpsertQuestion = memo(function ({
   onUploadChange,
   moveUpDisabled,
   moveDownDisabled,
+  disabled,
   ...moreProps
 }: Props) {
   const exActFocusedIndex = useBoundStore((state) => state.exActFocusedIndex);
@@ -137,6 +139,7 @@ export const ExamUpsertQuestion = memo(function ({
                 imageData={imageData}
                 imageInputProps={imageInputProps}
                 close={handleCloseEditor}
+                disabled={disabled}
               />
             ) : (
               <BaseControlledRichTextOutput
@@ -147,6 +150,7 @@ export const ExamUpsertQuestion = memo(function ({
                 text={text}
                 control={control}
                 onClick={handleFocus}
+                disabled={disabled}
               />
             )}
           </div>
@@ -163,6 +167,7 @@ export const ExamUpsertQuestion = memo(function ({
           className='mt-4'
           questionIndex={index}
           isCollapsed={isCollapsed}
+          disabled={disabled}
         />
       </div>
     </BaseSurface>

@@ -15,6 +15,7 @@ type Props = Omit<ComponentProps<'div'>, 'dangerouslySetInnerHTML'> & {
   active?: boolean;
   errorMessage?: string;
   wrapperProps?: ComponentProps<'div'>;
+  disabled?: boolean;
 };
 
 type ControlledProps = Props & UseControllerProps<any>;
@@ -28,6 +29,7 @@ export const BaseRichTextOutput = memo(
       text,
       active,
       errorMessage,
+      disabled,
       wrapperProps: { className: wrapperClassName, ...moreWrapperProps } = {},
       ...moreProps
     },
@@ -116,6 +118,7 @@ export const BaseRichTextOutput = memo(
               : 'border-accent/40 pl-18px pr-5',
             isEmpty && 'font-medium text-accent/50',
             !!errorMessage && '!border-red-500/60',
+            disabled && 'pointer-events-none !bg-backdrop-gray',
             className,
           )}
           {...moreProps}

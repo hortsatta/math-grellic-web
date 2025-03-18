@@ -16,12 +16,14 @@ import type { ExamUpsertFormData } from '../models/exam-form-data.model';
 type Props = ComponentProps<'div'> & {
   questionIndex: number;
   isCollapsed?: boolean;
+  disabled?: boolean;
 };
 
 export const ExamUpsertQuestionChoiceList = memo(function ({
   className,
   questionIndex,
   isCollapsed,
+  disabled,
   ...moreProps
 }: Props) {
   const setExActImageEdit = useBoundStore((state) => state.setExActImageEdit);
@@ -171,6 +173,7 @@ export const ExamUpsertQuestionChoiceList = memo(function ({
             onSetTextType={setTextType(key)}
             onUploadChange={handleUploadChange(key)}
             onRemove={handleRemove(key)}
+            disabled={disabled}
           />
         ))}
         {!isCollapsed && (

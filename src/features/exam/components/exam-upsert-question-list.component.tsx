@@ -18,10 +18,13 @@ const liAnimation = {
   stiffness: 200,
 };
 
+type Props = ComponentProps<'div'> & { disabled?: boolean };
+
 export const ExamUpsertQuestionList = memo(function ({
   className,
+  disabled,
   ...moreProps
-}: ComponentProps<'div'>) {
+}: Props) {
   const setExActImageEdit = useBoundStore((state) => state.setExActImageEdit);
   const { control, getValues, setValue } = useFormContext<ExamUpsertFormData>();
 
@@ -111,6 +114,7 @@ export const ExamUpsertQuestionList = memo(function ({
               onUploadChange={handleUploadChange(index)}
               moveUpDisabled={index <= 0}
               moveDownDisabled={index >= questions.length - 1}
+              disabled={disabled}
             />
           </motion.li>
         ))}

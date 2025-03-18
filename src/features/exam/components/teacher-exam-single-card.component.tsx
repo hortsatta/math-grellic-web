@@ -75,11 +75,7 @@ const ContextMenu = memo(function ({
         >
           Details
         </Menu.Item>
-        <Menu.Item
-          as={BaseDropdownButton}
-          iconName='file-text'
-          onClick={onPreview}
-        >
+        <Menu.Item as={BaseDropdownButton} iconName='eyes' onClick={onPreview}>
           Preview
         </Menu.Item>
         <BaseDivider className='my-1' />

@@ -1,4 +1,5 @@
 import dayjs from '#/config/dayjs.config';
+import { attachCompleteImageSrcs, hasImage } from '#/utils/html.util';
 import { transformToBaseModel } from '#/base/helpers/base.helper';
 import { transformToStudentUserAccount } from '#/user/helpers/user-transform.helper';
 import { transformToLesson } from '#/lesson/helpers/lesson-transform.helper';
@@ -19,6 +20,12 @@ import type {
   ExamScheduleUpsertFormData,
   ExamUpsertFormData,
 } from '../models/exam-form-data.model';
+
+const VITE_SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const VITE_SUPABASE_STORAGE_BASE_PATH = import.meta.env
+  .VITE_SUPABASE_STORAGE_BASE_PATH;
+
+const imgBaseUrl = `${VITE_SUPABASE_URL}${VITE_SUPABASE_STORAGE_BASE_PATH}/`;
 
 export function transformToExam(
   {
@@ -91,13 +98,17 @@ export function transformToExamQuestion({
   textType,
   choices,
 }: any): ExamQuestion {
+  const updatedText = hasImage(text)
+    ? attachCompleteImageSrcs(text, imgBaseUrl, true)
+    : text;
+
   const transformedChoices = choices
     ? choices.map((choice: any) => transformToExamQuestionChoice(choice))
     : [];
 
   return {
     orderNumber,
-    text,
+    text: updatedText,
     textType,
     choices: transformedChoices,
     ...transformToBaseModel(id, createdAt, updatedAt),
@@ -113,9 +124,13 @@ export function transformToExamQuestionChoice({
   textType,
   isCorrect,
 }: any): ExamQuestionChoice {
+  const updatedText = hasImage(text)
+    ? attachCompleteImageSrcs(text, imgBaseUrl, true)
+    : text;
+
   return {
     orderNumber,
-    text,
+    text: updatedText,
     textType,
     isCorrect,
     ...transformToBaseModel(id, createdAt, updatedAt),

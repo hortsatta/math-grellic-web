@@ -5,7 +5,6 @@ import { Menu } from '@headlessui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import isTime from 'validator/lib/isTime';
-import isBase64 from 'validator/lib/isBase64';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
@@ -196,28 +195,6 @@ const schema = z
               path: [`questions.${index}.choices.${cIndex}.text`],
             }),
         );
-
-        if (
-          choice.textType === ExActTextType.Text &&
-          !choice.text?.trim().length
-        ) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'Choice is invalid',
-            path: [`questions.${index}.choices.${cIndex}.text`],
-          });
-        } else if (
-          choice.textType === ExActTextType.Image &&
-          (!choice.imageData ||
-            (!data.slug?.trim() &&
-              !isBase64(choice.imageData?.split(',').pop() || '')))
-        ) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'Image is invalid',
-            path: [`questions.${index}.choices.${cIndex}.imageData`],
-          });
-        }
       });
     });
 
@@ -439,7 +416,7 @@ export const ExamUpsertForm = memo(function ({
                   )}
                   <Menu.Item
                     as={BaseDropdownButton}
-                    iconName='file-text'
+                    iconName='eyes'
                     onClick={handlePreview}
                     disabled={loading}
                   >

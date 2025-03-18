@@ -1,8 +1,10 @@
 import { memo, useMemo } from 'react';
 import cx from 'classix';
 
+import { ActivityGame } from '../models/activity.model';
+
 import type { ComponentProps } from 'react';
-import { ActivityGame, type Activity } from '../models/activity.model';
+import type { Activity } from '../models/activity.model';
 
 type Props = ComponentProps<'div'> & {
   activity: Activity;

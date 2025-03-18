@@ -111,7 +111,7 @@ export const TeacherActivitySingle = memo(function ({
             variant='solid'
             target='_blank'
           >
-            <BaseIcon name='file-text' size={24} />
+            <BaseIcon name='eyes' size={24} />
           </BaseLink>
           <BaseLink
             to={teacherRoutes.activity.editTo}

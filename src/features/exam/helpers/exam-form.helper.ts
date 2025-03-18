@@ -21,22 +21,25 @@ export async function generateImageFormData(
   const files: { base64: string; filename: string }[] = [];
   const baseName = `e${orderNumber}`;
   const fileExt = 'png';
+
   // Add all image srcs from question to files array
-  questions.forEach((question) => {
-    const srcs = getImageSrcs(question.text);
+  for (const question of questions) {
+    const srcs = await getImageSrcs(question.text);
     srcs.forEach((src, index) => {
       const filename = `${baseName}-q${question.orderNumber}-${index}.${fileExt}`;
       files.push({ base64: src, filename });
     });
+
     // Add all image srcs from choices to files array
-    question.choices.forEach((choice) => {
-      const srcs = getImageSrcs(choice.text);
+    for (const choice of question.choices) {
+      const srcs = await getImageSrcs(choice.text);
       srcs.forEach((src, index) => {
         const filename = `${baseName}-q${question.orderNumber}-c${choice.orderNumber}-${index}.${fileExt}`;
         files.push({ base64: src, filename });
       });
-    });
-  });
+    }
+  }
+
   // Convert base64 to blob and append files to formData
   for (const { base64, filename } of files) {
     const blob = await (await fetch(base64)).blob();
