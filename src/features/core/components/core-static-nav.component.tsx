@@ -7,7 +7,6 @@ import { BaseModal } from '#/base/components/base-modal.component';
 import { CoreStaticNavMenu } from './core-static-nav-menu.component';
 
 import type { ComponentProps } from 'react';
-import type { IconWeight } from '@phosphor-icons/react';
 import type { NavItem } from '#/base/models/base.model';
 
 type Props = ComponentProps<'div'> & {
@@ -18,8 +17,6 @@ type Props = ComponentProps<'div'> & {
 };
 
 const ABSOLUTE_REGISTER_PATH = `/${staticRoutes.userRegister.to}`;
-
-const menuIconProps = { weight: 'fill' as IconWeight };
 
 export const CoreStaticNav = memo(function ({
   items,
@@ -69,7 +66,6 @@ export const CoreStaticNav = memo(function ({
           <BaseIconButton
             name='list'
             variant='link'
-            iconProps={menuIconProps}
             onClick={handleSetModal(true)}
           />
         </div>

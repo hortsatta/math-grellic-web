@@ -87,6 +87,7 @@ export function TeacherLessonListPage() {
             filterOptions={filterOptions}
             defaulSelectedtFilterOptions={filterOptions}
             defaultSelectedSort={defaultSort}
+            searchInputPlaceholder='Find a Lesson'
             sortOptions={sortOptions}
             onSearchChange={setKeyword}
             onRefresh={refresh}

@@ -33,7 +33,7 @@ export const teacherRoutes = {
     to: 'exams',
     label: 'Exams',
     iconName: 'exam',
-    createTo: 'create',
+    createTo: 'enroll',
     editTo: 'edit',
     previewTo: 'preview',
     schedule: {

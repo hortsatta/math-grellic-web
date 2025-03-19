@@ -9,6 +9,7 @@ import TextAlign from '@tiptap/extension-text-align';
 import TiptapLink from '@tiptap/extension-link';
 import cx from 'classix';
 
+import { InlineMath } from '#/config/tiptap.config';
 import { BaseRichTextEditorMenubar } from './base-rich-text-editor-menubar.component';
 
 import type { ComponentProps } from 'react';
@@ -56,6 +57,7 @@ export const BaseRichTextEditor = memo(function ({
         },
         openOnClick: false,
       }),
+      InlineMath,
     ],
     editorProps: {
       attributes: {

@@ -99,7 +99,7 @@ export const ExamUpsertQuestionChoice = memo(function ({
   }, []);
 
   return (
-    <div className='flex w-full max-w-[578px] items-start'>
+    <div className='max-w-qcWrapperInput flex w-full items-start'>
       <div className='flex h-12 items-center justify-center'>
         <BaseIconButton
           name='check-fat'
@@ -109,10 +109,10 @@ export const ExamUpsertQuestionChoice = memo(function ({
           {...iconButtonProps}
         />
       </div>
-      <div className='relative w-full max-w-[485px]'>
+      <div className='max-w-qcInput relative w-full'>
         {exActFocusedIndex === focusedIndex ? (
           <BaseControlledAdvancedRichTextEditor
-            className='max-w-[485px]'
+            className='max-w-qcInput'
             name={name}
             label={choiceLabel}
             control={control}

@@ -161,7 +161,7 @@ export const ActivityUpsertPointTimeQuestion = memo(function ({
               onClick={handleIsCollapsed}
             />
           </div>
-          <div className='relative w-full max-w-[485px]'>
+          <div className='max-w-qcInput relative w-full'>
             {textType === ActivityTextType.Text ? (
               <BaseControlledTextArea
                 className='w-full'

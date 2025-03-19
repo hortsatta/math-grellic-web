@@ -1,15 +1,16 @@
 import { memo, useMemo } from 'react';
-import DOMPurify from 'dompurify';
 import cx from 'classix';
 
 import dayjs from '#/config/dayjs.config';
 import { convertSecondsToDuration, getDayJsDuration } from '#/utils/time.util';
+import { stripHtml } from '#/utils/html.util';
 import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
 import { StudentUserItem } from '#/user/components/student-user-picker-list.component';
 
 import type { ComponentProps } from 'react';
@@ -24,41 +25,35 @@ export const TeacherMeetingScheduleSingle = memo(function ({
   meetingSchedule,
   ...moreProps
 }: Props) {
-  const [title, meetingUrl, students] = useMemo(
-    () => [
-      meetingSchedule.title,
-      meetingSchedule.meetingUrl,
-      meetingSchedule.students || [],
-    ],
-    [meetingSchedule],
-  );
+  const [title, meetingUrl, startDate, endDate, students, description] =
+    useMemo(
+      () => [
+        meetingSchedule.title,
+        meetingSchedule.meetingUrl,
+        meetingSchedule.startDate,
+        meetingSchedule.endDate,
+        meetingSchedule.students || [],
+        meetingSchedule.description || '',
+      ],
+      [meetingSchedule],
+    );
 
-  const descriptionHtml = useMemo(() => {
-    const isEmpty = !DOMPurify.sanitize(meetingSchedule.description || '', {
-      ALLOWED_TAGS: [],
-    }).trim();
-
-    return !isEmpty
-      ? {
-          __html: DOMPurify.sanitize(meetingSchedule.description || ''),
-        }
-      : null;
-  }, [meetingSchedule]);
+  const isEmpty = useMemo(() => {
+    const result = stripHtml(description);
+    return !result.trim().length;
+  }, [description]);
 
   const [scheduleDate, scheduleTime, scheduleDuration] = useMemo(() => {
-    const date = dayjs(meetingSchedule.startDate).format('MMM DD, YYYY');
+    const date = dayjs(startDate).format('MMM DD, YYYY');
 
-    const time = `${dayjs(meetingSchedule.startDate).format(
-      'hh:mm A',
-    )} — ${dayjs(meetingSchedule.endDate).format('hh:mm A')}`;
+    const time = `${dayjs(startDate).format('hh:mm A')} — ${dayjs(
+      endDate,
+    ).format('hh:mm A')}`;
 
-    const duration = getDayJsDuration(
-      meetingSchedule.endDate,
-      meetingSchedule.startDate,
-    ).asSeconds();
+    const duration = getDayJsDuration(endDate, startDate).asSeconds();
 
     return [date, time, convertSecondsToDuration(duration)];
-  }, [meetingSchedule]);
+  }, [startDate, endDate]);
 
   return (
     <div className={cx('w-full pb-16', className)} {...moreProps}>
@@ -102,13 +97,17 @@ export const TeacherMeetingScheduleSingle = memo(function ({
           <BaseDivider />
           <div>
             <h3 className='text-base'>
-              {descriptionHtml ? 'Description' : 'Meeting has no description'}
+              {!isEmpty ? 'Description' : 'Meeting has no description'}
             </h3>
-            {descriptionHtml && (
-              <div
-                className='base-rich-text rt-output pr-2.5'
-                dangerouslySetInnerHTML={descriptionHtml}
-              />
+            {!isEmpty && (
+              <div className='base-rich-text rt-output pr-2.5'>
+                <BaseRichTextOutput
+                  className='border-0 p-0'
+                  label='Description'
+                  text={description}
+                  unboxed
+                />
+              </div>
             )}
           </div>
           <BaseDivider />

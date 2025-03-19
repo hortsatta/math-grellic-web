@@ -1,8 +1,8 @@
 import { memo, useMemo } from 'react';
-import DOMPurify from 'dompurify';
 import cx from 'classix';
 
 import dayjs from '#/config/dayjs.config';
+import { stripHtml } from '#/utils/html.util';
 import { convertSecondsToDuration } from '#/utils/time.util';
 import { RecordStatus } from '#/core/models/core.model';
 import { teacherRoutes } from '#/app/routes/teacher-routes';
@@ -11,6 +11,7 @@ import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
 import { LessonVideo } from './lesson-video.component';
 
 import type { ComponentProps } from 'react';
@@ -25,29 +26,31 @@ export const TeacherLessonSingle = memo(function ({
   lesson,
   ...moreProps
 }: Props) {
-  const [orderNumber, title, videoUrl, duration, isDraft, excerpt] = useMemo(
+  const [
+    orderNumber,
+    title,
+    videoUrl,
+    duration,
+    description,
+    isDraft,
+    excerpt,
+  ] = useMemo(
     () => [
       lesson.orderNumber,
       lesson.title,
       lesson.videoUrl,
       convertSecondsToDuration(lesson.durationSeconds || 0, true),
+      lesson.description || '',
       lesson.status === RecordStatus.Draft,
       lesson.excerpt,
     ],
     [lesson],
   );
 
-  const descriptionHtml = useMemo(() => {
-    const isEmpty = !DOMPurify.sanitize(lesson.description || '', {
-      ALLOWED_TAGS: [],
-    }).trim();
-
-    return !isEmpty
-      ? {
-          __html: DOMPurify.sanitize(lesson.description || ''),
-        }
-      : null;
-  }, [lesson]);
+  const isEmpty = useMemo(() => {
+    const result = stripHtml(description);
+    return !result.trim().length;
+  }, [description]);
 
   const [scheduleDate, scheduleTime] = useMemo(() => {
     if (!lesson.schedules?.length) {
@@ -128,13 +131,17 @@ export const TeacherLessonSingle = memo(function ({
           <div className='flex flex-col items-start gap-2.5 md:flex-row md:gap-0'>
             <div className='mr-4 flex-1 border-0 border-accent/20 md:border-r'>
               <h3 className='block text-base'>
-                {descriptionHtml ? 'Description' : 'Lesson has no description'}
+                {!isEmpty ? 'Description' : 'Lesson has no description'}
               </h3>
-              {descriptionHtml && (
-                <div
-                  className='base-rich-text rt-output pr-2.5'
-                  dangerouslySetInnerHTML={descriptionHtml}
-                />
+              {!isEmpty && (
+                <div className='base-rich-text rt-output pr-2.5'>
+                  <BaseRichTextOutput
+                    className='border-0 p-0'
+                    label='Description'
+                    text={description}
+                    unboxed
+                  />
+                </div>
               )}
             </div>
             <BaseDivider className='block md:hidden' />

@@ -1,7 +1,7 @@
 import { memo, useCallback, useMemo } from 'react';
 import cx from 'classix';
 
-import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseDataEmptyMessage } from '#/base/components/base-data-empty-message.component';
 import { StudentPerformanceType } from '../models/performance.model';
 import {
@@ -11,6 +11,8 @@ import {
 
 import type { ComponentProps } from 'react';
 import type { StudentPerformance } from '../models/performance.model';
+
+const STUDENT_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
 type Props = ComponentProps<'div'> & {
   students: StudentPerformance[];
@@ -56,7 +58,7 @@ export const StudentPerformanceList = memo(function ({
       ) : isEmpty ? (
         <BaseDataEmptyMessage
           message='No students available'
-          linkTo={teacherRoutes.student.to}
+          linkTo={STUDENT_LIST_PATH}
           linkLabel='View All Students'
         />
       ) : (

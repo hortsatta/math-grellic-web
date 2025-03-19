@@ -1,8 +1,8 @@
 import { Fragment, memo, useMemo } from 'react';
-import DOMPurify from 'dompurify';
 import cx from 'classix';
 
 import dayjs from '#/config/dayjs.config';
+import { stripHtml } from '#/utils/html.util';
 import { convertSecondsToDuration, getDayJsDuration } from '#/utils/time.util';
 import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { RecordStatus } from '#/core/models/core.model';
@@ -11,6 +11,7 @@ import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
 import { LessonItem } from '#/lesson/components/lesson-picker-list.component';
 import { TeacherExamSingleQuestion } from './teacher-exam-single-question.component';
 
@@ -36,6 +37,7 @@ export const TeacherExamSingle = memo(function ({
     questions,
     randomizeQuestions,
     isDraft,
+    description,
     excerpt,
     coveredLessons,
   ] = useMemo(
@@ -48,6 +50,7 @@ export const TeacherExamSingle = memo(function ({
       exam.questions,
       exam.randomizeQuestions,
       exam.status === RecordStatus.Draft,
+      exam.description || '',
       exam.excerpt,
       exam.coveredLessons,
     ],
@@ -76,17 +79,10 @@ export const TeacherExamSingle = memo(function ({
     [totalPoints],
   );
 
-  const descriptionHtml = useMemo(() => {
-    const isEmpty = !DOMPurify.sanitize(exam.description || '', {
-      ALLOWED_TAGS: [],
-    }).trim();
-
-    return !isEmpty
-      ? {
-          __html: DOMPurify.sanitize(exam.description || ''),
-        }
-      : null;
-  }, [exam]);
+  const isEmpty = useMemo(() => {
+    const result = stripHtml(description);
+    return !result.trim().length;
+  }, [description]);
 
   const schedules = useMemo(() => {
     if (!exam.schedules?.length) {
@@ -199,13 +195,17 @@ export const TeacherExamSingle = memo(function ({
           <div className='flex flex-col items-start gap-2.5 md:flex-row md:gap-0'>
             <div className='mr-4 flex-1 border-0 border-accent/20 md:border-r'>
               <h3 className='text-base'>
-                {descriptionHtml ? 'Description' : 'Exam has no description'}
+                {!isEmpty ? 'Description' : 'Exam has no description'}
               </h3>
-              {descriptionHtml && (
-                <div
-                  className='base-rich-text rt-output pr-2.5'
-                  dangerouslySetInnerHTML={descriptionHtml}
-                />
+              {!isEmpty && (
+                <div className='base-rich-text rt-output pr-2.5'>
+                  <BaseRichTextOutput
+                    className='border-0 p-0'
+                    label='Description'
+                    text={description}
+                    unboxed
+                  />
+                </div>
               )}
             </div>
             <BaseDivider className='block md:hidden' />

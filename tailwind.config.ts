@@ -20,6 +20,8 @@ export default {
         max: '1920px',
         compact: '860px',
         input: '280px',
+        qcWrapperInput: '578px',
+        qcInput: '485px',
       },
       height: {
         input: '60px',

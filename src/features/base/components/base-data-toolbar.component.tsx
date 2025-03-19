@@ -21,6 +21,7 @@ type Props = ComponentProps<'div'> & {
   defaulSelectedtFilterOptions?: QueryFilterOption[];
   defaultSelectedSort?: QuerySort;
   singleFilterOnly?: boolean;
+  searchInputPlaceholder?: string;
   onSearchChange?: (value: string | null) => void;
   onRefresh?: () => void;
   onFilter?: (value: QueryFilterOption[]) => void;
@@ -47,6 +48,7 @@ export const BaseDataToolbar = memo(
     defaultSelectedSort,
     singleFilterOnly,
     sortOptions,
+    searchInputPlaceholder,
     onSearchChange,
     onRefresh,
     onFilter,
@@ -74,7 +76,7 @@ export const BaseDataToolbar = memo(
       >
         <BaseSearchInput
           className='w-full md:w-auto'
-          placeholder='Find a lesson'
+          placeholder={searchInputPlaceholder || 'Find'}
           wrapperProps={searchWrapperProps}
           onChange={onSearchChange}
         />

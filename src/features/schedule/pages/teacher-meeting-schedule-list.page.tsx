@@ -45,6 +45,7 @@ export function TeacherMeetingScheduleListPage() {
             className='mb-5'
             defaultSelectedSort={defaultSort}
             sortOptions={sortOptions}
+            searchInputPlaceholder='Find a Meeting'
             onSearchChange={setKeyword}
             onRefresh={refresh}
             onSort={setSort}

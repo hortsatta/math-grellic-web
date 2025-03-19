@@ -1,5 +1,4 @@
 import { memo, useCallback, useMemo } from 'react';
-import DOMPurify from 'dompurify';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
@@ -8,10 +7,12 @@ import {
   convertSecondsToDuration,
   generateCountdownDate,
 } from '#/utils/time.util';
+import { stripHtml } from '#/utils/html.util';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
+import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
 import { LessonVideo } from './lesson-video.component';
 
 import type { ComponentProps } from 'react';
@@ -39,19 +40,19 @@ export const StudentLessonSingle = memo(function ({
     orderNumber,
     title,
     videoUrl,
-    excerpt,
     isCompleted,
     duration,
-    descriptionHtml,
+    description,
+    excerpt,
   ] = useMemo(
     () => [
       lesson.orderNumber,
       lesson.title,
       lesson.videoUrl,
-      lesson.excerpt,
       !!lesson.completions?.length,
       convertSecondsToDuration(lesson.durationSeconds || 0, true),
-      { __html: DOMPurify.sanitize(lesson.description || '') },
+      lesson.description || '',
+      lesson.excerpt,
     ],
     [lesson],
   );
@@ -79,6 +80,11 @@ export const StudentLessonSingle = memo(function ({
     }
     return generateCountdownDate(upcomingDuration);
   }, [upcomingDuration]);
+
+  const isEmpty = useMemo(() => {
+    const result = stripHtml(description);
+    return !result.trim().length;
+  }, [description]);
 
   const handleOnSetCompletion = useCallback(async () => {
     if (preview || upcomingDuration || !onSetCompletion) {
@@ -169,10 +175,16 @@ export const StudentLessonSingle = memo(function ({
         {formattedUpcomingDate ? (
           <div className='w-full py-8'>{excerpt}</div>
         ) : (
-          <div
-            className='base-rich-text rt-output py-8'
-            dangerouslySetInnerHTML={descriptionHtml}
-          />
+          <div className='base-rich-text rt-output py-8'>
+            {!isEmpty && (
+              <BaseRichTextOutput
+                className='border-0 p-0'
+                label='Description'
+                text={description}
+                unboxed
+              />
+            )}
+          </div>
         )}
       </div>
     </div>

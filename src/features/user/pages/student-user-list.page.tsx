@@ -148,6 +148,7 @@ export function StudentUserListPage() {
               filterOptions={filterOptions}
               defaulSelectedtFilterOptions={defaultFilterOptions}
               defaultSelectedSort={defaultSort}
+              searchInputPlaceholder='Find a Student'
               sortOptions={sortOptions}
               onSearchChange={setKeyword}
               onRefresh={refresh}

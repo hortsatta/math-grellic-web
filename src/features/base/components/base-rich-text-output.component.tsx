@@ -1,6 +1,7 @@
 import { createElement, forwardRef, memo, useCallback, useMemo } from 'react';
 import { StaticMathField } from 'react-mathquill';
 import { useController } from 'react-hook-form';
+import DOMPurify from 'dompurify';
 import cx from 'classix';
 
 import { stripHtml } from '#/utils/html.util';
@@ -13,6 +14,7 @@ type Props = Omit<ComponentProps<'div'>, 'dangerouslySetInnerHTML'> & {
   text: string;
   keyPrefix?: string;
   active?: boolean;
+  unboxed?: boolean;
   errorMessage?: string;
   wrapperProps?: ComponentProps<'div'>;
   disabled?: boolean;
@@ -28,6 +30,7 @@ export const BaseRichTextOutput = memo(
       label,
       text,
       active,
+      unboxed,
       errorMessage,
       disabled,
       wrapperProps: { className: wrapperClassName, ...moreWrapperProps } = {},
@@ -96,8 +99,9 @@ export const BaseRichTextOutput = memo(
       }
 
       // Parse the HTML string into a DOM tree
+      const sanitizedHtml = DOMPurify.sanitize(text || '');
       const parser = new DOMParser();
-      const doc = parser.parseFromString(text, 'text/html');
+      const doc = parser.parseFromString(sanitizedHtml, 'text/html');
 
       return Array.from(doc.body.childNodes).map((node, index) =>
         createComponent(node, `${keyPrefix}.${index}`),
@@ -106,16 +110,17 @@ export const BaseRichTextOutput = memo(
 
     return (
       <div
-        className={cx(active && 'w-full', wrapperClassName)}
+        className={cx(active && 'w-full', unboxed && 'my-2', wrapperClassName)}
         {...moreWrapperProps}
       >
         <div
           ref={ref}
           className={cx(
-            'rt-output base-rich-text flex min-h-[48px] w-full cursor-text items-center rounded-md border-2 py-2 text-accent',
+            'rt-output base-rich-text flex w-full cursor-text items-center rounded-md border-2 py-2 text-accent',
             active
               ? 'cursor-pointer border-transparent px-0'
               : 'border-accent/40 pl-18px pr-5',
+            unboxed ? '!border-0 !p-0' : 'min-h-[48px]',
             isEmpty && 'font-medium text-accent/50',
             !!errorMessage && '!border-red-500/60',
             disabled && 'pointer-events-none !bg-backdrop-gray',

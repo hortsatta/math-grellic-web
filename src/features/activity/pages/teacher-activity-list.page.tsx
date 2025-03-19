@@ -77,6 +77,7 @@ export function TeacherActivityListPage() {
             filterOptions={filterOptions}
             defaulSelectedtFilterOptions={filterOptions}
             defaultSelectedSort={defaultSort}
+            searchInputPlaceholder='Find an Activity'
             sortOptions={sortOptions}
             onSearchChange={setKeyword}
             onRefresh={refresh}

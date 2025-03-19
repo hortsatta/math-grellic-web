@@ -96,6 +96,23 @@ export const BaseRichTextEditorMenubar = function ({
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
   }, [editor]);
 
+  const handleInlineMath = useCallback(() => {
+    const { selection } = editor.state;
+    // Get the selected text
+    const selectedText = editor.state.doc.textBetween(
+      selection.from,
+      selection.to,
+    );
+
+    editor
+      .chain()
+      .focus()
+      .addInlineMath({
+        value: selectedText.trim().length ? selectedText : 'y=mx+b',
+      })
+      .run();
+  }, [editor]);
+
   return (
     <div className='w-full'>
       <div
@@ -103,20 +120,6 @@ export const BaseRichTextEditorMenubar = function ({
         {...moreProps}
       >
         <div className={MENU_WRAPPER_CLASSNAME}>
-          <BaseTooltip content='Heading 1'>
-            <BaseIconButton
-              name='text-h-one'
-              className={cx(
-                MENU_CLASSNAME,
-                editor.isActive('heading', { level: 1 }) &&
-                  MENU_ACTIVE_CLASSNAME,
-              )}
-              variant='link'
-              onClick={handleToggleHeading(1)}
-              iconProps={menuIconProps}
-              disabled={disabled}
-            />
-          </BaseTooltip>
           <BaseTooltip content='Heading 2'>
             <BaseIconButton
               name='text-h-two'
@@ -313,6 +316,16 @@ export const BaseRichTextEditorMenubar = function ({
         </div>
         <BaseDivider className='!h-10' vertical />
         <div className={MENU_WRAPPER_CLASSNAME}>
+          <BaseTooltip content='Insert expression'>
+            <BaseIconButton
+              name='function'
+              className={MENU_CLASSNAME}
+              variant='link'
+              onClick={handleInlineMath}
+              iconProps={menuIconProps}
+              disabled={disabled}
+            />
+          </BaseTooltip>
           <BaseTooltip content='Insert link'>
             <BaseIconButton
               name='link-simple'

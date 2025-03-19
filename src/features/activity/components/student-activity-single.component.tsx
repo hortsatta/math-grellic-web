@@ -1,5 +1,4 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import DOMPurify from 'dompurify';
 import { motion } from 'framer-motion';
 import cx from 'classix';
 
@@ -7,11 +6,13 @@ import {
   scoreShowItemVariants,
   scoreShowVariants,
 } from '#/utils/animation.util';
+import { stripHtml } from '#/utils/html.util';
 import { generateOrdinalSuffix } from '#/utils/string.util';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
 import { PerformanceRankAwardImg } from '#/performance/components/performance-rank-award-img.component';
 import { ActivityGameLoader } from './activity-game-loader.component';
 
@@ -70,16 +71,9 @@ export const StudentActivitySingle = memo(function ({
     [rank],
   );
 
-  const descriptionHtml = useMemo(() => {
-    const isEmpty = !DOMPurify.sanitize(description, {
-      ALLOWED_TAGS: [],
-    }).trim();
-
-    return !isEmpty
-      ? {
-          __html: DOMPurify.sanitize(description),
-        }
-      : null;
+  const isEmpty = useMemo(() => {
+    const result = stripHtml(description);
+    return !result.trim().length;
   }, [description]);
 
   const handleStartActivity = useCallback(() => setStartActivity(true), []);
@@ -120,13 +114,17 @@ export const StudentActivitySingle = memo(function ({
                   </motion.div>
                 </BaseSurface>
               )}
-              {descriptionHtml && (
+              {!isEmpty && (
                 <div className='w-full'>
                   <BaseDivider />
-                  <div
-                    className='base-rich-text rt-output w-full py-5'
-                    dangerouslySetInnerHTML={descriptionHtml}
-                  />
+                  <div className='base-rich-text rt-output w-full py-5'>
+                    <BaseRichTextOutput
+                      className='border-0 p-0'
+                      label='Description'
+                      text={description}
+                      unboxed
+                    />
+                  </div>
                   <BaseDivider />
                 </div>
               )}

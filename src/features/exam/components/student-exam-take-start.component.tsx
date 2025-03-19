@@ -1,10 +1,11 @@
 import { memo, useMemo } from 'react';
-import DOMPurify from 'dompurify';
 import cx from 'classix';
 
+import { stripHtml } from '#/utils/html.util';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
 import { LessonItem } from '#/lesson/components/lesson-picker-list.component';
 
 import type { ComponentProps } from 'react';
@@ -18,21 +19,14 @@ type Props = ComponentProps<'div'> & {
 
 export const StudentExamTakeStart = memo(function ({
   className,
-  description,
+  description = '',
   coveredLessons,
   onStart,
   ...moreProps
 }: Props) {
-  const descriptionHtml = useMemo(() => {
-    const isEmpty = !DOMPurify.sanitize(description || '', {
-      ALLOWED_TAGS: [],
-    }).trim();
-
-    return !isEmpty
-      ? {
-          __html: DOMPurify.sanitize(description || ''),
-        }
-      : null;
+  const isEmpty = useMemo(() => {
+    const result = stripHtml(description);
+    return !result.trim().length;
   }, [description]);
 
   return (
@@ -52,13 +46,17 @@ export const StudentExamTakeStart = memo(function ({
           <div className='flex w-full justify-center'>None</div>
         )}
       </BaseSurface>
-      {descriptionHtml && (
+      {!isEmpty && (
         <div className='w-full'>
           <BaseDivider />
-          <div
-            className='base-rich-text rt-output py-5'
-            dangerouslySetInnerHTML={descriptionHtml}
-          />
+          <div className='base-rich-text rt-output py-5'>
+            <BaseRichTextOutput
+              className='border-0 p-0'
+              label='Description'
+              text={description}
+              unboxed
+            />
+          </div>
           <BaseDivider />
         </div>
       )}

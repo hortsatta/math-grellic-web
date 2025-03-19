@@ -1,7 +1,7 @@
 import { memo, useMemo } from 'react';
-import DOMPurify from 'dompurify';
 import cx from 'classix';
 
+import { stripHtml } from '#/utils/html.util';
 import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { RecordStatus } from '#/core/models/core.model';
 import { BaseChip } from '#/base/components/base-chip.component';
@@ -9,6 +9,7 @@ import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
 import { activityGameLabel } from '../models/activity.model';
 import { TeacherActivitySinglePointTimeCategory } from './teacher-activity-single-point-time-category.component';
 import { TeacherActivitySingleStageCategory } from './teacher-activity-single-stage-category.component';
@@ -29,17 +30,19 @@ export const TeacherActivitySingle = memo(function ({
   activity,
   ...moreProps
 }: Props) {
-  const [title, orderNumber, game, categories, isDraft, excerpt] = useMemo(
-    () => [
-      activity.title,
-      activity.orderNumber,
-      activity.game,
-      activity.categories,
-      activity.status === RecordStatus.Draft,
-      activity.excerpt,
-    ],
-    [activity],
-  );
+  const [title, orderNumber, game, categories, isDraft, description, excerpt] =
+    useMemo(
+      () => [
+        activity.title,
+        activity.orderNumber,
+        activity.game,
+        activity.categories,
+        activity.status === RecordStatus.Draft,
+        activity.description || '',
+        activity.excerpt,
+      ],
+      [activity],
+    );
 
   const gameName = useMemo(
     () => activityGameLabel[game.name as ActivityGame],
@@ -63,17 +66,10 @@ export const TeacherActivitySingle = memo(function ({
     }`;
   }, [categories]);
 
-  const descriptionHtml = useMemo(() => {
-    const isEmpty = !DOMPurify.sanitize(activity.description || '', {
-      ALLOWED_TAGS: [],
-    }).trim();
-
-    return !isEmpty
-      ? {
-          __html: DOMPurify.sanitize(activity.description || ''),
-        }
-      : null;
-  }, [activity]);
+  const isEmpty = useMemo(() => {
+    const result = stripHtml(description);
+    return !result.trim().length;
+  }, [description]);
 
   return (
     <div className={cx('w-full pb-16', className)} {...moreProps}>
@@ -127,13 +123,17 @@ export const TeacherActivitySingle = memo(function ({
         <div className='flex flex-col items-start gap-2.5 md:flex-row md:gap-0'>
           <div className='mr-4 flex-1 border-0 border-accent/20 md:border-r'>
             <h3 className='text-base'>
-              {descriptionHtml ? 'Description' : 'Activity has no description'}
+              {!isEmpty ? 'Description' : 'Activity has no description'}
             </h3>
-            {descriptionHtml && (
-              <div
-                className='base-rich-text rt-output'
-                dangerouslySetInnerHTML={descriptionHtml}
-              />
+            {!isEmpty && (
+              <div className='base-rich-text rt-output'>
+                <BaseRichTextOutput
+                  className='border-0 p-0'
+                  label='Description'
+                  text={description}
+                  unboxed
+                />
+              </div>
             )}
           </div>
           <BaseDivider className='block md:hidden' />

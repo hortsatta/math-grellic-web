@@ -79,6 +79,7 @@ export function StudentPerformanceListPage() {
             filterOptions={filterOptions}
             defaulSelectedtFilterOptions={defaulSelectedtFilterOptions}
             defaultSelectedSort={defaultSort}
+            searchInputPlaceholder='Find a Student'
             sortOptions={sortOptions}
             onSearchChange={setKeyword}
             onRefresh={refresh}

@@ -139,7 +139,7 @@ const Choice = memo(function ({
   );
 
   return (
-    <div className='flex w-full max-w-[578px] items-start'>
+    <div className='max-w-qcWrapperInput flex w-full items-start'>
       <div className='flex h-12 items-center justify-center'>
         <BaseIconButton
           name='check-fat'

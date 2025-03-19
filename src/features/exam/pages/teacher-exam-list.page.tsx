@@ -93,6 +93,7 @@ export function TeacherExamListPage() {
             filterOptions={filterOptions}
             defaulSelectedtFilterOptions={filterOptions}
             defaultSelectedSort={defaultSort}
+            searchInputPlaceholder='Find an Exam'
             sortOptions={sortOptions}
             onSearchChange={setKeyword}
             onRefresh={refresh}
