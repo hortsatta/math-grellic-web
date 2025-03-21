@@ -57,7 +57,7 @@ export const StudentUserItem = memo(function ({
             onClick && 'group-hover/usrpicker:text-white',
           )}
         >
-          <span className='text font-medium'>{fullName}</span>
+          <span className='text-left font-medium'>{fullName}</span>
           <small>{publicId}</small>
         </div>
       </div>

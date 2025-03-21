@@ -58,7 +58,7 @@ export const LessonItem = memo(function ({
             onClick && 'group-hover/usrpicker:text-white',
           )}
         >
-          <span className='text font-medium'>{title}</span>
+          <span className='text-left font-medium'>{title}</span>
           <small>{orderNumber}</small>
         </div>
       </div>
