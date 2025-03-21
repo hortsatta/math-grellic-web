@@ -18,8 +18,10 @@ import { BaseStepper } from '#/base/components/base-stepper.component';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
-import { defaultQuestion } from '#/exam/helpers/exam-form.helper';
-import { createDefaultStageQuestion } from '../helpers/activity-form.helper';
+import {
+  createDefaultStageQuestion,
+  defaultQuestion,
+} from '../helpers/activity-form.helper';
 import { ActivityUpsertFormStep1 } from './activity-upsert-form-step-1.component';
 import { ActivityUpsertFormStepPointTimeLevel } from './activity-upsert-form-step-point-time-level.component';
 import { ActivityUpsertFormStepStageLevel } from './activity-upsert-form-step-stage-level.component';

@@ -1,8 +1,18 @@
 import isBase64 from 'validator/lib/isBase64';
 
-import { defaultQuestion } from '#/exam/helpers/exam-form.helper';
+import { ActivityTextType } from '../models/activity.model';
 
 import type { ActivityUpsertFormData } from '../models/activity-form-data.model';
+
+export const defaultQuestion = {
+  text: '',
+  textType: ActivityTextType.Text,
+  choices: Array.from(Array(4), () => ({
+    text: '',
+    textType: ActivityTextType.Text,
+    isCorrect: false,
+  })) as any[],
+} as any;
 
 export function createDefaultStageQuestion(stageNumber: number) {
   return { ...defaultQuestion, stageNumber };

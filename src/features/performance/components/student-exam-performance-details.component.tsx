@@ -1,6 +1,7 @@
 import { memo, useCallback, useMemo } from 'react';
 import cx from 'classix';
 
+import dayjs from '#/config/dayjs.config';
 import { generateOrdinalSuffix } from '#/utils/string.util';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
@@ -25,18 +26,26 @@ export const StudentExamPerformanceDetails = memo(function ({
   onClick,
   ...moreProps
 }: Props) {
-  const [orderNumber, title, totalPoints, passingPoints, completion, rank] =
-    useMemo(
-      () => [
-        exam.orderNumber,
-        exam.title,
-        exam.visibleQuestionsCount * exam.pointsPerQuestion,
-        exam.passingPoints,
-        exam.completions?.length ? exam.completions[0] : undefined,
-        exam.rank,
-      ],
-      [exam],
-    );
+  const [
+    orderNumber,
+    title,
+    totalPoints,
+    passingPoints,
+    schedule,
+    completion,
+    rank,
+  ] = useMemo(
+    () => [
+      exam.orderNumber,
+      exam.title,
+      exam.visibleQuestionsCount * exam.pointsPerQuestion,
+      exam.passingPoints,
+      exam.schedules?.length ? exam.schedules[0] : null,
+      exam.completions?.length ? exam.completions[0] : undefined,
+      exam.rank,
+    ],
+    [exam],
+  );
 
   const hasPassed = useMemo(
     () => (completion?.score || 0) >= passingPoints,
@@ -56,11 +65,16 @@ export const StudentExamPerformanceDetails = memo(function ({
   }, [completion, totalPoints]);
 
   const statusText = useMemo(() => {
+    if (isUpcoming) return 'Upcoming';
+
     if (!completion) {
-      return 'Expired';
+      return schedule && dayjs(schedule.endDate).isSameOrBefore(dayjs())
+        ? 'Expired'
+        : 'Pending';
     }
+
     return hasPassed ? 'Passed' : 'Failed';
-  }, [completion, hasPassed]);
+  }, [isUpcoming, hasPassed, schedule, completion]);
 
   const rankText = useMemo(
     () => (rank == null ? '-' : generateOrdinalSuffix(rank)),
@@ -115,7 +129,7 @@ export const StudentExamPerformanceDetails = memo(function ({
           <div className='w-20 text-center text-lg font-medium'>
             {scoreText}
           </div>
-          <BaseTag className='w-20 !bg-primary-hue-purple'>
+          <BaseTag className='w-20 !bg-primary-hue-purple !px-2'>
             {statusText}
           </BaseTag>
           <div className='flex min-w-[104px] items-center justify-center gap-x-2.5'>

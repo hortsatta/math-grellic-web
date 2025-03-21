@@ -86,7 +86,7 @@ export const StudentExamTakeDone = memo(function ({
     [passingPoints],
   );
 
-  const score = useMemo(() => examCompletion?.score || null, [examCompletion]);
+  const score = useMemo(() => examCompletion?.score ?? null, [examCompletion]);
 
   const scoreSuffix = useMemo(
     () => ((score || 0) > 1 ? 'Points' : 'Point'),
@@ -179,7 +179,7 @@ export const StudentExamTakeDone = memo(function ({
                 className='mb-2.5 flex flex-col items-center justify-center gap-2.5 px-5 text-primary -2xs:mb-8 -2xs:flex-row -2xs:gap-5'
                 variants={scoreShowItemVariants}
               >
-                {score != null && rank != null && (
+                {score != null && score > 0 && rank != null && (
                   <>
                     <div className='flex items-center gap-x-2.5'>
                       <span className='text-[40px] font-bold'>{rankText}</span>

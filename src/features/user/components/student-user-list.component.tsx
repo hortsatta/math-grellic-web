@@ -59,7 +59,7 @@ export const StudentUserList = memo(function ({
         <BaseDataEmptyMessage
           message='No students available'
           linkLabel='Enroll'
-          linkTo={teacherRoutes.exam.createTo}
+          linkTo={teacherRoutes.student.createTo}
         />
       ) : (
         students.map((student, index) => (

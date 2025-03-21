@@ -16,36 +16,55 @@ type QuestionAnswer = {
 type Props = ComponentProps<'div'> & {
   questionAnswers: QuestionAnswer[];
   label?: string;
+  labelHeading?: boolean;
 };
 
 export const StudentExamQuestionResult = memo(function ({
   className,
   questionAnswers,
   label = 'Showing exam questions with your selected choices and answers.',
+  labelHeading,
   ...moreProps
 }: Props) {
   return (
-    <div className={cx('h-[550px] xs:h-[450px]', className)} {...moreProps}>
+    <div
+      className={cx(
+        'h-[550px]',
+        questionAnswers.length ? 'xs:h-[450px]' : 'xs:h-52',
+        className,
+      )}
+      {...moreProps}
+    >
       <OverlayScrollbarsComponent
         className='h-full w-full px-0 pb-2.5 xs:px-4'
         options={options}
         defer
       >
-        <div className='mb-2.5'>{label}</div>
-        <ol className='flex w-full flex-col gap-y-2.5'>
-          {questionAnswers.map(
-            ({ question, selectedQuestionChoiceId }, index) =>
-              question && (
-                <li key={`ans-${question.id}`} className='w-full'>
-                  <StudentExamQuestionAnswer
-                    key={`qa-${index}`}
-                    question={question}
-                    selectedChoiceId={selectedQuestionChoiceId}
-                  />
-                </li>
-              ),
-          )}
-        </ol>
+        {labelHeading ? (
+          <h3 className='mb-2.5 text-base'>{label}</h3>
+        ) : (
+          <div className='mb-2.5'>{label}</div>
+        )}
+        {questionAnswers.length ? (
+          <ol className='flex w-full flex-col gap-y-2.5'>
+            {questionAnswers.map(
+              ({ question, selectedQuestionChoiceId }, index) =>
+                question && (
+                  <li key={`ans-${question.id}`} className='w-full'>
+                    <StudentExamQuestionAnswer
+                      key={`qa-${index}`}
+                      question={question}
+                      selectedChoiceId={selectedQuestionChoiceId}
+                    />
+                  </li>
+                ),
+            )}
+          </ol>
+        ) : (
+          <div className='flex h-full max-h-36 items-center justify-center'>
+            Viewing of results currently not available.
+          </div>
+        )}
       </OverlayScrollbarsComponent>
     </div>
   );

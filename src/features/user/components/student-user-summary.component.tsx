@@ -30,22 +30,22 @@ export const StudentUserSummary = memo(function ({
   onDelete,
   ...moreProps
 }: Props) {
-  const [publicId, email, approvalStatus, gender, phoneNumber] = useMemo(
-    () => [
-      student.publicId || '—',
-      student.email,
-      student.approvalStatus,
-      student.gender,
-      formatPhoneNumber(student?.phoneNumber || ''),
-    ],
-    [student],
-  );
-
-  const fullName = useMemo(
-    () =>
-      generateFullName(student.firstName, student.lastName, student.middleName),
-    [student],
-  );
+  const [publicId, email, approvalStatus, gender, phoneNumber, fullName] =
+    useMemo(
+      () => [
+        student.publicId || '—',
+        student.email,
+        student.approvalStatus,
+        student.gender,
+        formatPhoneNumber(student?.phoneNumber || ''),
+        generateFullName(
+          student.firstName,
+          student.lastName,
+          student.middleName,
+        ),
+      ],
+      [student],
+    );
 
   const [statusLabel, statusIconName] = useMemo(() => {
     switch (approvalStatus) {

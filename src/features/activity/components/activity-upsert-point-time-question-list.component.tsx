@@ -5,9 +5,9 @@ import { motion } from 'framer-motion';
 import cx from 'classix';
 
 import { liAnimation } from '#/utils/animation.util';
-import { defaultQuestion } from '#/exam/helpers/exam-form.helper';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseButton } from '#/base/components/base-button.components';
+import { defaultQuestion } from '../helpers/activity-form.helper';
 import { ActivityUpsertPointTimeQuestion } from './activity-upsert-point-time-question.component';
 
 import type { ComponentProps } from 'react';

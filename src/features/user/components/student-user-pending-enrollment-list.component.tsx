@@ -48,17 +48,11 @@ export const StudentUserPendingEnrollmentList = memo(
       return pendingStudents[currentIndex];
     }, [pendingStudents, currentIndex]);
 
-    const [date, email, phoneNumber] = useMemo(
+    const [date, email, phoneNumber, fullName] = useMemo(
       () => [
         dayjs(currentStudent?.createdAt).format('DD-MM-YYYY'),
         currentStudent?.email,
         currentStudent ? formatPhoneNumber(currentStudent?.phoneNumber) : '',
-      ],
-      [currentStudent],
-    );
-
-    const fullName = useMemo(
-      () =>
         currentStudent
           ? generateFullName(
               currentStudent.firstName,
@@ -66,6 +60,7 @@ export const StudentUserPendingEnrollmentList = memo(
               currentStudent.middleName,
             )
           : '',
+      ],
       [currentStudent],
     );
 

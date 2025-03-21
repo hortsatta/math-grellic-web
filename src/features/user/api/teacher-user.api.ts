@@ -158,37 +158,6 @@ export function getStudentCountByCurrentTeacherUser(
   };
 }
 
-// Deprecated
-export function getStudentByPublicIdAndCurrentTeacherUser(
-  keys: { publicId: string; exclude?: string; include?: string },
-  options?: Omit<
-    UseQueryOptions<StudentUserAccount, Error, StudentUserAccount, any>,
-    'queryFn'
-  >,
-) {
-  const { publicId: pId, exclude, include } = keys;
-  const publicId = pId.toLowerCase();
-
-  const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/students/${publicId}`;
-    const searchParams = generateSearchParams({ exclude, include });
-
-    try {
-      const student = await kyInstance.get(url, { searchParams }).json();
-      return student;
-    } catch (error: any) {
-      const apiError = await generateApiError(error);
-      throw apiError;
-    }
-  };
-
-  return {
-    queryKey: [...queryUserKey.studentSingle, { publicId, exclude, include }],
-    queryFn,
-    ...options,
-  };
-}
-
 export function getStudentByIdAndCurrentTeacherUser(
   keys: { id: number; exclude?: string; include?: string },
   options?: Omit<

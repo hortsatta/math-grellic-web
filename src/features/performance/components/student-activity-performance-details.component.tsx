@@ -90,7 +90,7 @@ export const StudentActivityPerformanceDetails = memo(function ({
         className={cx(
           'flex w-full flex-col items-start justify-between gap-2.5 overflow-hidden rounded px-4 py-2 sm:flex-row sm:items-center sm:gap-0',
           onClick &&
-            'group cursor-pointer transition-colors duration-75 hover:bg-primary-hue-purple-focus hover:!text-white',
+            'group cursor-pointer transition-colors duration-75 hover:bg-primary-hue-teal-focus hover:!text-white',
           className,
         )}
         onClick={handleClick}
@@ -116,7 +116,7 @@ export const StudentActivityPerformanceDetails = memo(function ({
             Activity {orderNumber} - {title}
           </span>
         </div>
-        <div className='flex w-full items-center justify-center gap-x-4 text-primary-hue-purple group-hover:text-white sm:w-auto sm:justify-start'>
+        <div className='flex w-full items-center justify-center gap-x-4 text-primary-hue-teal group-hover:text-white sm:w-auto sm:justify-start'>
           <div className='w-28 text-center text-lg font-medium'>
             {scoreText}
           </div>

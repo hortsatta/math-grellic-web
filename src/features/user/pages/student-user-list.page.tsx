@@ -15,8 +15,8 @@ import {
 } from '../hooks/use-student-user-list.hook';
 import { useStudentUserPendingEnrollmentList } from '../hooks/use-student-user-pending-enrollment-list.hook';
 import { useStudentUserOverview } from '../hooks/use-student-user-overview.hook';
-import { StudentUserList } from '../components/student-user-list.component';
 import { StudentUserSummary } from '../components/student-user-summary.component';
+import { StudentUserList } from '../components/student-user-list.component';
 import { StudentUserOverview } from '../components/student-user-overview.component';
 import { StudentUserPendingEnrollmentList } from '../components/student-user-pending-enrollment-list.component';
 
@@ -34,6 +34,12 @@ const filterOptions = [
     name: 'status',
     value: UserApprovalStatus.Pending,
     label: capitalize(UserApprovalStatus.Pending),
+  },
+  {
+    key: 'status-mailpending',
+    name: 'status',
+    value: UserApprovalStatus.MailPending,
+    label: 'Email Pending',
   },
   {
     key: 'status-rejected',

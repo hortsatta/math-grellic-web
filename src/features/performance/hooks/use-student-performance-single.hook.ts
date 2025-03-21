@@ -11,7 +11,11 @@ type Result = {
 };
 
 export function useStudentPerformanceSingle(): Result {
-  const { data: student, isLoading, isRefetching } = useQuery(
+  const {
+    data: student,
+    isLoading,
+    isRefetching,
+  } = useQuery(
     getStudentPerformanceByCurrentStudentUser(
       {},
       {

@@ -71,6 +71,7 @@ export const TeacherStudentExamPerformanceResult = memo(function ({
         <StudentExamQuestionResult
           questionAnswers={questionAnswers}
           label={label}
+          labelHeading
         />
       ) : (
         <div className='w-full pt-4 text-center'>Nothing to show</div>
