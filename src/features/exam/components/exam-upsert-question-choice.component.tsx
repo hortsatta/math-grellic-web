@@ -4,8 +4,8 @@ import cx from 'classix';
 
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
-import { BaseControlledAdvancedRichTextEditor } from '#/base/components/base-advanced-rich-text-editor.component';
-import { BaseControlledRichTextOutput } from '#/base/components/base-rich-text-output.component';
+import { BaseAdvancedRichTextEditor } from '#/base/components/base-advanced-rich-text-editor.component';
+import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
 
 import type { ChangeEvent, ComponentProps } from 'react';
 import type {
@@ -39,7 +39,11 @@ export const ExamUpsertQuestionChoice = memo(function ({
   const setExActFocusedIndex = useBoundStore(
     (state) => state.setExActFocusedIndex,
   );
-  const { control } = useFormContext<ExamUpsertFormData>();
+  const {
+    control,
+    formState: { errors },
+    setValue,
+  } = useFormContext<ExamUpsertFormData>();
   const text = useWatch({
     control,
     name: `questions.${questionIndex}.choices.${index}.text`,
@@ -88,6 +92,19 @@ export const ExamUpsertQuestionChoice = memo(function ({
     [index, questionIndex, onUploadChange],
   );
 
+  const textErrorMessage = useMemo(
+    () => errors.questions?.[questionIndex]?.choices?.[index]?.text?.message,
+    [errors, questionIndex, index],
+  );
+
+  const handleTextChange = useCallback(
+    (value: string) => {
+      setValue(name as any, value);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
   const handleFocus = useCallback(() => {
     setExActFocusedIndex(focusedIndex);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -99,7 +116,7 @@ export const ExamUpsertQuestionChoice = memo(function ({
   }, []);
 
   return (
-    <div className='max-w-qcWrapperInput flex w-full items-start'>
+    <div className='flex w-full max-w-qcWrapperInput items-start'>
       <div className='flex h-12 items-center justify-center'>
         <BaseIconButton
           name='check-fat'
@@ -109,26 +126,27 @@ export const ExamUpsertQuestionChoice = memo(function ({
           {...iconButtonProps}
         />
       </div>
-      <div className='max-w-qcInput relative w-full'>
+      <div className='relative w-full max-w-qcInput'>
         {exActFocusedIndex === focusedIndex ? (
-          <BaseControlledAdvancedRichTextEditor
+          <BaseAdvancedRichTextEditor
             className='max-w-qcInput'
-            name={name}
             label={choiceLabel}
-            control={control}
+            initialValue={text}
+            value={text}
+            errorMessage={textErrorMessage}
+            disabled={disabled}
             imageData={imageData}
             imageInputProps={imageInputProps}
             close={handleCloseEditor}
-            disabled={disabled}
+            onChange={handleTextChange}
             small
           />
         ) : (
-          <BaseControlledRichTextOutput
-            name={name}
+          <BaseRichTextOutput
             keyPrefix={`${focusedIndex}-`}
             label={choiceLabel}
             text={text}
-            control={control}
+            errorMessage={textErrorMessage}
             disabled={disabled}
             onClick={handleFocus}
           />

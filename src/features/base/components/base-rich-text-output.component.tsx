@@ -143,15 +143,11 @@ export const BaseRichTextOutput = memo(
 
 export function BaseControlledRichTextOutput(props: ControlledProps) {
   const {
-    field: { ...moreFields },
+    field,
     fieldState: { error },
   } = useController(props);
 
   return (
-    <BaseRichTextOutput
-      {...props}
-      {...moreFields}
-      errorMessage={error?.message}
-    />
+    <BaseRichTextOutput {...props} {...field} errorMessage={error?.message} />
   );
 }

@@ -80,13 +80,18 @@ export const BaseAdvancedRichTextEditor = memo(function ({
 
   // If using a controlled field, clear content if current value is empty
   useEffect(() => {
+    if (!editor) return;
+
+    if (value !== editor.getHTML()) {
+      editor.commands.setContent(value || '');
+    }
+
     if (value?.trim().length) {
       return;
     }
 
     editor?.commands.clearContent();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  }, [value, editor]);
 
   return (
     <div className='w-full'>

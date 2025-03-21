@@ -6,8 +6,8 @@ import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';
-import { BaseControlledAdvancedRichTextEditor } from '#/base/components/base-advanced-rich-text-editor.component';
-import { BaseControlledRichTextOutput } from '#/base/components/base-rich-text-output.component';
+import { BaseAdvancedRichTextEditor } from '#/base/components/base-advanced-rich-text-editor.component';
+import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
 import { ExamUpsertQuestionChoiceList } from './exam-upsert-question-choice-list.component';
 
 import type { ChangeEvent, ComponentProps } from 'react';
@@ -42,7 +42,11 @@ export const ExamUpsertQuestion = memo(function ({
   const setExActFocusedIndex = useBoundStore(
     (state) => state.setExActFocusedIndex,
   );
-  const { control } = useFormContext<ExamUpsertFormData>();
+  const {
+    control,
+    formState: { errors },
+    setValue,
+  } = useFormContext<ExamUpsertFormData>();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const text = useWatch({ control, name: `questions.${index}.text` });
   const imageData = useWatch({ control, name: `questions.${index}.imageData` });
@@ -72,6 +76,19 @@ export const ExamUpsertQuestion = memo(function ({
       },
     }),
     [index, onUploadChange],
+  );
+
+  const textErrorMessage = useMemo(
+    () => errors.questions?.[index]?.text?.message,
+    [errors, index],
+  );
+
+  const handleTextChange = useCallback(
+    (value: string) => {
+      setValue(name as any, value);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   );
 
   const handleIsCollapsed = useCallback(() => {
@@ -129,28 +146,29 @@ export const ExamUpsertQuestion = memo(function ({
               onClick={handleIsCollapsed}
             />
           </div>
-          <div className='max-w-qcInput relative w-full'>
+          <div className='relative w-full max-w-qcInput'>
             {exActFocusedIndex === focusedIndex ? (
-              <BaseControlledAdvancedRichTextEditor
+              <BaseAdvancedRichTextEditor
                 className='max-w-qcInput'
                 label={`Question ${orderNumber}`}
-                name={name}
-                control={control}
+                initialValue={text}
+                value={text}
+                errorMessage={textErrorMessage}
+                disabled={disabled}
                 imageData={imageData}
                 imageInputProps={imageInputProps}
                 close={handleCloseEditor}
-                disabled={disabled}
+                onChange={handleTextChange}
               />
             ) : (
-              <BaseControlledRichTextOutput
+              <BaseRichTextOutput
                 className='!min-h-[60px]'
-                name={name}
                 keyPrefix={`${focusedIndex}-`}
                 label={`Question ${orderNumber}`}
                 text={text}
-                control={control}
-                onClick={handleFocus}
+                errorMessage={textErrorMessage}
                 disabled={disabled}
+                onClick={handleFocus}
               />
             )}
           </div>
