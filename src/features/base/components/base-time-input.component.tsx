@@ -134,7 +134,7 @@ export const BaseTimeInput = memo(
         />
         {!!showTimeSuffix && (
           <BaseButton
-            className='!absolute left-[90px] top-[25.2px] !font-body !text-base !text-accent'
+            className='!absolute left-[90px] top-[25.2px] !mt-0.5 rounded border border-primary-border-light bg-white !py-1 px-1.5 !font-body !text-sm !leading-none !text-accent'
             variant='link'
             onClick={handleSuffixChange}
           >

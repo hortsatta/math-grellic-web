@@ -163,23 +163,11 @@ const schema = z
             message: 'Question is invalid',
             path: [`questions.${index}.text`],
           }),
-        () =>
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'Question is invalid',
-            path: [`questions.${index}.text`],
-          }),
       );
 
       question.choices.forEach((choice, cIndex) => {
         stripHtml(
           choice.text || '',
-          () =>
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'Choice is invalid',
-              path: [`questions.${index}.choices.${cIndex}.text`],
-            }),
           () =>
             ctx.addIssue({
               code: z.ZodIssueCode.custom,

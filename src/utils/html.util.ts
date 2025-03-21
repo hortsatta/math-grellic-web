@@ -25,7 +25,6 @@ export const voidElements = [
 export function stripHtml(
   html: string,
   onEmpty?: () => void,
-  onInvalidQuestion?: () => void,
   onInvalidImage?: () => void,
 ): string {
   const { result } = stringStripHtml(html || '', {
@@ -43,13 +42,11 @@ export function stripHtml(
             if (isInlineMath) {
               value = tag.attributes.find((attr) => attr.name === 'value')
                 ?.value;
-
-              if (!value?.trim().length) {
-                onInvalidQuestion && onInvalidQuestion();
-              }
             }
 
-            rangesArr.push(deleteFrom || 0, deleteTo || undefined, value);
+            deleteFrom != null &&
+              deleteTo != null &&
+              rangesArr.push(deleteFrom, deleteTo, value);
             break;
           }
           case 'img': {
@@ -59,19 +56,27 @@ export function stripHtml(
               onInvalidImage && onInvalidImage();
             }
 
-            rangesArr.push(deleteFrom || 0, deleteTo || undefined, 'img');
+            deleteFrom != null &&
+              deleteTo != null &&
+              rangesArr.push(deleteFrom, deleteTo, 'img');
             break;
           }
           default:
-            rangesArr.push(deleteFrom || 0, deleteTo || undefined, insert);
+            deleteFrom != null &&
+              deleteTo != null &&
+              rangesArr.push(deleteFrom, deleteTo, insert);
             break;
         }
       } else {
         // default action which does nothing different from normal, non-callback operation
-        rangesArr.push(deleteFrom || 0, deleteTo || undefined, insert);
+        deleteFrom != null &&
+          deleteTo != null &&
+          rangesArr.push(deleteFrom, deleteTo, insert);
       }
     },
   });
+
+  console.log('result', result);
 
   if (!result.trim().length) {
     onEmpty && onEmpty();
