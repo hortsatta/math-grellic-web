@@ -4,7 +4,7 @@ import { useController } from 'react-hook-form';
 import DOMPurify from 'dompurify';
 import cx from 'classix';
 
-import { stripHtml } from '#/utils/html.util';
+import { stripHtml, voidElements } from '#/utils/html.util';
 
 import type { ComponentProps } from 'react';
 import type { UseControllerProps } from 'react-hook-form';
@@ -52,13 +52,14 @@ export const BaseRichTextOutput = memo(
       if (node.nodeType === Node.ELEMENT_NODE) {
         const tagName = node.tagName.toLowerCase();
 
-        // Handle <img> tags as void elements
-        if (tagName === 'img') {
+        // Handle void elements
+        if (voidElements.includes(tagName)) {
           const attributes: any = {};
           for (const { name, value } of node.attributes) {
             attributes[name] = value;
           }
-          return <img key={key} {...attributes} />;
+
+          return createElement(tagName, { key, ...attributes });
         }
 
         // Handle <span> elements with data-type="inline-math"

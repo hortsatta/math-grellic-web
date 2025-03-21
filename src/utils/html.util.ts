@@ -3,6 +3,25 @@ import { stripHtml as stringStripHtml } from 'string-strip-html';
 import isBase64 from 'validator/lib/isBase64';
 import isURL from 'validator/lib/isURL';
 
+export const voidElements = [
+  'br',
+  'img',
+  'input',
+  'hr',
+  'meta',
+  'link',
+  'area',
+  'base',
+  'col',
+  'command',
+  'embed',
+  'keygen',
+  'param',
+  'source',
+  'track',
+  'wbr',
+];
+
 export function stripHtml(
   html: string,
   onEmpty?: () => void,
