@@ -4,6 +4,10 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import cx from 'classix';
 
 import { options } from '#/utils/scrollbar.util';
+import {
+  superAdminBaseRoute,
+  superAdminRoutes,
+} from '#/app/routes/super-admin-routes';
 import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { UserRole } from '#/user/models/user.model';
@@ -68,9 +72,10 @@ export const CoreMobileNav = memo(function ({
         return `/${studentBaseRoute}`;
       case UserRole.Teacher:
         return `/${teacherBaseRoute}`;
-      default:
-        // TODO admin
-        return `/${teacherBaseRoute}`;
+      case UserRole.Admin:
+        return `/`;
+      case UserRole.SuperAdmin:
+        return `/${superAdminBaseRoute}`;
     }
   }, [role]);
 
@@ -80,9 +85,10 @@ export const CoreMobileNav = memo(function ({
         return `/${studentBaseRoute}/${studentRoutes.account.to}`;
       case UserRole.Teacher:
         return `/${teacherBaseRoute}/${teacherRoutes.account.to}`;
-      default:
-        // TODO admin
-        return `/${teacherBaseRoute}/${teacherRoutes.account.to}`;
+      case UserRole.Admin:
+        return `/`;
+      case UserRole.SuperAdmin:
+        return `/${superAdminBaseRoute}/${superAdminRoutes.account.to}`;
     }
   }, [role]);
 

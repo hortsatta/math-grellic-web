@@ -2,6 +2,10 @@ import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
+import {
+  superAdminBaseRoute,
+  superAdminPath,
+} from '#/app/routes/super-admin-routes';
 import { teacherBaseRoute, teacherPath } from '#/app/routes/teacher-routes';
 import { studentBaseRoute, studentPath } from '#/app/routes/student-routes';
 import { UserRole } from '#/user/models/user.model';
@@ -39,8 +43,9 @@ export const BaseScene = memo(function ({
     // TODO admin
     return (
       {
-        [teacherPath]: [UserRole.Teacher, teacherPath],
         [studentPath]: [UserRole.Student, studentPath],
+        [teacherPath]: [UserRole.Teacher, teacherPath],
+        [superAdminPath]: [UserRole.SuperAdmin, superAdminPath],
       }[path] || []
     );
   }, [pathname]);
@@ -56,9 +61,10 @@ export const BaseScene = memo(function ({
       // TODO admin route
       const to =
         {
-          [UserRole.Admin]: teacherBaseRoute,
-          [UserRole.Teacher]: teacherBaseRoute,
           [UserRole.Student]: studentBaseRoute,
+          [UserRole.Teacher]: teacherBaseRoute,
+          [UserRole.Admin]: teacherBaseRoute,
+          [UserRole.SuperAdmin]: superAdminBaseRoute,
         }[userRole] || '';
 
       navigate(`/${to}`, { replace: true });

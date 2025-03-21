@@ -14,3 +14,5 @@ export function generateFullName(
 export function formatPhoneNumber(phoneNumber: string) {
   return phoneNumber.replace(/^(.{4})(.{3})/, '$1-$2-');
 }
+
+export const ADMIN_NAME = 'Super Admin';

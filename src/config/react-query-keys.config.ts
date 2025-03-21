@@ -4,9 +4,15 @@ export const queryCoreKey = {
 
 export const queryUserKey = {
   currentUser: ['users', 'current-user'],
+  adminList: ['users', 'admin-list'],
+  adminSingle: ['users', 'admin-single'],
+  teacherList: ['users', 'teacher-list'],
+  teacherSingle: ['users', 'teacher-single'],
   studentList: ['users', 'student-list'],
   studentSingle: ['users', 'student-single'],
   studentAssignedTeacher: ['users', 'student-assigned-teacher'],
+  allAdminList: ['users', 'all-admin-list'],
+  allTeacherList: ['users', 'all-teacher-list'],
   allStudentList: ['users', 'all-student-list'],
   selectedStudentList: ['users', 'selected-student-list'],
 };

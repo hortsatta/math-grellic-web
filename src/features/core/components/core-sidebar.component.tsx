@@ -9,6 +9,7 @@ import { CoreNav } from './core-nav.component';
 
 import { generateDashboardPath } from '#/utils/path.util';
 import { homeNavItem } from '#/app/routes/static-routes';
+import { generateSuperAdminRouteLinks } from '#/app/routes/super-admin-routes';
 import { generateTeacherRouteLinks } from '#/app/routes/teacher-routes';
 import { generateStudentRouteLinks } from '#/app/routes/student-routes';
 import { UserRole } from '#/user/models/user.model';
@@ -49,12 +50,16 @@ export const CoreSidebar = memo(function ({
 
   // TODO specify student or teacher links
   const navLinks = useMemo(() => {
-    if (user?.role === UserRole.Teacher) {
-      return generateTeacherRouteLinks();
-    } else if (user?.role === UserRole.Student) {
-      return generateStudentRouteLinks();
-    } else if (user?.role === UserRole.Admin) {
-      // TODO admin links
+    switch (user?.role) {
+      case UserRole.Student:
+        return generateStudentRouteLinks();
+      case UserRole.Teacher:
+        return generateTeacherRouteLinks();
+      case UserRole.Admin:
+        // TODO admin links
+        return [];
+      case UserRole.SuperAdmin:
+        return generateSuperAdminRouteLinks();
     }
 
     return [];

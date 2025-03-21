@@ -7,12 +7,14 @@ import type {
 import type { ActivityCategoryCompletion } from '#/activity/models/activity.model';
 
 export enum UserApprovalStatus {
+  MailPending = 'mail-pending',
   Pending = 'pending',
   Approved = 'approved',
   Rejected = 'rejected',
 }
 
 export enum UserRole {
+  SuperAdmin = 'super-admin',
   Admin = 'admin',
   Teacher = 'teacher',
   Student = 'student',
@@ -26,13 +28,12 @@ export enum UserGender {
 export type User = Partial<AuditTrail> & {
   id: number;
   email: string;
-  supabaseUserId: string;
   publicId: string;
   role: UserRole;
   approvalStatus: UserApprovalStatus;
   approvalDate: Date | null;
   profileImageUrl?: string;
-  userAccount?: TeacherUserAccount | StudentUserAccount; // TODO AdminUserAccount
+  userAccount?: AdminUserAccount | TeacherUserAccount | StudentUserAccount;
 };
 
 type UserAccount = Partial<AuditTrail> & {
@@ -46,6 +47,13 @@ type UserAccount = Partial<AuditTrail> & {
   email?: string;
   publicId?: string;
   approvalStatus?: UserApprovalStatus;
+};
+
+export type AdminUserAccount = UserAccount & {
+  aboutMe?: string;
+  messengerLink?: string;
+  emails: string[];
+  teachers?: TeacherUserAccount[];
 };
 
 export type TeacherUserAccount = UserAccount & {

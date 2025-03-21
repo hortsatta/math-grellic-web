@@ -11,6 +11,7 @@ import { transformToActivityCategoryCompletion } from '#/activity/helpers/activi
 import { UserRole } from '../models/user.model';
 
 import type {
+  AdminUserAccount,
   StudentUserAccount,
   TeacherUserAccount,
   User,
@@ -25,7 +26,6 @@ export function transformToUser({
   id,
   createdAt,
   updatedAt,
-  supabaseUserId,
   publicId,
   role,
   email,
@@ -34,17 +34,24 @@ export function transformToUser({
   approvalDate,
   userAccount: userAccountData,
 }: any): User {
-  // TODO admin
-  const userAccount =
-    role === UserRole.Teacher
-      ? transformToTeacherUserAccount(userAccountData)
-      : transformToStudentUserAccount(userAccountData);
+  let userAccount = undefined;
+
+  switch (role) {
+    case UserRole.Student:
+      userAccount = transformToStudentUserAccount(userAccountData);
+      break;
+    case UserRole.Teacher:
+      userAccount = transformToTeacherUserAccount(userAccountData);
+      break;
+    case UserRole.Admin:
+      userAccount = transformToAdminUserAccount(userAccountData);
+      break;
+  }
 
   return {
     id,
     createdAt: dayjs(createdAt).toDate(),
     updatedAt: dayjs(updatedAt).toDate(),
-    supabaseUserId,
     publicId,
     role,
     email,
@@ -53,6 +60,38 @@ export function transformToUser({
     approvalDate: approvalDate ? dayjs(approvalDate).toDate() : null,
     userAccount,
   };
+}
+
+export function transformToAdminUserAccount({
+  id,
+  firstName,
+  lastName,
+  middleName,
+  birthDate,
+  phoneNumber,
+  gender,
+  aboutMe,
+  messengerLink,
+  emails,
+  user,
+}: any): AdminUserAccount {
+  const { email, publicId, approvalStatus } = user || {};
+
+  return {
+    id,
+    email,
+    publicId,
+    approvalStatus,
+    firstName,
+    lastName,
+    middleName,
+    birthDate: dayjs(birthDate).toDate(),
+    phoneNumber,
+    gender,
+    aboutMe,
+    messengerLink,
+    emails,
+  } as AdminUserAccount;
 }
 
 export function transformToTeacherUserAccount({
@@ -171,6 +210,34 @@ export function transformToStudentUserAccount({
     examCompletions: transformedExamCompletions,
     activityCategoryCompletions: transformedActivityCategoryCompletions,
   } as StudentUserAccount;
+}
+
+export function transformToAdminUserUpdateDto({
+  approvalStatus,
+  profileImageUrl,
+  firstName,
+  lastName,
+  middleName,
+  birthDate,
+  phoneNumber,
+  gender,
+  aboutMe,
+  messengerLink,
+  emails,
+}: any) {
+  return {
+    approvalStatus,
+    profileImageUrl,
+    firstName,
+    lastName,
+    middleName,
+    birthDate,
+    phoneNumber: phoneNumber.replace(/\D/g, ''),
+    gender,
+    aboutMe,
+    messengerLink,
+    emails,
+  };
 }
 
 export function transformToTeacherUserCreateDto({

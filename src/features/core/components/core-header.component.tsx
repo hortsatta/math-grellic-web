@@ -5,6 +5,11 @@ import cx from 'classix';
 
 import { UserRole } from '#/user/models/user.model';
 import {
+  generateSuperAdminRouteLinks,
+  superAdminBaseRoute,
+  superAdminRoutes,
+} from '#/app/routes/super-admin-routes';
+import {
   generateTeacherRouteLinks,
   teacherBaseRoute,
   teacherRoutes,
@@ -43,12 +48,16 @@ export const CoreHeader = memo(function ({
 
   // TODO specify student or teacher links
   const navLinks = useMemo(() => {
-    if (role === UserRole.Teacher) {
-      return generateTeacherRouteLinks();
-    } else if (role === UserRole.Student) {
-      return generateStudentRouteLinks();
-    } else if (role === UserRole.Admin) {
-      // TODO admin links
+    switch (role) {
+      case UserRole.Student:
+        return generateStudentRouteLinks();
+      case UserRole.Teacher:
+        return generateTeacherRouteLinks();
+      case UserRole.Admin:
+        // TODO admin
+        return [];
+      case UserRole.SuperAdmin:
+        return generateSuperAdminRouteLinks();
     }
 
     return [];
@@ -71,8 +80,11 @@ export const CoreHeader = memo(function ({
       case UserRole.Teacher:
         navigate(`/${teacherBaseRoute}/${teacherRoutes.account.to}`);
         break;
-      default:
-        // navigate(`/${teacherBaseRoute}/${teacherRoutes.account.to}`)
+      case UserRole.Admin:
+        // navigate(`/${teacherBaseRoute}/${teacherRoutes.account.to}`);
+        break;
+      case UserRole.SuperAdmin:
+        navigate(`/${superAdminBaseRoute}/${superAdminRoutes.account.to}`);
         break;
     }
   }, [role, navigate]);
