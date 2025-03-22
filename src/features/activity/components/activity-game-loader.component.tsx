@@ -11,9 +11,9 @@ type Props = ComponentProps<'div'> & {
 };
 
 const gameSrc = {
-  [ActivityGame.AngryBirds as string]: '/games/angry-birds/index.html',
-  [ActivityGame.Basketball as string]: '/games/basketball/index.html',
-  [ActivityGame.CarRacing as string]: '/games/car-racing/index.html',
+  [ActivityGame.AngryBirds as string]: '/games/furious-flyers/index.html',
+  [ActivityGame.Basketball as string]: '/games/hoop-balls/index.html',
+  [ActivityGame.CarRacing as string]: '/games/speedway/index.html',
   [ActivityGame.SlidePuzzle as string]: '/games/slide-puzzle/index.html',
 };
 
