@@ -14,18 +14,18 @@ import type {
 import type { User } from '../models/user.model';
 import type {
   StudentUserUpdateFormData,
-  UserRegisterFormData,
+  UserUpsertFormData,
 } from '../models/user-form-data.model';
 
 const BASE_URL = 'users/students';
 
 export function registerStudentUser(
   options?: Omit<
-    UseMutationOptions<User | null, Error, UserRegisterFormData, any>,
+    UseMutationOptions<User | null, Error, UserUpsertFormData, any>,
     'mutationFn'
   >,
 ) {
-  const mutationFn = async (data: UserRegisterFormData): Promise<any> => {
+  const mutationFn = async (data: UserUpsertFormData): Promise<any> => {
     const url = `${BASE_URL}/register`;
     const json = transformToStudentUserCreateDto(data);
 

@@ -1,10 +1,10 @@
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { BaseStaticScene } from '#/base/components/base-static-scene.component';
-import { useUserRegisterEmailConfirmation } from '../hooks/use-user-register-email-confirmation.hook';
+import { useUserRegisterEmailConfirm } from '../hooks/use-user-register-email-confirm.hook';
 import { UserRegisterEmailConfirmDone } from '../components/user-register-email-confirm-done.component';
 
-export function UserRegisterEmailConfirmationPage() {
-  const { loading, isConfirmed } = useUserRegisterEmailConfirmation();
+export function UserRegisterEmailConfirmPage() {
+  const { loading, isConfirmed } = useUserRegisterEmailConfirm();
 
   return (
     <BaseStaticScene id='user-register-email-confirmation'>

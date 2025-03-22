@@ -1,6 +1,6 @@
 import type { UserApprovalStatus, UserGender } from './user.model';
 
-export type UserRegisterFormData = {
+export type UserUpsertFormData = {
   email: string;
   password: string;
   confirmPassword: string;

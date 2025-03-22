@@ -14,14 +14,14 @@ import {
 } from '../api/teacher-user.api';
 
 import type { User } from '../models/user.model';
-import type { UserRegisterFormData } from '../models/user-form-data.model';
+import type { UserUpsertFormData } from '../models/user-form-data.model';
 
 type Result = {
   loading: boolean;
   isDone: boolean;
   setIsDone: (isDone: boolean) => void;
-  studentFormData: UserRegisterFormData | undefined;
-  editStudent: (data: UserRegisterFormData) => Promise<User>;
+  studentFormData: UserUpsertFormData | undefined;
+  editStudent: (data: UserUpsertFormData) => Promise<User>;
   deleteStudent: () => Promise<boolean>;
 };
 
@@ -80,7 +80,7 @@ export function useStudentUserEdit(id?: number): Result {
   );
 
   const editStudent = useCallback(
-    async (data: UserRegisterFormData) => {
+    async (data: UserUpsertFormData) => {
       const updatedStudent = await mutateEditStudent({
         studentId: +(id || 0),
         data,

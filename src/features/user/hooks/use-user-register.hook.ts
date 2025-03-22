@@ -6,13 +6,10 @@ import { registerTeacherUser } from '../api/teacher-user.api';
 import { registerStudentUser } from '../api/student-user.api';
 
 import type { User } from '../models/user.model';
-import type { UserRegisterFormData } from '../models/user-form-data.model';
+import type { UserUpsertFormData } from '../models/user-form-data.model';
 
 type Result = {
-  register: (
-    data: UserRegisterFormData,
-    role: UserRole,
-  ) => Promise<User | null>;
+  register: (data: UserUpsertFormData, role: UserRole) => Promise<User | null>;
 };
 
 export function useUserRegister(): Result {
@@ -24,7 +21,7 @@ export function useUserRegister(): Result {
   );
 
   const register = useCallback(
-    async (data: UserRegisterFormData, role: UserRole) => {
+    async (data: UserUpsertFormData, role: UserRole) => {
       try {
         let newUser = null;
         if (role === UserRole.Teacher) {

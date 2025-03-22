@@ -76,8 +76,6 @@ export function stripHtml(
     },
   });
 
-  console.log('result', result);
-
   if (!result.trim().length) {
     onEmpty && onEmpty();
   }

@@ -21,17 +21,14 @@ import { UserApprovalStatus, UserGender, UserRole } from '../models/user.model';
 
 import type { FormProps, SelectOption } from '#/base/models/base.model';
 import type { User } from '../models/user.model';
-import type { UserRegisterFormData } from '../models/user-form-data.model';
+import type { UserUpsertFormData } from '../models/user-form-data.model';
 
 type Props = Omit<
-  FormProps<'div', UserRegisterFormData, Promise<User | null>>,
+  FormProps<'div', UserUpsertFormData, Promise<User | null>>,
   'onSubmit'
 > & {
   userRole: UserRole;
-  onSubmit: (
-    data: UserRegisterFormData,
-    role: UserRole,
-  ) => Promise<User | null>;
+  onSubmit: (data: UserUpsertFormData, role: UserRole) => Promise<User | null>;
 };
 
 const INPUT_CLASSNAME = '!max-w-input md:max-lg:!max-w-full';
@@ -91,7 +88,7 @@ const schema = z
     path: ['confirmPassword'],
   });
 
-const defaultValues: Partial<UserRegisterFormData> = {
+const defaultValues: Partial<UserUpsertFormData> = {
   email: '',
   password: '',
   confirmPassword: '',
@@ -118,7 +115,7 @@ export const UserRegisterForm = memo(function ({
     formState: { isSubmitting },
     handleSubmit,
     reset,
-  } = useForm<UserRegisterFormData>({
+  } = useForm<UserUpsertFormData>({
     shouldFocusError: false,
     defaultValues,
     resolver: zodResolver(schema),
@@ -135,7 +132,7 @@ export const UserRegisterForm = memo(function ({
   const handleReset = useCallback(() => reset(), [reset]);
 
   const submitForm = useCallback(
-    async (data: UserRegisterFormData) => {
+    async (data: UserUpsertFormData) => {
       try {
         await onSubmit(data, userRole);
         onDone && onDone(true);

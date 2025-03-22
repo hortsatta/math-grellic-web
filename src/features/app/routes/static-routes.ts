@@ -28,7 +28,10 @@ export const staticRoutes = {
     name: 'register',
     to: 'user/register',
     label: 'Register',
-    confirmTo: 'confirm',
+    confirm: {
+      to: 'confirm',
+      lastStepTo: 'last-step',
+    },
   },
 };
 

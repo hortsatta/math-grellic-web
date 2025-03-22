@@ -97,7 +97,7 @@ export const BaseAdvancedRichTextEditor = memo(function ({
     <div className='w-full'>
       <div
         className={cx(
-          'w-full rounded-md border-2 border-accent/40 bg-white',
+          'w-full rounded-md border-2 border-accent/40 bg-white transition-all focus-within:!border-primary-focus focus-within:!ring-1 focus-within:!ring-primary-focus',
           !!errorMessage && '!border-red-500/60',
           disabled && '!bg-backdrop-gray',
           className,

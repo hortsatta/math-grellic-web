@@ -27,7 +27,7 @@ const filterOptions = [
     key: 'status-approved',
     name: 'status',
     value: UserApprovalStatus.Approved,
-    label: 'Enrolled',
+    label: 'Registered',
   },
   {
     key: 'status-mailpending',

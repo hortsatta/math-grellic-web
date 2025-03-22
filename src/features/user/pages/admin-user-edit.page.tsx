@@ -2,27 +2,24 @@ import { useCallback, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import {
+  superAdminBaseRoute,
+  superAdminRoutes,
+} from '#/app/routes/super-admin-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseModal } from '#/base/components/base-modal.component';
-import { useStudentUserEdit } from '../hooks/use-student-user-edit.hook';
-import { StudentUserUpsertForm } from '../components/student-user-upsert-form.component';
+import { useAdminUserEdit } from '../hooks/use-admin-user-edit.hook';
+import { AdminUserUpsertForm } from '../components/admin-user-upsert-form.component';
 
-const STUDENT_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
+const ADMIN_LIST_PATH = `/${superAdminBaseRoute}/${superAdminRoutes.admin.to}`;
 
-export function StudentUserEditPage() {
+export function AdminUserEditPage() {
   const { id } = useParams();
 
-  const {
-    loading,
-    isDone,
-    setIsDone,
-    studentFormData,
-    editStudent,
-    deleteStudent,
-  } = useStudentUserEdit(+(id || 0));
+  const { loading, isDone, setIsDone, adminFormData, editAdmin, deleteAdmin } =
+    useAdminUserEdit(+(id || 0));
 
   const data: any = useLoaderData();
   const navigate = useNavigate();
@@ -35,29 +32,29 @@ export function StudentUserEditPage() {
     [loading],
   );
 
-  const handleDeleteStudent = useCallback(async () => {
-    if (!id || !studentFormData) {
+  const handleDeleteAdmin = useCallback(async () => {
+    if (!id || !adminFormData) {
       return;
     }
 
     try {
-      await deleteStudent();
-      toast.success(`Student deleted`);
-      navigate(STUDENT_LIST_PATH);
+      await deleteAdmin();
+      toast.success(`Admin deleted`);
+      navigate(ADMIN_LIST_PATH);
     } catch (error: any) {
       toast.error(error.message);
     }
-  }, [id, studentFormData, deleteStudent, navigate]);
+  }, [id, adminFormData, deleteAdmin, navigate]);
 
   return (
     <>
       <BaseDataSuspense resolve={data?.main}>
-        <StudentUserUpsertForm
+        <AdminUserUpsertForm
           loading={loading}
           isDone={isDone}
-          formData={studentFormData}
+          formData={adminFormData}
           onDone={setIsDone}
-          onSubmit={editStudent}
+          onSubmit={editAdmin}
           onDelete={handleSetModal(true)}
         />
       </BaseDataSuspense>
@@ -65,14 +62,14 @@ export function StudentUserEditPage() {
         <div>
           <div className='mb-4 flex items-center gap-2'>
             <BaseIcon name='trash' size={28} />
-            <span>Delete student?</span>
+            <span>Delete admin?</span>
           </div>
           <BaseButton
             className='!w-full'
             loading={loading}
-            onClick={handleDeleteStudent}
+            onClick={handleDeleteAdmin}
           >
-            Delete Student
+            Delete Admin
           </BaseButton>
         </div>
       </BaseModal>

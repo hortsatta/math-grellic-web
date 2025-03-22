@@ -10,7 +10,7 @@ type Result = {
   confirmUserEmail: (token: string) => void;
 };
 
-export function useUserRegisterEmailConfirmation(): Result {
+export function useUserRegisterEmailConfirm(): Result {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);

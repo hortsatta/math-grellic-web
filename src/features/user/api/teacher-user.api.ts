@@ -18,7 +18,7 @@ import type { PaginatedQueryData } from '#/core/models/core.model';
 import type { StudentUserAccount, User } from '../models/user.model';
 import type {
   TeacherUserUpdateFormData,
-  UserRegisterFormData,
+  UserUpsertFormData,
 } from '../models/user-form-data.model';
 
 const BASE_URL = 'users';
@@ -26,11 +26,11 @@ const TEACHER_BASE_URL = `${BASE_URL}/teachers`;
 
 export function registerTeacherUser(
   options?: Omit<
-    UseMutationOptions<User | null, Error, UserRegisterFormData, any>,
+    UseMutationOptions<User | null, Error, UserUpsertFormData, any>,
     'mutationFn'
   >,
 ) {
-  const mutationFn = async (data: UserRegisterFormData): Promise<any> => {
+  const mutationFn = async (data: UserUpsertFormData): Promise<any> => {
     const url = `${TEACHER_BASE_URL}/register`;
     const json = transformToTeacherUserCreateDto(data);
 
@@ -213,7 +213,7 @@ export function editStudent(
     UseMutationOptions<
       User,
       Error,
-      { studentId: number; data: UserRegisterFormData },
+      { studentId: number; data: UserUpsertFormData },
       any
     >,
     'mutationFn'
@@ -224,7 +224,7 @@ export function editStudent(
     data,
   }: {
     studentId: number;
-    data: UserRegisterFormData;
+    data: UserUpsertFormData;
   }): Promise<any> => {
     const url = `${TEACHER_BASE_URL}/students/${studentId}`;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

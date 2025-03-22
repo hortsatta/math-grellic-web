@@ -19,7 +19,7 @@ import { AuthProtectedRoute } from '#/auth/components/auth-protected-route.compo
 import { HomePage } from '#/static/pages/home.page';
 import { AboutPage } from '#/static/pages/about.page';
 import { UserRegisterPage } from '#/user/pages/user-register.page';
-import { UserRegisterEmailConfirmationPage } from '#/user/pages/user-register-email-confirmation.page';
+import { UserRegisterEmailConfirmPage } from '#/user/pages/user-register-email-confirm.page';
 
 import { dashboardRouteHandle } from '#/dashboard/route/dashboard-handle.route';
 import { SuperAdminDashboardPage } from '#/dashboard/pages/super-admin-dashboard.page';
@@ -27,7 +27,10 @@ import { TeacherDashboardPage } from '#/dashboard/pages/teacher-dashboard.page';
 import { StudentDashboardPage } from '#/dashboard/pages/student-dashboard.page';
 
 import { adminUserRouteHandle } from '#/user/route/admin-user-handle';
-import { getPaginatedAdminUserLoader } from '#/user/route/admin-user-loader';
+import {
+  getAdminUserByIdLoader,
+  getPaginatedAdminUserLoader,
+} from '#/user/route/admin-user-loader';
 import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.route';
 import { teacherExamRouteHandle } from '#/exam/route/teacher-exam-handle.route';
 import { teacherActivityRouteHandle } from '#/activity/route/teacher-activity-handle.route';
@@ -86,6 +89,9 @@ import {
 } from '#/user/route/student-user-loader';
 import { SuperAdminCurrentUserSinglePage } from '#/user/pages/super-admin-current-user-single.page';
 import { AdminUserListPage } from '#/user/pages/admin-user-list.page';
+import { AdminUserSinglePage } from '#/user/pages/admin-user-single.page';
+import { AdminUserCreatePage } from '#/user/pages/admin-user-create.page';
+import { AdminUserEditPage } from '#/user/pages/admin-user-edit.page';
 import { TeacherCurrentUserSinglePage } from '#/user/pages/teacher-current-user-single.page';
 import { TeacherUserAccountEditPage } from '#/user/pages/teacher-current-user-edit.page';
 import { StudentUserAccountEditPage } from '#/user/pages/student-current-user-edit.page';
@@ -156,10 +162,10 @@ const rootRoutes = createRoutesFromElements(
       />
       <Route path={staticRoutes.userRegister.to} element={<Outlet />}>
         <Route index element={<UserRegisterPage />} />
-        <Route
-          path={staticRoutes.userRegister.confirmTo}
-          element={<UserRegisterEmailConfirmationPage />}
-        />
+        <Route path={staticRoutes.userRegister.confirm.to} element={<Outlet />}>
+          <Route index element={<UserRegisterEmailConfirmPage />} />
+          {/* TODO user register by teacher, admin, or super admin (without password), set password here */}
+        </Route>
       </Route>
       <Route
         path='*'
@@ -200,10 +206,24 @@ const rootRoutes = createRoutesFromElements(
           loader={getPaginatedAdminUserLoader(queryClient)}
         />
         <Route path=':id' element={<Outlet />}>
-          {/* TODO admin single page */}
-          {/* TODO admin edit page */}
+          <Route
+            index
+            element={<AdminUserSinglePage />}
+            handle={adminUserRouteHandle.single}
+            loader={getAdminUserByIdLoader(queryClient)}
+          />
+          <Route
+            path={superAdminRoutes.admin.editTo}
+            element={<AdminUserEditPage />}
+            handle={adminUserRouteHandle.edit}
+            loader={getAdminUserByIdLoader(queryClient)}
+          />
         </Route>
-        {/* TODO admin create page */}
+        <Route
+          path={superAdminRoutes.admin.createTo}
+          element={<AdminUserCreatePage />}
+          handle={adminUserRouteHandle.create}
+        />
       </Route>
       <Route
         path='*'

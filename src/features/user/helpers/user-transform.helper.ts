@@ -19,7 +19,7 @@ import type {
 import type {
   StudentUserUpdateFormData,
   TeacherUserUpdateFormData,
-  UserRegisterFormData,
+  UserUpsertFormData,
 } from '../models/user-form-data.model';
 
 export function transformToUser({
@@ -318,6 +318,34 @@ export function transformToTeacherUserUpdateDto({
   };
 }
 
+export function transformToAdminUserCreateDto({
+  email,
+  approvalStatus,
+  profileImageUrl,
+  firstName,
+  lastName,
+  middleName,
+  birthDate,
+  phoneNumber,
+  gender,
+  aboutMe,
+  emails,
+}: any) {
+  return {
+    email,
+    approvalStatus,
+    profileImageUrl,
+    firstName,
+    lastName,
+    middleName,
+    birthDate,
+    phoneNumber,
+    gender,
+    aboutMe,
+    emails,
+  };
+}
+
 export function transformToStudentUserCreateDto({
   email,
   password,
@@ -386,13 +414,15 @@ export function transformToUserRegisterFormData({
   teacherId,
   email,
   approvalStatus,
-}: any): UserRegisterFormData {
+}: any): UserUpsertFormData {
   return {
     email,
     firstName,
     lastName,
     birthDate,
-    phoneNumber,
+    phoneNumber: phoneNumber?.length
+      ? phoneNumber?.slice(1, phoneNumber.length)
+      : undefined,
     gender,
     middleName,
     teacherId,

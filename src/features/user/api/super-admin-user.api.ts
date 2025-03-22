@@ -3,6 +3,7 @@ import { generateApiError } from '#/utils/api.util';
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import {
+  transformToAdminUserCreateDto,
   transformToAdminUserUpdateDto,
   transformToUser,
 } from '../helpers/user-transform.helper';
@@ -18,7 +19,7 @@ import type {
   User,
   UserApprovalStatus,
 } from '../models/user.model';
-import type { UserRegisterFormData } from '../models/user-form-data.model';
+import type { UserUpsertFormData } from '../models/user-form-data.model';
 
 const BASE_URL = 'users';
 const ADMIN_URL = 'admins';
@@ -165,12 +166,34 @@ export function getAdminByIdAndCurrentSuperAdminUser(
   };
 }
 
+export function registerAdminByCurrentSuperAdminUser(
+  options?: Omit<
+    UseMutationOptions<User | null, Error, UserUpsertFormData, any>,
+    'mutationFn'
+  >,
+) {
+  const mutationFn = async (data: UserUpsertFormData): Promise<any> => {
+    const url = `${SUPER_ADMIN_BASE_URL}/${ADMIN_URL}/register`;
+    const json = transformToAdminUserCreateDto(data);
+
+    try {
+      const user = await kyInstance.post(url, { json }).json();
+      return transformToUser(user);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return { mutationFn, ...options };
+}
+
 export function editAdmin(
   options?: Omit<
     UseMutationOptions<
       User,
       Error,
-      { adminId: number; data: UserRegisterFormData },
+      { adminId: number; data: UserUpsertFormData },
       any
     >,
     'mutationFn'
@@ -181,7 +204,7 @@ export function editAdmin(
     data,
   }: {
     adminId: number;
-    data: UserRegisterFormData;
+    data: UserUpsertFormData;
   }): Promise<any> => {
     const url = `${SUPER_ADMIN_BASE_URL}/${ADMIN_URL}/${adminId}`;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

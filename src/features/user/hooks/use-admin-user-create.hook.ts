@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import { queryClient } from '#/config/react-query-client.config';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
-import { registerStudentUser } from '../api/student-user.api';
+import { registerAdminByCurrentSuperAdminUser } from '../api/super-admin-user.api';
 
 import type { User } from '../models/user.model';
 import type { UserUpsertFormData } from '../models/user-form-data.model';
@@ -15,15 +15,15 @@ type Result = {
   register: (data: UserUpsertFormData) => Promise<User | null>;
 };
 
-export function useStudentUserCreate(): Result {
+export function useAdminUserCreate(): Result {
   const user = useBoundStore((state) => state.user);
   const [isDone, setIsDone] = useState(false);
 
   const { mutateAsync } = useMutation(
-    registerStudentUser({
+    registerAdminByCurrentSuperAdminUser({
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: queryUserKey.studentList,
+          queryKey: queryUserKey.adminList,
         });
       },
     }),
