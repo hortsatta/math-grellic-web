@@ -3,8 +3,7 @@ import { generateApiError } from '#/utils/api.util';
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import {
-  transformToAdminUserCreateDto,
-  transformToAdminUserUpdateDto,
+  transformToAdminUserUpsertDtoBySuperAdmin,
   transformToUser,
 } from '../helpers/user-transform.helper';
 
@@ -174,7 +173,7 @@ export function registerAdminByCurrentSuperAdminUser(
 ) {
   const mutationFn = async (data: UserUpsertFormData): Promise<any> => {
     const url = `${SUPER_ADMIN_BASE_URL}/${ADMIN_URL}/register`;
-    const json = transformToAdminUserCreateDto(data);
+    const json = transformToAdminUserUpsertDtoBySuperAdmin(data);
 
     try {
       const user = await kyInstance.post(url, { json }).json();
@@ -209,7 +208,7 @@ export function editAdmin(
     const url = `${SUPER_ADMIN_BASE_URL}/${ADMIN_URL}/${adminId}`;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { email, password, confirmPassword, ...moreData } = data;
-    const json = transformToAdminUserUpdateDto(moreData);
+    const json = transformToAdminUserUpsertDtoBySuperAdmin(moreData, true);
 
     try {
       const user = await kyInstance.patch(url, { json }).json();

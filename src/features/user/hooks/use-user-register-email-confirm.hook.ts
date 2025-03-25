@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 
-import { confirmUserRegisterEmail } from '../api/user.api';
+import { confirmUserRegistrationEmail } from '../api/user.api';
 
 type Result = {
   loading: boolean;
@@ -16,7 +16,7 @@ export function useUserRegisterEmailConfirm(): Result {
   const [loading, setLoading] = useState(true);
   const [isConfirmed, setIsConfirmed] = useState<boolean | null>(null);
 
-  const { mutateAsync } = useMutation(confirmUserRegisterEmail());
+  const { mutateAsync } = useMutation(confirmUserRegistrationEmail());
 
   const confirmUserEmail = useCallback(
     async (token: string) => {

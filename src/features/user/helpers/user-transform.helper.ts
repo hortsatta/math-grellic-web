@@ -212,7 +212,40 @@ export function transformToStudentUserAccount({
   } as StudentUserAccount;
 }
 
-export function transformToAdminUserUpdateDto({
+export function transformToAdminUserUpsertDtoBySuperAdmin(
+  {
+    email,
+    approvalStatus,
+    profileImageUrl,
+    firstName,
+    lastName,
+    middleName,
+    birthDate,
+    phoneNumber,
+    gender,
+  }: any,
+  isEdit?: boolean,
+) {
+  const dto = {
+    approvalStatus,
+    profileImageUrl,
+    firstName,
+    lastName,
+    middleName,
+    birthDate,
+    phoneNumber: phoneNumber.replace(/\D/g, ''),
+    gender,
+  };
+
+  return isEdit
+    ? dto
+    : {
+        ...dto,
+        email,
+      };
+}
+
+export function transformToAdminUserUpsertDto({
   approvalStatus,
   profileImageUrl,
   firstName,
@@ -314,34 +347,6 @@ export function transformToTeacherUserUpdateDto({
     website,
     socialMediaLinks,
     messengerLink,
-    emails,
-  };
-}
-
-export function transformToAdminUserCreateDto({
-  email,
-  approvalStatus,
-  profileImageUrl,
-  firstName,
-  lastName,
-  middleName,
-  birthDate,
-  phoneNumber,
-  gender,
-  aboutMe,
-  emails,
-}: any) {
-  return {
-    email,
-    approvalStatus,
-    profileImageUrl,
-    firstName,
-    lastName,
-    middleName,
-    birthDate,
-    phoneNumber,
-    gender,
-    aboutMe,
     emails,
   };
 }

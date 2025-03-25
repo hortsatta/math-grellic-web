@@ -20,6 +20,7 @@ import { HomePage } from '#/static/pages/home.page';
 import { AboutPage } from '#/static/pages/about.page';
 import { UserRegisterPage } from '#/user/pages/user-register.page';
 import { UserRegisterEmailConfirmPage } from '#/user/pages/user-register-email-confirm.page';
+import { UserRegisterEmailConfirmLastStepPage } from '#/user/pages/user-register-email-confirm-last-step.page';
 
 import { dashboardRouteHandle } from '#/dashboard/route/dashboard-handle.route';
 import { SuperAdminDashboardPage } from '#/dashboard/pages/super-admin-dashboard.page';
@@ -164,7 +165,10 @@ const rootRoutes = createRoutesFromElements(
         <Route index element={<UserRegisterPage />} />
         <Route path={staticRoutes.userRegister.confirm.to} element={<Outlet />}>
           <Route index element={<UserRegisterEmailConfirmPage />} />
-          {/* TODO user register by teacher, admin, or super admin (without password), set password here */}
+          <Route
+            path={staticRoutes.userRegister.confirm.lastStepTo}
+            element={<UserRegisterEmailConfirmLastStepPage />}
+          />
         </Route>
       </Route>
       <Route

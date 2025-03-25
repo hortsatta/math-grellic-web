@@ -135,7 +135,11 @@ export const AdminUserUpsertForm = memo(function ({
         const targetData = approvalStatus ? { ...data, approvalStatus } : data;
         await onSubmit(targetData);
 
-        toast.success(`Admin ${isEdit ? 'Updated' : 'Registered'}`);
+        toast.success(
+          isEdit
+            ? 'Admin updated'
+            : 'Admin registered. A confirmation email has been sent',
+        );
 
         onDone && onDone(true);
         navigate(ADMIN_LIST_PATH);

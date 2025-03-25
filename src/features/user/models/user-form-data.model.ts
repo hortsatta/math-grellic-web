@@ -14,6 +14,12 @@ export type UserUpsertFormData = {
   approvalStatus?: UserApprovalStatus;
 };
 
+export type UserRegisterLastStepFormData = {
+  token: string;
+  password: string;
+  confirmPassword: string;
+};
+
 export type TeacherUserUpdateFormData = {
   phoneNumber: string;
   aboutMe: string;
