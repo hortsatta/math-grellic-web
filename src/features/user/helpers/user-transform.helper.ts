@@ -215,7 +215,6 @@ export function transformToStudentUserAccount({
 export function transformToAdminUserUpsertDtoBySuperAdmin(
   {
     email,
-    approvalStatus,
     profileImageUrl,
     firstName,
     lastName,
@@ -227,7 +226,6 @@ export function transformToAdminUserUpsertDtoBySuperAdmin(
   isEdit?: boolean,
 ) {
   const dto = {
-    approvalStatus,
     profileImageUrl,
     firstName,
     lastName,
@@ -246,7 +244,6 @@ export function transformToAdminUserUpsertDtoBySuperAdmin(
 }
 
 export function transformToAdminUserUpsertDto({
-  approvalStatus,
   profileImageUrl,
   firstName,
   lastName,
@@ -259,7 +256,6 @@ export function transformToAdminUserUpsertDto({
   emails,
 }: any) {
   return {
-    approvalStatus,
     profileImageUrl,
     firstName,
     lastName,
@@ -276,7 +272,6 @@ export function transformToAdminUserUpsertDto({
 export function transformToTeacherUserCreateDto({
   email,
   password,
-  approvalStatus,
   profileImageUrl,
   firstName,
   lastName,
@@ -295,7 +290,6 @@ export function transformToTeacherUserCreateDto({
   return {
     email,
     password,
-    approvalStatus,
     profileImageUrl,
     firstName,
     lastName,
@@ -314,7 +308,6 @@ export function transformToTeacherUserCreateDto({
 }
 
 export function transformToTeacherUserUpdateDto({
-  approvalStatus,
   profileImageUrl,
   firstName,
   lastName,
@@ -332,7 +325,6 @@ export function transformToTeacherUserUpdateDto({
   emails,
 }: any) {
   return {
-    approvalStatus,
     profileImageUrl,
     firstName,
     lastName,
@@ -354,7 +346,6 @@ export function transformToTeacherUserUpdateDto({
 export function transformToStudentUserCreateDto({
   email,
   password,
-  approvalStatus,
   profileImageUrl,
   firstName,
   lastName,
@@ -368,7 +359,6 @@ export function transformToStudentUserCreateDto({
   return {
     email,
     password,
-    approvalStatus,
     profileImageUrl,
     firstName,
     lastName,
@@ -382,7 +372,6 @@ export function transformToStudentUserCreateDto({
 }
 
 export function transformToStudentUserUpdateDto({
-  approvalStatus,
   profileImageUrl,
   firstName,
   lastName,
@@ -395,7 +384,6 @@ export function transformToStudentUserUpdateDto({
   teacherId,
 }: any) {
   return {
-    approvalStatus,
     profileImageUrl,
     firstName,
     lastName,
@@ -418,7 +406,6 @@ export function transformToUserRegisterFormData({
   gender,
   teacherId,
   email,
-  approvalStatus,
 }: any): UserUpsertFormData {
   return {
     email,
@@ -431,7 +418,6 @@ export function transformToUserRegisterFormData({
     gender,
     middleName,
     teacherId,
-    approvalStatus,
     password: 'xxxxxxxxxxxx',
     confirmPassword: 'xxxxxxxxxxxx',
   };

@@ -36,7 +36,10 @@ export function useStudentUserEdit(id?: number): Result {
             queryKey: queryUserKey.studentList,
           }),
           queryClient.invalidateQueries({
-            queryKey: [...queryUserKey.studentSingle, { id: data?.id }],
+            queryKey: [
+              ...queryUserKey.studentSingle,
+              { id: data?.userAccount?.id },
+            ],
           }),
         ]),
     }),

@@ -14,7 +14,6 @@ import {
   superAdminRoutes,
 } from '#/app/routes/super-admin-routes';
 import { BaseButton } from '#/base/components/base-button.components';
-import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
 import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
@@ -182,35 +181,6 @@ export const AdminUserUpsertForm = memo(function ({
                 </BaseButton>
                 {isEdit && (
                   <BaseDropdownMenu disabled={loading}>
-                    {editApprovalStatus !== UserApprovalStatus.Rejected && (
-                      <>
-                        <Menu.Item
-                          as={BaseDropdownButton}
-                          iconName='trash'
-                          onClick={handleSubmit(
-                            (data) =>
-                              submitForm(data, UserApprovalStatus.Pending),
-                            handleSubmitError,
-                          )}
-                          disabled={loading}
-                        >
-                          Save as Pending
-                        </Menu.Item>
-                        <Menu.Item
-                          as={BaseDropdownButton}
-                          iconName='trash'
-                          onClick={handleSubmit(
-                            (data) =>
-                              submitForm(data, UserApprovalStatus.Rejected),
-                            handleSubmitError,
-                          )}
-                          disabled={loading}
-                        >
-                          Save as Rejected
-                        </Menu.Item>
-                        <BaseDivider />
-                      </>
-                    )}
                     <Menu.Item
                       as={BaseDropdownButton}
                       className='text-red-500'
@@ -218,7 +188,7 @@ export const AdminUserUpsertForm = memo(function ({
                       onClick={onDelete}
                       disabled={loading}
                     >
-                      Delete
+                      Delete Admin
                     </Menu.Item>
                   </BaseDropdownMenu>
                 )}

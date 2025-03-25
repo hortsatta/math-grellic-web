@@ -36,7 +36,10 @@ export function useAdminUserEdit(id?: number): Result {
             queryKey: queryUserKey.adminList,
           }),
           queryClient.invalidateQueries({
-            queryKey: [...queryUserKey.adminSingle, { id: data?.id }],
+            queryKey: [
+              ...queryUserKey.adminSingle,
+              { id: data?.userAccount?.id },
+            ],
           }),
         ]),
     }),

@@ -11,7 +11,6 @@ import cx from 'classix';
 import { getErrorMessage } from '#/utils/string.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseButton } from '#/base/components/base-button.components';
-import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
@@ -141,7 +140,11 @@ export const StudentUserUpsertForm = memo(function ({
         const targetData = approvalStatus ? { ...data, approvalStatus } : data;
         await onSubmit(targetData);
 
-        toast.success(`Student ${isEdit ? 'Updated' : 'Enrolled'}`);
+        toast.success(
+          isEdit
+            ? 'Student updated'
+            : 'Student registered. A confirmation email has been sent',
+        );
 
         onDone && onDone(true);
         navigate(STUDENT_LIST_PATH);
@@ -182,74 +185,25 @@ export const StudentUserUpsertForm = memo(function ({
                 >
                   {publishButtonLabel}
                 </BaseButton>
-                <BaseDropdownMenu disabled={loading}>
-                  {isEdit ? (
-                    <>
-                      {editApprovalStatus !== UserApprovalStatus.Rejected && (
-                        <>
-                          <Menu.Item
-                            as={BaseDropdownButton}
-                            iconName='trash'
-                            onClick={handleSubmit(
-                              (data) =>
-                                submitForm(data, UserApprovalStatus.Pending),
-                              handleSubmitError,
-                            )}
-                            disabled={loading}
-                          >
-                            Save as Pending
-                          </Menu.Item>
-                          <Menu.Item
-                            as={BaseDropdownButton}
-                            iconName='trash'
-                            onClick={handleSubmit(
-                              (data) =>
-                                submitForm(data, UserApprovalStatus.Rejected),
-                              handleSubmitError,
-                            )}
-                            disabled={loading}
-                          >
-                            Save as Rejected
-                          </Menu.Item>
-                          <BaseDivider />
-                        </>
-                      )}
-                      <Menu.Item
-                        as={BaseDropdownButton}
-                        className='text-red-500'
-                        iconName='trash'
-                        onClick={onDelete}
-                        disabled={loading}
-                      >
-                        Delete
-                      </Menu.Item>
-                    </>
-                  ) : (
-                    // TODO teacher create will always register student as pending
-                    // and wait for student email confirmation and password creation, no further teacher interaction
+                {isEdit && (
+                  <BaseDropdownMenu disabled={loading}>
                     <Menu.Item
                       as={BaseDropdownButton}
-                      iconName='share-fat'
-                      onClick={handleSubmit((data) =>
-                        submitForm(data, UserApprovalStatus.Pending),
-                      )}
+                      className='text-red-500'
+                      iconName='trash'
+                      onClick={onDelete}
                       disabled={loading}
                     >
-                      Register as Pending
+                      Delete Student
                     </Menu.Item>
-                  )}
-                </BaseDropdownMenu>
+                  </BaseDropdownMenu>
+                )}
               </div>
             }
           >
             <BaseStepperStep label='Student Info'>
-              <StudentUserUpsertFormStep1 disabled={loading} />
+              <StudentUserUpsertFormStep1 isEdit={isEdit} disabled={loading} />
             </BaseStepperStep>
-            {/* {!isEdit && (
-              <BaseStepperStep label='Student Credentials'>
-                <StudentUserUpsertFormStep2 disabled={loading} />
-              </BaseStepperStep>
-            )} */}
           </BaseStepper>
         </form>
       </FormProvider>

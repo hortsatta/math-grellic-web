@@ -78,7 +78,6 @@ export function StudentUserListPage() {
     handleStudentDetails,
     handleStudentEdit,
     setStudentApprovalStatus,
-    deleteStudent,
   } = useStudentUserList();
 
   const {
@@ -130,19 +129,19 @@ export function StudentUserListPage() {
     [currentStudent, setStudentApprovalStatus, handleOpenDetails],
   );
 
-  const handleDelete = useCallback(() => {
+  const handleEdit = useCallback(() => {
     if (!currentStudent) {
       return;
     }
 
     try {
-      deleteStudent(currentStudent.id);
+      handleStudentEdit(currentStudent.id);
       handleOpenDetails(false)();
       pendingListRef?.current?.handleRefresh();
     } catch (error: any) {
       toast.error(error.message);
     }
-  }, [currentStudent, deleteStudent, handleOpenDetails]);
+  }, [currentStudent, handleStudentEdit, handleOpenDetails]);
 
   return (
     <>
@@ -201,7 +200,7 @@ export function StudentUserListPage() {
             loading={isMutateLoading}
             onApprove={handleStudentStatus(UserApprovalStatus.Approved)}
             onReject={handleStudentStatus(UserApprovalStatus.Rejected)}
-            onDelete={handleDelete}
+            onEdit={handleEdit}
           />
         )}
       </BaseModal>

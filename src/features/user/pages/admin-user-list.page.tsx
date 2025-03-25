@@ -71,7 +71,6 @@ export function AdminUserListPage() {
     prevPage,
     handleAdminDetails,
     handleAdminEdit,
-    deleteAdmin,
   } = useAdminUserList();
 
   const {
@@ -107,19 +106,18 @@ export function AdminUserListPage() {
     [handleAdminDetails],
   );
 
-  const handleDelete = useCallback(() => {
+  const handleEdit = useCallback(() => {
     if (!currentAdmin) {
       return;
     }
 
     try {
-      deleteAdmin(currentAdmin.id);
+      handleAdminEdit(currentAdmin.id);
       handleOpenDetails(false)();
-      pendingListRef?.current?.handleRefresh();
     } catch (error: any) {
       toast.error(error.message);
     }
-  }, [currentAdmin, deleteAdmin, handleOpenDetails]);
+  }, [currentAdmin, handleAdminEdit, handleOpenDetails]);
 
   return (
     <>
@@ -176,7 +174,7 @@ export function AdminUserListPage() {
           <AdminUserSummary
             admin={currentAdmin}
             loading={isMutateLoading}
-            onDelete={handleDelete}
+            onEdit={handleEdit}
           />
         )}
       </BaseModal>

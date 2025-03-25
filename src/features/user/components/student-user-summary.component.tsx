@@ -18,7 +18,7 @@ type Props = ComponentProps<'div'> & {
   loading?: boolean;
   onApprove?: () => void;
   onReject?: () => void;
-  onDelete?: () => void;
+  onEdit?: () => void;
 };
 
 export const StudentUserSummary = memo(function ({
@@ -27,7 +27,7 @@ export const StudentUserSummary = memo(function ({
   loading,
   onApprove,
   onReject,
-  onDelete,
+  onEdit,
   ...moreProps
 }: Props) {
   const [publicId, email, approvalStatus, gender, phoneNumber, fullName] =
@@ -116,9 +116,9 @@ export const StudentUserSummary = memo(function ({
               className='!w-full'
               variant='border'
               disabled={loading}
-              onClick={onDelete}
+              onClick={onEdit}
             >
-              Delete
+              Edit
             </BaseButton>
           </>
         )}

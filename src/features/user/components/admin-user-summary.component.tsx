@@ -16,14 +16,18 @@ import type { AdminUserAccount } from '#/user/models/user.model';
 type Props = ComponentProps<'div'> & {
   admin: AdminUserAccount;
   loading?: boolean;
-  onDelete?: () => void;
+  onApprove?: () => void;
+  onReject?: () => void;
+  onEdit?: () => void;
 };
 
 export const AdminUserSummary = memo(function ({
   className,
   admin,
   loading,
-  onDelete,
+  onApprove,
+  onReject,
+  onEdit,
   ...moreProps
 }: Props) {
   const [publicId, email, approvalStatus, gender, phoneNumber, fullName] =
@@ -84,14 +88,35 @@ export const AdminUserSummary = memo(function ({
         {loading ? (
           <BaseSpinner size='xs' />
         ) : (
-          <BaseButton
-            className='!w-full'
-            variant='border'
-            disabled={loading}
-            onClick={onDelete}
-          >
-            Delete
-          </BaseButton>
+          <>
+            {approvalStatus === UserApprovalStatus.Pending && (
+              <>
+                <BaseButton
+                  className='!w-full'
+                  disabled={loading}
+                  onClick={onApprove}
+                >
+                  Approve Student
+                </BaseButton>
+                <BaseButton
+                  className='!w-full'
+                  variant='border'
+                  disabled={loading}
+                  onClick={onReject}
+                >
+                  Reject
+                </BaseButton>
+              </>
+            )}
+            <BaseButton
+              className='!w-full'
+              variant='border'
+              disabled={loading}
+              onClick={onEdit}
+            >
+              Edit
+            </BaseButton>
+          </>
         )}
       </div>
     </div>
