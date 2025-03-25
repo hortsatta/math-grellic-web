@@ -1,6 +1,13 @@
-import { memo, forwardRef, useState, useCallback, useMemo } from 'react';
+import {
+  memo,
+  forwardRef,
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+} from 'react';
 import { useController } from 'react-hook-form';
-import { PatternFormat } from 'react-number-format';
+import { PatternFormat, patternFormatter } from 'react-number-format';
 import cx from 'classix';
 
 import { BaseIcon } from './base-icon.component';
@@ -212,7 +219,7 @@ export function BaseControlledPhoneInput(
 ) {
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    field: { ref, onBlur, ...moreField },
+    field: { ref, onBlur, value, onChange, ...moreField },
     fieldState: { error },
   } = useController(props);
 
@@ -225,16 +232,30 @@ export function BaseControlledPhoneInput(
     setIsFocus(false);
   }, [onBlur]);
 
+  useEffect(() => {
+    if (value.includes('-')) return;
+
+    const formattedValue = patternFormatter(value, {
+      format: '0###-###-####',
+      mask: '_',
+    });
+
+    onChange(formattedValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
   return (
     <PatternFormat
       {...props}
       {...moreField}
+      value={value}
       type='text'
       customInput={BaseInput}
       errorMessage={error?.message}
       format='0###-###-####'
       mask='_'
       allowEmptyFormatting={isFocus}
+      onChange={onChange}
       onFocus={handleFocus}
       onBlur={handleBlur}
     />
