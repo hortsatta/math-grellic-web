@@ -1,8 +1,8 @@
 import dayjs from '#/config/dayjs.config';
 import { attachCompleteImageSrcs, hasImage } from '#/utils/html.util';
 import { transformToBaseModel } from '#/base/helpers/base.helper';
-import { transformToStudentUserAccount } from '#/user/helpers/user-transform.helper';
 import { transformToLesson } from '#/lesson/helpers/lesson-transform.helper';
+import { transformToExamSchedule } from './exam-schedule-transform.helper';
 
 import type { StudentUserAccount } from '#/user/models/user.model';
 import type { Lesson } from '#/lesson/models/lesson.model';
@@ -12,12 +12,10 @@ import type {
   ExamCompletionQuestionAnswer,
   ExamQuestion,
   ExamQuestionChoice,
-  ExamSchedule,
 } from '../models/exam.model';
 import type {
   ExamQuestionChoiceFormData,
   ExamQuestionFormData,
-  ExamScheduleUpsertFormData,
   ExamUpsertFormData,
 } from '../models/exam-form-data.model';
 
@@ -129,30 +127,6 @@ export function transformToExamQuestionChoice({
     orderNumber,
     text: updatedText,
     isCorrect,
-    ...transformToBaseModel(id, createdAt, updatedAt),
-  };
-}
-
-export function transformToExamSchedule({
-  id,
-  createdAt,
-  updatedAt,
-  startDate,
-  endDate,
-  students,
-  exam,
-}: any): Partial<ExamSchedule> {
-  const transformedStudents = !students?.length
-    ? null
-    : students.map((student: any) => transformToStudentUserAccount(student));
-
-  const transformedExam = exam ? transformToExam(exam) : undefined;
-
-  return {
-    startDate: dayjs(startDate).toDate(),
-    endDate: dayjs(endDate).toDate(),
-    students: transformedStudents,
-    exam: transformedExam,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
@@ -310,6 +284,7 @@ export function transformToExamUpsertDto({
   excerpt,
   coveredLessonIds,
   questions,
+  scheduleTitle,
   startDate,
   startTime,
   endDate,
@@ -343,6 +318,7 @@ export function transformToExamUpsertDto({
     excerpt,
     coveredLessonIds: coveredLessonIds?.length ? coveredLessonIds : undefined,
     questions: questionsDto,
+    scheduleTitle,
     startDate: transformedStartDate,
     endDate: transformedEndDate,
     studentIds: transformedStudentsIds,
@@ -379,73 +355,5 @@ export function transformToExamQuestionChoiceUpsertDto({
     orderNumber,
     text,
     isCorrect,
-  };
-}
-
-export function transformToExamScheduleFormData({
-  exam,
-  startDate,
-  endDate,
-  students,
-}: any): ExamScheduleUpsertFormData {
-  const transformedStudentIds = !students?.length
-    ? null
-    : students.map((student: StudentUserAccount) => student.id);
-
-  return {
-    examId: exam?.id || 0,
-    studentIds: transformedStudentIds,
-    startDate: dayjs(startDate).toDate(),
-    startTime: dayjs(startDate).format('hh:mm A'),
-    endDate: dayjs(endDate).toDate(),
-    endTime: dayjs(endDate).format('hh:mm A'),
-  };
-}
-
-export function transformToExamScheduleCreateDto({
-  examId,
-  startDate,
-  startTime,
-  endDate,
-  endTime,
-  studentIds,
-}: any) {
-  const formattedStartDate = dayjs(startDate).format('YYYY-MM-DD');
-  const formattedEndDate = dayjs(endDate).format('YYYY-MM-DD');
-
-  const transformedStartDate = dayjs(
-    `${formattedStartDate} ${startTime}`,
-  ).toDate();
-  const transformedEndDate = dayjs(`${formattedEndDate} ${endTime}`).toDate();
-  const transformedStudentsIds = !studentIds?.length ? null : studentIds;
-
-  return {
-    examId,
-    startDate: transformedStartDate,
-    endDate: transformedEndDate,
-    studentIds: transformedStudentsIds,
-  };
-}
-
-export function transformToExamScheduleUpdateDto({
-  startDate,
-  endDate,
-  startTime,
-  endTime,
-  studentIds,
-}: any) {
-  const formattedStartDate = dayjs(startDate).format('YYYY-MM-DD');
-  const formattedEndDate = dayjs(endDate).format('YYYY-MM-DD');
-
-  const transformedStartDate = dayjs(
-    `${formattedStartDate} ${startTime}`,
-  ).toDate();
-  const transformedEndDate = dayjs(`${formattedEndDate} ${endTime}`).toDate();
-  const transformedStudentsIds = !studentIds?.length ? null : studentIds;
-
-  return {
-    startDate: transformedStartDate,
-    endDate: transformedEndDate,
-    studentIds: transformedStudentsIds,
   };
 }

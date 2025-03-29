@@ -3,7 +3,7 @@ import { useLoaderData } from 'react-router-dom';
 
 import { BaseScene } from '#/base/components/base-scene.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
-import { ExamScheduleStatus } from '../models/exam.model';
+import { ExamScheduleStatus } from '../models/exam-schedule.model';
 import { useStudentExamSingle } from '../hooks/use-student-exam-single.hook';
 import { StudentExamSingleUpcomingNote } from '../components/student-exam-single-upcoming-note.component';
 import { StudentExamTakeStart } from '../components/student-exam-take-start.component';

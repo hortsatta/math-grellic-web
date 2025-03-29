@@ -13,7 +13,7 @@ import {
   getExamBySlugAndCurrentStudentUser,
   setExamCompletion as setExamCompletionApi,
 } from '../api/student-exam.api';
-import { ExamScheduleStatus } from '../models/exam.model';
+import { ExamScheduleStatus } from '../models/exam-schedule.model';
 
 import type { Duration } from 'dayjs/plugin/duration';
 import type { Exam, ExamCompletion } from '../models/exam.model';

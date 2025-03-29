@@ -1,5 +1,5 @@
 import type { AuditTrail } from '#/core/models/core.model';
-import type { ExamSchedule } from '#/exam/models/exam.model';
+import type { ExamSchedule } from '#/exam/models/exam-schedule.model';
 import type { LessonSchedule } from '#/lesson/models/lesson.model';
 import type { StudentUserAccount } from '#/user/models/user.model';
 

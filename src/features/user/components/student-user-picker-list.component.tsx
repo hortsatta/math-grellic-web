@@ -21,16 +21,18 @@ type Props = ComponentProps<'div'> & {
   loading?: boolean;
 };
 
-type StudentUserItemProps = {
+type StudentUserItemProps = ComponentProps<'button'> & {
   student: StudentUserAccount;
   onClick?: () => void;
   selected?: boolean;
 };
 
 export const StudentUserItem = memo(function ({
+  className,
   student,
   selected,
   onClick,
+  ...moreProps
 }: StudentUserItemProps) {
   const fullName = useMemo(
     () =>
@@ -44,8 +46,10 @@ export const StudentUserItem = memo(function ({
       className={cx(
         'group/usrpicker flex w-full items-center justify-between overflow-hidden rounded-md px-4 py-2',
         onClick ? 'hover:bg-primary' : 'pointer-events-none',
+        className,
       )}
       onClick={onClick}
+      {...moreProps}
     >
       <div className='flex items-center gap-4'>
         <div className='flex h-11 w-11 items-center justify-center rounded bg-slate-200'>

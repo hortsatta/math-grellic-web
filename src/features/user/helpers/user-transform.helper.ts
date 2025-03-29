@@ -3,10 +3,8 @@ import {
   transformToLessonCompletion,
   transformToLessonSchedule,
 } from '#/lesson/helpers/lesson-transform.helper';
-import {
-  transformToExamCompletion,
-  transformToExamSchedule,
-} from '#/exam/helpers/exam-transform.helper';
+import { transformToExamCompletion } from '#/exam/helpers/exam-transform.helper';
+import { transformToExamSchedule } from '#/exam/helpers/exam-schedule-transform.helper';
 import { transformToActivityCategoryCompletion } from '#/activity/helpers/activity-transform.helper';
 import { UserRole } from '../models/user.model';
 

@@ -92,12 +92,8 @@ export function useExamEdit(slug?: string): Result {
 
   const editExam = useCallback(
     async (data: ExamUpsertFormData) => {
-      // Set schedule id
-      const scheduleId = exam?.schedules?.length
-        ? exam?.schedules[0]?.id
-        : undefined;
       // Validate exam data before creation
-      await validateUpsertExam({ data, slug, scheduleId });
+      await validateUpsertExam({ data, slug });
       // If includes any image, then upload image first
       const htmls = data.questions.flatMap((q) => [
         q.text,
@@ -141,11 +137,10 @@ export function useExamEdit(slug?: string): Result {
       return mutateEditExam({
         slug: slug || '',
         data,
-        scheduleId,
         strict: !hasExamImages,
       });
     },
-    [exam, slug, validateUpsertExam, mutateEditExam, mutateUploadExamImages],
+    [slug, validateUpsertExam, mutateEditExam, mutateUploadExamImages],
   );
 
   const deleteExam = useCallback(async () => {

@@ -5,8 +5,8 @@ import { queryClient } from '#/config/react-query-client.config';
 import { queryExamKey } from '#/config/react-query-keys.config';
 import { createExamSchedule as createExamScheduleApi } from '../api/teacher-exam-schedule.api';
 
-import type { ExamSchedule } from '../models/exam.model';
-import type { ExamScheduleUpsertFormData } from '../models/exam-form-data.model';
+import type { ExamSchedule } from '../models/exam-schedule.model';
+import type { ExamScheduleUpsertFormData } from '../models/exam-schedule-form-data.model';
 
 type Result = {
   loading: boolean;

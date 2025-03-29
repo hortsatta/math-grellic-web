@@ -119,7 +119,7 @@ export function validateUpsertExam(
     UseMutationOptions<
       boolean,
       Error,
-      { data: ExamUpsertFormData; slug?: string; scheduleId?: number },
+      { data: ExamUpsertFormData; slug?: string },
       any
     >,
     'mutationFn'
@@ -128,17 +128,14 @@ export function validateUpsertExam(
   const mutationFn = async ({
     slug,
     data,
-    scheduleId,
   }: {
     data: ExamUpsertFormData;
     slug?: string;
-    scheduleId?: number;
   }): Promise<boolean> => {
     const url = `${BASE_URL}/validate`;
     const json = transformToExamUpsertDto(data);
     const searchParams = generateSearchParams({
       slug: slug?.toString(),
-      schedule: scheduleId?.toString(),
     });
 
     try {
@@ -182,7 +179,6 @@ export function editExam(
       {
         slug: string;
         data: ExamUpsertFormData;
-        scheduleId?: number;
         strict?: boolean;
       },
       any
@@ -193,18 +189,15 @@ export function editExam(
   const mutationFn = async ({
     slug,
     data,
-    scheduleId,
     strict,
   }: {
     slug: string;
     data: ExamUpsertFormData;
-    scheduleId?: number;
     strict?: boolean;
   }): Promise<any> => {
     const url = `${BASE_URL}/${slug}`;
     const json = transformToExamUpsertDto(data);
     const searchParams = generateSearchParams({
-      schedule: scheduleId?.toString(),
       strict: (+(strict || 0)).toString(),
     });
 

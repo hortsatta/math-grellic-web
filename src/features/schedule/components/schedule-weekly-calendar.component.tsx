@@ -8,7 +8,7 @@ import { ScheduleType } from '../models/schedule.model';
 import { ScheduleCalendarCard } from './schedule-calendar-card.component';
 
 import type { ComponentProps } from 'react';
-import type { ExamSchedule } from '#/exam/models/exam.model';
+import type { ExamSchedule } from '#/exam/models/exam-schedule.model';
 import type {
   MeetingSchedule,
   ScheduleCard as ScheduleCardType,

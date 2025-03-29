@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
 import { useExamScheduleCreate } from '../hooks/use-exam-schedule-create.hook';
@@ -7,12 +7,21 @@ import { ExamScheduleUpsertForm } from '../components/exam-schedule-upsert-form.
 import type { OutletContextType } from './teacher-exam-schedule-list.page';
 
 export function TeacherExamScheduleCreatePage() {
-  const { exam } = useOutletContext<OutletContextType>();
+  const { exam, clearSelectedExamSchedule } =
+    useOutletContext<OutletContextType>();
 
   const { loading, isDone, setIsDone, createExamSchedule } =
     useExamScheduleCreate();
 
   const examId = useMemo(() => exam?.id, [exam]);
+
+  const handleDone = useCallback(
+    (isDone: boolean) => {
+      setIsDone(isDone);
+      isDone && clearSelectedExamSchedule && clearSelectedExamSchedule();
+    },
+    [setIsDone, clearSelectedExamSchedule],
+  );
 
   return (
     examId && (
@@ -20,7 +29,7 @@ export function TeacherExamScheduleCreatePage() {
         examId={examId}
         loading={loading}
         isDone={isDone}
-        onDone={setIsDone}
+        onDone={handleDone}
         onSubmit={createExamSchedule}
       />
     )

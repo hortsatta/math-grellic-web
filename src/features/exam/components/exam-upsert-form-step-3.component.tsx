@@ -4,8 +4,9 @@ import cx from 'classix';
 
 import dayjs from '#/config/dayjs.config';
 import { convertSecondsToDuration, getDayJsDuration } from '#/utils/time.util';
-import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
+import { BaseControlledInput } from '#/base/components/base-input.component';
 import { BaseControlledTimeInput } from '#/base/components/base-time-input.component';
+import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
 import { StudentUserControlledPicker } from '#/user/components/student-user-picker.component';
 
 import type { ComponentProps } from 'react';
@@ -70,12 +71,19 @@ export const ExamUpsertFormStep3 = memo(function ({
         className='group/field flex flex-wrap gap-5'
         disabled={disabled}
       >
-        <div className='w-full'>
+        <div className='flex w-full flex-col items-start justify-between gap-5 -2xs:flex-row'>
+          <BaseControlledInput
+            name='scheduleTitle'
+            label='Title'
+            control={control}
+            fullWidth
+          />
           <BaseControlledDatePicker
             name='startDate'
             label='Date'
             control={control}
             iconName='calendar'
+            placement='bottom-end'
             calendarSelectorProps={calendarSelectorProps}
             fullWidth
           />

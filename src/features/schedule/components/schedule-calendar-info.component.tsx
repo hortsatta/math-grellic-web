@@ -11,7 +11,7 @@ import { BaseSurface } from '#/base/components/base-surface.component';
 import { ScheduleType } from '../models/schedule.model';
 
 import type { LessonSchedule } from '#/lesson/models/lesson.model';
-import type { ExamSchedule } from '#/exam/models/exam.model';
+import type { ExamSchedule } from '#/exam/models/exam-schedule.model';
 import type { MeetingSchedule, ScheduleCard } from '../models/schedule.model';
 
 type Props = {

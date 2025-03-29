@@ -95,13 +95,18 @@ const schema = z
     status: z.nativeEnum(RecordStatus),
     questions: z.array(questionSchema).min(1),
     // Schedule
+    scheduleTitle: z
+      .string()
+      .min(1, 'Schedule title is required')
+      .max(255, 'Schedule title is too long')
+      .optional(),
     startDate: z
       .date()
       .min(new Date(`${new Date().getFullYear()}-01-01`), 'Date is invalid')
       .optional(),
     endDate: z
       .date()
-      .min(new Date(`${new Date().getFullYear()}-01-01`), 'End date is invalid')
+      .min(new Date(`${new Date().getFullYear()}-01-01`), 'Date is invalid')
       .optional(),
     startTime: z
       .string()
@@ -184,7 +189,21 @@ const schema = z
       });
     });
 
-    if (data.startDate || data.endDate || data.startTime || data.endTime) {
+    if (
+      data.scheduleTitle ||
+      data.startDate ||
+      data.endDate ||
+      data.startTime ||
+      data.endTime
+    ) {
+      if (!data.scheduleTitle?.trim().length) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Schedule title is invalid',
+          path: ['scheduleTitle'],
+        });
+      }
+
       if (!data.startDate || !data.endDate) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -256,6 +275,7 @@ const defaultValues: Partial<ExamUpsertFormData> = {
   visibleQuestionsCount: undefined,
   passingPoints: undefined,
   questions: [defaultQuestion],
+  scheduleTitle: '',
   startDate: undefined,
   endDate: undefined,
   startTime: undefined,
@@ -390,16 +410,17 @@ export const ExamUpsertForm = memo(function ({
                   {publishButtonLabel}
                 </BaseButton>
                 <BaseDropdownMenu disabled={loading}>
-                  {(!isEdit || !isEditPublished) && (
-                    <Menu.Item
-                      as={BaseDropdownButton}
-                      type='submit'
-                      iconName='floppy-disk-back'
-                      disabled={loading}
-                    >
-                      Save as Draft
-                    </Menu.Item>
-                  )}
+                  <Menu.Item
+                    as={BaseDropdownButton}
+                    iconName='floppy-disk-back'
+                    onClick={handleSubmit(
+                      (data) => submitForm(data, RecordStatus.Draft),
+                      handleSubmitError,
+                    )}
+                    disabled={loading}
+                  >
+                    Save as Draft
+                  </Menu.Item>
                   <Menu.Item
                     as={BaseDropdownButton}
                     iconName='eyes'
@@ -432,7 +453,7 @@ export const ExamUpsertForm = memo(function ({
             <BaseStepperStep label='Questions'>
               <ExamUpsertFormStep2 disabled={loading} />
             </BaseStepperStep>
-            {(!isEdit || !isEditPublished) && (
+            {!isEditPublished && (
               <BaseStepperStep label='Exam Schedule'>
                 <ExamUpsertFormStep3 disabled={loading} />
               </BaseStepperStep>

@@ -1,29 +1,24 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
-import dayjs from '#/config/dayjs.config';
-import { getDayJsDuration, convertSecondsToDuration } from '#/utils/time.util';
 import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseModal } from '#/base/components/base-modal.component';
+import { TeacherExamScheduleSingleCard } from './teacher-exam-schedule-single-card.component';
+import { TeacherExamScheduleDetails } from './teacher-exam-schedule-details.component';
 
 import type { ComponentProps } from 'react';
-import type { ButtonVariant } from '#/base/models/base.model';
-import type { Exam, ExamSchedule } from '../models/exam.model';
+import type { Exam } from '../models/exam.model';
+import type { ExamSchedule } from '../models/exam-schedule.model';
 
 type Props = ComponentProps<'div'> & {
   exam: Exam;
   currentExamSchedule?: ExamSchedule;
   onUpsert?: (examSchedule: ExamSchedule | undefined) => void;
-};
-
-const scheduleButtonProps = {
-  className: '!text-base',
-  variant: 'link' as ButtonVariant,
-  bodyFont: true,
 };
 
 export const TeacherExamScheduleListOverview = memo(function ({
@@ -34,6 +29,9 @@ export const TeacherExamScheduleListOverview = memo(function ({
 }: Props) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [selectedSchedule, setSelectedSchedule] = useState<ExamSchedule | null>(
+    null,
+  );
 
   const [orderNumber, title, totalPoints, schedules] = useMemo(
     () => [
@@ -68,33 +66,10 @@ export const TeacherExamScheduleListOverview = memo(function ({
     }
 
     if (isUpsert) {
-      if (currentExamSchedule) {
-        const { startDate, endDate } = currentExamSchedule;
-        const date = dayjs(startDate).format('MMM DD, YYYY');
-        const time = `${dayjs(startDate).format('hh:mm A')} — ${dayjs(
-          endDate,
-        ).format('hh:mm A')}`;
-        const duration = getDayJsDuration(endDate, startDate).asSeconds();
-
-        return [{ date, time, duration: convertSecondsToDuration(duration) }];
-      } else {
-        return [];
-      }
+      return currentExamSchedule ? [currentExamSchedule] : [];
     }
 
-    return schedules
-      .filter((s) => dayjs(s.startDate).isSame(s.endDate, 'day'))
-      .map((schedule) => {
-        const { startDate, endDate } = schedule;
-
-        const date = dayjs(startDate).format('MMM DD, YYYY');
-        const time = `${dayjs(startDate).format('hh:mm A')} — ${dayjs(
-          endDate,
-        ).format('hh:mm A')}`;
-        const duration = getDayJsDuration(endDate, startDate).asSeconds();
-
-        return { date, time, duration: convertSecondsToDuration(duration) };
-      });
+    return schedules;
   }, [schedules, currentExamSchedule, isUpsert]);
 
   const handleUpsertSchedule = useCallback(
@@ -116,53 +91,71 @@ export const TeacherExamScheduleListOverview = memo(function ({
     [isUpsert, navigate, onUpsert],
   );
 
+  const selectSchedule = useCallback(
+    (schedule: ExamSchedule) => () => setSelectedSchedule(schedule),
+    [],
+  );
+
+  const handleCloseModal = useCallback(() => setSelectedSchedule(null), []);
+
   return (
-    <div className={cx('w-full', className)}>
-      {/* Exam details */}
-      <div className='flex w-full flex-col items-start justify-between gap-2.5 sm:flex-row sm:items-center'>
-        <h2 className='text-xl sm:pb-1'>{title}</h2>
-        <div className='flex items-center gap-2.5'>
-          <BaseChip iconName='chalkboard-teacher'>Exam {orderNumber}</BaseChip>
-          <BaseDivider className='!h-6' vertical />
-          <BaseChip iconName='list-numbers'>{totalPointsText}</BaseChip>
+    <>
+      <div className={cx('w-full', className)}>
+        {/* Exam details */}
+        <div className='flex w-full flex-col items-start justify-between gap-2.5 sm:flex-row sm:items-center'>
+          <h2 className='text-xl sm:pb-1'>{title}</h2>
+          <div className='flex items-center gap-2.5'>
+            <BaseChip iconName='chalkboard-teacher'>
+              Exam {orderNumber}
+            </BaseChip>
+            <BaseDivider className='!h-6' vertical />
+            <BaseChip iconName='list-numbers'>{totalPointsText}</BaseChip>
+          </div>
         </div>
-      </div>
-      {/* Exam schedules */}
-      {!!targetSchedules?.length &&
-        targetSchedules.map(({ date, time, duration }, index) => (
-          <BaseSurface
-            key={index}
-            className='my-4 flex flex-col items-start justify-between gap-2.5 !px-6 !py-3 -3xs:flex-row -3xs:items-center -3xs:gap-0 sm:h-16'
-            rounded='xs'
-          >
-            <div className='flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2.5'>
-              <BaseChip iconName='calendar-check'>{date}</BaseChip>
-              <BaseDivider className='hidden !h-6 sm:block' vertical />
-              <BaseChip iconName='clock'>{time}</BaseChip>
-              <BaseDivider className='hidden !h-6 sm:block' vertical />
-              <BaseChip iconName='hourglass'>{duration}</BaseChip>
-            </div>
-            <BaseButton
-              {...scheduleButtonProps}
-              onClick={handleUpsertSchedule(
-                schedules?.length ? schedules[index] : undefined,
+        {/* Exam schedules */}
+        {!!targetSchedules?.length &&
+          targetSchedules.map((schedule, index) => (
+            <BaseSurface
+              key={index}
+              className={cx(
+                'my-2.5 flex flex-col gap-1 !px-6 !py-3',
+                !isUpsert &&
+                  'cursor-pointer hover:!border-primary-hue-purple-focus hover:shadow-md hover:ring-1 hover:ring-primary-hue-purple-focus',
               )}
+              rounded='xs'
+              onClick={selectSchedule(schedule)}
             >
-              {isUpsert ? 'Cancel' : 'Edit Schedule'}
-            </BaseButton>
-          </BaseSurface>
-        ))}
-      {!currentExamSchedule && (
-        <BaseButton
-          className='mt-2.5 w-full overflow-hidden rounded bg-transparent py-2 !transition-[background] hover:bg-primary hover:text-white sm:mt-0'
-          leftIconName={isUpsert ? 'x-circle' : 'plus-circle'}
-          variant='link'
-          size='sm'
-          onClick={handleUpsertSchedule()}
-        >
-          {isUpsert ? 'Cancel New Schedule' : 'Add Schedule'}
-        </BaseButton>
-      )}
-    </div>
+              <TeacherExamScheduleSingleCard
+                schedule={schedule}
+                isUpsert={isUpsert}
+                onUpsert={handleUpsertSchedule(
+                  schedules?.length ? schedules[index] : undefined,
+                )}
+              />
+            </BaseSurface>
+          ))}
+        {!currentExamSchedule && (
+          <BaseButton
+            className='mt-2.5 w-full overflow-hidden rounded bg-transparent py-2 !transition-[background] hover:bg-primary hover:text-white sm:mt-0'
+            leftIconName={isUpsert ? 'x-circle' : 'plus-circle'}
+            variant='link'
+            size='sm'
+            onClick={handleUpsertSchedule()}
+          >
+            {isUpsert ? 'Cancel New Schedule' : 'Add Schedule'}
+          </BaseButton>
+        )}
+      </div>
+      <BaseModal
+        className='!min-h-0 !border-0 !px-0 !pb-8 xs:!px-10'
+        size='sm'
+        open={!!selectedSchedule}
+        onClose={handleCloseModal}
+      >
+        {selectedSchedule && (
+          <TeacherExamScheduleDetails schedule={selectedSchedule} />
+        )}
+      </BaseModal>
+    </>
   );
 });

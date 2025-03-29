@@ -29,6 +29,7 @@ import type {
   ControllerRenderProps,
   UseControllerProps,
 } from 'react-hook-form';
+import type { Placement } from '@floating-ui/react';
 import type { IconName } from '../models/base.model';
 
 type Props = ComponentProps<'div'> & {
@@ -37,6 +38,7 @@ type Props = ComponentProps<'div'> & {
   valueFormat?: string;
   label?: string;
   description?: string;
+  placement?: Placement;
   errorMessage?: string;
   iconName?: IconName;
   fullWidth?: boolean;
@@ -60,6 +62,7 @@ export const BaseDatePicker = memo(
       value,
       valueFormat = 'MMMM DD, YYYY',
       label,
+      placement = 'bottom-start',
       description,
       errorMessage,
       iconName,
@@ -88,7 +91,7 @@ export const BaseDatePicker = memo(
       open: isOpen,
       onOpenChange: setIsOpen,
       middleware: [offset(10)],
-      placement: 'bottom-start',
+      placement,
     });
     const click = useClick(context);
     const { getReferenceProps, getFloatingProps } = useInteractions([click]);

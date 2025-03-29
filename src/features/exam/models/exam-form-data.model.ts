@@ -30,20 +30,12 @@ export type ExamUpsertFormData = {
   excerpt?: string;
   coveredLessonIds?: number[];
   // Schedule
+  scheduleTitle?: string;
   startDate?: Date;
   startTime?: string;
   endDate?: Date;
   endTime?: string;
   studentIds?: number[];
-};
-
-export type ExamScheduleUpsertFormData = {
-  examId: number;
-  startDate: Date;
-  endDate: Date;
-  startTime: string;
-  endTime: string;
-  studentIds: number[];
 };
 
 export type ExamAnswerFormData = {

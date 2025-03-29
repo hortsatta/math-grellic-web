@@ -6,10 +6,10 @@ import {
   transformToExamSchedule,
   transformToExamScheduleCreateDto,
   transformToExamScheduleUpdateDto,
-} from '../helpers/exam-transform.helper';
+} from '../helpers/exam-schedule-transform.helper';
 
-import type { ExamSchedule } from '../models/exam.model';
-import type { ExamScheduleUpsertFormData } from '../models/exam-form-data.model';
+import type { ExamSchedule } from '../models/exam-schedule.model';
+import type { ExamScheduleUpsertFormData } from '../models/exam-schedule-form-data.model';
 
 const BASE_URL = 'exams';
 

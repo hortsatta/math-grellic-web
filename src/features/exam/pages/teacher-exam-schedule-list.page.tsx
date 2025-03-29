@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Outlet, useLoaderData } from 'react-router-dom';
 
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
@@ -9,11 +9,13 @@ import { BaseGroupLink } from '#/base/components/base-group-link.component';
 import { TeacherExamScheduleListOverview } from '../components/teacher-exam-schedule-list-overview.component';
 
 import type { GroupLink } from '#/base/models/base.model';
-import type { Exam, ExamSchedule } from '../models/exam.model';
+import type { Exam } from '../models/exam.model';
+import type { ExamSchedule } from '../models/exam-schedule.model';
 
 export type OutletContextType = {
   exam?: Exam | null;
   examSchedule?: ExamSchedule;
+  clearSelectedExamSchedule?: () => void;
 };
 
 const sceneTitle = 'Exam Schedule';
@@ -36,6 +38,10 @@ export function TeacherExamScheduleListPage() {
   const [examSchedule, setExamSchedule] = useState<ExamSchedule | undefined>(
     undefined,
   );
+
+  const clearSelectedExamSchedule = useCallback(() => {
+    setExamSchedule(undefined);
+  }, []);
 
   useEffect(() => {
     if (!examSchedule) {
@@ -63,7 +69,13 @@ export function TeacherExamScheduleListPage() {
               onUpsert={setExamSchedule}
             />
             <Outlet
-              context={{ exam, examSchedule } satisfies OutletContextType}
+              context={
+                {
+                  exam,
+                  examSchedule,
+                  clearSelectedExamSchedule,
+                } satisfies OutletContextType
+              }
             />
           </div>
         )}

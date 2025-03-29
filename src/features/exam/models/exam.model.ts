@@ -3,12 +3,7 @@ import type { AuditTrail, RecordStatus } from '#/core/models/core.model';
 import type { Lesson } from '#/lesson/models/lesson.model';
 import type { StudentUserAccount } from '#/user/models/user.model';
 import type { ExamUpsertFormData } from './exam-form-data.model';
-
-export enum ExamScheduleStatus {
-  Upcoming = 'upcoming',
-  Ongoing = 'ongoing',
-  Past = 'past',
-}
+import type { ExamSchedule, ExamScheduleStatus } from './exam-schedule.model';
 
 export type Exam = Partial<AuditTrail> & {
   id: number;
@@ -47,14 +42,6 @@ export type ExamQuestionChoice = Partial<AuditTrail> & {
   orderNumber: number;
   text: string;
   isCorrect: boolean;
-};
-
-export type ExamSchedule = Partial<AuditTrail> & {
-  id: number;
-  startDate: Date;
-  endDate: Date;
-  exam: Exam;
-  students: StudentUserAccount[];
 };
 
 export type ExamCompletion = Partial<AuditTrail> & {

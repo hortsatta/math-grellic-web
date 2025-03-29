@@ -7,7 +7,7 @@ import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { ScheduleDailyCard } from './schedule-daily-card.component';
 
 import type { ComponentProps } from 'react';
-import type { ExamSchedule } from '#/exam/models/exam.model';
+import type { ExamSchedule } from '#/exam/models/exam-schedule.model';
 import type { LessonSchedule } from '#/lesson/models/lesson.model';
 import type { MeetingSchedule } from '../models/schedule.model';
 

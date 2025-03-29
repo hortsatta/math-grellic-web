@@ -1,6 +1,6 @@
 import dayjs from '#/config/dayjs.config';
 import { transformToBaseModel } from '#/base/helpers/base.helper';
-import { transformToExamSchedule } from '#/exam/helpers/exam-transform.helper';
+import { transformToExamSchedule } from '#/exam/helpers/exam-schedule-transform.helper';
 import { transformToLessonSchedule } from '#/lesson/helpers/lesson-transform.helper';
 import { transformToStudentUserAccount } from '#/user/helpers/user-transform.helper';
 

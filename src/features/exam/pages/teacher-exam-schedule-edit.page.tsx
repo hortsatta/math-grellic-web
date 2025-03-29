@@ -6,14 +6,15 @@ import dayjs from '#/config/dayjs.config';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
-import { transformToExamScheduleFormData } from '../helpers/exam-transform.helper';
+import { transformToExamScheduleFormData } from '../helpers/exam-schedule-transform.helper';
 import { useExamScheduleEdit } from '../hooks/use-exam-schedule-edit.hook';
 import { ExamScheduleUpsertForm } from '../components/exam-schedule-upsert-form.component';
 
 import type { OutletContextType } from './teacher-exam-schedule-list.page';
 
 export function TeacherExamScheduleEditPage() {
-  const { exam, examSchedule } = useOutletContext<OutletContextType>();
+  const { exam, examSchedule, clearSelectedExamSchedule } =
+    useOutletContext<OutletContextType>();
 
   const { loading, isDone, setIsDone, editExamSchedule, deleteExamSchedule } =
     useExamScheduleEdit(examSchedule?.id);
@@ -73,6 +74,14 @@ export function TeacherExamScheduleEditPage() {
     }
   }, [examScheduleFormData, deleteExamSchedule, navigate]);
 
+  const handleDone = useCallback(
+    (isDone: boolean) => {
+      setIsDone(isDone);
+      isDone && clearSelectedExamSchedule && clearSelectedExamSchedule();
+    },
+    [setIsDone, clearSelectedExamSchedule],
+  );
+
   return (
     examId &&
     examScheduleFormData && (
@@ -81,7 +90,7 @@ export function TeacherExamScheduleEditPage() {
           examId={examId}
           formData={examScheduleFormData}
           isDone={isDone}
-          onDone={setIsDone}
+          onDone={handleDone}
           onSubmit={editExamSchedule}
           onDelete={handleSetModal(true)}
         />

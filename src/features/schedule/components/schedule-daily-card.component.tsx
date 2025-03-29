@@ -12,7 +12,7 @@ import { ScheduleType } from '../models/schedule.model';
 
 import type { ComponentProps } from 'react';
 import type { IconName } from '#/base/models/base.model';
-import type { ExamSchedule } from '#/exam/models/exam.model';
+import type { ExamSchedule } from '#/exam/models/exam-schedule.model';
 import type { LessonSchedule } from '#/lesson/models/lesson.model';
 import type { MeetingSchedule } from '../models/schedule.model';
 
@@ -189,7 +189,7 @@ export const ScheduleDailyCard = memo(function ({
         <div
           className={cx(
             'relative z-10 flex h-[234px] flex-col gap-2.5 rounded-lg border p-2.5 transition-all group-hover:-translate-y-1 group-hover:ring-1 group-hover:drop-shadow-primary',
-            fixedWidth ? '-2lg:w-[300px] w-full' : 'w-full',
+            fixedWidth ? 'w-full -2lg:w-[300px]' : 'w-full',
             !scheduleType
               ? 'items-center justify-center border-accent/30 bg-accent/10 text-accent'
               : 'border-accent text-white',

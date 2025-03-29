@@ -15,12 +15,12 @@ import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
-import { ExamScheduleStatus } from '../models/exam.model';
+import { PerformanceRankAwardImg } from '#/performance/components/performance-rank-award-img.component';
+import { ExamScheduleStatus } from '../models/exam-schedule.model';
 import { StudentExamQuestionResult } from './student-exam-question-result.component';
 
 import type { ComponentProps } from 'react';
 import type { Exam, ExamCompletion } from '../models/exam.model';
-import { PerformanceRankAwardImg } from '#/performance/components/performance-rank-award-img.component';
 
 type Props = ComponentProps<'div'> & {
   exam: Exam;

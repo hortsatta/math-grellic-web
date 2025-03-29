@@ -6,7 +6,7 @@ import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { ScheduleDailyCardList } from './schedule-daily-card-list.component';
 
 import type { ComponentProps } from 'react';
-import type { ExamSchedule } from '#/exam/models/exam.model';
+import type { ExamSchedule } from '#/exam/models/exam-schedule.model';
 import type { LessonSchedule } from '#/lesson/models/lesson.model';
 import type { MeetingSchedule } from '../models/schedule.model';
 

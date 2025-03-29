@@ -6,7 +6,7 @@ import { getDateTimeNow } from '#/core/api/core.api';
 import { transformToTimelineSchedules } from '../helpers/schedule-transform.helper';
 import { getSchedulesByDateAndCurrentStudentUser } from '../api/student-schedule.api';
 
-import type { ExamSchedule } from '#/exam/models/exam.model';
+import type { ExamSchedule } from '#/exam/models/exam-schedule.model';
 import type { LessonSchedule } from '#/lesson/models/lesson.model';
 import type { MeetingSchedule } from '../models/schedule.model';
 

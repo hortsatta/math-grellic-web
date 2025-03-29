@@ -7,7 +7,7 @@ import { ScheduleType } from '../models/schedule.model';
 
 import type { ComponentProps } from 'react';
 import type { IconName } from '#/base/models/base.model';
-import type { ExamSchedule } from '#/exam/models/exam.model';
+import type { ExamSchedule } from '#/exam/models/exam-schedule.model';
 import type { LessonSchedule } from '#/lesson/models/lesson.model';
 import type {
   MeetingSchedule,

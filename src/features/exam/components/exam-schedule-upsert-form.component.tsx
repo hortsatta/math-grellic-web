@@ -14,13 +14,14 @@ import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
-import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
+import { BaseControlledInput } from '#/base/components/base-input.component';
 import { BaseControlledTimeInput } from '#/base/components/base-time-input.component';
+import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
 import { StudentUserControlledPicker } from '#/user/components/student-user-picker.component';
 
 import type { FormProps, IconName } from '#/base/models/base.model';
-import type { ExamScheduleUpsertFormData } from '../models/exam-form-data.model';
-import type { ExamSchedule } from '../models/exam.model';
+import type { ExamScheduleUpsertFormData } from '../models/exam-schedule-form-data.model';
+import type { ExamSchedule } from '../models/exam-schedule.model';
 
 type Props = FormProps<
   'div',
@@ -39,6 +40,7 @@ const timeInputRules = { deps: ['startTime', 'endTime'] };
 
 const schema = z
   .object({
+    title: z.string().min(1, 'Title is required').max(255, 'Title is too long'),
     startDate: z
       .date({ required_error: 'Start date is required' })
       .min(new Date(`${new Date().getFullYear()}-01-01`), 'Date is invalid'),
@@ -96,6 +98,7 @@ const schema = z
   });
 
 const defaultValues: Partial<ExamScheduleUpsertFormData> = {
+  title: '',
   startDate: undefined,
   endDate: undefined,
   startTime: undefined,
@@ -244,12 +247,19 @@ export const ExamScheduleUpsertForm = memo(function ({
             className='group/field flex flex-wrap gap-5'
             disabled={isSubmitting || isDone}
           >
-            <div className='w-full'>
+            <div className='flex w-full flex-col items-start justify-between gap-5 -2xs:flex-row'>
+              <BaseControlledInput
+                name='title'
+                label='Title'
+                control={control}
+                fullWidth
+              />
               <BaseControlledDatePicker
                 name='startDate'
                 label='Date'
                 control={control}
                 iconName='calendar'
+                placement='bottom-end'
                 calendarSelectorProps={calendarSelectorProps}
                 asterisk
                 fullWidth
