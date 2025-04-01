@@ -89,6 +89,7 @@ import {
   RadioButton,
   RocketLaunch,
   Scan,
+  Scroll,
   ShareFat,
   SignOut,
   SortAscending,
@@ -304,6 +305,8 @@ export const BaseIcon = memo(
           return RocketLaunch;
         case 'scan':
           return Scan;
+        case 'scroll':
+          return Scroll;
         case 'share-fat':
           return ShareFat;
         case 'sign-out':

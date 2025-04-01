@@ -95,6 +95,7 @@ export type IconName =
   | 'radio-button'
   | 'rocket-launch'
   | 'scan'
+  | 'scroll'
   | 'share-fat'
   | 'sign-out'
   | 'squares-four'

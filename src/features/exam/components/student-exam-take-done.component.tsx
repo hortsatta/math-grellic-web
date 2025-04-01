@@ -17,8 +17,7 @@ import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { PerformanceRankAwardImg } from '#/performance/components/performance-rank-award-img.component';
-import { ExamScheduleStatus } from '../models/exam-schedule.model';
-import { StudentExamQuestionResult } from './student-exam-question-result.component';
+import { StudentExamCompletionHistoryList } from './student-exam-completion-history-list.component';
 
 import type { ComponentProps } from 'react';
 import type { Exam, ExamCompletion } from '../models/exam.model';
@@ -61,9 +60,8 @@ export const StudentExamTakeDone = memo(function ({
     orderNumber,
     totalPoints,
     passingPoints,
-    isPast,
-    questions,
     rank,
+    schedules,
     recentSchedule,
   ] = useMemo(
     () => [
@@ -71,9 +69,8 @@ export const StudentExamTakeDone = memo(function ({
       exam.orderNumber,
       exam.pointsPerQuestion * exam.visibleQuestionsCount,
       exam.passingPoints,
-      exam.scheduleStatus === ExamScheduleStatus.Past,
-      exam.questions,
       exam.rank,
+      exam.schedules || [],
       exam.schedules?.find((schedule) => schedule.isRecent),
     ],
     [exam],
@@ -129,18 +126,6 @@ export const StudentExamTakeDone = memo(function ({
   const rankText = useMemo(
     () => (rank == null ? '-' : generateOrdinalSuffix(rank)),
     [rank],
-  );
-
-  const questionAnswers = useMemo(
-    () =>
-      examCompletion?.questionAnswers?.map((answer) => {
-        const question = questions.find((q) => q.id === answer.question.id);
-        return {
-          question,
-          selectedQuestionChoiceId: answer.selectedQuestionChoice?.id,
-        };
-      }) || [],
-    [examCompletion, questions],
   );
 
   const handleReturn = useCallback(() => navigate('..'), [navigate]);
@@ -275,24 +260,30 @@ export const StudentExamTakeDone = memo(function ({
           >
             Return
           </BaseButton>
-          {examCompletion && isPast && (
+          {schedules.length > 1 && (
             <>
               <BaseDivider className='!h-6' vertical />
               <BaseButton
                 variant='link'
                 size='sm'
-                rightIconName='subtract-square'
+                rightIconName='scroll'
                 onClick={handleSetModal(true)}
               >
-                More Details
+                View History
               </BaseButton>
             </>
           )}
         </div>
       </div>
-      {examCompletion && isPast && (
-        <BaseModal open={openModal} onClose={handleSetModal(false)}>
-          <StudentExamQuestionResult questionAnswers={questionAnswers} />
+      {schedules.length > 1 && (
+        <BaseModal
+          className='!pb-8 xs:!px-10'
+          open={openModal}
+          onClose={handleSetModal(false)}
+        >
+          <div>
+            <StudentExamCompletionHistoryList exam={exam} />
+          </div>
         </BaseModal>
       )}
     </>
