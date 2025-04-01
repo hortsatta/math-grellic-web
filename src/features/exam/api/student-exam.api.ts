@@ -87,8 +87,9 @@ export function setExamCompletion(
     slug: string;
     data: StudentExamFormData;
   }): Promise<any> => {
+    const { answers, scheduleId } = data;
     const url = `${BASE_URL}/${slug}/students/completion`;
-    const json = { questionAnswers: data.answers };
+    const json = { questionAnswers: answers, scheduleId };
 
     try {
       const examCompletion = await kyInstance.post(url, { json }).json();

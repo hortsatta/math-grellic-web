@@ -10,7 +10,7 @@ import type { ExamQuestion } from '../models/exam.model';
 
 type QuestionAnswer = {
   question: ExamQuestion | undefined;
-  selectedQuestionChoiceId: number;
+  selectedQuestionChoiceId?: number;
 };
 
 type Props = ComponentProps<'div'> & {

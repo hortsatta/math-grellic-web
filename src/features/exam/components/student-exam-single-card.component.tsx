@@ -228,7 +228,12 @@ export const StudentExamSingleCard = memo(function ({
       return { score: null, hasPassed: false };
     }
 
-    const score = exam.completions[0].score;
+    // Get highest score if multiple completions
+    // or return first completion score
+    const score =
+      exam.completions.find((com) => com.isHighest)?.score ||
+      exam.completions[0].score;
+
     const hasPassed = (score || 0) >= exam.passingPoints;
 
     return { score, hasPassed };

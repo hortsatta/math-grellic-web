@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import cx from 'classix';
 
+import dayjs from '#/config/dayjs.config';
 import {
   scoreShowVariants,
   scoreShowItemVariants,
@@ -48,7 +49,7 @@ export const StudentExamTakeDone = memo(function ({
   useEffect(() => {
     const timeout = setTimeout(() => {
       setLocalLoading(false);
-    }, 2000);
+    }, 1000);
 
     return () => {
       clearTimeout(timeout);
@@ -63,6 +64,7 @@ export const StudentExamTakeDone = memo(function ({
     isPast,
     questions,
     rank,
+    recentSchedule,
   ] = useMemo(
     () => [
       exam.title,
@@ -72,9 +74,37 @@ export const StudentExamTakeDone = memo(function ({
       exam.scheduleStatus === ExamScheduleStatus.Past,
       exam.questions,
       exam.rank,
+      exam.schedules?.find((schedule) => schedule.isRecent),
     ],
     [exam],
   );
+
+  const score = useMemo(() => examCompletion?.score ?? null, [examCompletion]);
+
+  const [scheduleTitle, scheduleDate, scheduleTime] = useMemo(() => {
+    let schedule = null;
+
+    if (isExpired && recentSchedule) {
+      schedule = recentSchedule;
+    } else if (examCompletion) {
+      schedule = examCompletion.schedule;
+    } else {
+      return [];
+    }
+
+    const { title, startDate, endDate } = schedule;
+
+    if (!dayjs(startDate).isSame(endDate, 'day')) {
+      return [];
+    }
+
+    const date = dayjs(startDate).format('MMM DD, YYYY');
+    const time = `${dayjs(startDate).format('hh:mm A')} — ${dayjs(
+      endDate,
+    ).format('hh:mm A')}`;
+
+    return [title, date, time];
+  }, [isExpired, recentSchedule, examCompletion]);
 
   const totalPointsLabel = useMemo(
     () => `Total ${totalPoints > 1 ? 'Points' : 'Point'}`,
@@ -85,8 +115,6 @@ export const StudentExamTakeDone = memo(function ({
     () => `Passing ${passingPoints > 1 ? 'Points' : 'Point'}`,
     [passingPoints],
   );
-
-  const score = useMemo(() => examCompletion?.score ?? null, [examCompletion]);
 
   const scoreSuffix = useMemo(
     () => ((score || 0) > 1 ? 'Points' : 'Point'),
@@ -109,7 +137,7 @@ export const StudentExamTakeDone = memo(function ({
         const question = questions.find((q) => q.id === answer.question.id);
         return {
           question,
-          selectedQuestionChoiceId: answer.selectedQuestionChoice.id,
+          selectedQuestionChoiceId: answer.selectedQuestionChoice?.id,
         };
       }) || [],
     [examCompletion, questions],
@@ -127,6 +155,18 @@ export const StudentExamTakeDone = memo(function ({
   return (
     <>
       <div className={cx('w-full p-1.5', className)} {...moreProps}>
+        {scheduleDate && (
+          <div className='mb-6 flex flex-col gap-1'>
+            <span className='px-2.5 text-sm'>
+              Showing results for{' '}
+              <span className='font-medium'>{scheduleTitle}</span>
+            </span>
+            <div className='inline-block w-max rounded-full border border-accent/20 px-4 py-2 text-sm opacity-80'>
+              scheduled on <span className='font-medium'>{scheduleDate}</span>{' '}
+              at <span className='font-medium'>{scheduleTime}</span>
+            </div>
+          </div>
+        )}
         <div className='mb-5 flex items-center gap-x-2.5 text-primary'>
           {isExpired ? (
             <>

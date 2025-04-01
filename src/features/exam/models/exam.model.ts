@@ -50,13 +50,16 @@ export type ExamCompletion = Partial<AuditTrail> & {
   score: number | null;
   questionAnswers: ExamCompletionQuestionAnswer[];
   exam: Exam;
+  schedule: Partial<ExamSchedule>;
   student: StudentUserAccount;
+  isHighest: boolean | null;
+  isRecent: boolean | null;
 };
 
 export type ExamCompletionQuestionAnswer = Partial<AuditTrail> & {
   id: number;
   question: ExamQuestion;
-  selectedQuestionChoice: ExamQuestionChoice;
+  selectedQuestionChoice: ExamQuestionChoice | null;
 };
 
 export type ExamSlice = {

@@ -16,6 +16,7 @@ export function transformToExamSchedule({
   endDate,
   students,
   studentCount,
+  isRecent,
   exam,
 }: any): Partial<ExamSchedule> {
   const transformedStudents = !students?.length
@@ -31,6 +32,7 @@ export function transformToExamSchedule({
     students: transformedStudents,
     exam: transformedExam,
     studentCount,
+    isRecent: isRecent ?? null,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }

@@ -132,7 +132,7 @@ export const StudentExamPerformanceDetails = memo(function ({
           <BaseTag className='w-20 !bg-primary-hue-purple !px-2'>
             {statusText}
           </BaseTag>
-          <div className='flex min-w-[104px] items-center justify-center gap-x-2.5'>
+          <div className='flex min-w-[104px] items-center justify-end gap-x-2.5'>
             <span className='text-2xl font-bold'>{rankText}</span>
             {rank != null && rank <= 10 && (
               <PerformanceRankAwardImg rank={rank} size='sm' />

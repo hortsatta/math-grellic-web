@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 import dayjs from '#/config/dayjs.config';
 import { getDayJsDuration } from '#/utils/time.util';
@@ -98,6 +99,8 @@ export function useStudentExamSingle(): Result {
   }, [exam, serverClock]);
 
   const setExamAsExpired = useCallback(() => {
+    toast(`Time's up. Please submit exam`);
+
     setTimeout(() => {
       setIsExpired(true);
     }, 5000);
@@ -138,19 +141,23 @@ export function useStudentExamSingle(): Result {
 
   const setExamCompletion = useCallback(
     async (data: StudentExamFormData) => {
+      if (!exam?.schedules?.length)
+        throw new Error('Cannot submit exam, please try again');
+
       const isDone = await socket?.emitWithAck('exam-take-done', {
         roomName,
         studentId: user?.userAccount?.id || 0,
       });
 
-      if (!isDone) {
-        throw new Error('Cannot submit exam, please try again');
-      }
+      if (!isDone) throw new Error('Cannot submit exam, please try again');
 
       stopExam();
-      return mutateAsync({ slug: slug || '', data });
+
+      const scheduleId = exam.schedules[0].id;
+
+      return mutateAsync({ slug: slug || '', data: { ...data, scheduleId } });
     },
-    [slug, roomName, user, socket, stopExam, mutateAsync],
+    [slug, roomName, exam, user, socket, stopExam, mutateAsync],
   );
 
   // Stop clock ticking if current lesson is already available

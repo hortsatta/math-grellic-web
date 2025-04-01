@@ -139,23 +139,33 @@ export function transformToExamCompletion({
   score,
   questionAnswers,
   exam,
+  schedule,
   student,
+  isHighest,
+  isRecent,
 }: any): Partial<ExamCompletion> {
-  const transformedStudent = student
-    ? ({ id: student.id } as StudentUserAccount)
-    : undefined;
-
   const transformedQuestionAnswers =
     questionAnswers?.map((answer: any) =>
       transformToExamCompletionQuestionAnswer(answer),
     ) || [];
+
+  const transformedSchedule = schedule
+    ? transformToExamSchedule(schedule)
+    : undefined;
+
+  const transformedStudent = student
+    ? ({ id: student.id } as StudentUserAccount)
+    : undefined;
 
   return {
     submittedAt: dayjs(submittedAt).toDate(),
     score,
     questionAnswers: transformedQuestionAnswers,
     exam,
+    schedule: transformedSchedule,
     student: transformedStudent,
+    isHighest: isHighest ?? null,
+    isRecent: isRecent ?? null,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }
@@ -169,9 +179,11 @@ export function transformToExamCompletionQuestionAnswer({
 }: any): Partial<ExamCompletionQuestionAnswer> {
   return {
     question: { id: question.id } as ExamQuestion,
-    selectedQuestionChoice: {
-      id: selectedQuestionChoice.id,
-    } as ExamQuestionChoice,
+    selectedQuestionChoice: selectedQuestionChoice
+      ? ({
+          id: selectedQuestionChoice.id,
+        } as ExamQuestionChoice)
+      : null,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }

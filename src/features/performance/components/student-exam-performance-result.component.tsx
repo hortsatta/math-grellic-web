@@ -48,7 +48,7 @@ export const StudentExamPerformanceResult = memo(function ({
         const question = questions.find((q) => q.id === answer.question.id);
         return {
           question,
-          selectedQuestionChoiceId: answer.selectedQuestionChoice.id,
+          selectedQuestionChoiceId: answer.selectedQuestionChoice?.id,
         };
       }) || [],
     [examCompletion, questions],

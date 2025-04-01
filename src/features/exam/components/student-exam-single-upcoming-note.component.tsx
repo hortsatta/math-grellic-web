@@ -34,39 +34,40 @@ export const StudentExamSingleUpcomingNote = memo(function LessonSingle({
     return generateCountdownDate(upcomingDuration);
   }, [upcomingDuration]);
 
-  const [scheduleDate, scheduleTime, scheduleDuration] = useMemo(() => {
-    if (!exam.schedules?.length) {
-      return [];
-    }
+  const [scheduleTitle, scheduleDate, scheduleTime, scheduleDuration] =
+    useMemo(() => {
+      if (!exam.schedules?.length) {
+        return [];
+      }
 
-    const { startDate, endDate } = exam.schedules[0];
+      const { title, startDate, endDate } = exam.schedules[0];
 
-    if (!dayjs(startDate).isSame(endDate, 'day')) {
-      return [];
-    }
+      if (!dayjs(startDate).isSame(endDate, 'day')) {
+        return [];
+      }
 
-    const date = dayjs(startDate).format('MMM DD, YYYY');
-    const time = `${dayjs(startDate).format('hh:mm A')} — ${dayjs(
-      endDate,
-    ).format('hh:mm A')}`;
-    const duration = getDayJsDuration(endDate, startDate).asSeconds();
+      const date = dayjs(startDate).format('MMM DD, YYYY');
+      const time = `${dayjs(startDate).format('hh:mm A')} — ${dayjs(
+        endDate,
+      ).format('hh:mm A')}`;
+      const duration = getDayJsDuration(endDate, startDate).asSeconds();
 
-    return [date, time, convertSecondsToDuration(duration)];
-  }, [exam]);
+      return [title, date, time, convertSecondsToDuration(duration)];
+    }, [exam]);
 
   return (
     <div
       className={cx('flex w-full flex-col items-center', className)}
       {...moreProps}
     >
-      <div className='relative mb-8 mt-5 h-[500px] w-full'>
+      <div className='relative mb-8 mt-5 w-full -3xs:h-[500px]'>
         <div className='absolute flex w-full items-center justify-center opacity-5'>
           <BaseIcon name='exam' size={500} />
           <BaseIcon name='exam' size={500} />
         </div>
-        <div className='relative z-10 mx-auto flex h-full w-full max-w-compact flex-col items-center justify-center'>
-          <div className='min-w-[276px]'>
-            <small className='mb-1 flex w-full items-center justify-end text-base font-medium uppercase'>
+        <div className='relative z-10 mx-auto flex h-full w-full max-w-compact flex-col items-center justify-start -3xs:justify-center'>
+          <div className='w-full -3xs:w-auto -3xs:min-w-[276px]'>
+            <small className='mb-1 flex w-full items-center justify-end font-medium uppercase -3xs:text-base'>
               <span className='relative mr-4 flex gap-1'>
                 <span className='relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-primary-focus-light'></span>
                 <span className='relative inline-flex h-2.5 w-2.5 animate-bounce rounded-full bg-primary-focus-light animation-delay-100'></span>
@@ -77,11 +78,12 @@ export const StudentExamSingleUpcomingNote = memo(function LessonSingle({
             {!loading && (
               <div className='w-full overflow-hidden rounded border border-accent drop-shadow-primary'>
                 <div className='flex min-h-[24px] w-full items-center justify-center bg-primary-hue-purple'>
-                  <span className='px-5 py-0.5 text-lg font-medium uppercase text-white'>
+                  <span className='px-5 py-0.5 font-medium uppercase text-white -3xs:text-lg'>
                     {formattedUpcomingDate}
                   </span>
                 </div>
                 <div className='flex flex-col bg-white px-2.5 py-0.5'>
+                  <span className='my-1 font-medium'>{scheduleTitle}</span>
                   <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
                   <BaseChip iconName='clock'>{scheduleTime}</BaseChip>
                   <BaseChip iconName='hourglass'>{scheduleDuration}</BaseChip>
