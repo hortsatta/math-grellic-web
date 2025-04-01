@@ -16,6 +16,7 @@ import {
   useInteractions,
   useMergeRefs,
 } from '@floating-ui/react';
+import cx from 'classix';
 
 import { BaseSurface } from './base-surface.component';
 
@@ -27,11 +28,13 @@ type Props = UseHoverProps & {
   children: ReactNode;
   content?: ReactNode;
   placement?: Placement;
+  className?: string;
 };
 
 export const BaseTooltip = memo(
   forwardRef<HTMLElement, Props>(function (
     {
+      className,
       content,
       delay = { open: 800, close: 200 },
       placement = 'bottom',
@@ -79,7 +82,10 @@ export const BaseTooltip = memo(
           <BaseSurface
             ref={refs.setFloating}
             style={floatingStyles}
-            className='z-max animate-fastFadeIn !rounded !bg-accent !p-0 text-white'
+            className={cx(
+              'z-max hidden animate-fastFadeIn !rounded !bg-accent !p-0 text-white sm:inline-block',
+              className,
+            )}
             {...getFloatingProps()}
           >
             <small className='block px-2 py-1'>{content}</small>
