@@ -88,7 +88,7 @@ export const StudentActivityPerformanceDetails = memo(function ({
     <>
       <div
         className={cx(
-          'flex w-full flex-col items-start justify-between gap-2.5 overflow-hidden rounded px-4 py-2 sm:flex-row sm:items-center sm:gap-0',
+          'flex w-full flex-col items-start justify-between gap-2.5 overflow-hidden rounded p-2 sm:flex-row sm:items-center sm:gap-0',
           onClick &&
             'group cursor-pointer transition-colors duration-75 hover:bg-primary-hue-teal-focus hover:!text-white',
           className,

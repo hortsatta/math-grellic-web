@@ -51,13 +51,17 @@ export const TeacherStudentActivityPerformanceList = memo(function ({
 
   return (
     <div className={cx('flex flex-col py-2.5', className)} {...moreProps}>
-      {activities?.map((activity) => (
-        <StudentActivityPerformanceDetails
-          key={activity.slug}
-          activity={activity}
-          onClick={onActivityClick}
-        />
-      ))}
+      {activities?.length ? (
+        activities.map((activity) => (
+          <StudentActivityPerformanceDetails
+            key={activity.slug}
+            activity={activity}
+            onClick={onActivityClick}
+          />
+        ))
+      ) : (
+        <div className='text-center text-sm opacity-70'>Nothing to show</div>
+      )}
     </div>
   );
 });

@@ -17,4 +17,6 @@ export type ExamSchedule = Partial<AuditTrail> & {
   students: StudentUserAccount[];
   studentCount?: string;
   isRecent?: boolean;
+  isUpcoming?: boolean;
+  isOngoing?: boolean;
 };

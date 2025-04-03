@@ -47,14 +47,18 @@ export const StudentExamPerformanceList = memo(function ({
 
   return (
     <div className={cx('flex flex-col py-2.5', className)} {...moreProps}>
-      {exams?.map((exam, index) => (
-        <StudentExamPerformanceDetails
-          key={exam.slug}
-          exam={exam}
-          onClick={onExamClick}
-          last={index >= exams.length - 1}
-        />
-      ))}
+      {exams?.length ? (
+        exams.map((exam, index) => (
+          <StudentExamPerformanceDetails
+            key={exam.slug}
+            exam={exam}
+            onClick={onExamClick}
+            last={index >= exams.length - 1}
+          />
+        ))
+      ) : (
+        <div className='text-center text-sm opacity-70'>Nothing to show</div>
+      )}
     </div>
   );
 });

@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import cx from 'classix';
 
-import dayjs from '#/config/dayjs.config';
 import { transformToExam } from '#/exam/helpers/exam-transform.helper';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { getStudentExamsByPublicIdAndCurrentTeacherUser } from '../api/teacher-performance.api';
@@ -42,38 +41,8 @@ export const TeacherStudentExamPerformanceList = memo(function ({
     ),
   );
 
-  const currentExams = useMemo(
-    () =>
-      exams?.filter((exams) => {
-        const currentDate = dayjs().toDate();
-
-        if (!exams.schedules?.length) {
-          return false;
-        }
-
-        return (
-          dayjs(exams.schedules[0].endDate).isBefore(currentDate) ||
-          dayjs(currentDate).isBetween(
-            exams.schedules[0].startDate,
-            exams.schedules[0].endDate,
-            undefined,
-            '[]',
-          )
-        );
-      }) || [],
-    [exams],
-  );
-
-  const upcomingExams = useMemo(
-    () =>
-      exams?.filter((exams) => {
-        const currentDate = dayjs().toDate();
-
-        return (
-          !!exams.schedules?.length &&
-          dayjs(exams.schedules[0].startDate).isAfter(currentDate)
-        );
-      }) || [],
+  const filteredExams = useMemo(
+    () => exams?.filter((exams) => exams.schedules?.length),
     [exams],
   );
 
@@ -87,21 +56,17 @@ export const TeacherStudentExamPerformanceList = memo(function ({
 
   return (
     <div className={cx('flex flex-col py-2.5', className)} {...moreProps}>
-      {currentExams?.map((exam) => (
-        <StudentExamPerformanceDetails
-          key={`ce-${exam.slug}`}
-          exam={exam}
-          onClick={onExamClick}
-        />
-      ))}
-      {upcomingExams?.map((exam) => (
-        <StudentExamPerformanceDetails
-          key={`ue-${exam.slug}`}
-          exam={exam}
-          onClick={onExamClick}
-          isUpcoming
-        />
-      ))}
+      {filteredExams?.length ? (
+        filteredExams.map((exam) => (
+          <StudentExamPerformanceDetails
+            key={`ce-${exam.slug}`}
+            exam={exam}
+            onClick={onExamClick}
+          />
+        ))
+      ) : (
+        <div className='text-center text-sm opacity-70'>Nothing to show</div>
+      )}
     </div>
   );
 });

@@ -1,7 +1,6 @@
 import { memo, useCallback, useMemo } from 'react';
 import cx from 'classix';
 
-import dayjs from '#/config/dayjs.config';
 import { generateOrdinalSuffix } from '#/utils/string.util';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
@@ -13,7 +12,6 @@ import type { Exam } from '#/exam/models/exam.model';
 
 type Props = Omit<ComponentProps<'div'>, 'onClick'> & {
   exam: Exam;
-  isUpcoming?: boolean;
   last?: boolean;
   onClick?: (exam?: Exam) => void;
 };
@@ -21,31 +19,34 @@ type Props = Omit<ComponentProps<'div'>, 'onClick'> & {
 export const StudentExamPerformanceDetails = memo(function ({
   className,
   exam,
-  isUpcoming,
   last,
   onClick,
   ...moreProps
 }: Props) {
-  const [
-    orderNumber,
-    title,
-    totalPoints,
-    passingPoints,
-    schedule,
-    completion,
-    rank,
-  ] = useMemo(
-    () => [
-      exam.orderNumber,
-      exam.title,
-      exam.visibleQuestionsCount * exam.pointsPerQuestion,
-      exam.passingPoints,
-      exam.schedules?.length ? exam.schedules[0] : null,
-      exam.completions?.length ? exam.completions[0] : undefined,
-      exam.rank,
-    ],
-    [exam],
-  );
+  const [orderNumber, title, totalPoints, passingPoints, completion, rank] =
+    useMemo(
+      () => [
+        exam.orderNumber,
+        exam.title,
+        exam.visibleQuestionsCount * exam.pointsPerQuestion,
+        exam.passingPoints,
+        exam.completions?.find((com) => com.isHighest) ||
+          (exam.completions || [])[0],
+        exam.rank,
+      ],
+      [exam],
+    );
+
+  const [schedule, isUpcoming] = useMemo(() => {
+    if (!exam.schedules?.length) return [];
+
+    return [
+      exam.schedules[0],
+      exam.schedules.length > 1 ? false : exam.schedules[0].isUpcoming,
+    ];
+
+    return [];
+  }, [exam]);
 
   const hasPassed = useMemo(
     () => (completion?.score || 0) >= passingPoints,
@@ -68,9 +69,7 @@ export const StudentExamPerformanceDetails = memo(function ({
     if (isUpcoming) return 'Upcoming';
 
     if (!completion) {
-      return schedule && dayjs(schedule.endDate).isSameOrBefore(dayjs())
-        ? 'Expired'
-        : 'Pending';
+      return schedule && schedule.isOngoing ? 'Pending' : 'Expired';
     }
 
     return hasPassed ? 'Passed' : 'Failed';
@@ -89,7 +88,7 @@ export const StudentExamPerformanceDetails = memo(function ({
     <>
       <div
         className={cx(
-          'flex w-full flex-col items-start justify-between gap-2.5 overflow-hidden rounded px-4 py-2 sm:flex-row sm:items-center sm:gap-0',
+          'flex w-full flex-col items-start justify-between gap-2.5 overflow-hidden rounded p-2 sm:flex-row sm:items-center sm:gap-0',
           onClick &&
             'group cursor-pointer transition-colors duration-75 hover:bg-primary-hue-purple-focus hover:!text-white',
           className,

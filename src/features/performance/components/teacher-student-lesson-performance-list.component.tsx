@@ -76,13 +76,16 @@ export const TeacherStudentLessonPerformanceList = memo(function ({
 
   return (
     <div className={cx('flex flex-col py-2.5', className)} {...moreProps}>
-      {currentLessons?.map((lesson) => (
+      {!currentLessons.length && !upcomingLessons.length && (
+        <div className='text-center text-sm opacity-70'>Nothing to show</div>
+      )}
+      {currentLessons.map((lesson) => (
         <StudentLessonPerformanceDetails
           key={`cl-${lesson.slug}`}
           lesson={lesson}
         />
       ))}
-      {upcomingLessons?.map((lesson) => (
+      {upcomingLessons.map((lesson) => (
         <StudentLessonPerformanceDetails
           key={`ul-${lesson.slug}`}
           lesson={lesson}

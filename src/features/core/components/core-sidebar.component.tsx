@@ -1,18 +1,17 @@
 import { memo, useCallback, useMemo } from 'react';
 import cx from 'classix';
 
-import { SidebarMode } from '#/base/models/base.model';
-import { BaseIconButton } from '#/base/components/base-icon-button.component';
-import { useBoundStore } from '../hooks/use-store.hook';
-import { CoreLogo } from './core-logo.component';
-import { CoreNav } from './core-nav.component';
-
 import { generateDashboardPath } from '#/utils/path.util';
 import { homeNavItem } from '#/app/routes/static-routes';
 import { generateSuperAdminRouteLinks } from '#/app/routes/super-admin-routes';
 import { generateTeacherRouteLinks } from '#/app/routes/teacher-routes';
 import { generateStudentRouteLinks } from '#/app/routes/student-routes';
+import { SidebarMode } from '#/base/models/base.model';
 import { UserRole } from '#/user/models/user.model';
+import { BaseIconButton } from '#/base/components/base-icon-button.component';
+import { useBoundStore } from '../hooks/use-store.hook';
+import { CoreLogo } from './core-logo.component';
+import { CoreNav } from './core-nav.component';
 import { CoreNavItem } from './core-nav-item.component';
 
 import gridSmPng from '#/assets/images/grid-sm.png';
