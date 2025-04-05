@@ -128,17 +128,30 @@ export const TeacherExamSingleCard = memo(function ({
     [exam],
   );
 
+  console.log(exam.schedules);
+
   const [scheduleDate, scheduleTime, scheduleDuration] = useMemo(() => {
     if (!exam.schedules?.length) {
       return [];
     }
 
-    const { startDate, endDate } = exam.schedules[0];
+    // Feature ongoing schedule first, if none then upcoming schedule, if still none
+    // then get the first schedule
+    let targetSchedule = exam.schedules.find((schedule) => schedule.isOngoing);
 
-    // TODO change
-    if (!dayjs(startDate).isSame(endDate, 'day')) {
-      return [];
+    if (!targetSchedule) {
+      const upcomingSchedules = exam.schedules.filter(
+        (schedule) => schedule.isUpcoming,
+      );
+
+      if (upcomingSchedules.length) {
+        targetSchedule = upcomingSchedules[upcomingSchedules.length - 1];
+      } else {
+        targetSchedule = exam.schedules[0];
+      }
     }
+
+    const { startDate, endDate } = targetSchedule;
 
     const date = dayjs(startDate).format('MMM DD, YYYY');
     const time = `${dayjs(startDate).format('hh:mm A')} — ${dayjs(
