@@ -1,44 +1,43 @@
 import { memo, useMemo } from 'react';
 import cx from 'classix';
 
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
-import { BaseLink } from '#/base/components/base-link.component';
+import { convertSecondsToDuration } from '#/utils/time.util';
 import { BaseProgressCircle } from '#/base/components/base-progress-circle.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { StudentPerformanceType } from '../models/performance.model';
 
+import type { TeacherLessonPerformance } from '../models/performance.model';
 import type { ComponentProps } from 'react';
-import type { StudentPerformance } from '../models/performance.model';
 
 type Props = ComponentProps<'div'> & {
-  studentPerformance?: StudentPerformance | null;
+  lessonPerformance?: TeacherLessonPerformance;
   loading?: boolean;
 };
-
-const PERFORMANCE_PATH = `/${studentBaseRoute}/${studentRoutes.performance.to}`;
 
 const LESSON_WRAPPER_CLASSNAME = 'flex flex-col items-center w-36';
 const LESSON_VALUE_CLASSNAME = 'text-2xl font-bold text-primary';
 const LESSON_LABEL_CLASSNAME = 'text-sm';
 
-export const StudentLessonPerformanceOverview = memo(function ({
+export const TeacherLessonPerformanceOverviewBoard = memo(function ({
   loading,
   className,
-  studentPerformance,
+  lessonPerformance,
   ...moreProps
 }: Props) {
   const [
-    currentLessonCount,
-    lessonsCompletedCount,
+    totalLessonCount,
+    totalLessonDuration,
     overallLessonCompletionPercent,
   ] = useMemo(
     () => [
-      studentPerformance?.currentLessonCount || 0,
-      studentPerformance?.lessonsCompletedCount || 0,
-      studentPerformance?.overallLessonCompletionPercent || 0,
+      lessonPerformance?.totalLessonCount || 0,
+      convertSecondsToDuration(
+        lessonPerformance?.totalLessonDurationSeconds || 0,
+      ),
+      lessonPerformance?.overallLessonCompletionPercent || 0,
     ],
-    [studentPerformance],
+    [lessonPerformance],
   );
 
   return (
@@ -58,16 +57,16 @@ export const StudentLessonPerformanceOverview = memo(function ({
             className='flex animate-fastFadeIn justify-center !p-2.5 font-medium'
           >
             <div className={LESSON_WRAPPER_CLASSNAME}>
-              <span className={LESSON_VALUE_CLASSNAME}>
-                {currentLessonCount}
-              </span>
-              <span className={LESSON_LABEL_CLASSNAME}>Current Lessons</span>
+              <span className={LESSON_VALUE_CLASSNAME}>{totalLessonCount}</span>
+              <span className={LESSON_LABEL_CLASSNAME}>Total Lessons</span>
             </div>
             <div className={cx(LESSON_WRAPPER_CLASSNAME, 'flex-1')}>
               <span className={LESSON_VALUE_CLASSNAME}>
-                {lessonsCompletedCount}
+                {totalLessonDuration}
               </span>
-              <span className={LESSON_LABEL_CLASSNAME}>Lessons Completed</span>
+              <span className={LESSON_LABEL_CLASSNAME}>
+                Total Lessons Duration
+              </span>
             </div>
           </BaseSurface>
           <BaseSurface
@@ -82,15 +81,6 @@ export const StudentLessonPerformanceOverview = memo(function ({
           </BaseSurface>
         </>
       )}
-      <div className='flex flex-1 items-center justify-center'>
-        <BaseLink
-          to={PERFORMANCE_PATH}
-          rightIconName='arrow-circle-right'
-          size='xs'
-        >
-          View Performance
-        </BaseLink>
-      </div>
     </div>
   );
 });

@@ -9,22 +9,22 @@ import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import type { ComponentProps } from 'react';
 
 type Props = ComponentProps<'div'> & {
-  registeredAdminCount: number;
+  enrolledStudentCount: number;
   loading?: boolean;
   onRefresh?: () => void;
 };
 
-export const AdminUserOverview = memo(function ({
+export const StudentUserOverviewBoard = memo(function ({
   className,
   loading,
-  registeredAdminCount,
+  enrolledStudentCount,
   onRefresh,
   ...moreProps
 }: Props) {
   return (
     <div className={cx('w-full', className)} {...moreProps}>
       <div className='flex items-center justify-between'>
-        <h2 className='text-lg'>Admins Overview</h2>
+        <h2 className='text-lg'>Students Overview</h2>
         <BaseTooltip content='Refresh'>
           <BaseIconButton
             name='arrow-clockwise'
@@ -40,10 +40,10 @@ export const AdminUserOverview = memo(function ({
         ) : (
           <>
             <span className='text-xl font-bold text-primary'>
-              {registeredAdminCount}
+              {enrolledStudentCount}
             </span>
             <h3 className='font-body text-sm font-normal tracking-normal text-accent'>
-              Total Admins Registered
+              Total Students Enrolled
             </h3>
           </>
         )}

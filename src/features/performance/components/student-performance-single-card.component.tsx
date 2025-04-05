@@ -203,7 +203,7 @@ export const StudentPerformanceSingleCard = memo(function ({
                   <PerformanceRankAwardImg rank={overallRank} />
                 )}
               </div>
-              {!!overallScore && (
+              {overallScore != null && (
                 <>
                   <BaseDivider className='!h-10' vertical />
                   <span className='font-display text-2xl tracking-tighter'>

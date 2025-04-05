@@ -28,6 +28,7 @@ export type LessonSchedule = Partial<AuditTrail> & {
   startDate: Date;
   lesson: Lesson;
   students: StudentUserAccount[];
+  isUpcoming?: boolean;
 };
 
 export type LessonCompletion = Partial<AuditTrail> & {

@@ -1,9 +1,11 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import cx from 'classix';
 
-import { StudentExamPerformanceCard } from './student-exam-performance-card.component';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { studentRoutes } from '#/app/routes/student-routes';
+import { StudentExamPerformanceOverviewCard } from './student-exam-performance-overview-card.component';
 import { StudentActivityPerformanceCard } from './student-activity-performance-card.component';
-import { StudentLessonPerformanceCard } from './student-lesson-performance-card.component';
+import { StudentLessonPerformanceOverviewCard } from './student-lesson-performance-overview-card.component';
 
 import type { ComponentProps } from 'react';
 import type { StudentPerformance } from '../models/performance.model';
@@ -19,21 +21,40 @@ export const StudentPerformanceSingle = memo(function ({
   isStudent,
   ...moreProps
 }: Props) {
+  const [examDetailsTo, activityDetailsTo, lessonDetailsTo] = useMemo(
+    () =>
+      isStudent
+        ? [
+            studentRoutes.performance.examTo,
+            studentRoutes.performance.activityTo,
+            studentRoutes.performance.lessonTo,
+          ]
+        : [
+            teacherRoutes.performance.examTo,
+            teacherRoutes.performance.activityTo,
+            teacherRoutes.performance.lessonTo,
+          ],
+    [isStudent],
+  );
+
   return (
     <div
       className={cx('flex w-full flex-col gap-y-2.5', className)}
       {...moreProps}
     >
-      <StudentExamPerformanceCard student={student} isStudent={isStudent} />
+      <StudentExamPerformanceOverviewCard
+        student={student}
+        detailsTo={examDetailsTo}
+      />
       <StudentActivityPerformanceCard
         className='min-h-[280px]'
         student={student}
         isStudent={isStudent}
       />
-      <StudentLessonPerformanceCard
+      <StudentLessonPerformanceOverviewCard
         className='min-h-[280px]'
         student={student}
-        isStudent={isStudent}
+        detailsTo={lessonDetailsTo}
       />
     </div>
   );

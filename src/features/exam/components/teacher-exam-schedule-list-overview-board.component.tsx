@@ -21,7 +21,7 @@ type Props = ComponentProps<'div'> & {
   onUpsert?: (examSchedule: ExamSchedule | undefined) => void;
 };
 
-export const TeacherExamScheduleListOverview = memo(function ({
+export const TeacherExamScheduleListOverviewBoard = memo(function ({
   className,
   exam,
   currentExamSchedule,

@@ -9,7 +9,7 @@ import { BaseDataSuspense } from '#/base/components/base-data-suspense.component
 import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 import { BaseDataPagination } from '#/base/components/base-data-pagination.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
-import { TeacherActivityPerformanceOverview } from '#/performance/components/teacher-activity-performance-overview.component';
+import { TeacherActivityPerformanceOverviewBoard } from '#/performance/components/teacher-activity-performance-overview-board.component';
 import { TeacherStudentPerformanceLeaderboard } from '#/performance/components/teacher-student-performance-leaderboard.component';
 import {
   defaultSort,
@@ -102,7 +102,7 @@ export function TeacherActivityListPage() {
         </div>
         <BaseRightSidebar>
           <div className='flex flex-col gap-5'>
-            <TeacherActivityPerformanceOverview
+            <TeacherActivityPerformanceOverviewBoard
               activityPerformance={activityPerformance}
               loading={activityPerformanceLoading}
             />

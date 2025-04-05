@@ -15,7 +15,7 @@ type Props = ComponentProps<'div'> & {
   loading?: boolean;
 };
 
-export const TeacherStudentPerformanceOverview = memo(function ({
+export const TeacherStudentPerformanceOverviewBoard = memo(function ({
   className,
   loading,
   teacherClassPerformance,

@@ -13,7 +13,7 @@ import {
   useStudentPerformanceList,
 } from '../hooks/use-student-performance-list.hook';
 import { StudentPerformanceList } from '../components/student-performance-list.component';
-import { TeacherStudentPerformanceOverview } from '../components/teacher-student-performance-overview.component';
+import { TeacherStudentPerformanceOverviewBoard } from '../components/teacher-student-performance-overview-board.component';
 
 const filterOptions = [
   {
@@ -103,7 +103,7 @@ export function StudentPerformanceListPage() {
           )}
         </div>
         <BaseRightSidebar>
-          <TeacherStudentPerformanceOverview
+          <TeacherStudentPerformanceOverviewBoard
             teacherClassPerformance={teacherClassPerformance}
             loading={classLoading}
           />

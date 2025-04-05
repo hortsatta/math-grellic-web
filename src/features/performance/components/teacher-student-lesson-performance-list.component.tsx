@@ -1,97 +1,69 @@
-import { memo, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { memo, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
-import dayjs from '#/config/dayjs.config';
-import { transformToLesson } from '#/lesson/helpers/lesson-transform.helper';
-import { BaseSpinner } from '#/base/components/base-spinner.component';
-import { getStudentLessonsByPublicIdAndCurrentTeacherUser } from '../api/teacher-performance.api';
-import { StudentLessonPerformanceDetails } from './student-lesson-performance-details.component';
+import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { BaseDataEmptyMessage } from '#/base/components/base-data-empty-message.component';
+import {
+  StudentLessonPerformanceSingleCard,
+  StudentLessonPerformanceSingleCardSkeleton,
+} from './student-lesson-performance-single-card.component';
 
 import type { ComponentProps } from 'react';
+import type { Lesson } from '#/lesson/models/lesson.model';
+
+const LESSON_CREATE_TO = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}/${teacherRoutes.exam.createTo}`;
+
+type Props = ComponentProps<'div'> & {
+  lessons: Lesson[];
+  loading?: boolean;
+};
 
 export const TeacherStudentLessonPerformanceList = memo(function ({
   className,
+  loading,
+  lessons,
   ...moreProps
-}: ComponentProps<'div'>) {
-  const { publicId } = useParams();
+}: Props) {
+  const navigate = useNavigate();
 
-  const {
-    data: lessons,
-    isFetching,
-    isLoading,
-  } = useQuery(
-    getStudentLessonsByPublicIdAndCurrentTeacherUser(
-      { publicId: publicId || '' },
-      {
-        refetchOnWindowFocus: false,
-        enabled: !!publicId,
-        initialData: [],
-        select: (data: unknown) =>
-          Array.isArray(data)
-            ? data.map((item: any) => transformToLesson(item))
-            : [],
-      },
-    ),
+  const isEmpty = useMemo(() => !lessons?.length, [lessons]);
+
+  const handleClick = useCallback(
+    (slug: string) => () =>
+      navigate(`/${teacherBaseRoute}/${teacherRoutes.lesson.to}/${slug}`),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   );
-
-  const currentLessons = useMemo(
-    () =>
-      lessons?.filter((lesson) => {
-        const currentDate = dayjs().toDate();
-
-        if (!lesson.schedules?.length) {
-          return false;
-        }
-
-        return (
-          dayjs(lesson.schedules[0].startDate).isSame(currentDate, 'date') ||
-          dayjs(lesson.schedules[0].startDate).isBefore(currentDate, 'date')
-        );
-      }) || [],
-    [lessons],
-  );
-
-  const upcomingLessons = useMemo(
-    () =>
-      lessons?.filter((lesson) => {
-        const currentDate = dayjs().toDate();
-
-        return (
-          !!lesson.schedules?.length &&
-          dayjs(lesson.schedules[0].startDate).isAfter(currentDate, 'date')
-        );
-      }) || [],
-    [lessons],
-  );
-
-  if (isFetching || isLoading) {
-    return (
-      <div className='mt-5 flex w-full justify-center'>
-        <BaseSpinner />
-      </div>
-    );
-  }
 
   return (
-    <div className={cx('flex flex-col py-2.5', className)} {...moreProps}>
-      {!currentLessons.length && !upcomingLessons.length && (
-        <div className='text-center text-sm opacity-70'>Nothing to show</div>
+    <div
+      className={cx(
+        'flex w-full flex-1 flex-col gap-2.5 self-stretch',
+        className,
       )}
-      {currentLessons.map((lesson) => (
-        <StudentLessonPerformanceDetails
-          key={`cl-${lesson.slug}`}
-          lesson={lesson}
+      role='table'
+      {...moreProps}
+    >
+      {loading ? (
+        [...Array(4)].map((_, index) => (
+          <StudentLessonPerformanceSingleCardSkeleton key={index} />
+        ))
+      ) : isEmpty ? (
+        <BaseDataEmptyMessage
+          message='No lessons available'
+          linkTo={LESSON_CREATE_TO}
         />
-      ))}
-      {upcomingLessons.map((lesson) => (
-        <StudentLessonPerformanceDetails
-          key={`ul-${lesson.slug}`}
-          lesson={lesson}
-          isUpcoming
-        />
-      ))}
+      ) : (
+        lessons.map((lesson) => (
+          <StudentLessonPerformanceSingleCard
+            key={`lesson-${lesson.id}`}
+            lesson={lesson}
+            role='row'
+            onClick={handleClick(lesson.slug)}
+          />
+        ))
+      )}
     </div>
   );
 });

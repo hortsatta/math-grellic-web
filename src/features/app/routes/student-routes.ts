@@ -35,6 +35,15 @@ export const studentRoutes = {
     size: 28,
     hasRightSidebar: true,
   },
+  performance: {
+    name: 'performance',
+    to: 'performance',
+    label: 'Performance',
+    iconName: 'chart-donut',
+    lessonTo: 'lessons',
+    examTo: 'exams',
+    activityTo: 'activities',
+  },
   schedule: {
     name: 'schedules',
     to: 'schedules',
@@ -44,12 +53,6 @@ export const studentRoutes = {
       to: 'meetings',
     },
     hasRightSidebar: true,
-  },
-  performance: {
-    name: 'performance',
-    to: 'performance',
-    label: 'Performance',
-    iconName: 'chart-donut',
   },
   help: {
     name: 'help',

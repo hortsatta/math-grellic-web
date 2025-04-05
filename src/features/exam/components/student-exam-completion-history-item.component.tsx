@@ -24,6 +24,7 @@ export const StudentExamCompletionHistoryItem = memo(function ({
   passingPoints,
   schedule,
   completion,
+  onClick,
   ...moreProps
 }: Props) {
   const [score, date, time] = useMemo(() => {
@@ -70,9 +71,12 @@ export const StudentExamCompletionHistoryItem = memo(function ({
   return (
     <div
       className={cx(
-        'flex w-full flex-col gap-2.5 -3xs:flex-row -3xs:items-center -3xs:justify-between',
+        'flex w-full flex-col gap-2.5 rounded-md -3xs:flex-row -3xs:items-center -3xs:justify-between',
+        onClick &&
+          'cursor-pointer transition-all hover:!border-primary-hue-purple-focus hover:shadow-md hover:ring-1 hover:ring-primary-hue-purple-focus',
         className,
       )}
+      onClick={onClick}
       {...moreProps}
     >
       <div className='flex items-center gap-2.5'>

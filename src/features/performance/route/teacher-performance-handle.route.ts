@@ -26,4 +26,12 @@ export const teacherStudentPerformanceRouteHandle: {
     title: 'Performance Details',
     links: [performanceListLink, studentListLink],
   },
+  exams: {
+    title: 'Exam Performance Details',
+    links: [performanceListLink],
+  },
+  lessons: {
+    title: 'Lesson Performance Details',
+    links: [performanceListLink],
+  },
 };

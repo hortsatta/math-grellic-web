@@ -53,6 +53,17 @@ export const teacherRoutes = {
     previewTo: 'preview',
     hasRightSidebar: true,
   },
+  performance: {
+    name: 'performance',
+    to: 'performance',
+    label: 'Performance',
+    iconName: 'chart-donut',
+    lessonTo: 'lessons',
+    examTo: 'exams',
+    activityTo: 'activities',
+    studentTo: 'students',
+    hasRightSidebar: true,
+  },
   schedule: {
     name: 'schedules',
     to: 'schedules',
@@ -63,13 +74,6 @@ export const teacherRoutes = {
       createTo: 'create',
       editTo: 'edit',
     },
-    hasRightSidebar: true,
-  },
-  performance: {
-    name: 'performance',
-    to: 'performance',
-    label: 'Performance',
-    iconName: 'chart-donut',
     hasRightSidebar: true,
   },
   student: {

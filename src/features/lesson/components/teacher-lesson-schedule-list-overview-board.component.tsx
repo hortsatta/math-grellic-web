@@ -24,7 +24,7 @@ const scheduleButtonProps = {
   bodyFont: true,
 };
 
-export const TeacherLessonScheduleListOverview = memo(function ({
+export const TeacherLessonScheduleListOverviewBoard = memo(function ({
   className,
   lesson,
 }: Props) {

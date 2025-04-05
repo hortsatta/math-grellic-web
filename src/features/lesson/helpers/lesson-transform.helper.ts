@@ -64,6 +64,7 @@ export function transformToLessonSchedule({
   startDate,
   students,
   lesson,
+  isUpcoming,
 }: any): Partial<LessonSchedule> {
   const transformedStudents = !students?.length
     ? null
@@ -75,6 +76,7 @@ export function transformToLessonSchedule({
     startDate: dayjs(startDate).toDate(),
     students: transformedStudents,
     lesson: transformedLesson,
+    isUpcoming: isUpcoming ?? null,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }

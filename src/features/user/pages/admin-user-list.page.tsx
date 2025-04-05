@@ -16,7 +16,7 @@ import {
 import { useAdminUserOverview } from '../hooks/use-admin-user-overview.hook';
 import { useAdminUserPendingRegistrationList } from '../hooks/use-admin-user-pending-registration-list.hook';
 import { AdminUserSummary } from '../components/admin-user-summary.component';
-import { AdminUserOverview } from '../components/admin-user-overview.component';
+import { AdminUserOverviewBoard } from '../components/admin-user-overview-board.component';
 import { AdminUserPendingRegistrationList } from '../components/admin-user-pending-registration-list.component';
 import { AdminUserList } from '../components/admin-user-list.component';
 
@@ -160,7 +160,7 @@ export function AdminUserListPage() {
                 onRefresh={pendingRefresh}
                 onAdminDetails={handleOpenDetails(true)}
               />
-              <AdminUserOverview
+              <AdminUserOverviewBoard
                 registeredAdminCount={registeredAdminCount}
                 loading={overviewLoading}
                 onRefresh={overviewRefresh}

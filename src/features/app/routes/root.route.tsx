@@ -3,6 +3,7 @@ import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
+  redirect,
 } from 'react-router-dom';
 
 import { queryClient } from '#/config/react-query-client.config';
@@ -60,8 +61,15 @@ import {
 } from '#/activity/route/teacher-activity-loader.route';
 import {
   getPaginatedStudentPerformancesLoader,
+  getStudentExamsByPublicIdAndCurrentTeacherUserLoader,
+  getStudentLessonsByPublicIdAndCurrentTeacherUserLoader,
   getStudentPerformanceByPublicIdLoader,
 } from '#/performance/route/teacher-performance-loader.route';
+import {
+  getPerformanceByCurrentStudentUser,
+  getStudentExamsByCurrentStudentUserLoader,
+  getStudentLessonsByCurrentStudentUserLoader,
+} from '#/performance/route/student-performance-loader';
 import {
   getSchedulesByDateRangeLoader as getTeacherSchedulesByDateRangeLoader,
   getMeetingScheduleByIdLoader as getTeacherMeetingScheduleByIdLoader,
@@ -129,6 +137,10 @@ import { StudentActivityListPage } from '#/activity/pages/student-activity-list.
 import { StudentActivitySinglePage } from '#/activity/pages/student-activity-single.page';
 import { StudentPerformanceListPage } from '#/performance/pages/student-performance-list.page';
 import { TeacherStudentPerformanceSinglePage } from '#/performance/pages/teacher-student-performance-single.page';
+import { TeacherStudentExamPerformanceListPage } from '#/performance/pages/teacher-student-exam-performance-list.page';
+import { TeacherStudentLessonPerformanceListPage } from '#/performance/pages/teacher-student-lesson-performance-list.page';
+import { StudentExamPerformanceListPage } from '#/performance/pages/student-exam-performance-list.page';
+import { StudentLessonPerformanceListPage } from '#/performance/pages/student-lesson-performance-list.page';
 import { StudentPerformanceSinglePage } from '#/performance/pages/student-performance-single.page';
 import { TeacherScheduleCalendarPage } from '#/schedule/pages/teacher-schedule-calendar.page';
 import { StudentScheduleCalendarPage } from '#/schedule/pages/student-schedule-calendar.page';
@@ -427,17 +439,39 @@ const rootRoutes = createRoutesFromElements(
       <Route path={teacherRoutes.performance.to} element={<Outlet />}>
         <Route
           index
-          element={<StudentPerformanceListPage />}
-          handle={teacherStudentPerformanceRouteHandle.list}
-          loader={getPaginatedStudentPerformancesLoader(queryClient)}
+          loader={() => redirect(teacherRoutes.performance.studentTo)}
         />
-        <Route path=':publicId' element={<Outlet />}>
+        <Route path={teacherRoutes.performance.studentTo} element={<Outlet />}>
           <Route
             index
-            element={<TeacherStudentPerformanceSinglePage />}
-            handle={teacherStudentPerformanceRouteHandle.single}
-            loader={getStudentPerformanceByPublicIdLoader(queryClient)}
+            element={<StudentPerformanceListPage />}
+            handle={teacherStudentPerformanceRouteHandle.list}
+            loader={getPaginatedStudentPerformancesLoader(queryClient)}
           />
+          <Route path=':publicId' element={<Outlet />}>
+            <Route
+              index
+              element={<TeacherStudentPerformanceSinglePage />}
+              handle={teacherStudentPerformanceRouteHandle.single}
+              loader={getStudentPerformanceByPublicIdLoader(queryClient)}
+            />
+            <Route
+              path={teacherRoutes.performance.examTo}
+              element={<TeacherStudentExamPerformanceListPage />}
+              handle={teacherStudentPerformanceRouteHandle.exams}
+              loader={getStudentExamsByPublicIdAndCurrentTeacherUserLoader(
+                queryClient,
+              )}
+            />
+            <Route
+              path={teacherRoutes.performance.lessonTo}
+              element={<TeacherStudentLessonPerformanceListPage />}
+              handle={teacherStudentPerformanceRouteHandle.lessons}
+              loader={getStudentLessonsByPublicIdAndCurrentTeacherUserLoader(
+                queryClient,
+              )}
+            />
+          </Route>
         </Route>
       </Route>
       {/* TEACHER SCHEDULE */}
@@ -595,6 +629,19 @@ const rootRoutes = createRoutesFromElements(
           index
           element={<StudentPerformanceSinglePage />}
           handle={studentPerformanceRouteHandle.single}
+          loader={getPerformanceByCurrentStudentUser(queryClient)}
+        />
+        <Route
+          path={studentRoutes.performance.examTo}
+          element={<StudentExamPerformanceListPage />}
+          handle={studentPerformanceRouteHandle.exams}
+          loader={getStudentExamsByCurrentStudentUserLoader(queryClient)}
+        />
+        <Route
+          path={studentRoutes.performance.lessonTo}
+          element={<StudentLessonPerformanceListPage />}
+          handle={studentPerformanceRouteHandle.lessons}
+          loader={getStudentLessonsByCurrentStudentUserLoader(queryClient)}
         />
       </Route>
       {/* STUDENT SCHEDULE */}

@@ -1,72 +1,91 @@
-import { memo, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import cx from 'classix';
 
-import { transformToExam } from '#/exam/helpers/exam-transform.helper';
-import { BaseSpinner } from '#/base/components/base-spinner.component';
-import { getStudentExamsByPublicIdAndCurrentTeacherUser } from '../api/teacher-performance.api';
-import { StudentExamPerformanceDetails } from './student-exam-performance-details.component';
+import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { BaseDataEmptyMessage } from '#/base/components/base-data-empty-message.component';
+import { BaseModal } from '#/base/components/base-modal.component';
+import {
+  StudentExamPerformanceSingleCardSkeleton,
+  StudentExamPerformanceSingleCard,
+} from './student-exam-performance-single-card.component';
+import { TeacherStudentExamPerformanceResult } from './teacher-student-exam-performance-result.component';
 
 import type { ComponentProps } from 'react';
 import type { Exam } from '#/exam/models/exam.model';
+import type { ExamSchedule } from '#/exam/models/exam-schedule.model';
+
+const EXAM_CREATE_TO = `/${teacherBaseRoute}/${teacherRoutes.exam.to}/${teacherRoutes.exam.createTo}`;
 
 type Props = ComponentProps<'div'> & {
-  onExamClick: (exam?: Exam) => void;
+  exams: Exam[];
+  loading?: boolean;
 };
 
 export const TeacherStudentExamPerformanceList = memo(function ({
   className,
-  onExamClick,
+  loading,
+  exams,
   ...moreProps
 }: Props) {
-  const { publicId } = useParams();
-
-  const {
-    data: exams,
-    isFetching,
-    isLoading,
-  } = useQuery(
-    getStudentExamsByPublicIdAndCurrentTeacherUser(
-      { publicId: publicId || '' },
-      {
-        refetchOnWindowFocus: false,
-        enabled: !!publicId,
-        initialData: [],
-        select: (data: unknown) =>
-          Array.isArray(data)
-            ? data.map((item: any) => transformToExam(item))
-            : [],
-      },
-    ),
-  );
+  const [openModal, setOpenModal] = useState(false);
+  const [currentExam, setCurrentExam] = useState<Exam | null>(null);
 
   const filteredExams = useMemo(
     () => exams?.filter((exams) => exams.schedules?.length),
     [exams],
   );
 
-  if (isFetching || isLoading) {
-    return (
-      <div className='mt-5 flex w-full justify-center'>
-        <BaseSpinner />
-      </div>
-    );
-  }
+  const isEmpty = useMemo(() => !filteredExams?.length, [filteredExams]);
+
+  const viewExamResult = useCallback((exam: Exam) => {
+    setCurrentExam(exam);
+    setOpenModal(true);
+  }, []);
+
+  const handleClose = useCallback(() => setCurrentExam(null), []);
+
+  useEffect(() => {
+    setOpenModal(!!currentExam);
+  }, [currentExam]);
 
   return (
-    <div className={cx('flex flex-col py-2.5', className)} {...moreProps}>
-      {filteredExams?.length ? (
-        filteredExams.map((exam) => (
-          <StudentExamPerformanceDetails
-            key={`ce-${exam.slug}`}
-            exam={exam}
-            onClick={onExamClick}
+    <>
+      <div
+        className={cx(
+          'flex w-full flex-1 flex-col gap-2.5 self-stretch',
+          className,
+        )}
+        role='table'
+        {...moreProps}
+      >
+        {loading ? (
+          [...Array(4)].map((_, index) => (
+            <StudentExamPerformanceSingleCardSkeleton key={index} />
+          ))
+        ) : isEmpty ? (
+          <BaseDataEmptyMessage
+            message='No exams available'
+            linkTo={EXAM_CREATE_TO}
           />
-        ))
-      ) : (
-        <div className='text-center text-sm opacity-70'>Nothing to show</div>
-      )}
-    </div>
+        ) : (
+          filteredExams.map((exam) => (
+            <StudentExamPerformanceSingleCard
+              key={exam.id}
+              exam={exam}
+              role='row'
+              onResult={viewExamResult}
+            />
+          ))
+        )}
+      </div>
+      <BaseModal open={openModal} onClose={handleClose}>
+        {currentExam && (
+          <TeacherStudentExamPerformanceResult
+            slug={currentExam.slug}
+            scheduleId={(currentExam.schedules as ExamSchedule[])[0].id}
+          />
+        )}
+      </BaseModal>
+    </>
   );
 });

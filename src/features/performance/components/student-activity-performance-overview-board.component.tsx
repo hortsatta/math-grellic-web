@@ -24,7 +24,7 @@ const ACTIVITY_WRAPPER_CLASSNAME = 'flex flex-col items-center w-36';
 const ACTIVITY_VALUE_CLASSNAME = 'text-2xl font-bold text-primary-hue-teal';
 const ACTIVITY_LABEL_CLASSNAME = 'text-sm';
 
-export const StudentActivityPerformanceOverview = memo(function ({
+export const StudentActivityPerformanceOverviewBoard = memo(function ({
   loading,
   className,
   studentPerformance,

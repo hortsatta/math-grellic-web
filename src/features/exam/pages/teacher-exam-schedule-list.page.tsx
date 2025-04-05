@@ -6,7 +6,7 @@ import { useTeacherExamSingle } from '../hooks/use-teacher-exam-single.hook';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseScene } from '#/base/components/base-scene.component';
 import { BaseGroupLink } from '#/base/components/base-group-link.component';
-import { TeacherExamScheduleListOverview } from '../components/teacher-exam-schedule-list-overview.component';
+import { TeacherExamScheduleListOverviewBoard } from '../components/teacher-exam-schedule-list-overview-board.component';
 
 import type { GroupLink } from '#/base/models/base.model';
 import type { Exam } from '../models/exam.model';
@@ -62,7 +62,7 @@ export function TeacherExamScheduleListPage() {
       >
         {exam && (
           <div className='w-full py-5'>
-            <TeacherExamScheduleListOverview
+            <TeacherExamScheduleListOverviewBoard
               className='mx-auto max-w-compact'
               exam={exam}
               currentExamSchedule={examSchedule}

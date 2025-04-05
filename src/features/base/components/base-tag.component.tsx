@@ -12,7 +12,7 @@ export const BaseTag = memo(
       <div
         ref={ref}
         className={cx(
-          'rounded bg-accent/80 px-4 py-1 text-center text-xs font-medium uppercase tracking-wide text-white',
+          'flex items-center justify-center rounded bg-accent/80 px-4 py-1 text-xs font-medium uppercase tracking-wide text-white',
           className,
         )}
         {...moreProps}

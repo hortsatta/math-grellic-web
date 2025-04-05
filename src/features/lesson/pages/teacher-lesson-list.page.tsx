@@ -9,7 +9,7 @@ import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 import { BaseDataPagination } from '#/base/components/base-data-pagination.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
-import { TeacherLessonPerformanceOverview } from '#/performance/components/teacher-lesson-performance-overview.component';
+import { TeacherLessonPerformanceOverviewBoard } from '#/performance/components/teacher-lesson-performance-overview-board.component';
 import { TeacherScheduleDailyCardList } from '#/schedule/components/teacher-schedule-daily-card-list.component';
 import {
   defaultSort,
@@ -121,7 +121,7 @@ export function TeacherLessonListPage() {
               loading={dailyScheduleLoading}
               setCurrentDate={setCurrentDate}
             />
-            <TeacherLessonPerformanceOverview
+            <TeacherLessonPerformanceOverviewBoard
               lessonPerformance={lessonPerformance}
               loading={lessonPerformanceLoading}
             />

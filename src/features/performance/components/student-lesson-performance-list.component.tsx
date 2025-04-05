@@ -1,57 +1,62 @@
-import { memo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { memo, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
-import { BaseSpinner } from '#/base/components/base-spinner.component';
-
-import { transformToLesson } from '#/lesson/helpers/lesson-transform.helper';
-import { getStudentLessonsByCurrentStudentUser } from '../api/student-performance.api';
-import { StudentLessonPerformanceDetails } from './student-lesson-performance-details.component';
+import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
+import {
+  StudentLessonPerformanceSingleCardSkeleton,
+  StudentLessonPerformanceSingleCard,
+} from './student-lesson-performance-single-card.component';
 
 import type { ComponentProps } from 'react';
+import type { Lesson } from '#/lesson/models/lesson.model';
+
+type Props = ComponentProps<'div'> & {
+  lessons: Lesson[];
+  loading?: boolean;
+};
 
 export const StudentLessonPerformanceList = memo(function ({
   className,
+  loading,
+  lessons,
   ...moreProps
-}: ComponentProps<'div'>) {
-  const {
-    data: lessons,
-    isFetching,
-    isLoading,
-  } = useQuery(
-    getStudentLessonsByCurrentStudentUser(
-      {},
-      {
-        refetchOnWindowFocus: false,
-        initialData: [],
-        select: (data: unknown) =>
-          Array.isArray(data)
-            ? data.map((item: any) => transformToLesson(item))
-            : [],
-      },
-    ),
+}: Props) {
+  const navigate = useNavigate();
+
+  const isEmpty = useMemo(() => !lessons?.length, [lessons]);
+
+  const handleClick = useCallback(
+    (slug: string) => () =>
+      navigate(`/${studentBaseRoute}/${studentRoutes.lesson.to}/${slug}`),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   );
 
-  if (isFetching || isLoading) {
-    return (
-      <div className='mt-5 flex w-full justify-center'>
-        <BaseSpinner />
-      </div>
-    );
-  }
-
   return (
-    <div className={cx('flex flex-col py-2.5', className)} {...moreProps}>
-      {lessons?.length ? (
+    <div
+      className={cx(
+        'flex w-full flex-1 flex-col gap-2.5 self-stretch',
+        className,
+      )}
+      role='table'
+      {...moreProps}
+    >
+      {loading ? (
+        [...Array(4)].map((_, index) => (
+          <StudentLessonPerformanceSingleCardSkeleton key={index} />
+        ))
+      ) : isEmpty ? (
+        <div className='w-full py-4 text-center'>No lessons to show</div>
+      ) : (
         lessons.map((lesson) => (
-          <StudentLessonPerformanceDetails
-            key={lesson.slug}
+          <StudentLessonPerformanceSingleCard
+            key={`lesson-${lesson.id}`}
             lesson={lesson}
-            isStudent
+            role='row'
+            onClick={handleClick(lesson.slug)}
           />
         ))
-      ) : (
-        <div className='text-center text-sm opacity-70'>Nothing to show</div>
       )}
     </div>
   );

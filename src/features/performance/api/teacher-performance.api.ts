@@ -312,15 +312,25 @@ export function getStudentActivitiesByPublicIdAndCurrentTeacherUser(
 }
 
 export function getStudentExamWithCompletionsByPublicIdAndSlug(
-  keys: { publicId: string; slug: string; exclude?: string; include?: string },
+  keys: {
+    publicId: string;
+    slug: string;
+    scheduleId?: number;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<UseQueryOptions<Exam, Error, Exam, any>, 'queryFn'>,
 ) {
-  const { publicId: pId, slug, exclude, include } = keys;
+  const { publicId: pId, slug, scheduleId, exclude, include } = keys;
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students/${publicId}/exams/${slug}`;
-    const searchParams = generateSearchParams({ exclude, include });
+    const searchParams = generateSearchParams({
+      scheduleId: scheduleId?.toString(),
+      exclude,
+      include,
+    });
 
     try {
       const exam = await kyInstance.get(url, { searchParams }).json();

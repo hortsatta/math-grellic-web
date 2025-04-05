@@ -2,6 +2,8 @@ import { defer } from 'react-router-dom';
 
 import {
   getPaginatedStudentPerformancesByCurrentTeacherUser,
+  getStudentExamsByPublicIdAndCurrentTeacherUser,
+  getStudentLessonsByPublicIdAndCurrentTeacherUser,
   getStudentPerformanceByPublicIdAndCurrentTeacherUser,
 } from '../api/teacher-performance.api';
 import { defaultParamKeys } from '../hooks/use-student-performance-list.hook';
@@ -35,6 +37,46 @@ export function getPaginatedStudentPerformancesLoader(
   return async () => {
     const query =
       getPaginatedStudentPerformancesByCurrentTeacherUser(defaultParamKeys);
+    return defer({
+      main:
+        queryClient.getQueryData(query.queryKey as string[]) ??
+        queryClient.fetchQuery(query),
+    });
+  };
+}
+
+export function getStudentExamsByPublicIdAndCurrentTeacherUserLoader(
+  queryClient: QueryClient,
+  queryParams?: { exclude?: string; include?: string },
+) {
+  return async ({ params }: LoaderFunctionArgs) => {
+    if (!params?.publicId) {
+      return;
+    }
+
+    const keys = { ...queryParams, publicId: params.publicId };
+    const query = getStudentExamsByPublicIdAndCurrentTeacherUser(keys);
+
+    return defer({
+      main:
+        queryClient.getQueryData(query.queryKey as string[]) ??
+        queryClient.fetchQuery(query),
+    });
+  };
+}
+
+export function getStudentLessonsByPublicIdAndCurrentTeacherUserLoader(
+  queryClient: QueryClient,
+  queryParams?: { exclude?: string; include?: string },
+) {
+  return async ({ params }: LoaderFunctionArgs) => {
+    if (!params?.publicId) {
+      return;
+    }
+
+    const keys = { ...queryParams, publicId: params.publicId };
+    const query = getStudentLessonsByPublicIdAndCurrentTeacherUser(keys);
+
     return defer({
       main:
         queryClient.getQueryData(query.queryKey as string[]) ??

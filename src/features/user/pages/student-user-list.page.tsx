@@ -17,7 +17,7 @@ import { useStudentUserPendingEnrollmentList } from '../hooks/use-student-user-p
 import { useStudentUserOverview } from '../hooks/use-student-user-overview.hook';
 import { StudentUserSummary } from '../components/student-user-summary.component';
 import { StudentUserList } from '../components/student-user-list.component';
-import { StudentUserOverview } from '../components/student-user-overview.component';
+import { StudentUserOverviewBoard } from '../components/student-user-overview-board.component';
 import { StudentUserPendingEnrollmentList } from '../components/student-user-pending-enrollment-list.component';
 
 import type { StudentUserAccount } from '../models/user.model';
@@ -184,7 +184,7 @@ export function StudentUserListPage() {
                 onRefresh={pendingRefresh}
                 onStudentDetails={handleOpenDetails(true)}
               />
-              <StudentUserOverview
+              <StudentUserOverviewBoard
                 enrolledStudentCount={enrolledStudentCount}
                 loading={overviewLoading}
                 onRefresh={overviewRefresh}

@@ -30,7 +30,7 @@ type Result = {
   handlePerformanceDetails: (publicId: string) => void;
 };
 
-const PERFORMANCE_PATH = `/${teacherBaseRoute}/${teacherRoutes.performance.to}`;
+const PERFORMANCE_PATH = `/${teacherBaseRoute}/${teacherRoutes.performance.to}/${teacherRoutes.performance.studentTo}`;
 
 export const defaultSort = {
   field: 'rank',

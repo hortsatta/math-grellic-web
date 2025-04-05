@@ -11,10 +11,12 @@ import type { ComponentProps } from 'react';
 
 type Props = ComponentProps<'div'> & {
   slug: string;
+  scheduleId: number;
 };
 
 export const TeacherStudentExamPerformanceResult = memo(function ({
   slug,
+  scheduleId,
   ...moreProps
 }: Props) {
   const { publicId } = useParams();
@@ -25,7 +27,7 @@ export const TeacherStudentExamPerformanceResult = memo(function ({
     isLoading,
   } = useQuery(
     getStudentExamWithCompletionsByPublicIdAndSlug(
-      { publicId: publicId || '', slug },
+      { publicId: publicId || '', slug, scheduleId },
       {
         refetchOnWindowFocus: false,
         enabled: !!publicId,

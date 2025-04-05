@@ -20,7 +20,7 @@ const EXAM_WRAPPER_CLASSNAME = 'flex flex-col items-center w-36';
 const EXAM_VALUE_CLASSNAME = 'text-2xl font-bold text-primary-hue-purple';
 const EXAM_LABEL_CLASSNAME = 'text-sm';
 
-export const TeacherExamPerformanceOverview = memo(function ({
+export const TeacherExamPerformanceOverviewBoard = memo(function ({
   loading,
   className,
   examPerformance,

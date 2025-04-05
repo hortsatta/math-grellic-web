@@ -3,7 +3,7 @@ import { useLoaderData } from 'react-router-dom';
 import { useStudentPerformanceSingle } from '#/performance/hooks/use-student-performance-single.hook';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
-import { StudentExamPerformanceOverview } from '#/performance/components/student-exam-performance-overview.component';
+import { StudentExamPerformanceOverviewBoard } from '#/performance/components/student-exam-performance-overview-board.component';
 import { useStudentExamList } from '../hooks/use-student-exam-list.hook';
 import { StudentLatestExamList } from '../components/student-latest-exam-list.component';
 import { StudentPreviousExamList } from '../components/student-previous-exam-list.component';
@@ -42,7 +42,7 @@ export function StudentExamListPage() {
           <div className='bg-gradient sticky bottom-0 h-20 w-full bg-gradient-to-t from-backdrop from-60% to-transparent' />
         </div>
         <BaseRightSidebar>
-          <StudentExamPerformanceOverview
+          <StudentExamPerformanceOverviewBoard
             studentPerformance={studentPerformance}
             loading={performanceLoading}
           />

@@ -6,7 +6,7 @@ import { BaseScene } from '#/base/components/base-scene.component';
 import { BaseGroupLink } from '#/base/components/base-group-link.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { useTeacherLessonSingle } from '../hooks/use-teacher-lesson-single.hook';
-import { TeacherLessonScheduleListOverview } from '../components/teacher-lesson-schedule-list-overview.component';
+import { TeacherLessonScheduleListOverviewBoard } from '../components/teacher-lesson-schedule-list-overview-board.component';
 
 import type { Lesson, LessonSchedule } from '../models/lesson.model';
 import type { GroupLink } from '#/base/models/base.model';
@@ -50,7 +50,7 @@ export function TeacherLessonScheduleListPage() {
       >
         {lesson && (
           <div className='w-full py-5'>
-            <TeacherLessonScheduleListOverview
+            <TeacherLessonScheduleListOverviewBoard
               lesson={lesson}
               className='mx-auto max-w-compact'
             />
