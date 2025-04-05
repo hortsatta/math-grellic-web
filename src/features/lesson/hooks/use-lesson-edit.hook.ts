@@ -81,18 +81,13 @@ export function useLessonEdit(slug?: string): Result {
 
   const editLesson = useCallback(
     async (data: LessonUpsertFormData) => {
-      const scheduleId = lesson?.schedules?.length
-        ? lesson?.schedules[0]?.id
-        : undefined;
-
       const updatedLesson = await mutateEditLesson({
         slug: slug || '',
         data,
-        scheduleId,
       });
       return updatedLesson;
     },
-    [slug, lesson, mutateEditLesson],
+    [slug, mutateEditLesson],
   );
 
   const deleteLesson = useCallback(async () => {

@@ -179,7 +179,7 @@ export function editLesson(
     UseMutationOptions<
       Lesson,
       Error,
-      { slug: string; data: LessonUpsertFormData; scheduleId?: number },
+      { slug: string; data: LessonUpsertFormData },
       any
     >,
     'mutationFn'
@@ -188,20 +188,15 @@ export function editLesson(
   const mutationFn = async ({
     slug,
     data,
-    scheduleId,
   }: {
     slug: string;
     data: LessonUpsertFormData;
-    scheduleId?: number;
   }): Promise<any> => {
     const url = `${BASE_URL}/${slug}`;
     const json = transformToLessonUpsertDto(data);
-    const searchParams = generateSearchParams({
-      schedule: scheduleId?.toString(),
-    });
 
     try {
-      const lesson = await kyInstance.patch(url, { json, searchParams }).json();
+      const lesson = await kyInstance.patch(url, { json }).json();
       return transformToLesson(lesson);
     } catch (error: any) {
       const apiError = await generateApiError(error);

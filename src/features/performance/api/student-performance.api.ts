@@ -124,6 +124,7 @@ export function getStudentActivitiesByCurrentStudentUser(
   };
 }
 
+// Deprecated, don't show answer key
 export function getStudentExamWithCompletionsBySlugAndCurrentStudentUser(
   keys: { slug: string; exclude?: string; include?: string },
   options?: Omit<UseQueryOptions<Exam, Error, Exam, any>, 'queryFn'>,

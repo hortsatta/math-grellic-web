@@ -105,6 +105,7 @@ export function getExamPerformanceByCurrentTeacherUser(
   };
 }
 
+// TODO
 export function getActivityPerformanceByCurrentTeacherUser(
   options?: Omit<
     UseQueryOptions<
@@ -311,6 +312,7 @@ export function getStudentActivitiesByPublicIdAndCurrentTeacherUser(
   };
 }
 
+// Deprecated
 export function getStudentExamWithCompletionsByPublicIdAndSlug(
   keys: {
     publicId: string;
