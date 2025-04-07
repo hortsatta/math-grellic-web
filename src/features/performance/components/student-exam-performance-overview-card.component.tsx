@@ -18,7 +18,8 @@ type Props = ComponentProps<typeof BaseSurface> & {
   compact?: boolean;
 };
 
-const EXAM_WRAPPER_CLASSNAME = 'flex flex-col items-center w-36';
+const EXAM_WRAPPER_CLASSNAME = 'flex flex-col items-center -3xs:w-36 w-auto';
+const EXAM_WRAPPER_SM_CLASSNAME = 'flex flex-col items-center -3xs:w-24 w-auto';
 const EXAM_VALUE_CLASSNAME = 'text-2xl font-bold text-primary-hue-purple';
 
 export const StudentExamPerformanceOverviewCard = memo(function ({
@@ -29,22 +30,24 @@ export const StudentExamPerformanceOverviewCard = memo(function ({
   ...moreProps
 }: Props) {
   const [
-    currentExamCount,
-    examsCompletedCount,
-    examsPassedCount,
-    examsFailedCount,
-    examsExpiredCount,
+    examCurrentCount,
+    examTotalCount,
+    examCompletedCount,
+    examPassedCount,
+    examFailedCount,
+    examExpiredCount,
     overallExamCompletionPercent,
     overallExamScore,
     overallExamRank,
   ] = useMemo(
     () => [
       // Exams
-      student.currentExamCount,
-      student.examsCompletedCount,
-      student.examsPassedCount,
-      student.examsFailedCount,
-      student.examsExpiredCount,
+      student.examCurrentCount,
+      student.examTotalCount,
+      student.examCompletedCount,
+      student.examPassedCount,
+      student.examFailedCount,
+      student.examExpiredCount,
       student.overallExamCompletionPercent,
       student.overallExamScore,
       student.overallExamRank,
@@ -84,7 +87,7 @@ export const StudentExamPerformanceOverviewCard = memo(function ({
           )}
         </div>
       )}
-      <div className='flex min-h-[200px] w-full flex-col items-stretch gap-5 md:flex-row md:gap-0'>
+      <div className='flex min-h-[200px] w-full flex-col items-center gap-5 md:flex-row md:items-stretch'>
         <div className='flex flex-1 flex-col items-center justify-center gap-y-8 '>
           <div className='flex items-center justify-center gap-5 font-bold text-primary-hue-purple'>
             <div className='flex items-center gap-x-2.5'>
@@ -110,29 +113,38 @@ export const StudentExamPerformanceOverviewCard = memo(function ({
         </div>
         <BaseDivider className='hidden !h-auto md:block' vertical />
         <BaseDivider className='block md:hidden' />
-        <div className='flex flex-1 flex-col items-center justify-center font-medium'>
-          <div className='grid w-fit grid-cols-1 gap-y-4 -3xs:grid-cols-2 -2xs:grid-cols-3 md:grid-cols-2'>
+        <div className='flex flex-1 flex-col items-center justify-center gap-2.5 font-medium'>
+          <div className='flex w-full flex-col items-center gap-2.5 rounded-lg border p-4'>
             <div className={EXAM_WRAPPER_CLASSNAME}>
-              <span className={EXAM_VALUE_CLASSNAME}>{currentExamCount}</span>
+              <span className={EXAM_VALUE_CLASSNAME}>{examCompletedCount}</span>
+              <span>Exams Completed</span>
+            </div>
+            <BaseDivider />
+            <div className='flex items-center justify-center gap-2.5'>
+              <div className={EXAM_WRAPPER_SM_CLASSNAME}>
+                <span className={EXAM_VALUE_CLASSNAME}>{examPassedCount}</span>
+                <span className='text-sm'>Passed</span>
+              </div>
+              <BaseDivider className='!h-14' vertical />
+              <div className={EXAM_WRAPPER_SM_CLASSNAME}>
+                <span className={EXAM_VALUE_CLASSNAME}>{examFailedCount}</span>
+                <span className='text-sm'>Failed</span>
+              </div>
+              <BaseDivider className='!h-14' vertical />
+              <div className={EXAM_WRAPPER_SM_CLASSNAME}>
+                <span className={EXAM_VALUE_CLASSNAME}>{examExpiredCount}</span>
+                <span className='text-sm'>Expired</span>
+              </div>
+            </div>
+          </div>
+          <div className='flex items-center gap-2.5'>
+            <div className={EXAM_WRAPPER_CLASSNAME}>
+              <span className={EXAM_VALUE_CLASSNAME}>{examCurrentCount}</span>
               <span>Current Exams</span>
             </div>
             <div className={EXAM_WRAPPER_CLASSNAME}>
-              <span className={EXAM_VALUE_CLASSNAME}>{examsPassedCount}</span>
-              <span>Exams Passed</span>
-            </div>
-            <div className={EXAM_WRAPPER_CLASSNAME}>
-              <span className={EXAM_VALUE_CLASSNAME}>
-                {examsCompletedCount}
-              </span>
-              <span>Exams Completed</span>
-            </div>
-            <div className={EXAM_WRAPPER_CLASSNAME}>
-              <span className={EXAM_VALUE_CLASSNAME}>{examsFailedCount}</span>
-              <span>Exams Failed</span>
-            </div>
-            <div className={EXAM_WRAPPER_CLASSNAME}>
-              <span className={EXAM_VALUE_CLASSNAME}>{examsExpiredCount}</span>
-              <span>Exams Expired</span>
+              <span className={EXAM_VALUE_CLASSNAME}>{examTotalCount}</span>
+              <span>Total Exams</span>
             </div>
           </div>
         </div>

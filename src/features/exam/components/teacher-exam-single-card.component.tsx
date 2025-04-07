@@ -128,8 +128,6 @@ export const TeacherExamSingleCard = memo(function ({
     [exam],
   );
 
-  console.log(exam.schedules);
-
   const [scheduleDate, scheduleTime, scheduleDuration] = useMemo(() => {
     if (!exam.schedules?.length) {
       return [];

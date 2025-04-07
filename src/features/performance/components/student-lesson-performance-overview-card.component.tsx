@@ -16,7 +16,7 @@ type Props = ComponentProps<typeof BaseSurface> & {
   compact?: boolean;
 };
 
-const LESSON_WRAPPER_CLASSNAME = 'flex flex-col items-center w-40';
+const LESSON_WRAPPER_CLASSNAME = 'flex flex-col items-center -3xs:w-40 w-auto';
 const LESSON_VALUE_CLASSNAME = 'text-2xl font-bold text-primary';
 
 export const StudentLessonPerformanceOverviewCard = memo(function ({
@@ -27,17 +27,17 @@ export const StudentLessonPerformanceOverviewCard = memo(function ({
   ...moreProps
 }: Props) {
   const [
-    totalLessonCount,
-    currentLessonCount,
-    lessonsCompletedCount,
+    lessonTotalCount,
+    lessonCurrentCount,
+    lessonCompletedCount,
     overallLessonScoreText,
     overallLessonCompletionPercent,
   ] = useMemo(
     () => [
-      student.totalLessonCount,
-      student.currentLessonCount,
-      student.lessonsCompletedCount,
-      `${student.lessonsCompletedCount}/${student.currentLessonCount} Completed`,
+      student.lessonTotalCount,
+      student.lessonCurrentCount,
+      student.lessonCompletedCount,
+      `${student.lessonCompletedCount}/${student.lessonCurrentCount} Completed`,
       student.overallLessonCompletionPercent,
     ],
     [student],
@@ -59,7 +59,7 @@ export const StudentLessonPerformanceOverviewCard = memo(function ({
           )}
         </div>
       )}
-      <div className='flex min-h-[200px] w-full flex-col items-stretch gap-5 md:flex-row md:gap-0'>
+      <div className='flex min-h-[200px] w-full flex-col items-stretch gap-5 md:flex-row'>
         <div className='flex flex-1 flex-col items-center justify-center gap-y-8'>
           <div className='flex items-center justify-center gap-5 font-bold text-primary'>
             <span className='font-display text-xl tracking-tighter'>
@@ -74,22 +74,24 @@ export const StudentLessonPerformanceOverviewCard = memo(function ({
         </div>
         <BaseDivider className='hidden !h-auto md:block' vertical />
         <BaseDivider className='block md:hidden' />
-        <div className='flex flex-1 flex-col items-center justify-center font-medium'>
-          <div className='flex w-fit grid-cols-2 flex-col gap-y-4 -3xs:grid -3xs:flex-row xs:flex md:flex-col'>
+        <div className='flex w-full flex-1 flex-col items-center justify-center gap-2.5 font-medium'>
+          <div className='flex w-full flex-col items-center rounded-lg border p-4'>
             <div className={LESSON_WRAPPER_CLASSNAME}>
               <span className={LESSON_VALUE_CLASSNAME}>
-                {currentLessonCount}
+                {lessonCompletedCount}
+              </span>
+              <span>Lessons Completed</span>
+            </div>
+          </div>
+          <div className='flex flex-col items-center gap-2.5 -3xs:flex-row'>
+            <div className={LESSON_WRAPPER_CLASSNAME}>
+              <span className={LESSON_VALUE_CLASSNAME}>
+                {lessonCurrentCount}
               </span>
               <span>Current Lessons</span>
             </div>
             <div className={LESSON_WRAPPER_CLASSNAME}>
-              <span className={LESSON_VALUE_CLASSNAME}>
-                {lessonsCompletedCount}
-              </span>
-              <span>Lessons Completed</span>
-            </div>
-            <div className={LESSON_WRAPPER_CLASSNAME}>
-              <span className={LESSON_VALUE_CLASSNAME}>{totalLessonCount}</span>
+              <span className={LESSON_VALUE_CLASSNAME}>{lessonTotalCount}</span>
               <span>Total Lessons</span>
             </div>
           </div>

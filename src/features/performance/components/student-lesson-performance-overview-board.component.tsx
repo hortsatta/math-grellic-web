@@ -29,13 +29,13 @@ export const StudentLessonPerformanceOverviewBoard = memo(function ({
   ...moreProps
 }: Props) {
   const [
-    currentLessonCount,
-    lessonsCompletedCount,
+    lessonCurrentCount,
+    lessonCompletedCount,
     overallLessonCompletionPercent,
   ] = useMemo(
     () => [
-      studentPerformance?.currentLessonCount || 0,
-      studentPerformance?.lessonsCompletedCount || 0,
+      studentPerformance?.lessonCurrentCount || 0,
+      studentPerformance?.lessonCompletedCount || 0,
       studentPerformance?.overallLessonCompletionPercent || 0,
     ],
     [studentPerformance],
@@ -59,13 +59,13 @@ export const StudentLessonPerformanceOverviewBoard = memo(function ({
           >
             <div className={LESSON_WRAPPER_CLASSNAME}>
               <span className={LESSON_VALUE_CLASSNAME}>
-                {currentLessonCount}
+                {lessonCurrentCount}
               </span>
               <span className={LESSON_LABEL_CLASSNAME}>Current Lessons</span>
             </div>
             <div className={cx(LESSON_WRAPPER_CLASSNAME, 'flex-1')}>
               <span className={LESSON_VALUE_CLASSNAME}>
-                {lessonsCompletedCount}
+                {lessonCompletedCount}
               </span>
               <span className={LESSON_LABEL_CLASSNAME}>Lessons Completed</span>
             </div>

@@ -21,7 +21,8 @@ type Props = ComponentProps<'div'> & {
 
 const PERFORMANCE_PATH = `/${studentBaseRoute}/${studentRoutes.performance.to}`;
 
-const EXAM_WRAPPER_CLASSNAME = 'flex flex-col items-center w-36';
+const EXAM_WRAPPER_CLASSNAME = 'flex flex-col items-center';
+const EXAM_WRAPPER_SM_CLASSNAME = 'flex flex-col items-center flex-1';
 const EXAM_VALUE_CLASSNAME = 'text-2xl font-bold text-primary-hue-purple';
 const EXAM_LABEL_CLASSNAME = 'text-sm';
 
@@ -32,21 +33,21 @@ export const StudentExamPerformanceOverviewBoard = memo(function ({
   ...moreProps
 }: Props) {
   const [
-    currentExamCount,
-    examsPassedCount,
-    examsCompletedCount,
-    examsFailedCount,
-    examsExpiredCount,
+    examCurrentCount,
+    examPassedCount,
+    examCompletedCount,
+    examFailedCount,
+    examExpiredCount,
     overallExamRank,
     overallExamScore,
     overallExamCompletionPercent,
   ] = useMemo(
     () => [
-      studentPerformance?.currentExamCount,
-      studentPerformance?.examsPassedCount,
-      studentPerformance?.examsCompletedCount,
-      studentPerformance?.examsFailedCount,
-      studentPerformance?.examsExpiredCount,
+      studentPerformance?.examCurrentCount,
+      studentPerformance?.examPassedCount,
+      studentPerformance?.examCompletedCount,
+      studentPerformance?.examFailedCount,
+      studentPerformance?.examExpiredCount,
       studentPerformance?.overallExamRank,
       studentPerformance?.overallExamScore,
       studentPerformance?.overallExamCompletionPercent || 0,
@@ -105,37 +106,40 @@ export const StudentExamPerformanceOverviewBoard = memo(function ({
             rounded='sm'
             className='flex animate-fastFadeIn justify-center !p-4'
           >
-            <div className='flex flex-1 flex-col items-center justify-center font-medium'>
-              <div className='grid w-fit grid-cols-2 gap-y-4'>
+            <div className='flex flex-1 flex-col items-center justify-center gap-2.5 font-medium'>
+              <div className={EXAM_WRAPPER_CLASSNAME}>
+                <span className={EXAM_VALUE_CLASSNAME}>{examCurrentCount}</span>
+                <span className={EXAM_LABEL_CLASSNAME}>Current Exams</span>
+              </div>
+              <div className='flex w-full flex-col items-center gap-2.5 rounded-lg border p-4'>
                 <div className={EXAM_WRAPPER_CLASSNAME}>
                   <span className={EXAM_VALUE_CLASSNAME}>
-                    {currentExamCount}
-                  </span>
-                  <span className={EXAM_LABEL_CLASSNAME}>Current Exams</span>
-                </div>
-                <div className={EXAM_WRAPPER_CLASSNAME}>
-                  <span className={EXAM_VALUE_CLASSNAME}>
-                    {examsPassedCount}
-                  </span>
-                  <span className={EXAM_LABEL_CLASSNAME}>Exams Passed</span>
-                </div>
-                <div className={EXAM_WRAPPER_CLASSNAME}>
-                  <span className={EXAM_VALUE_CLASSNAME}>
-                    {examsCompletedCount}
+                    {examCompletedCount}
                   </span>
                   <span className={EXAM_LABEL_CLASSNAME}>Exams Completed</span>
                 </div>
-                <div className={EXAM_WRAPPER_CLASSNAME}>
-                  <span className={EXAM_VALUE_CLASSNAME}>
-                    {examsFailedCount}
-                  </span>
-                  <span className={EXAM_LABEL_CLASSNAME}>Exams Failed</span>
-                </div>
-                <div className={EXAM_WRAPPER_CLASSNAME}>
-                  <span className={EXAM_VALUE_CLASSNAME}>
-                    {examsExpiredCount}
-                  </span>
-                  <span className={EXAM_LABEL_CLASSNAME}>Exams Expired</span>
+                <BaseDivider />
+                <div className='flex w-full items-center justify-center gap-2.5'>
+                  <div className={EXAM_WRAPPER_SM_CLASSNAME}>
+                    <span className={EXAM_VALUE_CLASSNAME}>
+                      {examPassedCount}
+                    </span>
+                    <span className={EXAM_LABEL_CLASSNAME}>Passed</span>
+                  </div>
+                  <BaseDivider className='!h-14' vertical />
+                  <div className={EXAM_WRAPPER_SM_CLASSNAME}>
+                    <span className={EXAM_VALUE_CLASSNAME}>
+                      {examFailedCount}
+                    </span>
+                    <span className={EXAM_LABEL_CLASSNAME}>Failed</span>
+                  </div>
+                  <BaseDivider className='!h-14' vertical />
+                  <div className={EXAM_WRAPPER_SM_CLASSNAME}>
+                    <span className={EXAM_VALUE_CLASSNAME}>
+                      {examExpiredCount}
+                    </span>
+                    <span className={EXAM_LABEL_CLASSNAME}>Expired</span>
+                  </div>
                 </div>
               </div>
             </div>

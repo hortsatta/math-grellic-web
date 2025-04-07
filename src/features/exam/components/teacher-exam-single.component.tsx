@@ -164,7 +164,7 @@ export const TeacherExamSingle = memo(function ({
               )}
             </div>
             {schedules.length ? (
-              <div className='flex w-full flex-col gap-2.5 sm:gap-y-4'>
+              <div className='flex w-full flex-col'>
                 {schedules.map((schedule, index) => (
                   <Fragment key={`sched-${index}`}>
                     <TeacherExamScheduleSingleCard

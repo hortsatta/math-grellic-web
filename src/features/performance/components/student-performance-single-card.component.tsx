@@ -78,12 +78,12 @@ export const StudentPerformanceSingleCard = memo(function ({
   onDetails,
   ...moreProps
 }: Props) {
-  const [publicId, email, gender, totalLessonCount] = useMemo(
+  const [publicId, email, gender, lessonTotalCount] = useMemo(
     () => [
       student.publicId,
       student.email,
       student.gender,
-      student.totalLessonCount,
+      student.lessonTotalCount,
     ],
     [student],
   );
@@ -94,7 +94,7 @@ export const StudentPerformanceSingleCard = memo(function ({
     } else if (performance === StudentPerformanceType.Activity) {
       return student.overallActivityScore;
     } else {
-      return student.lessonsCompletedCount;
+      return student.lessonCompletedCount;
     }
   }, [performance, student]);
 
@@ -121,7 +121,7 @@ export const StudentPerformanceSingleCard = memo(function ({
 
   const overallScoreText = useMemo(() => {
     if (performance === StudentPerformanceType.Lesson) {
-      return `${overallScore || 0}/${totalLessonCount} Completed`;
+      return `${overallScore || 0}/${lessonTotalCount} Completed`;
     } else {
       if (overallScore == null) {
         return '';
@@ -130,7 +130,7 @@ export const StudentPerformanceSingleCard = memo(function ({
       const pointText = overallScore > 1 ? 'Points' : 'Point';
       return `${overallScore} ${pointText}`;
     }
-  }, [overallScore, totalLessonCount, performance]);
+  }, [overallScore, lessonTotalCount, performance]);
 
   return (
     <BaseSurface

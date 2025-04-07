@@ -26,12 +26,12 @@ export const TeacherLessonPerformanceOverviewBoard = memo(function ({
   ...moreProps
 }: Props) {
   const [
-    totalLessonCount,
+    lessonTotalCount,
     totalLessonDuration,
     overallLessonCompletionPercent,
   ] = useMemo(
     () => [
-      lessonPerformance?.totalLessonCount || 0,
+      lessonPerformance?.lessonTotalCount || 0,
       convertSecondsToDuration(
         lessonPerformance?.totalLessonDurationSeconds || 0,
       ),
@@ -57,7 +57,7 @@ export const TeacherLessonPerformanceOverviewBoard = memo(function ({
             className='flex animate-fastFadeIn justify-center !p-2.5 font-medium'
           >
             <div className={LESSON_WRAPPER_CLASSNAME}>
-              <span className={LESSON_VALUE_CLASSNAME}>{totalLessonCount}</span>
+              <span className={LESSON_VALUE_CLASSNAME}>{lessonTotalCount}</span>
               <span className={LESSON_LABEL_CLASSNAME}>Total Lessons</span>
             </div>
             <div className={cx(LESSON_WRAPPER_CLASSNAME, 'flex-1')}>

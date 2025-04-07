@@ -7,11 +7,12 @@ export enum StudentPerformanceType {
 }
 
 export type StudentPerformance = StudentUserAccount & {
-  currentExamCount: number;
-  examsCompletedCount: number;
-  examsPassedCount: number;
-  examsFailedCount: number;
-  examsExpiredCount: number;
+  examCurrentCount: number;
+  examTotalCount: number;
+  examCompletedCount: number;
+  examPassedCount: number;
+  examFailedCount: number;
+  examExpiredCount: number;
   overallExamCompletionPercent: number;
   overallExamRank: number;
   overallExamScore: number | null;
@@ -20,9 +21,9 @@ export type StudentPerformance = StudentUserAccount & {
   overallActivityCompletionPercent: number;
   overallActivityRank: number;
   overallActivityScore: number | null;
-  totalLessonCount: number;
-  currentLessonCount: number;
-  lessonsCompletedCount: number;
+  lessonTotalCount: number;
+  lessonCurrentCount: number;
+  lessonCompletedCount: number;
   overallLessonCompletionPercent: number;
 };
 
@@ -33,7 +34,7 @@ export type TeacherClassPerformance = {
 };
 
 export type TeacherLessonPerformance = {
-  totalLessonCount: number;
+  lessonTotalCount: number;
   totalLessonDurationSeconds: number;
   overallLessonCompletionPercent: number;
 };

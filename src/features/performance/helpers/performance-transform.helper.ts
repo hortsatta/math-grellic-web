@@ -3,11 +3,12 @@ import { transformToStudentUserAccount } from '#/user/helpers/user-transform.hel
 import type { StudentPerformance } from '../models/performance.model';
 
 export function transformToStudentPerformance({
-  currentExamCount,
-  examsCompletedCount,
-  examsPassedCount,
-  examsFailedCount,
-  examsExpiredCount,
+  examCurrentCount,
+  examTotalCount,
+  examCompletedCount,
+  examPassedCount,
+  examFailedCount,
+  examExpiredCount,
   overallExamCompletionPercent,
   overallExamRank,
   overallExamScore,
@@ -16,9 +17,9 @@ export function transformToStudentPerformance({
   overallActivityCompletionPercent,
   overallActivityRank,
   overallActivityScore,
-  totalLessonCount,
-  currentLessonCount,
-  lessonsCompletedCount,
+  lessonTotalCount,
+  lessonCurrentCount,
+  lessonCompletedCount,
   overallLessonCompletionPercent,
   ...moreProps
 }: any): StudentPerformance {
@@ -26,11 +27,12 @@ export function transformToStudentPerformance({
 
   return {
     ...student,
-    currentExamCount,
-    examsCompletedCount,
-    examsPassedCount,
-    examsFailedCount,
-    examsExpiredCount,
+    examCurrentCount,
+    examTotalCount,
+    examCompletedCount,
+    examPassedCount,
+    examFailedCount,
+    examExpiredCount,
     overallExamCompletionPercent,
     overallExamRank,
     overallExamScore,
@@ -39,9 +41,9 @@ export function transformToStudentPerformance({
     overallActivityCompletionPercent,
     overallActivityRank,
     overallActivityScore,
-    totalLessonCount,
-    currentLessonCount,
-    lessonsCompletedCount,
+    lessonTotalCount,
+    lessonCurrentCount,
+    lessonCompletedCount,
     overallLessonCompletionPercent,
   };
 }

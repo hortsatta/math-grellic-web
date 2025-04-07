@@ -46,7 +46,7 @@ const StudentRankCard = memo(function ({
 }: StudentRankCardProps) {
   const [lastName, firstWithMiddleName] = useMemo(
     () => [
-      `${student.lastName},`,
+      `${student.lastName}, `,
       `${student.firstName}${
         student.middleName ? ` ${student.middleName[0]}` : ''
       }`,
@@ -83,8 +83,8 @@ const StudentRankCard = memo(function ({
           <PerformanceRankAwardImg rank={overallRank} />
         )}
       </div>
-      <h4 className='flex flex-row items-center justify-start font-body text-base font-medium leading-tight tracking-normal text-accent sm:flex-col'>
-        <span>{lastName}</span>
+      <h4 className='flex flex-row items-start justify-start font-body text-base font-medium leading-tight tracking-normal text-accent sm:flex-col'>
+        <span className='mr-1'>{lastName}</span>
         <span>{firstWithMiddleName}</span>
       </h4>
     </div>

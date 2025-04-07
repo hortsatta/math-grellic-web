@@ -60,8 +60,10 @@ export const TeacherExamScheduleSingleCard = memo(function ({
   return (
     <div
       className={cx(
-        'flex flex-col items-start gap-1',
-        !isUpsert && onClick && 'group/schedule cursor-pointer',
+        'flex flex-col items-start gap-1 px-4 py-2.5',
+        !isUpsert &&
+          onClick &&
+          'rounded-md transition-all hover:cursor-pointer hover:!border-primary-hue-purple-focus hover:shadow-md hover:ring-1 hover:ring-primary-hue-purple-focus',
         className,
       )}
       role='button'
@@ -69,16 +71,7 @@ export const TeacherExamScheduleSingleCard = memo(function ({
       {...moreProps}
     >
       <div className='flex w-full flex-col items-start justify-between -3xs:flex-row -3xs:items-center'>
-        <span
-          className={cx(
-            'font-medium',
-            !isUpsert &&
-              onClick &&
-              'group-hover/schedule:text-primary-hue-purple-focus',
-          )}
-        >
-          {title}
-        </span>
+        <span className='font-medium'>{title}</span>
         {onUpsert && (
           <BaseButton
             className='!text-base'
