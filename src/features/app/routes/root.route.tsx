@@ -61,12 +61,14 @@ import {
 } from '#/activity/route/teacher-activity-loader.route';
 import {
   getPaginatedStudentPerformancesLoader,
+  getStudentActivitiesByPublicIdAndCurrentTeacherUserLoader,
   getStudentExamsByPublicIdAndCurrentTeacherUserLoader,
   getStudentLessonsByPublicIdAndCurrentTeacherUserLoader,
   getStudentPerformanceByPublicIdLoader,
 } from '#/performance/route/teacher-performance-loader.route';
 import {
   getPerformanceByCurrentStudentUser,
+  getStudentActivitiesByCurrentStudentUserLoader,
   getStudentExamsByCurrentStudentUserLoader,
   getStudentLessonsByCurrentStudentUserLoader,
 } from '#/performance/route/student-performance-loader';
@@ -138,8 +140,10 @@ import { StudentActivitySinglePage } from '#/activity/pages/student-activity-sin
 import { StudentPerformanceListPage } from '#/performance/pages/student-performance-list.page';
 import { TeacherStudentPerformanceSinglePage } from '#/performance/pages/teacher-student-performance-single.page';
 import { TeacherStudentExamPerformanceListPage } from '#/performance/pages/teacher-student-exam-performance-list.page';
+import { TeacherStudentActivityPerformanceListPage } from '#/performance/pages/teacher-student-activity-performance-list.page';
 import { TeacherStudentLessonPerformanceListPage } from '#/performance/pages/teacher-student-lesson-performance-list.page';
 import { StudentExamPerformanceListPage } from '#/performance/pages/student-exam-performance-list.page';
+import { StudentActivityPerformanceListPage } from '#/performance/pages/student-activity-performance-list.page';
 import { StudentLessonPerformanceListPage } from '#/performance/pages/student-lesson-performance-list.page';
 import { StudentPerformanceSinglePage } from '#/performance/pages/student-performance-single.page';
 import { TeacherScheduleCalendarPage } from '#/schedule/pages/teacher-schedule-calendar.page';
@@ -464,6 +468,14 @@ const rootRoutes = createRoutesFromElements(
               )}
             />
             <Route
+              path={teacherRoutes.performance.activityTo}
+              element={<TeacherStudentActivityPerformanceListPage />}
+              handle={teacherStudentPerformanceRouteHandle.activities}
+              loader={getStudentActivitiesByPublicIdAndCurrentTeacherUserLoader(
+                queryClient,
+              )}
+            />
+            <Route
               path={teacherRoutes.performance.lessonTo}
               element={<TeacherStudentLessonPerformanceListPage />}
               handle={teacherStudentPerformanceRouteHandle.lessons}
@@ -636,6 +648,12 @@ const rootRoutes = createRoutesFromElements(
           element={<StudentExamPerformanceListPage />}
           handle={studentPerformanceRouteHandle.exams}
           loader={getStudentExamsByCurrentStudentUserLoader(queryClient)}
+        />
+        <Route
+          path={studentRoutes.performance.activityTo}
+          element={<StudentActivityPerformanceListPage />}
+          handle={studentPerformanceRouteHandle.activities}
+          loader={getStudentActivitiesByCurrentStudentUserLoader(queryClient)}
         />
         <Route
           path={studentRoutes.performance.lessonTo}

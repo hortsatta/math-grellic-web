@@ -61,11 +61,6 @@ export const StudentDashboardUserSummary = memo(function ({
 
     return [
       {
-        value: overallLessonCompletionPercent || 0,
-        performace: StudentPerformanceType.Lesson,
-        label: 'Lessons',
-      },
-      {
         value: overallExamCompletionPercent || 0,
         performace: StudentPerformanceType.Exam,
         label: 'Exams',
@@ -74,6 +69,11 @@ export const StudentDashboardUserSummary = memo(function ({
         value: overallActivityCompletionPercent || 0,
         performace: StudentPerformanceType.Activity,
         label: 'Activities',
+      },
+      {
+        value: overallLessonCompletionPercent || 0,
+        performace: StudentPerformanceType.Lesson,
+        label: 'Lessons',
       },
     ];
   }, [studentPerformance]);

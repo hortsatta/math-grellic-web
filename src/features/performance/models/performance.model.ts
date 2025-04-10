@@ -16,8 +16,9 @@ export type StudentPerformance = StudentUserAccount & {
   overallExamCompletionPercent: number;
   overallExamRank: number;
   overallExamScore: number | null;
-  totalActivityCount: number;
-  activitiesCompletedCount: number;
+  activityTotalCount: number;
+  activityCompletedCount: number;
+  activityIncompleteCount: number;
   overallActivityCompletionPercent: number;
   overallActivityRank: number;
   overallActivityScore: number | null;
@@ -46,6 +47,6 @@ export type TeacherExamPerformance = {
 };
 
 export type TeacherActivityPerformance = {
-  totalActivityCount: number;
+  activityTotalCount: number;
   overallActivityCompletionPercent: number;
 };

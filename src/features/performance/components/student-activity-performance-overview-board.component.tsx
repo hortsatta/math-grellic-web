@@ -31,14 +31,16 @@ export const StudentActivityPerformanceOverviewBoard = memo(function ({
   ...moreProps
 }: Props) {
   const [
-    totalActivityCount,
-    activitiesCompletedCount,
+    activityTotalCount,
+    activityCompletedCount,
+    activityIncompleteCount,
     overallActivityRank,
     overallActivityCompletionPercent,
   ] = useMemo(
     () => [
-      studentPerformance?.totalActivityCount,
-      studentPerformance?.activitiesCompletedCount,
+      studentPerformance?.activityTotalCount,
+      studentPerformance?.activityCompletedCount,
+      studentPerformance?.activityIncompleteCount,
       studentPerformance?.overallActivityRank,
       studentPerformance?.overallActivityCompletionPercent || 0,
     ],
@@ -91,7 +93,7 @@ export const StudentActivityPerformanceOverviewBoard = memo(function ({
             <div className='flex flex-1 items-center justify-center font-medium'>
               <div className={ACTIVITY_WRAPPER_CLASSNAME}>
                 <span className={ACTIVITY_VALUE_CLASSNAME}>
-                  {totalActivityCount}
+                  {activityTotalCount}
                 </span>
                 <span className={ACTIVITY_LABEL_CLASSNAME}>
                   Total Activities
@@ -99,7 +101,7 @@ export const StudentActivityPerformanceOverviewBoard = memo(function ({
               </div>
               <div className={ACTIVITY_WRAPPER_CLASSNAME}>
                 <span className={ACTIVITY_VALUE_CLASSNAME}>
-                  {activitiesCompletedCount}
+                  {activityCompletedCount}
                 </span>
                 <span className={ACTIVITY_LABEL_CLASSNAME}>
                   Activities Completed

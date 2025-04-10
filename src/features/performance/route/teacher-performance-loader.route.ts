@@ -2,6 +2,7 @@ import { defer } from 'react-router-dom';
 
 import {
   getPaginatedStudentPerformancesByCurrentTeacherUser,
+  getStudentActivitiesByPublicIdAndCurrentTeacherUser,
   getStudentExamsByPublicIdAndCurrentTeacherUser,
   getStudentLessonsByPublicIdAndCurrentTeacherUser,
   getStudentPerformanceByPublicIdAndCurrentTeacherUser,
@@ -56,6 +57,26 @@ export function getStudentExamsByPublicIdAndCurrentTeacherUserLoader(
 
     const keys = { ...queryParams, publicId: params.publicId };
     const query = getStudentExamsByPublicIdAndCurrentTeacherUser(keys);
+
+    return defer({
+      main:
+        queryClient.getQueryData(query.queryKey as string[]) ??
+        queryClient.fetchQuery(query),
+    });
+  };
+}
+
+export function getStudentActivitiesByPublicIdAndCurrentTeacherUserLoader(
+  queryClient: QueryClient,
+  queryParams?: { exclude?: string; include?: string },
+) {
+  return async ({ params }: LoaderFunctionArgs) => {
+    if (!params?.publicId) {
+      return;
+    }
+
+    const keys = { ...queryParams, publicId: params.publicId };
+    const query = getStudentActivitiesByPublicIdAndCurrentTeacherUser(keys);
 
     return defer({
       main:

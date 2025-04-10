@@ -1,67 +1,94 @@
-import { memo } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import cx from 'classix';
 
-import { transformToActivity } from '#/activity/helpers/activity-transform.helper';
-import { BaseSpinner } from '#/base/components/base-spinner.component';
-import { getStudentActivitiesByPublicIdAndCurrentTeacherUser } from '../api/teacher-performance.api';
-import { StudentActivityPerformanceDetails } from './student-activity-performance-details.component';
+import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { BaseDataEmptyMessage } from '#/base/components/base-data-empty-message.component';
+import { BaseModal } from '#/base/components/base-modal.component';
+import { TeacherStudentActivityPerformanceResult } from './teacher-student-activity-performance-result.component';
+import {
+  StudentActivityPerformanceSingleCardSkeleton,
+  StudentActivityPerformanceSingleCard,
+} from './student-activity-performance-single-card.component';
 
 import type { ComponentProps } from 'react';
-import type { Activity } from '#/activity/models/activity.model';
+import type {
+  Activity,
+  ActivityCategory,
+} from '#/activity/models/activity.model';
+
+const ACTIVITY_CREATE_TO = `/${teacherBaseRoute}/${teacherRoutes.activity.to}/${teacherRoutes.activity.createTo}`;
 
 type Props = ComponentProps<'div'> & {
-  onActivityClick: (activity?: Activity) => void;
+  activities: Activity[];
+  loading?: boolean;
 };
 
 export const TeacherStudentActivityPerformanceList = memo(function ({
   className,
-  onActivityClick,
+  loading,
+  activities,
   ...moreProps
 }: Props) {
-  const { publicId } = useParams();
+  const [openModal, setOpenModal] = useState(false);
+  const [currentActivity, setCurrentActivity] = useState<Activity | null>(null);
 
-  const {
-    data: activities,
-    isFetching,
-    isLoading,
-  } = useQuery(
-    getStudentActivitiesByPublicIdAndCurrentTeacherUser(
-      { publicId: publicId || '' },
-      {
-        refetchOnWindowFocus: false,
-        enabled: !!publicId,
-        initialData: [],
-        select: (data: unknown) =>
-          Array.isArray(data)
-            ? data.map((item: any) => transformToActivity(item))
-            : [],
-      },
-    ),
+  const isEmpty = useMemo(() => !activities?.length, [activities]);
+
+  const viewActivityResult = useCallback(
+    (activity: Activity) => (category: ActivityCategory) => {
+      setCurrentActivity({
+        ...activity,
+        categories: activity.categories.filter((cat) => cat.id === category.id),
+      });
+      setOpenModal(true);
+    },
+    [],
   );
 
-  if (isFetching || isLoading) {
-    return (
-      <div className='mt-5 flex w-full justify-center'>
-        <BaseSpinner />
-      </div>
-    );
-  }
+  const handleClose = useCallback(() => setCurrentActivity(null), []);
+
+  useEffect(() => {
+    setOpenModal(!!currentActivity);
+  }, [currentActivity]);
 
   return (
-    <div className={cx('flex flex-col py-2.5', className)} {...moreProps}>
-      {activities?.length ? (
-        activities.map((activity) => (
-          <StudentActivityPerformanceDetails
-            key={activity.slug}
-            activity={activity}
-            onClick={onActivityClick}
+    <>
+      <div
+        className={cx(
+          'flex w-full flex-1 flex-col gap-2.5 self-stretch',
+          className,
+        )}
+        role='table'
+        {...moreProps}
+      >
+        {loading ? (
+          [...Array(4)].map((_, index) => (
+            <StudentActivityPerformanceSingleCardSkeleton key={index} />
+          ))
+        ) : isEmpty ? (
+          <BaseDataEmptyMessage
+            message='No activities available'
+            linkTo={ACTIVITY_CREATE_TO}
           />
-        ))
-      ) : (
-        <div className='text-center text-sm opacity-70'>Nothing to show</div>
-      )}
-    </div>
+        ) : (
+          activities.map((activity) => (
+            <StudentActivityPerformanceSingleCard
+              key={`act-${activity.id}`}
+              activity={activity}
+              role='row'
+              onResult={viewActivityResult(activity)}
+            />
+          ))
+        )}
+      </div>
+      <BaseModal open={openModal} onClose={handleClose}>
+        {currentActivity && (
+          <TeacherStudentActivityPerformanceResult
+            slug={currentActivity.slug}
+            categoryId={currentActivity.categories[0].id}
+          />
+        )}
+      </BaseModal>
+    </>
   );
 });

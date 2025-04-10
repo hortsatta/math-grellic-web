@@ -6,7 +6,7 @@ import type { StudentUserAccount } from '#/user/models/user.model';
 export enum ScheduleType {
   Lesson = 'lesson',
   Exam = 'exam',
-  Meeting = 'meeting',
+  Meeting = 'meetingUrl',
 }
 
 export type MeetingSchedule = Partial<AuditTrail> & {

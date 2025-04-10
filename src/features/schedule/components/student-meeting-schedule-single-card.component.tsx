@@ -1,16 +1,16 @@
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import cx from 'classix';
 
 import dayjs from '#/config/dayjs.config';
 import { getDayJsDuration, convertSecondsToDuration } from '#/utils/time.util';
+import { BaseButton } from '#/base/components/base-button.components';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
-import { BaseLink } from '#/base/components/base-link.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 
-import type { ComponentProps } from 'react';
+import type { ComponentProps, MouseEvent } from 'react';
 import type { MeetingSchedule } from '../models/schedule.model';
 
 type Props = ComponentProps<typeof BaseSurface> & {
@@ -48,6 +48,15 @@ export const StudentMeetingScheduleSingleCard = memo(function ({
     return [date, time, convertSecondsToDuration(duration)];
   }, [meetingSchedule]);
 
+  const handleClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      event.preventDefault();
+      window.open(meetingUrl, '_blank')?.focus();
+    },
+    [meetingUrl],
+  );
+
   return (
     <Link to={to} className='group'>
       <BaseSurface
@@ -77,15 +86,15 @@ export const StudentMeetingScheduleSingleCard = memo(function ({
                 {title}
               </h2>
               <div className='flex justify-start'>
-                <BaseLink
-                  to={meetingUrl}
-                  target='_blank'
+                <BaseButton
                   className='!font-body font-medium !leading-tight sm:!leading-normal [.primary_&]:text-white'
+                  variant='link'
                   rightIconName='arrow-square-out'
                   size='sm'
+                  onClick={handleClick}
                 >
                   {meetingUrl}
-                </BaseLink>
+                </BaseButton>
               </div>
             </div>
           </div>

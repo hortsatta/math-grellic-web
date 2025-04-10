@@ -1,62 +1,50 @@
-import { memo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { memo, useMemo } from 'react';
 import cx from 'classix';
 
-import { BaseSpinner } from '#/base/components/base-spinner.component';
-import { transformToActivity } from '#/activity/helpers/activity-transform.helper';
-import { getStudentActivitiesByCurrentStudentUser } from '../api/student-performance.api';
-import { StudentActivityPerformanceDetails } from './student-activity-performance-details.component';
+import {
+  StudentActivityPerformanceSingleCardSkeleton,
+  StudentActivityPerformanceSingleCard,
+} from './student-activity-performance-single-card.component';
 
 import type { ComponentProps } from 'react';
 import type { Activity } from '#/activity/models/activity.model';
 
 type Props = ComponentProps<'div'> & {
-  onActivityClick: (activity?: Activity) => void;
+  activities: Activity[];
+  loading?: boolean;
 };
 
 export const StudentActivityPerformanceList = memo(function ({
   className,
-  onActivityClick,
+  loading,
+  activities,
   ...moreProps
 }: Props) {
-  const {
-    data: activities,
-    isFetching,
-    isLoading,
-  } = useQuery(
-    getStudentActivitiesByCurrentStudentUser(
-      {},
-      {
-        refetchOnWindowFocus: false,
-        initialData: [],
-        select: (data: unknown) =>
-          Array.isArray(data)
-            ? data.map((item: any) => transformToActivity(item))
-            : [],
-      },
-    ),
-  );
-
-  if (isFetching || isLoading) {
-    return (
-      <div className='mt-5 flex w-full justify-center'>
-        <BaseSpinner />
-      </div>
-    );
-  }
+  const isEmpty = useMemo(() => !activities?.length, [activities]);
 
   return (
-    <div className={cx('flex flex-col py-2.5', className)} {...moreProps}>
-      {activities?.length ? (
+    <div
+      className={cx(
+        'flex w-full flex-1 flex-col gap-2.5 self-stretch',
+        className,
+      )}
+      role='table'
+      {...moreProps}
+    >
+      {loading ? (
+        [...Array(4)].map((_, index) => (
+          <StudentActivityPerformanceSingleCardSkeleton key={index} />
+        ))
+      ) : isEmpty ? (
+        <div className='w-full py-4 text-center'>No activities to show</div>
+      ) : (
         activities.map((activity) => (
-          <StudentActivityPerformanceDetails
-            key={activity.slug}
+          <StudentActivityPerformanceSingleCard
+            key={`act-${activity.id}`}
             activity={activity}
-            onClick={onActivityClick}
+            role='row'
           />
         ))
-      ) : (
-        <div className='text-center text-sm opacity-70'>Nothing to show</div>
       )}
     </div>
   );

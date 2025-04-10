@@ -70,7 +70,7 @@ export const TeacherStudentExamPerformanceList = memo(function ({
         ) : (
           filteredExams.map((exam) => (
             <StudentExamPerformanceSingleCard
-              key={exam.id}
+              key={`exam-${exam.id}`}
               exam={exam}
               role='row'
               onResult={viewExamResult}

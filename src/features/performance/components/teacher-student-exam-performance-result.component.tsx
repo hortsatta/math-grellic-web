@@ -36,13 +36,14 @@ export const TeacherStudentExamPerformanceResult = memo(function ({
     ),
   );
 
-  const [title, questions, examCompletion] = useMemo(
+  const [title, questions, examCompletion, schedule] = useMemo(
     () => [
       exam?.title,
       exam?.questions || [],
       exam?.completions?.length ? exam.completions[0] : null,
+      exam?.schedules?.find((schedule) => schedule.id === scheduleId),
     ],
-    [exam],
+    [exam, scheduleId],
   );
 
   const label = useMemo(() => (title ? `Results for ${title}` : ''), [title]);
@@ -69,9 +70,10 @@ export const TeacherStudentExamPerformanceResult = memo(function ({
 
   return (
     <div {...moreProps}>
-      {examCompletion ? (
+      {examCompletion && schedule ? (
         <StudentExamQuestionResult
           questionAnswers={questionAnswers}
+          schedule={schedule}
           label={label}
           labelHeading
         />

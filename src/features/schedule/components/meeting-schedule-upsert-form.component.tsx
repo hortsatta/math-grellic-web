@@ -212,7 +212,7 @@ export const MeetingScheduleUpsertForm = memo(function ({
   );
 
   return (
-    <div className={cx('w-full', className)} {...moreProps}>
+    <div className={cx('w-full pb-8', className)} {...moreProps}>
       <form onSubmit={handleSubmit(submitForm)}>
         <div>
           <BaseDivider className='mb-2.5 pt-2.5' />

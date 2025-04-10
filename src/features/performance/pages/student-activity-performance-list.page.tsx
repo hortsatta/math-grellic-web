@@ -2,14 +2,14 @@ import { useLoaderData } from 'react-router-dom';
 
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
-import { useStudentExamPerformanceList } from '../hooks/use-student-exam-performance-list.hook';
+import { StudentActivityPerformanceOverviewCard } from '../components/student-activity-performance-overview-card.component';
+import { StudentActivityPerformanceList } from '../components/student-activity-performance-list.component';
+import { useStudentActivityPerformanceList } from '../hooks/use-student-activity-performance-list.hook';
 import { useStudentPerformanceSingle } from '../hooks/use-student-performance-single.hook';
-import { StudentExamPerformanceList } from '../components/student-exam-performance-list.component';
-import { StudentExamPerformanceOverviewCard } from '../components/student-exam-performance-overview-card.component';
 
-export function StudentExamPerformanceListPage() {
+export function StudentActivityPerformanceListPage() {
   const { student, loading: studentLoading } = useStudentPerformanceSingle();
-  const { exams, loading } = useStudentExamPerformanceList();
+  const { activities, loading } = useStudentActivityPerformanceList();
 
   const data: any = useLoaderData();
 
@@ -23,9 +23,12 @@ export function StudentExamPerformanceListPage() {
           {!student || studentLoading ? (
             <BasePageSpinner />
           ) : (
-            <StudentExamPerformanceOverviewCard student={student} compact />
+            <StudentActivityPerformanceOverviewCard student={student} compact />
           )}
-          <StudentExamPerformanceList exams={exams || []} loading={loading} />
+          <StudentActivityPerformanceList
+            activities={activities || []}
+            loading={loading}
+          />
         </div>
       </div>
     </BaseDataSuspense>

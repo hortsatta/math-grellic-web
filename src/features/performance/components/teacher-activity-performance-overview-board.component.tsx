@@ -22,9 +22,9 @@ export const TeacherActivityPerformanceOverviewBoard = memo(function ({
   activityPerformance,
   ...moreProps
 }: Props) {
-  const [totalActivityCount, overallActivityCompletionPercent] = useMemo(
+  const [activityTotalCount, overallActivityCompletionPercent] = useMemo(
     () => [
-      activityPerformance?.totalActivityCount || 0,
+      activityPerformance?.activityTotalCount || 0,
       activityPerformance?.overallActivityCompletionPercent || 0,
     ],
     [activityPerformance],
@@ -48,7 +48,7 @@ export const TeacherActivityPerformanceOverviewBoard = memo(function ({
           >
             <div className='flex w-36 flex-col items-center'>
               <span className='text-2xl font-bold text-primary-hue-teal'>
-                {totalActivityCount}
+                {activityTotalCount}
               </span>
               <span className='text-sm'>Total Activities</span>
             </div>

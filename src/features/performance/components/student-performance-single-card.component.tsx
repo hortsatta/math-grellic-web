@@ -92,7 +92,7 @@ export const StudentPerformanceSingleCard = memo(function ({
     if (performance === StudentPerformanceType.Exam) {
       return student.overallExamScore;
     } else if (performance === StudentPerformanceType.Activity) {
-      return student.overallActivityScore;
+      return null;
     } else {
       return student.lessonCompletedCount;
     }
@@ -191,7 +191,7 @@ export const StudentPerformanceSingleCard = memo(function ({
             performance === StudentPerformanceType.Exam &&
               '!text-primary-hue-purple',
             performance === StudentPerformanceType.Activity &&
-              '!text-primary-hue-teal',
+              '!min-w-[136px] !text-primary-hue-teal',
             performance === StudentPerformanceType.Lesson && '!text-primary',
           )}
         >

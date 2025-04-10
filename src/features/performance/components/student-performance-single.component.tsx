@@ -4,7 +4,7 @@ import cx from 'classix';
 import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { studentRoutes } from '#/app/routes/student-routes';
 import { StudentExamPerformanceOverviewCard } from './student-exam-performance-overview-card.component';
-import { StudentActivityPerformanceCard } from './student-activity-performance-card.component';
+import { StudentActivityPerformanceOverviewCard } from './student-activity-performance-overview-card.component';
 import { StudentLessonPerformanceOverviewCard } from './student-lesson-performance-overview-card.component';
 
 import type { ComponentProps } from 'react';
@@ -46,10 +46,10 @@ export const StudentPerformanceSingle = memo(function ({
         student={student}
         detailsTo={examDetailsTo}
       />
-      <StudentActivityPerformanceCard
+      <StudentActivityPerformanceOverviewCard
         className='min-h-[280px]'
         student={student}
-        isStudent={isStudent}
+        detailsTo={activityDetailsTo}
       />
       <StudentLessonPerformanceOverviewCard
         className='min-h-[280px]'

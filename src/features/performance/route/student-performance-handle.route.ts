@@ -11,6 +11,10 @@ export const studentPerformanceRouteHandle: {
     title: 'Exam Performance Details',
     links: [],
   },
+  activities: {
+    title: 'Activity Performance Details',
+    links: [],
+  },
   lessons: {
     title: 'Lesson Performance Details',
     links: [],

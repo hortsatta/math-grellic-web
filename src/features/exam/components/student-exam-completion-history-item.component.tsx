@@ -71,7 +71,7 @@ export const StudentExamCompletionHistoryItem = memo(function ({
   return (
     <div
       className={cx(
-        'flex w-full flex-col gap-2.5 rounded-md -3xs:flex-row -3xs:items-center -3xs:justify-between',
+        'flex w-full flex-col gap-1.5 rounded-md sm:flex-row sm:items-center sm:justify-between sm:gap-2.5',
         onClick &&
           'cursor-pointer transition-all hover:!border-primary-hue-purple-focus hover:shadow-md hover:ring-1 hover:ring-primary-hue-purple-focus',
         className,
@@ -95,17 +95,23 @@ export const StudentExamCompletionHistoryItem = memo(function ({
             weight='bold'
           />
         )}
-        <span className='w-20 text-center text-lg font-medium text-primary-hue-purple'>
-          {scoreText}
-        </span>
+        <div className='flex flex-col gap-1 -3xs:flex-row -3xs:gap-2.5 sm:items-center'>
+          <BaseChip className='text-sm' iconName='calendar-check'>
+            {date}
+          </BaseChip>
+          <BaseDivider className='hidden !h-6 sm:inline-block' vertical />
+          <BaseChip className='text-sm' iconName='clock'>
+            {time}
+          </BaseChip>
+        </div>
+      </div>
+      <div className='flex items-center gap-2.5'>
         <BaseTag className='w-20 !bg-primary-hue-purple !px-2'>
           {statusText}
         </BaseTag>
-      </div>
-      <div className='flex flex-col sm:flex-row sm:items-center sm:gap-2.5'>
-        <BaseChip iconName='calendar-check'>{date}</BaseChip>
-        <BaseDivider className='hidden !h-6 sm:inline-block' vertical />
-        <BaseChip iconName='clock'>{time}</BaseChip>
+        <span className='w-20 text-right text-lg font-medium text-primary-hue-purple'>
+          {scoreText}
+        </span>
       </div>
     </div>
   );

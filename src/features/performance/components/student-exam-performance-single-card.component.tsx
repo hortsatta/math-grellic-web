@@ -166,7 +166,6 @@ export const StudentExamPerformanceSingleCard = memo(function ({
               weight='bold'
             />
           )}
-
           <span>
             Exam {orderNumber} - {title}
           </span>

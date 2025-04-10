@@ -95,6 +95,18 @@ export const StudentActivitySingleCard = memo(function ({
     [game],
   );
 
+  const isIncomplete = useMemo(() => {
+    const completionCount = categories.filter(
+      (cat) => cat.completions?.length,
+    ).length;
+
+    if (game.type === ActivityCategoryType.Stage) {
+      return !completionCount;
+    }
+
+    return completionCount < 3;
+  }, [game, categories]);
+
   const isGameTypeStage = useMemo(
     () => game.type === ActivityCategoryType.Stage,
     [game],
@@ -181,7 +193,10 @@ export const StudentActivitySingleCard = memo(function ({
                     <BaseIcon
                       name='check-circle'
                       weight='fill'
-                      className='relative z-10 text-green-500'
+                      className={cx(
+                        'relative z-10',
+                        isIncomplete ? 'text-accent' : 'text-green-500',
+                      )}
                       size={44}
                     />
                     <div className='absolute h-6 w-6 bg-white' />

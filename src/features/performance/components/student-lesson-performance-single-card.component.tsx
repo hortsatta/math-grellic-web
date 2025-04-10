@@ -77,11 +77,7 @@ export const StudentLessonPerformanceSingleCardSkeleton = memo(function () {
         <div className='h-6 w-[200px] rounded bg-accent/20' />
       </div>
       <div className='flex w-full items-center gap-2.5 sm:w-auto'>
-        <div className='flex w-[80px] flex-col gap-2.5 sm:w-full sm:flex-row sm:gap-4'>
-          <div className='h-6 w-full rounded bg-accent/20 -3xs:w-20 sm:w-20' />
-          <div className='h-6 w-full rounded bg-accent/20 -3xs:w-20 sm:w-20' />
-        </div>
-        <div className='h-full w-28 rounded bg-accent/20' />
+        <div className='h-6 w-28 rounded bg-accent/20' />
       </div>
     </div>
   );

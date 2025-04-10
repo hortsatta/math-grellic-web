@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import cx from 'classix';
 
+import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import {
   StudentMeetingScheduleSingleCard,
   StudentMeetingScheduleSingleCardSkeleton,
@@ -8,7 +9,6 @@ import {
 
 import type { ComponentProps } from 'react';
 import type { MeetingSchedule } from '../models/schedule.model';
-import { BaseIconButton } from '#/base/components/base-icon-button.component';
 
 type Props = ComponentProps<'div'> & {
   upcomingMeetingSchedules: MeetingSchedule[];

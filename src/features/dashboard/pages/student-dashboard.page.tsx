@@ -84,6 +84,7 @@ export function StudentDashboardPage() {
             scheduleEmptyLabel='No schedule for today'
             loading={todayScheduleLoading}
             fixedWidth
+            isStudent
           />
         </BaseSurface>
         <StudentDashboardHelpCard />
