@@ -163,7 +163,8 @@ export const TeacherExamSingleCard = memo(function ({
   return (
     <BaseSurface
       className={cx(
-        'pointer-events-none flex h-auto w-full items-center gap-5 !p-2.5 transition-all hover:cursor-pointer hover:!border-primary-hue-purple-focus hover:shadow-md hover:ring-1 hover:ring-primary-hue-purple-focus sm:h-[106px]',
+        'pointer-events-none flex h-auto w-full items-center gap-5 !p-2.5 transition-all hover:cursor-pointer hover:!border-primary-hue-purple-focus hover:shadow-md hover:ring-1 hover:ring-primary-hue-purple-focus',
+        !isDashboard && 'sm:h-[106px]',
         className,
       )}
       rounded='sm'
@@ -174,7 +175,12 @@ export const TeacherExamSingleCard = memo(function ({
         tabIndex={0}
         onClick={onDetails}
       >
-        <div className='flex h-full flex-1 flex-col flex-wrap items-center gap-2.5 xs:flex-row xs:gap-4 sm:flex-nowrap'>
+        <div
+          className={cx(
+            'flex h-full flex-1 flex-col items-center gap-2.5 xs:flex-row xs:gap-4',
+            isDashboard ? 'flex-wrap' : 'flex-wrap sm:flex-nowrap',
+          )}
+        >
           <div className='flex h-[84px] w-full flex-col items-center overflow-hidden rounded border border-primary bg-primary-hue-purple/30 font-medium xs:w-[121px]'>
             <div className='flex w-full flex-1 items-center justify-center text-2xl text-primary-hue-purple'>
               <div className='flex-1 text-center'>{passingPoints}</div>
@@ -224,15 +230,22 @@ export const TeacherExamSingleCard = memo(function ({
           </div>
           {/* Earliest exam schedule */}
           {scheduleDate && (
-            <div className='flex w-full flex-col gap-1 xs:flex-row xs:gap-2.5 sm:w-auto sm:min-w-[190px] sm:flex-col sm:gap-1'>
+            <div
+              className={cx(
+                'flex gap-1',
+                isDashboard
+                  ? 'w-full flex-col xs:w-auto xs:flex-row xs:gap-2.5 -2lg:flex-col -2lg:gap-1 xl:flex-row xl:gap-2.5 2xl:w-auto 2xl:flex-col 2xl:gap-1'
+                  : 'w-full flex-col xs:flex-row xs:gap-2.5 sm:w-auto sm:min-w-[190px] sm:flex-col sm:gap-1',
+              )}
+            >
               <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
               <BaseDivider
-                className='hidden !h-6 xs:block sm:hidden'
+                className='hidden !h-6 xs:block -2lg:hidden xl:block 2xl:hidden'
                 vertical
               />
               <BaseChip iconName='clock'>{scheduleTime}</BaseChip>
               <BaseDivider
-                className='hidden !h-6 xs:block sm:hidden'
+                className='hidden !h-6 xs:block -2lg:hidden xl:block 2xl:hidden'
                 vertical
               />
               <BaseChip iconName='hourglass'>{scheduleDuration}</BaseChip>

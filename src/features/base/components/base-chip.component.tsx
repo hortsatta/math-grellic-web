@@ -10,6 +10,7 @@ type Props = ComponentProps<'div'> & {
   iconName?: IconName;
   iconProps?: Omit<ComponentProps<typeof BaseIcon>, 'name'>;
   isIconEnd?: boolean;
+  isCompact?: boolean;
 };
 
 export const BaseChip = memo(function ({
@@ -17,12 +18,17 @@ export const BaseChip = memo(function ({
   iconName,
   iconProps,
   isIconEnd,
+  isCompact,
   children,
   ...moreProps
 }: Props) {
   return (
     <div
-      className={cx(className, 'flex items-center gap-1 uppercase')}
+      className={cx(
+        'flex items-center gap-1 uppercase',
+        isCompact && 'text-sm',
+        className,
+      )}
       {...moreProps}
     >
       {isIconEnd ? (

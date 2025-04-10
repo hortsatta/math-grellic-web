@@ -67,7 +67,11 @@ export const StudentActivityCompletionHistoryItem = memo(function ({
           size={28}
           weight='bold'
         />
-        <BaseChip className='w-28 text-sm' iconName={labelIconName as IconName}>
+        <BaseChip
+          className='w-28'
+          iconName={labelIconName as IconName}
+          isCompact
+        >
           {label}
         </BaseChip>
       </div>

@@ -46,7 +46,7 @@ export const StudentActivityQuestionResult = memo(function ({
         {labelHeading ? (
           <div className='mb-2.5 flex flex-col'>
             <h3 className='text-base'>{label}</h3>
-            <BaseChip className='text-sm' iconName='dice-three'>
+            <BaseChip iconName='dice-three' isCompact>
               {gameName}
             </BaseChip>
           </div>

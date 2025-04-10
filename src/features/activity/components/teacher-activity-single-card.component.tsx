@@ -222,7 +222,14 @@ export const TeacherActivitySingleCard = memo(function ({
         </div>
         {/* Category info */}
         {!!categories.length && (
-          <div className='flex min-w-[190px] flex-col gap-1'>
+          <div
+            className={cx(
+              'flex min-w-[190px]',
+              isDashboard
+                ? 'flex-col gap-1 xs:flex-row xs:gap-2.5 -2lg:flex-col -2lg:gap-1 xl:flex-row xl:gap-2.5 2xl:flex-col 2xl:gap-1'
+                : 'flex-col gap-1',
+            )}
+          >
             {categories.map((category, index) => (
               <div key={`cat-${index}`} className='flex items-center gap-2.5'>
                 {!isGameTypeStage ? (
@@ -233,12 +240,31 @@ export const TeacherActivitySingleCard = memo(function ({
                     <span className='text-sm uppercase'>
                       ({getLevelName(category.level)})
                     </span>
+                    {index < categories.length - 1 && isDashboard && (
+                      <BaseDivider
+                        className='hidden !h-6 xs:block -2lg:hidden xl:block 2xl:hidden'
+                        vertical
+                      />
+                    )}
                   </>
                 ) : (
-                  <div className='flex flex-col gap-1'>
+                  <div
+                    className={cx(
+                      'flex flex-col gap-1',
+                      isDashboard
+                        ? 'flex-col gap-1 xs:flex-row xs:gap-2.5 -2lg:flex-col -2lg:gap-1 xl:flex-row xl:gap-2.5 2xl:flex-col 2xl:gap-1'
+                        : 'flex-col gap-1',
+                    )}
+                  >
                     <BaseChip iconName='stack'>
                       {generateStageText(category)}
                     </BaseChip>
+                    {isDashboard && (
+                      <BaseDivider
+                        className='hidden !h-6 xs:block -2lg:hidden xl:block 2xl:hidden'
+                        vertical
+                      />
+                    )}
                     <BaseChip iconName='list-bullets'>
                       {generateStagQuestionCountText(category)}
                     </BaseChip>

@@ -61,11 +61,11 @@ export const StudentExamQuestionResult = memo(function ({
           <div className='mb-2.5 flex flex-col'>
             <h3 className='text-base'>{label}</h3>
             <div className='flex flex-col gap-1 -3xs:flex-row -3xs:gap-2.5'>
-              <BaseChip className='text-sm' iconName='calendar-check'>
+              <BaseChip iconName='calendar-check' isCompact>
                 {date}
               </BaseChip>
               <BaseDivider className='hidden !h-6 -3xs:inline-block' vertical />
-              <BaseChip className='text-sm' iconName='clock'>
+              <BaseChip iconName='clock' isCompact>
                 {time}
               </BaseChip>
             </div>

@@ -80,10 +80,7 @@ export const StudentUserAccountSingle = memo(function ({
               <div className='flex h-full flex-col justify-between py-0.5'>
                 <span className='text-lg font-medium'>{teacherFullName}</span>
                 <div className='flex items-center gap-2.5 !text-sm'>
-                  <BaseChip
-                    iconName='identification-badge'
-                    className='!text-sm'
-                  >
+                  <BaseChip iconName='identification-badge' isCompact>
                     {teacherPublicId}
                   </BaseChip>
                   <BaseDivider className='!h-6' vertical />

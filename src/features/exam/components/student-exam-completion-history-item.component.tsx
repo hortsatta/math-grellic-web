@@ -96,11 +96,11 @@ export const StudentExamCompletionHistoryItem = memo(function ({
           />
         )}
         <div className='flex flex-col gap-1 -3xs:flex-row -3xs:gap-2.5 sm:items-center'>
-          <BaseChip className='text-sm' iconName='calendar-check'>
+          <BaseChip iconName='calendar-check' isCompact>
             {date}
           </BaseChip>
           <BaseDivider className='hidden !h-6 sm:inline-block' vertical />
-          <BaseChip className='text-sm' iconName='clock'>
+          <BaseChip iconName='clock' isCompact>
             {time}
           </BaseChip>
         </div>

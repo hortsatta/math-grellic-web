@@ -208,7 +208,7 @@ export const TeacherLessonSingleCard = memo(function ({
             className={cx(
               'flex w-32 pt-1',
               isDashboard
-                ? 'w-full flex-col items-start gap-1 -2lg:w-auto -2lg:flex-row -2lg:items-center -2lg:gap-2.5 xl:w-full xl:flex-col xl:items-start xl:gap-1 2xl:w-auto 2xl:flex-row 2xl:items-center 2xl:gap-2.5'
+                ? 'w-full items-center gap-2.5 -2lg:w-auto xl:w-full 2xl:w-auto'
                 : 'min-w-0 flex-col items-start gap-1 xs:min-w-[240px] xs:flex-row xs:gap-2.5 sm:min-w-0 sm:flex-col sm:gap-1 md:w-auto md:min-w-[240px] md:flex-row md:items-center md:gap-2.5',
             )}
           >
@@ -216,7 +216,7 @@ export const TeacherLessonSingleCard = memo(function ({
             <BaseDivider
               className={cx(
                 'hidden !h-6',
-                isDashboard ? 'xl:hidden 2xl:block' : 'sm:hidden md:block',
+                isDashboard ? 'xs:block' : 'xs:block sm:hidden md:block',
               )}
               vertical
             />
