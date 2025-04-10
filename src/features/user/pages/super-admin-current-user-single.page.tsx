@@ -6,12 +6,13 @@ import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { UserGender, UserRole } from '../models/user.model';
 import { ADMIN_NAME } from '../helpers/user.helper';
+import { currentUserRouteHandle } from '../route/current-user-handle';
 import { useCurrentUserSingle } from '../hooks/use-current-user-single.hook';
 import { UserAvatarImg } from '../components/user-avatar-img.component';
 
 // const USER_ACCOUNT_PATH = `/${superAdminBaseRoute}/${superAdminRoutes.account.to}/${superAdminRoutes.account.editTo}`;
 
-export function SuperAdminCurrentUserSinglePage() {
+function SuperAdminCurrentUserSinglePage() {
   const { loading, user } = useCurrentUserSingle();
   const data: any = useLoaderData();
 
@@ -65,3 +66,6 @@ export function SuperAdminCurrentUserSinglePage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = SuperAdminCurrentUserSinglePage;
+export const handle = currentUserRouteHandle.single;

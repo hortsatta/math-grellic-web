@@ -1,13 +1,16 @@
 import { useLoaderData } from 'react-router-dom';
 
+import { queryClient } from '#/config/react-query-client.config';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
-import { StudentActivityPerformanceOverviewCard } from '../components/student-activity-performance-overview-card.component';
-import { StudentActivityPerformanceList } from '../components/student-activity-performance-list.component';
+import { studentPerformanceRouteHandle } from '../route/student-performance-handle.route';
+import { getStudentActivitiesByCurrentStudentUserLoader } from '../route/student-performance-loader';
 import { useStudentActivityPerformanceList } from '../hooks/use-student-activity-performance-list.hook';
 import { useStudentPerformanceSingle } from '../hooks/use-student-performance-single.hook';
+import { StudentActivityPerformanceOverviewCard } from '../components/student-activity-performance-overview-card.component';
+import { StudentActivityPerformanceList } from '../components/student-activity-performance-list.component';
 
-export function StudentActivityPerformanceListPage() {
+function StudentActivityPerformanceListPage() {
   const { student, loading: studentLoading } = useStudentPerformanceSingle();
   const { activities, loading } = useStudentActivityPerformanceList();
 
@@ -34,3 +37,8 @@ export function StudentActivityPerformanceListPage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = StudentActivityPerformanceListPage;
+export const handle = studentPerformanceRouteHandle.activities;
+export const loader =
+  getStudentActivitiesByCurrentStudentUserLoader(queryClient);

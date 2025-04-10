@@ -14,6 +14,8 @@ import { BaseDivider } from './base-divider.component';
 import { BaseRangeSlider } from './base-range-slider.component';
 import { BaseSpinner } from './base-spinner.component';
 
+import 'cropperjs/dist/cropper.min.css';
+
 import type { ChangeEvent, ComponentProps, WheelEvent } from 'react';
 import type { ReactCropperElement } from 'react-cropper';
 import type { IconName } from '../models/base.model';

@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
+import { currentUserRouteHandle } from '../route/current-user-handle';
 import { useTeacherCurrenUserEdit } from '../hooks/use-teacher-current-user-edit.hook';
 import { CurrentUserUpdateForm } from '../components/current-user-update-form.component';
 
@@ -10,7 +11,7 @@ import type {
   TeacherUserUpdateFormData,
 } from '../models/user-form-data.model';
 
-export function TeacherUserAccountEditPage() {
+function TeacherUserAccountEditPage() {
   const {
     loading,
     isDone,
@@ -41,3 +42,6 @@ export function TeacherUserAccountEditPage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = TeacherUserAccountEditPage;
+export const handle = currentUserRouteHandle.edit;

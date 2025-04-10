@@ -1,8 +1,11 @@
 import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
+import { queryClient } from '#/config/react-query-client.config';
 import { generateFullName } from '#/user/helpers/user.helper';
 import { UserGender } from '#/user/models/user.model';
+import { getStudentAssignedTeacherLoader } from '#/user/route/student-assigned-teacher-loader.route';
+import { useStudentAssignedTeacherSingle } from '#/user/hooks/use-student-assigned-teacher-single.hook';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
@@ -10,10 +13,9 @@ import { BaseDataSuspense } from '#/base/components/base-data-suspense.component
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { UserAvatarImg } from '#/user/components/user-avatar-img.component';
 import { UserMessengerLink } from '#/user/components/user-messenger-link.component';
+import { studentHelpRouteHandle } from '../route/student-help-handle.route';
 
-import { useStudentAssignedTeacherSingle } from '#/user/hooks/use-student-assigned-teacher-single.hook';
-
-export function StudentHelpPage() {
+function StudentHelpPage() {
   const { loading, user: assignedTeacher } = useStudentAssignedTeacherSingle();
   const data: any = useLoaderData();
 
@@ -80,3 +82,7 @@ export function StudentHelpPage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = StudentHelpPage;
+export const handle = studentHelpRouteHandle;
+export const loader = getStudentAssignedTeacherLoader(queryClient);

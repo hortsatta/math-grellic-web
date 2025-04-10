@@ -1,9 +1,10 @@
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { BaseScene } from '#/base/components/base-scene.component';
+import { teacherLessonRouteHandle } from '../route/teacher-lesson-handle.route';
 import { useLessonPreview } from '../hooks/use-lesson-preview.hook';
 import { StudentLessonSingle } from '../components/student-lesson-single.component';
 
-export function LessonPreviewPage() {
+function LessonPreviewPage() {
   const { titlePreview, lesson } = useLessonPreview();
 
   if (lesson === undefined) {
@@ -18,3 +19,6 @@ export function LessonPreviewPage() {
     </BaseScene>
   );
 }
+
+export const Component = LessonPreviewPage;
+export const handle = teacherLessonRouteHandle.preview;

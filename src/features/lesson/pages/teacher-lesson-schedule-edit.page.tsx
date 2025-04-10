@@ -1,13 +1,14 @@
 import { useMemo } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
+import { teacherLessonRouteHandle } from '../route/teacher-lesson-handle.route';
 import { transformToLessonScheduleFormData } from '../helpers/lesson-transform.helper';
 import { useLessonScheduleUpsert } from '../hooks/use-lesson-schedule-upsert.hook';
 import { LessonScheduleUpsertForm } from '../components/lesson-schedule-upsert-form.component';
 
 import type { OutletContextType } from './teacher-lesson-schedule-list.page';
 
-export function TeacherLessonScheduleEditPage() {
+function TeacherLessonScheduleEditPage() {
   const { lesson, lessonSchedule } = useOutletContext<OutletContextType>();
 
   const { isDone, setIsDone, editLessonSchedule } = useLessonScheduleUpsert(
@@ -37,3 +38,6 @@ export function TeacherLessonScheduleEditPage() {
     )
   );
 }
+
+export const Component = TeacherLessonScheduleEditPage;
+export const handle = teacherLessonRouteHandle.schedule;

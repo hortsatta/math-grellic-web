@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom/client';
 
 import { App } from './features/app';
 import 'overlayscrollbars/overlayscrollbars.css';
-import 'cropperjs/dist/cropper.min.css';
-import 'mathquill/build/mathquill.css';
 import './assets/fonts/fonts.css';
 import './index.css';
 

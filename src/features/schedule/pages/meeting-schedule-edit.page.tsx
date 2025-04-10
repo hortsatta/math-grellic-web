@@ -2,17 +2,20 @@ import { useState, useMemo, useCallback } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
+import { queryClient } from '#/config/react-query-client.config';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseModal } from '#/base/components/base-modal.component';
+import { teacherScheduleRouteHandle } from '../route/teacher-schedule-handle.route';
+import { getTeacherMeetingScheduleByIdLoader } from '../route/teacher-schedule-loader.route';
 import { useMeetingScheduleEdit } from '../hooks/use-meeting-schedule-edit.hook';
 import { MeetingScheduleUpsertForm } from '../components/meeting-schedule-upsert-form.component';
 
 const MEETING_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.schedule.to}/${teacherRoutes.schedule.meeting.to}`;
 
-export function MeetingScheduleEditPage() {
+function MeetingScheduleEditPage() {
   const { id } = useParams();
 
   const {
@@ -84,3 +87,7 @@ export function MeetingScheduleEditPage() {
     </>
   );
 }
+
+export const Component = MeetingScheduleEditPage;
+export const handle = teacherScheduleRouteHandle.edit;
+export const loader = getTeacherMeetingScheduleByIdLoader(queryClient);

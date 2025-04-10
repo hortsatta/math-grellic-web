@@ -1,13 +1,16 @@
 import { useLoaderData } from 'react-router-dom';
 
+import { queryClient } from '#/config/react-query-client.config';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
+import { studentPerformanceRouteHandle } from '../route/student-performance-handle.route';
+import { getStudentExamsByCurrentStudentUserLoader } from '../route/student-performance-loader';
 import { useStudentExamPerformanceList } from '../hooks/use-student-exam-performance-list.hook';
 import { useStudentPerformanceSingle } from '../hooks/use-student-performance-single.hook';
 import { StudentExamPerformanceList } from '../components/student-exam-performance-list.component';
 import { StudentExamPerformanceOverviewCard } from '../components/student-exam-performance-overview-card.component';
 
-export function StudentExamPerformanceListPage() {
+function StudentExamPerformanceListPage() {
   const { student, loading: studentLoading } = useStudentPerformanceSingle();
   const { exams, loading } = useStudentExamPerformanceList();
 
@@ -31,3 +34,7 @@ export function StudentExamPerformanceListPage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = StudentExamPerformanceListPage;
+export const handle = studentPerformanceRouteHandle.exams;
+export const loader = getStudentExamsByCurrentStudentUserLoader(queryClient);

@@ -1,13 +1,16 @@
 import { useLoaderData } from 'react-router-dom';
 
+import { queryClient } from '#/config/react-query-client.config';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
+import { teacherStudentPerformanceRouteHandle } from '../route/teacher-performance-handle.route';
+import { getTeacherStudentActivitiesByPublicIdAndCurrentTeacherUserLoader } from '../route/teacher-performance-loader.route';
 import { useTeacherStudentActivityPerformanceList } from '../hooks/use-teacher-student-activity-performance-list.hook';
 import { useTeacherStudentPerformanceSingle } from '../hooks/use-teacher-student-performance-single.hook';
 import { StudentActivityPerformanceOverviewCard } from '../components/student-activity-performance-overview-card.component';
 import { TeacherStudentActivityPerformanceList } from '../components/teacher-student-activity-performance-list.component';
 
-export function TeacherStudentActivityPerformanceListPage() {
+function TeacherStudentActivityPerformanceListPage() {
   const { student, loading: studentLoading } =
     useTeacherStudentPerformanceSingle();
   const { activities, loading } = useTeacherStudentActivityPerformanceList();
@@ -35,3 +38,8 @@ export function TeacherStudentActivityPerformanceListPage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = TeacherStudentActivityPerformanceListPage;
+export const handle = teacherStudentPerformanceRouteHandle.activities;
+export const loader =
+  getTeacherStudentActivitiesByPublicIdAndCurrentTeacherUserLoader(queryClient);

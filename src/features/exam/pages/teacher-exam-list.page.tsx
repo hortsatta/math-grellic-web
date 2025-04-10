@@ -1,6 +1,7 @@
 import { useLoaderData } from 'react-router-dom';
 
 import { capitalize } from '#/utils/string.util';
+import { queryClient } from '#/config/react-query-client.config';
 import { RecordStatus } from '#/core/models/core.model';
 import { ScheduleType } from '#/schedule/models/schedule.model';
 import { StudentPerformanceType } from '#/performance/models/performance.model';
@@ -14,6 +15,8 @@ import { BaseDataSuspense } from '#/base/components/base-data-suspense.component
 import { TeacherScheduleDailyCardList } from '#/schedule/components/teacher-schedule-daily-card-list.component';
 import { TeacherExamPerformanceOverviewBoard } from '#/performance/components/teacher-exam-performance-overview-board.component';
 import { TeacherStudentPerformanceLeaderboard } from '#/performance/components/teacher-student-performance-leaderboard.component';
+import { teacherExamRouteHandle } from '../route/teacher-exam-handle.route';
+import { getTeacherPaginatedExamsLoader } from '../route/teacher-exam-loader.route';
 import {
   defaultSort,
   useTeacherExamList,
@@ -50,7 +53,7 @@ const sortOptions = [
   },
 ];
 
-export function TeacherExamListPage() {
+function TeacherExamListPage() {
   const {
     exams,
     loading,
@@ -142,3 +145,7 @@ export function TeacherExamListPage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = TeacherExamListPage;
+export const handle = teacherExamRouteHandle.list;
+export const loader = getTeacherPaginatedExamsLoader(queryClient);

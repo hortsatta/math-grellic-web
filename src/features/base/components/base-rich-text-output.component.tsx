@@ -6,6 +6,8 @@ import cx from 'classix';
 
 import { stripHtml, voidElements } from '#/utils/html.util';
 
+import 'mathquill/build/mathquill.css';
+
 import type { ComponentProps } from 'react';
 import type { UseControllerProps } from 'react-hook-form';
 

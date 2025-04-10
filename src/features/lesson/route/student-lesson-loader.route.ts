@@ -8,7 +8,7 @@ import {
 import type { QueryClient } from '@tanstack/react-query';
 import type { LoaderFunctionArgs } from 'react-router-dom';
 
-export function getLessonBySlugLoader(
+export function getStudentLessonBySlugLoader(
   queryClient: QueryClient,
   queryParams?: { exclude?: string; include?: string },
 ) {
@@ -28,7 +28,7 @@ export function getLessonBySlugLoader(
   };
 }
 
-export function getLessonsLoader(queryClient: QueryClient) {
+export function getStudentLessonsLoader(queryClient: QueryClient) {
   return async () => {
     const query = getLessonsByCurrentStudentUser();
     return defer({

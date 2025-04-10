@@ -7,12 +7,13 @@ import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { transformToExamScheduleFormData } from '../helpers/exam-schedule-transform.helper';
+import { teacherExamRouteHandle } from '../route/teacher-exam-handle.route';
 import { useExamScheduleEdit } from '../hooks/use-exam-schedule-edit.hook';
 import { ExamScheduleUpsertForm } from '../components/exam-schedule-upsert-form.component';
 
 import type { OutletContextType } from './teacher-exam-schedule-list.page';
 
-export function TeacherExamScheduleEditPage() {
+function TeacherExamScheduleEditPage() {
   const { exam, examSchedule, clearSelectedExamSchedule } =
     useOutletContext<OutletContextType>();
 
@@ -113,3 +114,6 @@ export function TeacherExamScheduleEditPage() {
     )
   );
 }
+
+export const Component = TeacherExamScheduleEditPage;
+export const handle = teacherExamRouteHandle.schedule;

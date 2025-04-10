@@ -3,6 +3,8 @@ import { NodeViewWrapper } from '@tiptap/react';
 import { EditableMathField } from 'react-mathquill';
 import cx from 'classix';
 
+import 'mathquill/build/mathquill.css';
+
 import type { Node } from '@tiptap/pm/model';
 import type { MathField } from 'react-mathquill';
 

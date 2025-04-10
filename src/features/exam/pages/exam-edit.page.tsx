@@ -2,17 +2,20 @@ import { useCallback, useMemo, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
+import { queryClient } from '#/config/react-query-client.config';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseModal } from '#/base/components/base-modal.component';
+import { teacherExamRouteHandle } from '../route/teacher-exam-handle.route';
+import { getTeacherExamBySlugLoader } from '../route/teacher-exam-loader.route';
 import { useExamEdit } from '../hooks/use-exam-edit.hook';
 import { ExamUpsertForm } from '../components/exam-upsert-form.component';
 
 const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
 
-export function ExamEditPage() {
+function ExamEditPage() {
   const { slug } = useParams();
 
   const { loading, isDone, setIsDone, examFormData, editExam, deleteExam } =
@@ -80,3 +83,7 @@ export function ExamEditPage() {
     </>
   );
 }
+
+export const Component = ExamEditPage;
+export const handle = teacherExamRouteHandle.edit;
+export const loader = getTeacherExamBySlugLoader(queryClient);

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
+import { queryClient } from '#/config/react-query-client.config';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import {
   formatPhoneNumber,
@@ -14,6 +15,8 @@ import { BaseLink } from '#/base/components/base-link.component';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { UserMessengerLink } from '#/user/components/user-messenger-link.component';
+import { teacherStudentPerformanceRouteHandle } from '../route/teacher-performance-handle.route';
+import { getTeacherStudentPerformanceByPublicIdLoader } from '../route/teacher-performance-loader.route';
 import { useTeacherStudentPerformanceSingle } from '../hooks/use-teacher-student-performance-single.hook';
 import { StudentPerformanceSingle } from '../components/student-performance-single.component';
 
@@ -21,7 +24,7 @@ import type { UserGender } from '#/user/models/user.model';
 
 const STUDENT_USER_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
-export function TeacherStudentPerformanceSinglePage() {
+function TeacherStudentPerformanceSinglePage() {
   const { student, loading } = useTeacherStudentPerformanceSingle();
   const data: any = useLoaderData();
 
@@ -87,3 +90,7 @@ export function TeacherStudentPerformanceSinglePage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = TeacherStudentPerformanceSinglePage;
+export const handle = teacherStudentPerformanceRouteHandle.single;
+export const loader = getTeacherStudentPerformanceByPublicIdLoader(queryClient);

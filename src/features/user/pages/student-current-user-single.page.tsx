@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
+import { queryClient } from '#/config/react-query-client.config';
 import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
@@ -10,6 +11,8 @@ import { BaseLink } from '#/base/components/base-link.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { generateFullName } from '../helpers/user.helper';
 import { UserRole } from '../models/user.model';
+import { currentUserRouteHandle } from '../route/current-user-handle';
+import { getStudentAssignedTeacherLoader } from '../route/student-assigned-teacher-loader.route';
 import { useCurrentUserSingle } from '../hooks/use-current-user-single.hook';
 import { useStudentAssignedTeacherSingle } from '../hooks/use-student-assigned-teacher-single.hook';
 import { UserAvatarImg } from '../components/user-avatar-img.component';
@@ -20,7 +23,7 @@ import type { StudentUserAccount, UserGender } from '../models/user.model';
 
 const USER_ACCOUNT_PATH = `/${studentBaseRoute}/${studentRoutes.account.to}/${studentRoutes.account.editTo}`;
 
-export function StudentCurrentUserSinglePage() {
+function StudentCurrentUserSinglePage() {
   const { loading: userLoading, user: studentUser } = useCurrentUserSingle();
 
   const { loading: assignedTeacherLoading, user: assignedTeacher } =
@@ -112,3 +115,7 @@ export function StudentCurrentUserSinglePage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = StudentCurrentUserSinglePage;
+export const handle = currentUserRouteHandle.single;
+export const loader = getStudentAssignedTeacherLoader(queryClient);

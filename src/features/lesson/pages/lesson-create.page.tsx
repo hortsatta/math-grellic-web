@@ -1,7 +1,8 @@
-import { LessonUpsertForm } from '../components/lesson-upsert-form.component';
+import { teacherLessonRouteHandle } from '../route/teacher-lesson-handle.route';
 import { useLessonCreate } from '../hooks/use-lesson-create.hook';
+import { LessonUpsertForm } from '../components/lesson-upsert-form.component';
 
-export function LessonCreatePage() {
+function LessonCreatePage() {
   const { isDone, setIsDone, createLesson } = useLessonCreate();
 
   return (
@@ -12,3 +13,6 @@ export function LessonCreatePage() {
     />
   );
 }
+
+export const Component = LessonCreatePage;
+export const handle = teacherLessonRouteHandle.create;

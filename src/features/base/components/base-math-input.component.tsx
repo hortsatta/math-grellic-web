@@ -7,6 +7,8 @@ import { BaseIcon } from './base-icon.component';
 import { BaseIconButton } from './base-icon-button.component';
 import { BaseTooltip } from './base-tooltip.component';
 
+import 'mathquill/build/mathquill.css';
+
 import type { ComponentProps, ReactNode } from 'react';
 import type { UseControllerProps } from 'react-hook-form';
 import type { MathField } from 'react-mathquill';

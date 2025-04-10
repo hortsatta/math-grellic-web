@@ -10,7 +10,7 @@ import {
 import type { QueryClient } from '@tanstack/react-query';
 import type { LoaderFunctionArgs } from 'react-router-dom';
 
-export function getMeetingScheduleByIdLoader(
+export function getStudentMeetingScheduleByIdLoader(
   queryClient: QueryClient,
   queryParams?: { exclude?: string; include?: string },
 ) {
@@ -30,7 +30,7 @@ export function getMeetingScheduleByIdLoader(
   };
 }
 
-export function getMeetingSchedulesLoader(queryClient: QueryClient) {
+export function getStudentMeetingSchedulesLoader(queryClient: QueryClient) {
   return async () => {
     const query = getMeetingSchedulesByCurrentStudentUser();
     return defer({
@@ -41,7 +41,7 @@ export function getMeetingSchedulesLoader(queryClient: QueryClient) {
   };
 }
 
-export function getSchedulesByDateRangeLoader(queryClient: QueryClient) {
+export function getStudentSchedulesByDateRangeLoader(queryClient: QueryClient) {
   const today = new Date();
   const first = today.getDate() - today.getDay() + 1;
   const last = first + (DAYS_PER_WEEK - 1);

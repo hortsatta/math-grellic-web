@@ -8,7 +8,7 @@ import {
 import type { QueryClient } from '@tanstack/react-query';
 import type { LoaderFunctionArgs } from 'react-router-dom';
 
-export function getActivityBySlugLoader(
+export function getStudentActivityBySlugLoader(
   queryClient: QueryClient,
   queryParams?: { exclude?: string; include?: string },
 ) {
@@ -28,7 +28,7 @@ export function getActivityBySlugLoader(
   };
 }
 
-export function getActivitiesLoader(queryClient: QueryClient) {
+export function getStudentActivitiesLoader(queryClient: QueryClient) {
   return async () => {
     const query = getActivitiesByCurrentStudentUser();
     return defer({

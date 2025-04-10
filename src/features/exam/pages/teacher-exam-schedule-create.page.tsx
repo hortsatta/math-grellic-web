@@ -1,12 +1,13 @@
 import { useCallback, useMemo } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
+import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.route';
 import { useExamScheduleCreate } from '../hooks/use-exam-schedule-create.hook';
 import { ExamScheduleUpsertForm } from '../components/exam-schedule-upsert-form.component';
 
 import type { OutletContextType } from './teacher-exam-schedule-list.page';
 
-export function TeacherExamScheduleCreatePage() {
+function TeacherExamScheduleCreatePage() {
   const { exam, clearSelectedExamSchedule } =
     useOutletContext<OutletContextType>();
 
@@ -35,3 +36,6 @@ export function TeacherExamScheduleCreatePage() {
     )
   );
 }
+
+export const Component = TeacherExamScheduleCreatePage;
+export const handle = teacherLessonRouteHandle.schedule;

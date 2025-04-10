@@ -1,14 +1,17 @@
 import { useLoaderData } from 'react-router-dom';
 
+import { queryClient } from '#/config/react-query-client.config';
 import { useStudentPerformanceSingle } from '#/performance/hooks/use-student-performance-single.hook';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { StudentActivityPerformanceOverviewBoard } from '#/performance/components/student-activity-performance-overview-board.component';
+import { studentActivityRouteHandle } from '../route/student-activity-handle.route';
+import { getStudentActivitiesLoader } from '../route/student-activity-loader.route';
 import { useStudentActivityList } from '../hooks/use-student-activity-list.hook';
 import { StudentFeaturedActivityList } from '../components/student-featured-activity-list.component';
 import { StudentOtherActivityList } from '../components/student-other-activity-list.component';
 
-export function StudentActivityListPage() {
+function StudentActivityListPage() {
   const { featuredActivities, otherActivities, loading, refetch } =
     useStudentActivityList();
 
@@ -43,3 +46,7 @@ export function StudentActivityListPage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = StudentActivityListPage;
+export const handle = studentActivityRouteHandle.list;
+export const loader = getStudentActivitiesLoader(queryClient);

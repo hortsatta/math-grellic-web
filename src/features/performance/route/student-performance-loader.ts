@@ -4,18 +4,18 @@ import {
   getStudentActivitiesByCurrentStudentUser,
   getStudentExamsByCurrentStudentUser,
   getStudentLessonsByCurrentStudentUser,
-  getStudentPerformanceByCurrentStudentUser,
+  getStudentPerformanceByCurrentStudentUser as getPerformanceByCurrentStudentUser,
 } from '../api/student-performance.api';
 
 import type { QueryClient } from '@tanstack/react-query';
 
-export function getPerformanceByCurrentStudentUser(
+export function getStudentPerformanceByCurrentStudentUser(
   queryClient: QueryClient,
   queryParams?: { exclude?: string; include?: string },
 ) {
   return async () => {
     const keys = { ...queryParams };
-    const query = getStudentPerformanceByCurrentStudentUser(keys);
+    const query = getPerformanceByCurrentStudentUser(keys);
 
     return defer({
       main:

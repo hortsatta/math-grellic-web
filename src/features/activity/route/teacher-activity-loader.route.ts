@@ -9,7 +9,7 @@ import { defaultParamKeys } from '../hooks/use-teacher-activity-list.hook';
 import type { QueryClient } from '@tanstack/react-query';
 import type { LoaderFunctionArgs } from 'react-router-dom';
 
-export function getActivityBySlugLoader(
+export function getTeacherActivityBySlugLoader(
   queryClient: QueryClient,
   queryParams?: { status?: string; exclude?: string; include?: string },
 ) {
@@ -29,7 +29,7 @@ export function getActivityBySlugLoader(
   };
 }
 
-export function getPaginatedActivitiesLoader(queryClient: QueryClient) {
+export function getTeacherPaginatedActivitiesLoader(queryClient: QueryClient) {
   return async () => {
     const query = getPaginatedActivitiesByCurrentTeacherUser(defaultParamKeys);
     return defer({

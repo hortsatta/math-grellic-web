@@ -10,6 +10,7 @@ import { BaseLink } from '#/base/components/base-link.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { generateFullName } from '../helpers/user.helper';
 import { UserRole } from '../models/user.model';
+import { currentUserRouteHandle } from '../route/current-user-handle';
 import { useCurrentUserSingle } from '../hooks/use-current-user-single.hook';
 import { UserAvatarImg } from '../components/user-avatar-img.component';
 import { UserMessengerLink } from '../components/user-messenger-link.component';
@@ -19,7 +20,7 @@ import type { TeacherUserAccount, UserGender } from '../models/user.model';
 
 const USER_ACCOUNT_PATH = `/${teacherBaseRoute}/${teacherRoutes.account.to}/${teacherRoutes.account.editTo}`;
 
-export function TeacherCurrentUserSinglePage() {
+function TeacherCurrentUserSinglePage() {
   const { loading, user } = useCurrentUserSingle();
   const data: any = useLoaderData();
 
@@ -99,3 +100,6 @@ export function TeacherCurrentUserSinglePage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = TeacherCurrentUserSinglePage;
+export const handle = currentUserRouteHandle.single;

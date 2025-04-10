@@ -1,7 +1,8 @@
+import { studentUserRouteHandle } from '../route/student-user-handle';
 import { useStudentUserCreate } from '../hooks/use-student-user-create.hook';
 import { StudentUserUpsertForm } from '../components/student-user-upsert-form.component';
 
-export function StudentUserCreatePage() {
+function StudentUserCreatePage() {
   const { isDone, setIsDone, register } = useStudentUserCreate();
 
   return (
@@ -12,3 +13,6 @@ export function StudentUserCreatePage() {
     />
   );
 }
+
+export const Component = StudentUserCreatePage;
+export const handle = studentUserRouteHandle.create;

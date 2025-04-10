@@ -1,8 +1,11 @@
 import { useLoaderData } from 'react-router-dom';
 
+import { queryClient } from '#/config/react-query-client.config';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 import { BaseDataPagination } from '#/base/components/base-data-pagination.component';
+import { teacherScheduleRouteHandle } from '../route/teacher-schedule-handle.route';
+import { getTeacherPaginatedMeetingSchedulesLoader } from '../route/teacher-schedule-loader.route';
 import {
   defaultSort,
   useTeacherMeetingScheduleList,
@@ -20,7 +23,7 @@ const sortOptions = [
   },
 ];
 
-export function TeacherMeetingScheduleListPage() {
+function TeacherMeetingScheduleListPage() {
   const {
     meetingSchedules,
     loading,
@@ -71,3 +74,7 @@ export function TeacherMeetingScheduleListPage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = TeacherMeetingScheduleListPage;
+export const handle = teacherScheduleRouteHandle.list;
+export const loader = getTeacherPaginatedMeetingSchedulesLoader(queryClient);

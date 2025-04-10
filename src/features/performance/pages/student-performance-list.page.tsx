@@ -14,6 +14,9 @@ import {
 } from '../hooks/use-student-performance-list.hook';
 import { StudentPerformanceList } from '../components/student-performance-list.component';
 import { TeacherStudentPerformanceOverviewBoard } from '../components/teacher-student-performance-overview-board.component';
+import { queryClient } from '#/config/react-query-client.config';
+import { teacherStudentPerformanceRouteHandle } from '../route/teacher-performance-handle.route';
+import { getTeacherPaginatedStudentPerformancesLoader } from '../route/teacher-performance-loader.route';
 
 const filterOptions = [
   {
@@ -47,7 +50,7 @@ const sortOptions = [
   },
 ];
 
-export function StudentPerformanceListPage() {
+function StudentPerformanceListPage() {
   const {
     students,
     loading,
@@ -112,3 +115,7 @@ export function StudentPerformanceListPage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = StudentPerformanceListPage;
+export const handle = teacherStudentPerformanceRouteHandle.list;
+export const loader = getTeacherPaginatedStudentPerformancesLoader(queryClient);

@@ -12,7 +12,7 @@ import { defaultParamKeys } from '../hooks/use-student-performance-list.hook';
 import type { QueryClient } from '@tanstack/react-query';
 import type { LoaderFunctionArgs } from 'react-router-dom';
 
-export function getStudentPerformanceByPublicIdLoader(
+export function getTeacherStudentPerformanceByPublicIdLoader(
   queryClient: QueryClient,
   queryParams?: { exclude?: string; include?: string },
 ) {
@@ -32,7 +32,7 @@ export function getStudentPerformanceByPublicIdLoader(
   };
 }
 
-export function getPaginatedStudentPerformancesLoader(
+export function getTeacherPaginatedStudentPerformancesLoader(
   queryClient: QueryClient,
 ) {
   return async () => {
@@ -46,7 +46,7 @@ export function getPaginatedStudentPerformancesLoader(
   };
 }
 
-export function getStudentExamsByPublicIdAndCurrentTeacherUserLoader(
+export function getTeacherStudentExamsByPublicIdAndCurrentTeacherUserLoader(
   queryClient: QueryClient,
   queryParams?: { exclude?: string; include?: string },
 ) {
@@ -66,7 +66,7 @@ export function getStudentExamsByPublicIdAndCurrentTeacherUserLoader(
   };
 }
 
-export function getStudentActivitiesByPublicIdAndCurrentTeacherUserLoader(
+export function getTeacherStudentActivitiesByPublicIdAndCurrentTeacherUserLoader(
   queryClient: QueryClient,
   queryParams?: { exclude?: string; include?: string },
 ) {
@@ -86,7 +86,7 @@ export function getStudentActivitiesByPublicIdAndCurrentTeacherUserLoader(
   };
 }
 
-export function getStudentLessonsByPublicIdAndCurrentTeacherUserLoader(
+export function getTeacherStudentLessonsByPublicIdAndCurrentTeacherUserLoader(
   queryClient: QueryClient,
   queryParams?: { exclude?: string; include?: string },
 ) {

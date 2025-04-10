@@ -5,6 +5,7 @@ import { useStudentScheduleTodayList } from '#/schedule/hooks/use-student-schedu
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { ScheduleDailyCardList } from '#/schedule/components/schedule-daily-card-list.component';
 import { useStudentAnnouncementList } from '#/announcement/hooks/use-student-announcement-list.hook';
+import { dashboardRouteHandle } from '../route/dashboard-handle.route';
 import { useStudentCurriculumSnippets } from '../hooks/use-student-curriculum-snippets.hook';
 import { StudentDashboardUserSummary } from '../components/student-dashboard-user-summary.component';
 import { StudentDashboardCurriculumTabList } from '../components/student-dashboard-curriculum-tab-list.component';
@@ -13,7 +14,7 @@ import { StudentDashboardHelpCard } from '../components/student-dashboard-help-c
 
 const SCHEDULE_PATH = `/${studentBaseRoute}/${studentRoutes.schedule.to}`;
 
-export function StudentDashboardPage() {
+function StudentDashboardPage() {
   const user = useBoundStore((state) => state.user || null);
 
   const { loading: performanceLoading, student: studentPerformance } =
@@ -92,3 +93,6 @@ export function StudentDashboardPage() {
     </div>
   );
 }
+
+export const Component = StudentDashboardPage;
+export const handle = dashboardRouteHandle;

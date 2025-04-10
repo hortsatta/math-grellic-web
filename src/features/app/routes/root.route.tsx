@@ -6,15 +6,11 @@ import {
   redirect,
 } from 'react-router-dom';
 
-import { queryClient } from '#/config/react-query-client.config';
-
-import { RecordStatus } from '#/core/models/core.model';
+import { UserRole } from '#/user/models/user.model';
 import { coreRouteHandle } from '#/core/core-route-handle';
 import { CorePageNotFound } from '#/core/components/core-page-not-found.component';
 import { CoreStaticLayout } from '#/core/components/core-static-layout.component';
 import { CoreLayout } from '#/core/components/core-layout.component';
-
-import { UserRole } from '#/user/models/user.model';
 import { AuthProtectedRoute } from '#/auth/components/auth-protected-route.component';
 
 import { HomePage } from '#/static/pages/home.page';
@@ -22,143 +18,6 @@ import { AboutPage } from '#/static/pages/about.page';
 import { UserRegisterPage } from '#/user/pages/user-register.page';
 import { UserRegisterEmailConfirmPage } from '#/user/pages/user-register-email-confirm.page';
 import { UserRegisterEmailConfirmLastStepPage } from '#/user/pages/user-register-email-confirm-last-step.page';
-
-import { dashboardRouteHandle } from '#/dashboard/route/dashboard-handle.route';
-import { SuperAdminDashboardPage } from '#/dashboard/pages/super-admin-dashboard.page';
-import { TeacherDashboardPage } from '#/dashboard/pages/teacher-dashboard.page';
-import { StudentDashboardPage } from '#/dashboard/pages/student-dashboard.page';
-
-import { adminUserRouteHandle } from '#/user/route/admin-user-handle';
-import {
-  getAdminUserByIdLoader,
-  getPaginatedAdminUserLoader,
-} from '#/user/route/admin-user-loader';
-import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.route';
-import { teacherExamRouteHandle } from '#/exam/route/teacher-exam-handle.route';
-import { teacherActivityRouteHandle } from '#/activity/route/teacher-activity-handle.route';
-import { studentLessonRouteHandle } from '#/lesson/route/student-lesson-handle.route';
-import { studentExamRouteHandle } from '#/exam/route/student-exam-handle.route';
-import { studentActivityRouteHandle } from '#/activity/route/student-activity-handle.route';
-import { teacherStudentPerformanceRouteHandle } from '#/performance/route/teacher-performance-handle.route';
-import { studentPerformanceRouteHandle } from '#/performance/route/student-performance-handle.route';
-import { teacherScheduleRouteHandle } from '#/schedule/route/teacher-schedule-handle.route';
-import { studentScheduleRouteHandle } from '#/schedule/route/student-schedule-handle.route';
-import { studentUserRouteHandle } from '#/user/route/student-user-handle';
-import { currentUserRouteHandle } from '#/user/route/current-user-handle';
-import { studentHelpRouteHandle } from '#/help/route/student-help-handle.route';
-import { getStudentAssignedTeacherLoader } from '#/user/route/student-assigned-teacher-loader.route';
-import {
-  getPaginatedLessonsLoader as getTeacherPaginatedLessonsLoader,
-  getLessonBySlugLoader as getTeacherLessonBySlugLoader,
-} from '#/lesson/route/teacher-lesson-loader.route';
-import {
-  getPaginatedExamsLoader as getTeacherPaginatedExamsLoader,
-  getExamBySlugLoader as getTeacherExamBySlugLoader,
-} from '#/exam/route/teacher-exam-loader.route';
-import {
-  getPaginatedActivitiesLoader as getTeacherPaginatedActivitiesLoader,
-  getActivityBySlugLoader as getTeacherActivityBySlugLoader,
-} from '#/activity/route/teacher-activity-loader.route';
-import {
-  getPaginatedStudentPerformancesLoader,
-  getStudentActivitiesByPublicIdAndCurrentTeacherUserLoader,
-  getStudentExamsByPublicIdAndCurrentTeacherUserLoader,
-  getStudentLessonsByPublicIdAndCurrentTeacherUserLoader,
-  getStudentPerformanceByPublicIdLoader,
-} from '#/performance/route/teacher-performance-loader.route';
-import {
-  getPerformanceByCurrentStudentUser,
-  getStudentActivitiesByCurrentStudentUserLoader,
-  getStudentExamsByCurrentStudentUserLoader,
-  getStudentLessonsByCurrentStudentUserLoader,
-} from '#/performance/route/student-performance-loader';
-import {
-  getSchedulesByDateRangeLoader as getTeacherSchedulesByDateRangeLoader,
-  getMeetingScheduleByIdLoader as getTeacherMeetingScheduleByIdLoader,
-  getPaginatedMeetingSchedulesLoader as getTeacherPaginatedMeetingScheduleLoader,
-} from '#/schedule/route/teacher-schedule-loader.route';
-import {
-  getLessonsLoader as getStudentLessonsLoader,
-  getLessonBySlugLoader as getStudentLessonBySlugLoader,
-} from '#/lesson/route/student-lesson-loader.route';
-import {
-  getExamsLoader as getStudentExamsLoader,
-  getExamBySlugLoader as getStudentExamBySlugLoader,
-} from '#/exam/route/student-exam-loader.route';
-import {
-  getActivitiesLoader as getStudentActivitiesLoader,
-  getActivityBySlugLoader as getStudentActivityBySlugLoader,
-} from '#/activity/route/student-activity-loader.route';
-import {
-  getSchedulesByDateRangeLoader as getStudentSchedulesByDateRangeLoader,
-  getMeetingSchedulesLoader as getStudentMeetingSchedulesLoader,
-  getMeetingScheduleByIdLoader as getStudentMeetingScheduleByIdLoader,
-} from '#/schedule/route/student-schedule-loader.route';
-import {
-  getPaginatedStudentUserLoader,
-  getStudentUserByIdLoader,
-} from '#/user/route/student-user-loader';
-import { SuperAdminCurrentUserSinglePage } from '#/user/pages/super-admin-current-user-single.page';
-import { AdminUserListPage } from '#/user/pages/admin-user-list.page';
-import { AdminUserSinglePage } from '#/user/pages/admin-user-single.page';
-import { AdminUserCreatePage } from '#/user/pages/admin-user-create.page';
-import { AdminUserEditPage } from '#/user/pages/admin-user-edit.page';
-import { TeacherCurrentUserSinglePage } from '#/user/pages/teacher-current-user-single.page';
-import { TeacherUserAccountEditPage } from '#/user/pages/teacher-current-user-edit.page';
-import { StudentUserAccountEditPage } from '#/user/pages/student-current-user-edit.page';
-import { StudentAssignedTeacherPage } from '#/user/pages/student-assigned-teacher.page';
-import { StudentCurrentUserSinglePage } from '#/user/pages/student-current-user-single.page';
-import { TeacherLessonListPage } from '#/lesson/pages/teacher-lesson-list.page';
-import { TeacherLessonSinglePage } from '#/lesson/pages/teacher-lesson-single.page';
-import { TeacherLessonScheduleListPage } from '#/lesson/pages/teacher-lesson-schedule-list.page';
-import { TeacherLessonScheduleCreatePage } from '#/lesson/pages/teacher-lesson-schedule-create.page';
-import { TeacherLessonScheduleEditPage } from '#/lesson/pages/teacher-lesson-schedule-edit.page';
-import { TeacherExamListPage } from '#/exam/pages/teacher-exam-list.page';
-import { StudentLessonListPage } from '#/lesson/pages/student-lesson-list.page';
-import { StudentLessonSinglePage } from '#/lesson/pages/student-lesson-single.page';
-import { LessonCreatePage } from '#/lesson/pages/lesson-create.page';
-import { LessonPreviewSlugPage } from '#/lesson/pages/lesson-preview-slug.page';
-import { LessonPreviewPage } from '#/lesson/pages/lesson-preview.page';
-import { LessonEditPage } from '#/lesson/pages/lesson-edit.page';
-import { TeacherExamSinglePage } from '#/exam/pages/teacher-exam-single.page';
-import { ExamCreatePage } from '#/exam/pages/exam-create.page';
-import { ExamEditPage } from '#/exam/pages/exam-edit.page';
-import { ExamPreviewPage } from '#/exam/pages/exam-preview.page';
-import { ExamPreviewSlugPage } from '#/exam/pages/exam-preview-slug.page';
-import { TeacherExamScheduleListPage } from '#/exam/pages/teacher-exam-schedule-list.page';
-import { TeacherExamScheduleCreatePage } from '#/exam/pages/teacher-exam-schedule-create.page';
-import { TeacherExamScheduleEditPage } from '#/exam/pages/teacher-exam-schedule-edit.page';
-import { StudentExamListPage } from '#/exam/pages/student-exam-list.page';
-import { StudentExamSinglePage } from '#/exam/pages/student-exam-single.page';
-import { TeacherActivityListPage } from '#/activity/pages/teacher-activity-list.page';
-import { ActivityCreatePage } from '#/activity/pages/activity-create.page';
-import { ActivityEditPage } from '#/activity/pages/activity-edit.page';
-import { ActivityPreviewSlugPage } from '#/activity/pages/activity-preview-slug.page';
-import { TeacherActivitySinglePage } from '#/activity/pages/teacher-activity-single.page';
-import { StudentActivityListPage } from '#/activity/pages/student-activity-list.page';
-import { StudentActivitySinglePage } from '#/activity/pages/student-activity-single.page';
-import { StudentPerformanceListPage } from '#/performance/pages/student-performance-list.page';
-import { TeacherStudentPerformanceSinglePage } from '#/performance/pages/teacher-student-performance-single.page';
-import { TeacherStudentExamPerformanceListPage } from '#/performance/pages/teacher-student-exam-performance-list.page';
-import { TeacherStudentActivityPerformanceListPage } from '#/performance/pages/teacher-student-activity-performance-list.page';
-import { TeacherStudentLessonPerformanceListPage } from '#/performance/pages/teacher-student-lesson-performance-list.page';
-import { StudentExamPerformanceListPage } from '#/performance/pages/student-exam-performance-list.page';
-import { StudentActivityPerformanceListPage } from '#/performance/pages/student-activity-performance-list.page';
-import { StudentLessonPerformanceListPage } from '#/performance/pages/student-lesson-performance-list.page';
-import { StudentPerformanceSinglePage } from '#/performance/pages/student-performance-single.page';
-import { TeacherScheduleCalendarPage } from '#/schedule/pages/teacher-schedule-calendar.page';
-import { StudentScheduleCalendarPage } from '#/schedule/pages/student-schedule-calendar.page';
-import { MeetingScheduleCreatePage } from '#/schedule/pages/meeting-schedule-create.page';
-import { MeetingScheduleEditPage } from '#/schedule/pages/meeting-schedule-edit.page';
-import { TeacherMeetingScheduleListPage } from '#/schedule/pages/teacher-meeting-schedule-list.page';
-import { TeacherMeetingScheduleSinglePage } from '#/schedule/pages/teacher-meeting-schedule-single.page';
-import { StudentMeetingScheduleSinglePage } from '#/schedule/pages/student-meeting-schedule-single.page';
-import { StudentMeetingScheduleListPage } from '#/schedule/pages/student-meeting-schedule-list.page';
-import { StudentUserListPage } from '#/user/pages/student-user-list.page';
-import { StudentUserSinglePage } from '#/user/pages/student-user-single.page';
-import { StudentUserCreatePage } from '#/user/pages/student-user-create.page';
-import { StudentUserEditPage } from '#/user/pages/student-user-edit.page';
-import { StudentHelpPage } from '#/help/pages/student-help.page';
 
 import { staticRoutes } from './static-routes';
 import { superAdminBaseRoute, superAdminRoutes } from './super-admin-routes';
@@ -205,44 +64,34 @@ const rootRoutes = createRoutesFromElements(
     >
       <Route
         index
-        element={<SuperAdminDashboardPage />}
-        handle={dashboardRouteHandle}
+        lazy={() => import('#/dashboard/pages/super-admin-dashboard.page')}
       />
       {/* SUPER ADMIN CURRENT USER */}
       <Route path={superAdminRoutes.account.to} element={<Outlet />}>
         <Route
           index
-          element={<SuperAdminCurrentUserSinglePage />}
-          handle={currentUserRouteHandle.single}
+          lazy={() =>
+            import('#/user/pages/super-admin-current-user-single.page')
+          }
         />
         {/* TODO account edit page */}
       </Route>
       {/* SUPER ADMIN ADMIN */}
       <Route path={superAdminRoutes.admin.to} element={<Outlet />}>
-        <Route
-          index
-          element={<AdminUserListPage />}
-          handle={adminUserRouteHandle.list}
-          loader={getPaginatedAdminUserLoader(queryClient)}
-        />
+        <Route index lazy={() => import('#/user/pages/admin-user-list.page')} />
         <Route path=':id' element={<Outlet />}>
           <Route
             index
-            element={<AdminUserSinglePage />}
-            handle={adminUserRouteHandle.single}
-            loader={getAdminUserByIdLoader(queryClient)}
+            lazy={() => import('#/user/pages/admin-user-single.page')}
           />
           <Route
             path={superAdminRoutes.admin.editTo}
-            element={<AdminUserEditPage />}
-            handle={adminUserRouteHandle.edit}
-            loader={getAdminUserByIdLoader(queryClient)}
+            lazy={() => import('#/user/pages/admin-user-edit.page')}
           />
         </Route>
         <Route
           path={superAdminRoutes.admin.createTo}
-          element={<AdminUserCreatePage />}
-          handle={adminUserRouteHandle.create}
+          lazy={() => import('#/user/pages/admin-user-create.page')}
         />
       </Route>
       <Route
@@ -264,180 +113,137 @@ const rootRoutes = createRoutesFromElements(
     >
       <Route
         index
-        element={<TeacherDashboardPage />}
-        handle={dashboardRouteHandle}
+        lazy={() => import('#/dashboard/pages/teacher-dashboard.page')}
       />
       {/* TEACHER CURRENT USER */}
       <Route path={teacherRoutes.account.to} element={<Outlet />}>
         <Route
           index
-          element={<TeacherCurrentUserSinglePage />}
-          handle={currentUserRouteHandle.single}
+          lazy={() => import('#/user/pages/teacher-current-user-single.page')}
         />
         <Route
           path={teacherRoutes.account.editTo}
-          element={<TeacherUserAccountEditPage />}
-          handle={currentUserRouteHandle.edit}
+          lazy={() => import('#/user/pages/teacher-current-user-edit.page')}
         />
       </Route>
       {/* TEACHER LESSONS */}
       <Route path={teacherRoutes.lesson.to} element={<Outlet />}>
         <Route
           index
-          element={<TeacherLessonListPage />}
-          handle={teacherLessonRouteHandle.list}
-          loader={getTeacherPaginatedLessonsLoader(queryClient)}
+          lazy={() => import('#/lesson/pages/teacher-lesson-list.page')}
         />
         <Route path=':slug' element={<Outlet />}>
           <Route
             index
-            element={<TeacherLessonSinglePage />}
-            handle={teacherLessonRouteHandle.single}
-            loader={getTeacherLessonBySlugLoader(queryClient)}
+            lazy={() => import('#/lesson/pages/teacher-lesson-single.page')}
           />
           <Route
             path={teacherRoutes.lesson.editTo}
-            element={<LessonEditPage />}
-            handle={teacherLessonRouteHandle.edit}
-            loader={getTeacherLessonBySlugLoader(queryClient)}
+            lazy={() => import('#/lesson/pages/lesson-edit.page')}
           />
           <Route
             path={teacherRoutes.lesson.previewTo}
-            element={<LessonPreviewSlugPage />}
-            handle={teacherLessonRouteHandle.preview}
-            loader={getTeacherLessonBySlugLoader(queryClient, {
-              exclude: 'schedules',
-            })}
+            lazy={() => import('#/lesson/pages/lesson-preview-slug.page')}
           />
           <Route
             path={`${teacherRoutes.lesson.schedule.to}`}
-            element={<TeacherLessonScheduleListPage />}
-            handle={teacherLessonRouteHandle.schedule}
-            loader={getTeacherLessonBySlugLoader(queryClient, {
-              status: RecordStatus.Published,
-            })}
+            lazy={() =>
+              import('#/lesson/pages/teacher-lesson-schedule-list.page')
+            }
           >
             <Route
               path={`${teacherRoutes.lesson.schedule.createTo}`}
-              element={<TeacherLessonScheduleCreatePage />}
-              handle={teacherLessonRouteHandle.schedule}
+              lazy={() =>
+                import('#/lesson/pages/teacher-lesson-schedule-create.page')
+              }
             />
             <Route
               path={`${teacherRoutes.lesson.schedule.editTo}`}
-              element={<TeacherLessonScheduleEditPage />}
-              handle={teacherLessonRouteHandle.schedule}
+              lazy={() =>
+                import('#/lesson/pages/teacher-lesson-schedule-edit.page')
+              }
             />
           </Route>
         </Route>
         <Route
           path={teacherRoutes.lesson.createTo}
-          element={<LessonCreatePage />}
-          handle={teacherLessonRouteHandle.create}
+          lazy={() => import('#/lesson/pages/lesson-create.page')}
         />
         <Route
           path={teacherRoutes.lesson.previewTo}
-          element={<LessonPreviewPage />}
-          handle={teacherLessonRouteHandle.preview}
+          lazy={() => import('#/lesson/pages/lesson-preview.page')}
         />
       </Route>
       {/* TEACHER EXAMS */}
       <Route path={teacherRoutes.exam.to} element={<Outlet />}>
         <Route
           index
-          element={<TeacherExamListPage />}
-          handle={teacherExamRouteHandle.list}
-          loader={getTeacherPaginatedExamsLoader(queryClient)}
+          lazy={() => import('#/exam/pages/teacher-exam-list.page')}
         />
         <Route path=':slug' element={<Outlet />}>
           <Route
             index
-            element={<TeacherExamSinglePage />}
-            handle={teacherExamRouteHandle.single}
-            loader={getTeacherExamBySlugLoader(queryClient)}
+            lazy={() => import('#/exam/pages/teacher-exam-single.page')}
           />
           <Route
             path={teacherRoutes.exam.editTo}
-            element={<ExamEditPage />}
-            handle={teacherExamRouteHandle.edit}
-            loader={getTeacherExamBySlugLoader(queryClient)}
+            lazy={() => import('#/exam/pages/exam-edit.page')}
           />
           <Route
             path={teacherRoutes.exam.previewTo}
-            element={<ExamPreviewSlugPage />}
-            handle={teacherExamRouteHandle.preview}
-            loader={getTeacherExamBySlugLoader(queryClient, {
-              exclude: 'schedules',
-            })}
+            lazy={() => import('#/exam/pages/exam-preview-slug.page')}
           />
           <Route
             path={`${teacherRoutes.exam.schedule.to}`}
-            element={<TeacherExamScheduleListPage />}
-            handle={teacherExamRouteHandle.schedule}
-            loader={getTeacherExamBySlugLoader(queryClient, {
-              status: RecordStatus.Published,
-            })}
+            lazy={() => import('#/exam/pages/teacher-exam-schedule-list.page')}
           >
             <Route
               path={`${teacherRoutes.exam.schedule.createTo}`}
-              element={<TeacherExamScheduleCreatePage />}
-              handle={teacherLessonRouteHandle.schedule}
+              lazy={() =>
+                import('#/exam/pages/teacher-exam-schedule-create.page')
+              }
             />
             <Route
               path={`${teacherRoutes.exam.schedule.editTo}`}
-              element={<TeacherExamScheduleEditPage />}
-              handle={teacherExamRouteHandle.schedule}
+              lazy={() =>
+                import('#/exam/pages/teacher-exam-schedule-edit.page')
+              }
             />
           </Route>
         </Route>
         <Route
           path={teacherRoutes.exam.createTo}
-          element={<ExamCreatePage />}
-          handle={teacherExamRouteHandle.create}
+          lazy={() => import('#/exam/pages/exam-create.page')}
         />
         <Route
           path={teacherRoutes.exam.previewTo}
-          element={<ExamPreviewPage />}
-          handle={teacherExamRouteHandle.preview}
+          lazy={() => import('#/exam/pages/exam-preview.page')}
         />
       </Route>
       {/* TEACHER ACTIVITIES */}
       <Route path={teacherRoutes.activity.to} element={<Outlet />}>
         <Route
           index
-          element={<TeacherActivityListPage />}
-          handle={teacherActivityRouteHandle.list}
-          loader={getTeacherPaginatedActivitiesLoader(queryClient)}
+          lazy={() => import('#/activity/pages/teacher-activity-list.page')}
         />
         <Route path=':slug' element={<Outlet />}>
           <Route
             index
-            element={<TeacherActivitySinglePage />}
-            handle={teacherActivityRouteHandle.single}
-            loader={getTeacherActivityBySlugLoader(queryClient)}
+            lazy={() => import('#/activity/pages/teacher-activity-single.page')}
           />
           <Route
             path={teacherRoutes.activity.editTo}
-            element={<ActivityEditPage />}
-            handle={teacherActivityRouteHandle.edit}
-            loader={getTeacherActivityBySlugLoader(queryClient)}
+            lazy={() => import('#/activity/pages/activity-edit.page')}
           />
           <Route
             path={teacherRoutes.activity.previewTo}
-            element={<ActivityPreviewSlugPage />}
-            handle={teacherActivityRouteHandle.preview}
-            loader={getTeacherActivityBySlugLoader(queryClient)}
+            lazy={() => import('#/activity/pages/activity-preview-slug.page')}
           />
         </Route>
         <Route
           path={teacherRoutes.activity.createTo}
-          element={<ActivityCreatePage />}
-          handle={teacherActivityRouteHandle.create}
+          lazy={() => import('#/activity/pages/activity-create.page')}
         />
-        {/* <Route
-          path={teacherRoutes.activity.previewTo}
-          element={<ActivityPreviewPage />}
-          handle={teacherActivityRouteHandle.preview}
-        /> */}
       </Route>
       {/* TEACHER PERFORMANCE */}
       <Route path={teacherRoutes.performance.to} element={<Outlet />}>
@@ -448,40 +254,42 @@ const rootRoutes = createRoutesFromElements(
         <Route path={teacherRoutes.performance.studentTo} element={<Outlet />}>
           <Route
             index
-            element={<StudentPerformanceListPage />}
-            handle={teacherStudentPerformanceRouteHandle.list}
-            loader={getPaginatedStudentPerformancesLoader(queryClient)}
+            lazy={() =>
+              import('#/performance/pages/student-performance-list.page')
+            }
           />
           <Route path=':publicId' element={<Outlet />}>
             <Route
               index
-              element={<TeacherStudentPerformanceSinglePage />}
-              handle={teacherStudentPerformanceRouteHandle.single}
-              loader={getStudentPerformanceByPublicIdLoader(queryClient)}
+              lazy={() =>
+                import(
+                  '#/performance/pages/teacher-student-performance-single.page'
+                )
+              }
             />
             <Route
               path={teacherRoutes.performance.examTo}
-              element={<TeacherStudentExamPerformanceListPage />}
-              handle={teacherStudentPerformanceRouteHandle.exams}
-              loader={getStudentExamsByPublicIdAndCurrentTeacherUserLoader(
-                queryClient,
-              )}
+              lazy={() =>
+                import(
+                  '#/performance/pages/teacher-student-exam-performance-list.page'
+                )
+              }
             />
             <Route
               path={teacherRoutes.performance.activityTo}
-              element={<TeacherStudentActivityPerformanceListPage />}
-              handle={teacherStudentPerformanceRouteHandle.activities}
-              loader={getStudentActivitiesByPublicIdAndCurrentTeacherUserLoader(
-                queryClient,
-              )}
+              lazy={() =>
+                import(
+                  '#/performance/pages/teacher-student-activity-performance-list.page'
+                )
+              }
             />
             <Route
               path={teacherRoutes.performance.lessonTo}
-              element={<TeacherStudentLessonPerformanceListPage />}
-              handle={teacherStudentPerformanceRouteHandle.lessons}
-              loader={getStudentLessonsByPublicIdAndCurrentTeacherUserLoader(
-                queryClient,
-              )}
+              lazy={() =>
+                import(
+                  '#/performance/pages/teacher-student-lesson-performance-list.page'
+                )
+              }
             />
           </Route>
         </Route>
@@ -490,34 +298,29 @@ const rootRoutes = createRoutesFromElements(
       <Route path={teacherRoutes.schedule.to} element={<Outlet />}>
         <Route
           index
-          element={<TeacherScheduleCalendarPage />}
-          handle={teacherScheduleRouteHandle.calendar}
-          loader={getTeacherSchedulesByDateRangeLoader(queryClient)}
+          lazy={() => import('#/schedule/pages/teacher-schedule-calendar.page')}
         />
         <Route path={teacherRoutes.schedule.meeting.to} element={<Outlet />}>
           <Route
             index
-            element={<TeacherMeetingScheduleListPage />}
-            handle={teacherScheduleRouteHandle.list}
-            loader={getTeacherPaginatedMeetingScheduleLoader(queryClient)}
+            lazy={() =>
+              import('#/schedule/pages/teacher-meeting-schedule-list.page')
+            }
           />
           <Route
             path={teacherRoutes.schedule.meeting.createTo}
-            element={<MeetingScheduleCreatePage />}
-            handle={teacherScheduleRouteHandle.create}
+            lazy={() => import('#/schedule/pages/meeting-schedule-create.page')}
           />
           <Route path=':id' element={<Outlet />}>
             <Route
               index
-              element={<TeacherMeetingScheduleSinglePage />}
-              handle={teacherScheduleRouteHandle.single}
-              loader={getTeacherMeetingScheduleByIdLoader(queryClient)}
+              lazy={() =>
+                import('#/schedule/pages/teacher-meeting-schedule-single.page')
+              }
             />
             <Route
               path={teacherRoutes.schedule.meeting.editTo}
-              element={<MeetingScheduleEditPage />}
-              handle={teacherScheduleRouteHandle.edit}
-              loader={getTeacherMeetingScheduleByIdLoader(queryClient)}
+              lazy={() => import('#/schedule/pages/meeting-schedule-edit.page')}
             />
           </Route>
         </Route>
@@ -526,28 +329,21 @@ const rootRoutes = createRoutesFromElements(
       <Route path={teacherRoutes.student.to} element={<Outlet />}>
         <Route
           index
-          element={<StudentUserListPage />}
-          handle={studentUserRouteHandle.list}
-          loader={getPaginatedStudentUserLoader(queryClient)}
+          lazy={() => import('#/user/pages/student-user-list.page')}
         />
         <Route path=':id' element={<Outlet />}>
           <Route
             index
-            element={<StudentUserSinglePage />}
-            handle={studentUserRouteHandle.single}
-            loader={getStudentUserByIdLoader(queryClient)}
+            lazy={() => import('#/user/pages/student-user-single.page')}
           />
           <Route
             path={teacherRoutes.student.editTo}
-            element={<StudentUserEditPage />}
-            handle={studentUserRouteHandle.edit}
-            loader={getStudentUserByIdLoader(queryClient)}
+            lazy={() => import('#/user/pages/student-user-edit.page')}
           />
         </Route>
         <Route
           path={teacherRoutes.student.createTo}
-          element={<StudentUserCreatePage />}
-          handle={studentUserRouteHandle.create}
+          lazy={() => import('#/user/pages/student-user-create.page')}
         />
       </Route>
       <Route
@@ -567,122 +363,102 @@ const rootRoutes = createRoutesFromElements(
     >
       <Route
         index
-        element={<StudentDashboardPage />}
-        handle={dashboardRouteHandle}
+        lazy={() => import('#/dashboard/pages/student-dashboard.page')}
       />
       {/* STUDENT CURRENT USER */}
       <Route path={studentRoutes.account.to} element={<Outlet />}>
         <Route
           index
-          element={<StudentCurrentUserSinglePage />}
-          handle={currentUserRouteHandle.single}
-          loader={getStudentAssignedTeacherLoader(queryClient)}
+          lazy={() => import('#/user/pages/student-current-user-single.page')}
         />
         <Route
           path={studentRoutes.account.editTo}
-          handle={currentUserRouteHandle.edit}
-          element={<StudentUserAccountEditPage />}
+          lazy={() => import('#/user/pages/student-current-user-edit.page')}
         />
         <Route
           path={studentRoutes.account.teacherAccountTo}
-          element={<StudentAssignedTeacherPage />}
-          handle={currentUserRouteHandle.assignedTeacher}
-          loader={getStudentAssignedTeacherLoader(queryClient)}
+          lazy={() => import('#/user/pages/student-assigned-teacher.page')}
         />
       </Route>
       {/* STUDENT LESSONS */}
       <Route path={studentRoutes.lesson.to} element={<Outlet />}>
         <Route
           index
-          element={<StudentLessonListPage />}
-          handle={studentLessonRouteHandle.list}
-          loader={getStudentLessonsLoader(queryClient)}
+          lazy={() => import('#/lesson/pages/student-lesson-list.page')}
         />
         <Route
           path=':slug'
-          element={<StudentLessonSinglePage />}
-          handle={studentLessonRouteHandle.single}
-          loader={getStudentLessonBySlugLoader(queryClient)}
+          lazy={() => import('#/lesson/pages/student-lesson-single.page')}
         />
       </Route>
       {/* STUDENT EXAMS */}
       <Route path={studentRoutes.exam.to} element={<Outlet />}>
         <Route
           index
-          element={<StudentExamListPage />}
-          handle={studentExamRouteHandle.list}
-          loader={getStudentExamsLoader(queryClient)}
+          lazy={() => import('#/exam/pages/student-exam-list.page')}
         />
         <Route
           path=':slug'
-          element={<StudentExamSinglePage />}
-          handle={studentExamRouteHandle.single}
-          loader={getStudentExamBySlugLoader(queryClient)}
+          lazy={() => import('#/exam/pages/student-exam-single.page')}
         />
       </Route>
       {/* STUDENT ACTIVITIES */}
       <Route path={studentRoutes.activity.to} element={<Outlet />}>
         <Route
           index
-          element={<StudentActivityListPage />}
-          handle={studentActivityRouteHandle.list}
-          loader={getStudentActivitiesLoader(queryClient)}
+          lazy={() => import('#/activity/pages/student-activity-list.page')}
         />
         <Route
           path=':slug'
-          element={<StudentActivitySinglePage />}
-          handle={studentActivityRouteHandle.single}
-          loader={getStudentActivityBySlugLoader(queryClient)}
+          lazy={() => import('#/activity/pages/student-activity-single.page')}
         />
       </Route>
       {/* STUDENT PERFORMANCE */}
       <Route path={studentRoutes.performance.to} element={<Outlet />}>
         <Route
           index
-          element={<StudentPerformanceSinglePage />}
-          handle={studentPerformanceRouteHandle.single}
-          loader={getPerformanceByCurrentStudentUser(queryClient)}
+          lazy={() =>
+            import('#/performance/pages/student-performance-single.page')
+          }
         />
         <Route
           path={studentRoutes.performance.examTo}
-          element={<StudentExamPerformanceListPage />}
-          handle={studentPerformanceRouteHandle.exams}
-          loader={getStudentExamsByCurrentStudentUserLoader(queryClient)}
+          lazy={() =>
+            import('#/performance/pages/student-exam-performance-list.page')
+          }
         />
         <Route
           path={studentRoutes.performance.activityTo}
-          element={<StudentActivityPerformanceListPage />}
-          handle={studentPerformanceRouteHandle.activities}
-          loader={getStudentActivitiesByCurrentStudentUserLoader(queryClient)}
+          lazy={() =>
+            import('#/performance/pages/student-activity-performance-list.page')
+          }
         />
         <Route
           path={studentRoutes.performance.lessonTo}
-          element={<StudentLessonPerformanceListPage />}
-          handle={studentPerformanceRouteHandle.lessons}
-          loader={getStudentLessonsByCurrentStudentUserLoader(queryClient)}
+          lazy={() =>
+            import('#/performance/pages/student-lesson-performance-list.page')
+          }
         />
       </Route>
       {/* STUDENT SCHEDULE */}
       <Route path={studentRoutes.schedule.to} element={<Outlet />}>
         <Route
           index
-          element={<StudentScheduleCalendarPage />}
-          handle={studentScheduleRouteHandle.calendar}
-          loader={getStudentSchedulesByDateRangeLoader(queryClient)}
+          lazy={() => import('#/schedule/pages/student-schedule-calendar.page')}
         />
         <Route path={studentRoutes.schedule.meeting.to} element={<Outlet />}>
           <Route
             index
-            element={<StudentMeetingScheduleListPage />}
-            handle={studentScheduleRouteHandle.list}
-            loader={getStudentMeetingSchedulesLoader(queryClient)}
+            lazy={() =>
+              import('#/schedule/pages/student-meeting-schedule-list.page')
+            }
           />
           <Route path=':id' element={<Outlet />}>
             <Route
               index
-              element={<StudentMeetingScheduleSinglePage />}
-              handle={studentScheduleRouteHandle.single}
-              loader={getStudentMeetingScheduleByIdLoader(queryClient)}
+              lazy={() =>
+                import('#/schedule/pages/student-meeting-schedule-single.page')
+              }
             />
           </Route>
         </Route>
@@ -690,9 +466,7 @@ const rootRoutes = createRoutesFromElements(
       {/* STUDENT HELP */}
       <Route
         path={studentRoutes.help.to}
-        element={<StudentHelpPage />}
-        handle={studentHelpRouteHandle}
-        loader={getStudentAssignedTeacherLoader(queryClient)}
+        lazy={() => import('#/help/pages/student-help.page')}
       />
       <Route
         path='*'

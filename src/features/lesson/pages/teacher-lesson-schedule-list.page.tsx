@@ -1,10 +1,14 @@
 import { useMemo } from 'react';
 import { Outlet, useLoaderData } from 'react-router-dom';
 
+import { queryClient } from '#/config/react-query-client.config';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { RecordStatus } from '#/core/models/core.model';
 import { BaseScene } from '#/base/components/base-scene.component';
 import { BaseGroupLink } from '#/base/components/base-group-link.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
+import { teacherLessonRouteHandle } from '../route/teacher-lesson-handle.route';
+import { getTeacherLessonBySlugLoader } from '../route/teacher-lesson-loader.route';
 import { useTeacherLessonSingle } from '../hooks/use-teacher-lesson-single.hook';
 import { TeacherLessonScheduleListOverviewBoard } from '../components/teacher-lesson-schedule-list-overview-board.component';
 
@@ -30,7 +34,7 @@ const sceneLinks = [
   },
 ] as GroupLink[];
 
-export function TeacherLessonScheduleListPage() {
+function TeacherLessonScheduleListPage() {
   const { lesson } = useTeacherLessonSingle();
   const data: any = useLoaderData();
 
@@ -63,3 +67,9 @@ export function TeacherLessonScheduleListPage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = TeacherLessonScheduleListPage;
+export const handle = teacherLessonRouteHandle.schedule;
+export const loader = getTeacherLessonBySlugLoader(queryClient, {
+  status: RecordStatus.Published,
+});

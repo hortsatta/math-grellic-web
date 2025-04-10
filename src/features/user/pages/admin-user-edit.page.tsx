@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
+import { queryClient } from '#/config/react-query-client.config';
 import {
   superAdminBaseRoute,
   superAdminRoutes,
@@ -10,12 +11,14 @@ import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseModal } from '#/base/components/base-modal.component';
+import { adminUserRouteHandle } from '../route/admin-user-handle';
+import { getAdminUserByIdLoader } from '../route/admin-user-loader';
 import { useAdminUserEdit } from '../hooks/use-admin-user-edit.hook';
 import { AdminUserUpsertForm } from '../components/admin-user-upsert-form.component';
 
 const ADMIN_LIST_PATH = `/${superAdminBaseRoute}/${superAdminRoutes.admin.to}`;
 
-export function AdminUserEditPage() {
+function AdminUserEditPage() {
   const { id } = useParams();
 
   const { loading, isDone, setIsDone, adminFormData, editAdmin, deleteAdmin } =
@@ -76,3 +79,7 @@ export function AdminUserEditPage() {
     </>
   );
 }
+
+export const Component = AdminUserEditPage;
+export const handle = adminUserRouteHandle.edit;
+export const loader = getAdminUserByIdLoader(queryClient);

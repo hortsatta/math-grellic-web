@@ -1,11 +1,14 @@
 import { useLoaderData } from 'react-router-dom';
 
+import { queryClient } from '#/config/react-query-client.config';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseScene } from '#/base/components/base-scene.component';
+import { getStudentLessonBySlugLoader } from '../route/student-lesson-loader.route';
+import { studentLessonRouteHandle } from '../route/student-lesson-handle.route';
 import { useStudentLessonSingle } from '../hooks/use-student-lesson-single.hook';
 import { StudentLessonSingle } from '../components/student-lesson-single.component';
 
-export function StudentLessonSinglePage() {
+function StudentLessonSinglePage() {
   const { loading, title, lesson, upcomingDayJsDuration, setLessonCompletion } =
     useStudentLessonSingle();
 
@@ -26,3 +29,7 @@ export function StudentLessonSinglePage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = StudentLessonSinglePage;
+export const handle = studentLessonRouteHandle.single;
+export const loader = getStudentLessonBySlugLoader(queryClient);

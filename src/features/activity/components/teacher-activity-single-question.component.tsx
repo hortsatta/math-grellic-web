@@ -9,6 +9,8 @@ import { BaseSurface } from '#/base/components/base-surface.component';
 import { getQuestionImageUrl } from '../helpers/activity-transform.helper';
 import { ActivityTextType } from '../models/activity.model';
 
+import 'mathquill/build/mathquill.css';
+
 import type { ComponentProps } from 'react';
 import type { IconName } from '#/base/models/base.model';
 import type {

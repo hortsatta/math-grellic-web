@@ -1,13 +1,16 @@
 import { useLoaderData } from 'react-router-dom';
 
+import { queryClient } from '#/config/react-query-client.config';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
+import { teacherStudentPerformanceRouteHandle } from '../route/teacher-performance-handle.route';
+import { getTeacherStudentExamsByPublicIdAndCurrentTeacherUserLoader } from '../route/teacher-performance-loader.route';
 import { useTeacherStudentExamPerformanceList } from '../hooks/use-teacher-student-exam-performance-list.hook';
 import { useTeacherStudentPerformanceSingle } from '../hooks/use-teacher-student-performance-single.hook';
 import { TeacherStudentExamPerformanceList } from '../components/teacher-student-exam-performance-list.component';
 import { StudentExamPerformanceOverviewCard } from '../components/student-exam-performance-overview-card.component';
 
-export function TeacherStudentExamPerformanceListPage() {
+function TeacherStudentExamPerformanceListPage() {
   const { student, loading: studentLoading } =
     useTeacherStudentPerformanceSingle();
   const { exams, loading } = useTeacherStudentExamPerformanceList();
@@ -35,3 +38,8 @@ export function TeacherStudentExamPerformanceListPage() {
     </BaseDataSuspense>
   );
 }
+
+export const Component = TeacherStudentExamPerformanceListPage;
+export const handle = teacherStudentPerformanceRouteHandle.exams;
+export const loader =
+  getTeacherStudentExamsByPublicIdAndCurrentTeacherUserLoader(queryClient);

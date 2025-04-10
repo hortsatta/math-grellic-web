@@ -9,7 +9,7 @@ import { defaultParamKeys } from '../hooks/use-teacher-exam-list.hook';
 import type { QueryClient } from '@tanstack/react-query';
 import type { LoaderFunctionArgs } from 'react-router-dom';
 
-export function getExamBySlugLoader(
+export function getTeacherExamBySlugLoader(
   queryClient: QueryClient,
   queryParams?: { status?: string; exclude?: string; include?: string },
 ) {
@@ -29,7 +29,7 @@ export function getExamBySlugLoader(
   };
 }
 
-export function getPaginatedExamsLoader(queryClient: QueryClient) {
+export function getTeacherPaginatedExamsLoader(queryClient: QueryClient) {
   return async () => {
     const query = getPaginatedExamsByCurrentTeacherUser(defaultParamKeys);
     return defer({

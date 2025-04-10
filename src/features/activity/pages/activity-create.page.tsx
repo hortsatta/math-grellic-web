@@ -1,7 +1,8 @@
+import { teacherActivityRouteHandle } from '../route/teacher-activity-handle.route';
 import { useActivityCreate } from '../hooks/use-activity-create.hook';
 import { ActivityUpsertForm } from '../components/activity-upsert-form.component';
 
-export function ActivityCreatePage() {
+function ActivityCreatePage() {
   const { loading, isDone, setIsDone, createActivity } = useActivityCreate();
 
   return (
@@ -13,3 +14,6 @@ export function ActivityCreatePage() {
     />
   );
 }
+
+export const Component = ActivityCreatePage;
+export const handle = teacherActivityRouteHandle.create;
