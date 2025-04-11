@@ -1,12 +1,9 @@
 import { memo, useCallback, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
-import { teacherScheduleRouteHandle } from '../route/teacher-schedule-handle.route';
-import { getTeacherSchedulesByDateRangeLoader } from '../route/teacher-schedule-loader.route';
 import { useTeacherScheduleTimelineCalendar } from '../hooks/use-teacher-schedule-timeline-calendar.hook';
 import { useTeacherScheduleMonthlyCalendar } from '../hooks/use-teacher-schedule-monthly-calendar.hook';
 import { ScheduleWeeklyCalendarSelector } from '../components/schedule-weekly-calendar-selector.component';
@@ -128,6 +125,4 @@ function TeacherScheduleCalendarPage() {
   );
 }
 
-export const Component = TeacherScheduleCalendarPage;
-export const handle = teacherScheduleRouteHandle.calendar;
-export const loader = getTeacherSchedulesByDateRangeLoader(queryClient);
+export default TeacherScheduleCalendarPage;

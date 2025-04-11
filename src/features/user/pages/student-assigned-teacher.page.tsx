@@ -1,14 +1,11 @@
 import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { generateFullName } from '../helpers/user.helper';
-import { currentUserRouteHandle } from '../route/current-user-handle';
-import { getStudentAssignedTeacherLoader } from '../route/student-assigned-teacher-loader.route';
 import { useStudentAssignedTeacherSingle } from '../hooks/use-student-assigned-teacher-single.hook';
 import { UserAvatarImg } from '../components/user-avatar-img.component';
 import { UserMessengerLink } from '../components/user-messenger-link.component';
@@ -82,6 +79,4 @@ function StudentAssignedTeacherPage() {
   );
 }
 
-export const Component = StudentAssignedTeacherPage;
-export const handle = currentUserRouteHandle.assignedTeacher;
-export const loader = getStudentAssignedTeacherLoader(queryClient);
+export default StudentAssignedTeacherPage;

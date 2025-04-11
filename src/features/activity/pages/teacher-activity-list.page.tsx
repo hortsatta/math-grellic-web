@@ -1,6 +1,5 @@
 import { useLoaderData } from 'react-router-dom';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { capitalize } from '#/utils/string.util';
 import { RecordStatus } from '#/core/models/core.model';
 import { StudentPerformanceType } from '#/performance/models/performance.model';
@@ -12,8 +11,6 @@ import { BaseDataPagination } from '#/base/components/base-data-pagination.compo
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { TeacherActivityPerformanceOverviewBoard } from '#/performance/components/teacher-activity-performance-overview-board.component';
 import { TeacherStudentPerformanceLeaderboard } from '#/performance/components/teacher-student-performance-leaderboard.component';
-import { teacherActivityRouteHandle } from '../route/teacher-activity-handle.route';
-import { getTeacherPaginatedActivitiesLoader } from '../route/teacher-activity-loader.route';
 import {
   defaultSort,
   useTeacherActivityList,
@@ -121,6 +118,4 @@ function TeacherActivityListPage() {
   );
 }
 
-export const Component = TeacherActivityListPage;
-export const handle = teacherActivityRouteHandle.list;
-export const loader = getTeacherPaginatedActivitiesLoader(queryClient);
+export default TeacherActivityListPage;

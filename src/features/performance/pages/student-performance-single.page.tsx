@@ -1,14 +1,11 @@
 import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { formatPhoneNumber } from '#/user/helpers/user.helper';
 import { UserAvatarImg } from '#/user/components/user-avatar-img.component';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
-import { getStudentPerformanceByCurrentStudentUser } from '../route/student-performance-loader';
-import { studentPerformanceRouteHandle } from '../route/student-performance-handle.route';
 import { useStudentPerformanceSingle } from '../hooks/use-student-performance-single.hook';
 import { StudentPerformanceSingle } from '../components/student-performance-single.component';
 
@@ -71,6 +68,4 @@ function StudentPerformanceSinglePage() {
   );
 }
 
-export const Component = StudentPerformanceSinglePage;
-export const handle = studentPerformanceRouteHandle.single;
-export const loader = getStudentPerformanceByCurrentStudentUser(queryClient);
+export default StudentPerformanceSinglePage;

@@ -2,14 +2,11 @@ import { useCallback, useMemo, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseModal } from '#/base/components/base-modal.component';
-import { teacherActivityRouteHandle } from '../route/teacher-activity-handle.route';
-import { getTeacherActivityBySlugLoader } from '../route/teacher-activity-loader.route';
 import { useActivityEdit } from '../hooks/use-activity-edit.hook';
 import { ActivityUpsertForm } from '../components/activity-upsert-form.component';
 
@@ -90,6 +87,4 @@ function ActivityEditPage() {
   );
 }
 
-export const Component = ActivityEditPage;
-export const handle = teacherActivityRouteHandle.edit;
-export const loader = getTeacherActivityBySlugLoader(queryClient);
+export default ActivityEditPage;

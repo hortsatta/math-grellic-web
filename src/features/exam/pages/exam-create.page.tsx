@@ -1,4 +1,3 @@
-import { teacherExamRouteHandle } from '../route/teacher-exam-handle.route';
 import { useExamCreate } from '../hooks/use-exam-create.hook';
 import { ExamUpsertForm } from '../components/exam-upsert-form.component';
 
@@ -15,5 +14,4 @@ function ExamCreatePage() {
   );
 }
 
-export const Component = ExamCreatePage;
-export const handle = teacherExamRouteHandle.create;
+export default ExamCreatePage;

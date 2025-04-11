@@ -6,7 +6,6 @@ import { ScheduleDailyCardList } from '#/schedule/components/schedule-daily-card
 import { useTeacherAnnouncementList } from '#/announcement/hooks/use-teacher-announcement-list.hook';
 import { useAnnouncementCreate } from '#/announcement/hooks/use-announcement-create.hook';
 import { useAnnouncementEdit } from '#/announcement/hooks/use-announcement-edit.hook';
-import { dashboardRouteHandle } from '../route/dashboard-handle.route';
 import { useTeacherClassPerformance } from '../hooks/use-teacher-class-performance.hook';
 import { useTeacherCurriculumSnippets } from '../hooks/use-teacher-curriculum-snippets.hook';
 import { TeacherDashboardUserSummary } from '../components/teacher-dashboard-user-summary.component';
@@ -110,5 +109,4 @@ function TeacherDashboardPage() {
   );
 }
 
-export const Component = TeacherDashboardPage;
-export const handle = dashboardRouteHandle;
+export default TeacherDashboardPage;

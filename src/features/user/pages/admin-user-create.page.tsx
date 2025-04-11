@@ -1,4 +1,3 @@
-import { adminUserRouteHandle } from '../route/admin-user-handle';
 import { useAdminUserCreate } from '../hooks/use-admin-user-create.hook';
 import { AdminUserUpsertForm } from '../components/admin-user-upsert-form.component';
 
@@ -14,5 +13,4 @@ function AdminUserCreatePage() {
   );
 }
 
-export const Component = AdminUserCreatePage;
-export const handle = adminUserRouteHandle.create;
+export default AdminUserCreatePage;

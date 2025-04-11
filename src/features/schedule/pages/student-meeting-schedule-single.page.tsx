@@ -1,10 +1,7 @@
 import { useLoaderData } from 'react-router-dom';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseScene } from '#/base/components/base-scene.component';
-import { studentScheduleRouteHandle } from '../route/student-schedule-handle.route';
-import { getStudentMeetingScheduleByIdLoader } from '../route/student-schedule-loader.route';
 import { useStudentMeetingScheduleSingle } from '../hooks/use-student-meeting-schedule-single.hook';
 import { StudentMeetingScheduleSingle } from '../components/student-meeting-schedule-single.component';
 
@@ -26,6 +23,4 @@ function StudentMeetingScheduleSinglePage() {
   );
 }
 
-export const Component = StudentMeetingScheduleSinglePage;
-export const handle = studentScheduleRouteHandle.single;
-export const loader = getStudentMeetingScheduleByIdLoader(queryClient);
+export default StudentMeetingScheduleSinglePage;

@@ -9,7 +9,7 @@ import {
 
 import type { QueryClient } from '@tanstack/react-query';
 
-export function getStudentPerformanceByCurrentStudentUser(
+export function getStudentPerformanceByCurrentStudentUserLoader(
   queryClient: QueryClient,
   queryParams?: { exclude?: string; include?: string },
 ) {

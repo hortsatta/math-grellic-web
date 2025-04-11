@@ -1,11 +1,8 @@
 import { useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { BaseScene } from '#/base/components/base-scene.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
-import { studentExamRouteHandle } from '../route/student-exam-handle.route';
-import { getStudentExamBySlugLoader } from '../route/student-exam-loader.route';
 import { useStudentExamSingle } from '../hooks/use-student-exam-single.hook';
 import { StudentExamTake } from '../components/student-exam-take.component';
 import { StudentExamSingleUpcomingNote } from '../components/student-exam-single-upcoming-note.component';
@@ -74,6 +71,4 @@ function StudentExamSinglePage() {
   );
 }
 
-export const Component = StudentExamSinglePage;
-export const handle = studentExamRouteHandle.single;
-export const loader = getStudentExamBySlugLoader(queryClient);
+export default StudentExamSinglePage;

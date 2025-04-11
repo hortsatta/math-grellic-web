@@ -2,7 +2,6 @@ import { useRef, useState, useCallback } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { capitalize } from '#/utils/string.util';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
@@ -10,8 +9,6 @@ import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component
 import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 import { BaseDataPagination } from '#/base/components/base-data-pagination.component';
 import { UserApprovalStatus } from '../models/user.model';
-import { adminUserRouteHandle } from '../route/admin-user-handle';
-import { getPaginatedAdminUserLoader } from '../route/admin-user-loader';
 import {
   defaultSort,
   useAdminUserList,
@@ -185,6 +182,4 @@ function AdminUserListPage() {
   );
 }
 
-export const Component = AdminUserListPage;
-export const handle = adminUserRouteHandle.list;
-export const loader = getPaginatedAdminUserLoader(queryClient);
+export default AdminUserListPage;

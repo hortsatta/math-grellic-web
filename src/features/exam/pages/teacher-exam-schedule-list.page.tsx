@@ -1,16 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Outlet, useLoaderData } from 'react-router-dom';
 
-import { queryClient } from '#/config/react-query-client.config';
-import { RecordStatus } from '#/core/models/core.model';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { useTeacherExamSingle } from '../hooks/use-teacher-exam-single.hook';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseScene } from '#/base/components/base-scene.component';
 import { BaseGroupLink } from '#/base/components/base-group-link.component';
-import { teacherExamRouteHandle } from '../route/teacher-exam-handle.route';
 import { TeacherExamScheduleListOverviewBoard } from '../components/teacher-exam-schedule-list-overview-board.component';
-import { getTeacherExamBySlugLoader } from '../route/teacher-exam-loader.route';
 
 import type { GroupLink } from '#/base/models/base.model';
 import type { Exam } from '../models/exam.model';
@@ -88,8 +84,4 @@ function TeacherExamScheduleListPage() {
   );
 }
 
-export const Component = TeacherExamScheduleListPage;
-export const handle = teacherExamRouteHandle.schedule;
-export const loader = getTeacherExamBySlugLoader(queryClient, {
-  status: RecordStatus.Published,
-});
+export default TeacherExamScheduleListPage;

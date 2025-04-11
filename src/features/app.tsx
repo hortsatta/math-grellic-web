@@ -31,7 +31,7 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthSessionSubscriber />
-      <RouterProvider router={router} />
+      <RouterProvider router={router} future={{ v7_startTransition: true }} />
       <Toaster containerClassName='mb-12' position='bottom-center' />
     </QueryClientProvider>
   );

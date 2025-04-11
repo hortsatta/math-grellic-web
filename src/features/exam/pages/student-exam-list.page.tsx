@@ -1,12 +1,9 @@
 import { useLoaderData } from 'react-router-dom';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { useStudentPerformanceSingle } from '#/performance/hooks/use-student-performance-single.hook';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { StudentExamPerformanceOverviewBoard } from '#/performance/components/student-exam-performance-overview-board.component';
-import { studentExamRouteHandle } from '../route/student-exam-handle.route';
-import { getStudentExamsLoader } from '../route/student-exam-loader.route';
 import { useStudentExamList } from '../hooks/use-student-exam-list.hook';
 import { StudentLatestExamList } from '../components/student-latest-exam-list.component';
 import { StudentPreviousExamList } from '../components/student-previous-exam-list.component';
@@ -55,6 +52,4 @@ function StudentExamListPage() {
   );
 }
 
-export const Component = StudentExamListPage;
-export const handle = studentExamRouteHandle.list;
-export const loader = getStudentExamsLoader(queryClient);
+export default StudentExamListPage;

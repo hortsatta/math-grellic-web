@@ -1,9 +1,6 @@
 import { useLoaderData } from 'react-router-dom';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
-import { studentScheduleRouteHandle } from '../route/student-schedule-handle.route';
-import { getStudentMeetingSchedulesLoader } from '../route/student-schedule-loader.route';
 import { useStudentMeetingScheduleList } from '../hooks/use-student-meeting-schedule-list.hook';
 import { StudentMeetingScheduleList } from '../components/student-meeting-schedule-list.component';
 
@@ -38,6 +35,4 @@ function StudentMeetingScheduleListPage() {
   );
 }
 
-export const Component = StudentMeetingScheduleListPage;
-export const handle = studentScheduleRouteHandle.list;
-export const loader = getStudentMeetingSchedulesLoader(queryClient);
+export default StudentMeetingScheduleListPage;

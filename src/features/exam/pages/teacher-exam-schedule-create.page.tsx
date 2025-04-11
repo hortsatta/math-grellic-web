@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
-import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.route';
 import { useExamScheduleCreate } from '../hooks/use-exam-schedule-create.hook';
 import { ExamScheduleUpsertForm } from '../components/exam-schedule-upsert-form.component';
 
@@ -37,5 +36,4 @@ function TeacherExamScheduleCreatePage() {
   );
 }
 
-export const Component = TeacherExamScheduleCreatePage;
-export const handle = teacherLessonRouteHandle.schedule;
+export default TeacherExamScheduleCreatePage;

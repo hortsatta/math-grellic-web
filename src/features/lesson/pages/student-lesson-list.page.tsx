@@ -1,12 +1,9 @@
 import { useLoaderData } from 'react-router-dom';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { useStudentPerformanceSingle } from '#/performance/hooks/use-student-performance-single.hook';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { StudentLessonPerformanceOverviewBoard } from '#/performance/components/student-lesson-performance-overview-board.component';
-import { studentLessonRouteHandle } from '../route/student-lesson-handle.route';
-import { getStudentLessonsLoader } from '../route/student-lesson-loader.route';
 import { useStudentLessonList } from '../hooks/use-student-lesson-list.hook';
 import { StudentLatestLessonList } from '../components/student-latest-lesson-list.component';
 import { StudentPreviousLessonList } from '../components/student-previous-lesson-list.component';
@@ -55,6 +52,4 @@ function StudentLessonListPage() {
   );
 }
 
-export const Component = StudentLessonListPage;
-export const handle = studentLessonRouteHandle.list;
-export const loader = getStudentLessonsLoader(queryClient);
+export default StudentLessonListPage;

@@ -1,10 +1,7 @@
 import { useLoaderData } from 'react-router-dom';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
-import { studentPerformanceRouteHandle } from '../route/student-performance-handle.route';
-import { getStudentLessonsByCurrentStudentUserLoader } from '../route/student-performance-loader';
 import { useStudentPerformanceSingle } from '../hooks/use-student-performance-single.hook';
 import { useStudentLessonPerformanceList } from '../hooks/use-student-lesson-performance-list.hook';
 import { StudentLessonPerformanceList } from '../components/student-lesson-performance-list.component';
@@ -38,6 +35,4 @@ function StudentLessonPerformanceListPage() {
   );
 }
 
-export const Component = StudentLessonPerformanceListPage;
-export const handle = studentPerformanceRouteHandle.lessons;
-export const loader = getStudentLessonsByCurrentStudentUserLoader(queryClient);
+export default StudentLessonPerformanceListPage;

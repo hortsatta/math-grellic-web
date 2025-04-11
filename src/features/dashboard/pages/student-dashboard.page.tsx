@@ -5,7 +5,6 @@ import { useStudentScheduleTodayList } from '#/schedule/hooks/use-student-schedu
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { ScheduleDailyCardList } from '#/schedule/components/schedule-daily-card-list.component';
 import { useStudentAnnouncementList } from '#/announcement/hooks/use-student-announcement-list.hook';
-import { dashboardRouteHandle } from '../route/dashboard-handle.route';
 import { useStudentCurriculumSnippets } from '../hooks/use-student-curriculum-snippets.hook';
 import { StudentDashboardUserSummary } from '../components/student-dashboard-user-summary.component';
 import { StudentDashboardCurriculumTabList } from '../components/student-dashboard-curriculum-tab-list.component';
@@ -94,5 +93,4 @@ function StudentDashboardPage() {
   );
 }
 
-export const Component = StudentDashboardPage;
-export const handle = dashboardRouteHandle;
+export default StudentDashboardPage;

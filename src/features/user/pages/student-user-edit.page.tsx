@@ -2,14 +2,11 @@ import { useCallback, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseModal } from '#/base/components/base-modal.component';
-import { studentUserRouteHandle } from '../route/student-user-handle';
-import { getStudentUserByIdLoader } from '../route/student-user-loader';
 import { useStudentUserEdit } from '../hooks/use-student-user-edit.hook';
 import { StudentUserUpsertForm } from '../components/student-user-upsert-form.component';
 
@@ -83,6 +80,4 @@ function StudentUserEditPage() {
   );
 }
 
-export const Component = StudentUserEditPage;
-export const handle = studentUserRouteHandle.edit;
-export const loader = getStudentUserByIdLoader(queryClient);
+export default StudentUserEditPage;

@@ -6,7 +6,6 @@ import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { UserGender, UserRole } from '../models/user.model';
 import { ADMIN_NAME } from '../helpers/user.helper';
-import { currentUserRouteHandle } from '../route/current-user-handle';
 import { useCurrentUserSingle } from '../hooks/use-current-user-single.hook';
 import { UserAvatarImg } from '../components/user-avatar-img.component';
 
@@ -67,5 +66,4 @@ function SuperAdminCurrentUserSinglePage() {
   );
 }
 
-export const Component = SuperAdminCurrentUserSinglePage;
-export const handle = currentUserRouteHandle.single;
+export default SuperAdminCurrentUserSinglePage;

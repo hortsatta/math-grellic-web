@@ -2,14 +2,11 @@ import { useCallback, useMemo, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseButton } from '#/base/components/base-button.components';
-import { getTeacherLessonBySlugLoader } from '../route/teacher-lesson-loader.route';
-import { teacherLessonRouteHandle } from '../route/teacher-lesson-handle.route';
 import { LessonUpsertForm } from '../components/lesson-upsert-form.component';
 import { useLessonEdit } from '../hooks/use-lesson-edit.hook';
 
@@ -90,6 +87,4 @@ function LessonEditPage() {
   );
 }
 
-export const Component = LessonEditPage;
-export const handle = teacherLessonRouteHandle.edit;
-export const loader = getTeacherLessonBySlugLoader(queryClient);
+export default LessonEditPage;

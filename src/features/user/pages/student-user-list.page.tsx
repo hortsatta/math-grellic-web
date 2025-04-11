@@ -2,7 +2,6 @@ import { useCallback, useRef, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { capitalize } from '#/utils/string.util';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseDataPagination } from '#/base/components/base-data-pagination.component';
@@ -10,8 +9,6 @@ import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { UserApprovalStatus } from '../models/user.model';
-import { studentUserRouteHandle } from '../route/student-user-handle';
-import { getPaginatedStudentUserLoader } from '../route/student-user-loader';
 import {
   defaultSort,
   useStudentUserList,
@@ -211,6 +208,4 @@ function StudentUserListPage() {
   );
 }
 
-export const Component = StudentUserListPage;
-export const handle = studentUserRouteHandle.list;
-export const loader = getPaginatedStudentUserLoader(queryClient);
+export default StudentUserListPage;

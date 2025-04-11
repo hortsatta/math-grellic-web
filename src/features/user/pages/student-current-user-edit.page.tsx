@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
-import { currentUserRouteHandle } from '../route/current-user-handle';
 import { CurrentUserUpdateForm } from '../components/current-user-update-form.component';
 import { useStudentCurrenUserEdit } from '../hooks/use-student-current-user-edit.hook';
 
@@ -44,5 +43,4 @@ function StudentUserAccountEditPage() {
   );
 }
 
-export const Component = StudentUserAccountEditPage;
-export const handle = currentUserRouteHandle.edit;
+export default StudentUserAccountEditPage;

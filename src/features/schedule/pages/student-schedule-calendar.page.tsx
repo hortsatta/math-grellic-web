@@ -2,13 +2,10 @@ import { memo, useCallback, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
-import { queryClient } from '#/config/react-query-client.config';
 import { options } from '#/utils/scrollbar.util';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
-import { studentScheduleRouteHandle } from '../route/student-schedule-handle.route';
-import { getStudentSchedulesByDateRangeLoader } from '../route/student-schedule-loader.route';
 import { useStudentScheduleTimelineCalendar } from '../hooks/use-student-schedule-timeline-calendar.hook';
 import { useStudentScheduleMonthlyCalendar } from '../hooks/use-student-schedule-monthly-calendar.hook';
 import { ScheduleWeeklyCalendarSelector } from '../components/schedule-weekly-calendar-selector.component';
@@ -130,6 +127,4 @@ function StudentScheduleCalendarPage() {
   );
 }
 
-export const Component = StudentScheduleCalendarPage;
-export const handle = studentScheduleRouteHandle.calendar;
-export const loader = getStudentSchedulesByDateRangeLoader(queryClient);
+export default StudentScheduleCalendarPage;

@@ -10,7 +10,6 @@ import { BaseLink } from '#/base/components/base-link.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { generateFullName } from '../helpers/user.helper';
 import { UserRole } from '../models/user.model';
-import { currentUserRouteHandle } from '../route/current-user-handle';
 import { useCurrentUserSingle } from '../hooks/use-current-user-single.hook';
 import { UserAvatarImg } from '../components/user-avatar-img.component';
 import { UserMessengerLink } from '../components/user-messenger-link.component';
@@ -101,5 +100,4 @@ function TeacherCurrentUserSinglePage() {
   );
 }
 
-export const Component = TeacherCurrentUserSinglePage;
-export const handle = currentUserRouteHandle.single;
+export default TeacherCurrentUserSinglePage;

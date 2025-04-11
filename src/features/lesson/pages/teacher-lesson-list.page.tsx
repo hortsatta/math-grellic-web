@@ -1,7 +1,6 @@
 import { useLoaderData } from 'react-router-dom';
 
 import { capitalize } from '#/utils/string.util';
-import { queryClient } from '#/config/react-query-client.config';
 import { RecordStatus } from '#/core/models/core.model';
 import { ScheduleType } from '#/schedule/models/schedule.model';
 import { useTeacherLessonPerformanceOverview } from '#/performance/hooks/use-teacher-lesson-performance-overview.hook';
@@ -12,8 +11,6 @@ import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { TeacherLessonPerformanceOverviewBoard } from '#/performance/components/teacher-lesson-performance-overview-board.component';
 import { TeacherScheduleDailyCardList } from '#/schedule/components/teacher-schedule-daily-card-list.component';
-import { teacherLessonRouteHandle } from '../route/teacher-lesson-handle.route';
-import { getTeacherPaginatedLessonsLoader } from '../route/teacher-lesson-loader.route';
 import {
   defaultSort,
   useTeacherLessonList,
@@ -135,6 +132,4 @@ function TeacherLessonListPage() {
   );
 }
 
-export const Component = TeacherLessonListPage;
-export const handle = teacherLessonRouteHandle.list;
-export const loader = getTeacherPaginatedLessonsLoader(queryClient);
+export default TeacherLessonListPage;

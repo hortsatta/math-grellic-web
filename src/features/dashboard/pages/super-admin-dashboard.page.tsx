@@ -1,5 +1,4 @@
 import { useBoundStore } from '#/core/hooks/use-store.hook';
-import { dashboardRouteHandle } from '../route/dashboard-handle.route';
 import { SuperAdminDashboardUserSummary } from '../components/super-admin-dashboard-user-summary.component';
 
 function SuperAdminDashboardPage() {
@@ -18,5 +17,4 @@ function SuperAdminDashboardPage() {
   );
 }
 
-export const Component = SuperAdminDashboardPage;
-export const handle = dashboardRouteHandle;
+export default SuperAdminDashboardPage;

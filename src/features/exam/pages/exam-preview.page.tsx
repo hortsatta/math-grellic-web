@@ -1,6 +1,5 @@
 import { BaseScene } from '#/base/components/base-scene.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
-import { teacherExamRouteHandle } from '../route/teacher-exam-handle.route';
 import { useExamPreview } from '../hooks/use-exam-preview.hook';
 import { StudentExamTakeForm } from '../components/student-exam-take-form.component';
 import { StudentExamTakeDone } from '../components/student-exam-take-done.component';
@@ -38,5 +37,4 @@ function ExamPreviewPage() {
   );
 }
 
-export const Component = ExamPreviewPage;
-export const handle = teacherExamRouteHandle.preview;
+export default ExamPreviewPage;

@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
-import { teacherLessonRouteHandle } from '../route/teacher-lesson-handle.route';
 import { transformToLessonScheduleFormData } from '../helpers/lesson-transform.helper';
 import { useLessonScheduleUpsert } from '../hooks/use-lesson-schedule-upsert.hook';
 import { LessonScheduleUpsertForm } from '../components/lesson-schedule-upsert-form.component';
@@ -39,5 +38,4 @@ function TeacherLessonScheduleEditPage() {
   );
 }
 
-export const Component = TeacherLessonScheduleEditPage;
-export const handle = teacherLessonRouteHandle.schedule;
+export default TeacherLessonScheduleEditPage;
