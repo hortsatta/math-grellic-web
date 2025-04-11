@@ -40,6 +40,7 @@ export const queryExamKey = {
   list: ['exams', 'list'],
   single: ['exams', 'single'],
   studentPerformance: ['exams', 'student-performance'],
+  studentPerformanceResult: ['exams', 'student-performance-result'],
 };
 
 export const queryActivityKey = {

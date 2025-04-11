@@ -20,6 +20,7 @@ type QuestionAnswer = {
 type Props = ComponentProps<'div'> & {
   questionAnswers: QuestionAnswer[];
   schedule: ExamSchedule;
+  isRandomized?: boolean;
   label?: string;
   labelHeading?: boolean;
 };
@@ -28,6 +29,7 @@ export const StudentExamQuestionResult = memo(function ({
   className,
   questionAnswers,
   schedule,
+  isRandomized,
   label = 'Showing exam questions with your selected choices and answers.',
   labelHeading,
   ...moreProps
@@ -81,8 +83,10 @@ export const StudentExamQuestionResult = memo(function ({
                   <li key={`ans-${question.id}`} className='w-full'>
                     <StudentExamQuestionAnswer
                       key={`qa-${index}`}
+                      studentOrderNumber={index + 1}
                       question={question}
                       selectedChoiceId={selectedQuestionChoiceId}
+                      isRandomized={isRandomized}
                     />
                   </li>
                 ),

@@ -36,10 +36,11 @@ export const TeacherStudentExamPerformanceResult = memo(function ({
     ),
   );
 
-  const [title, questions, examCompletion, schedule] = useMemo(
+  const [title, questions, isRandomized, examCompletion, schedule] = useMemo(
     () => [
       exam?.title,
       exam?.questions || [],
+      exam?.randomizeQuestions,
       exam?.completions?.length ? exam.completions[0] : null,
       exam?.schedules?.find((schedule) => schedule.id === scheduleId),
     ],
@@ -74,6 +75,7 @@ export const TeacherStudentExamPerformanceResult = memo(function ({
         <StudentExamQuestionResult
           questionAnswers={questionAnswers}
           schedule={schedule}
+          isRandomized={isRandomized}
           label={label}
           labelHeading
         />

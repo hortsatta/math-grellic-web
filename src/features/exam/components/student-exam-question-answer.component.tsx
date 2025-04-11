@@ -11,7 +11,9 @@ import type { ExamQuestion, ExamQuestionChoice } from '../models/exam.model';
 
 type Props = ComponentProps<typeof BaseSurface> & {
   question: ExamQuestion;
+  studentOrderNumber: number;
   selectedChoiceId?: number;
+  isRandomized?: boolean;
 };
 
 type ChoiceProps = {
@@ -85,7 +87,9 @@ const Choice = memo(function ({ className, choice }: ChoiceProps) {
 export const StudentExamQuestionAnswer = memo(function ({
   className,
   question,
+  studentOrderNumber,
   selectedChoiceId,
+  isRandomized,
   ...moreProps
 }: Props) {
   const [orderNumber, text, choices, selectedChoice] = useMemo(
@@ -117,9 +121,14 @@ export const StudentExamQuestionAnswer = memo(function ({
           'flex items-start gap-x-1 border-b border-accent/20 px-4',
         )}
       >
-        <span className='py-[18px] pr-2.5 font-medium opacity-70'>
-          {orderNumber.toString().padStart(2, '0')}.
-        </span>
+        <div className='flex flex-col items-end py-[18px] pr-2.5 font-medium opacity-70'>
+          {isRandomized && (
+            <span>{studentOrderNumber.toString().padStart(2, '0')}.</span>
+          )}
+          <span className={cx(isRandomized && 'opacity-50')}>
+            {orderNumber.toString().padStart(2, '0')}.
+          </span>
+        </div>
         <BaseRichTextOutput
           className='!min-h-[60px]'
           label={`Question ${orderNumber}`}

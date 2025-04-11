@@ -312,26 +312,21 @@ export function getStudentActivitiesByPublicIdAndCurrentTeacherUser(
   };
 }
 
-// Deprecated
 export function getStudentExamWithCompletionsByPublicIdAndSlug(
   keys: {
     publicId: string;
     slug: string;
     scheduleId?: number;
-    exclude?: string;
-    include?: string;
   },
   options?: Omit<UseQueryOptions<Exam, Error, Exam, any>, 'queryFn'>,
 ) {
-  const { publicId: pId, slug, scheduleId, exclude, include } = keys;
+  const { publicId: pId, slug, scheduleId } = keys;
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students/${publicId}/exams/${slug}`;
     const searchParams = generateSearchParams({
       scheduleId: scheduleId?.toString(),
-      exclude,
-      include,
     });
 
     try {
@@ -344,7 +339,7 @@ export function getStudentExamWithCompletionsByPublicIdAndSlug(
   };
 
   return {
-    queryKey: [...queryExamKey.single, { publicId, slug, exclude, include }],
+    queryKey: [...queryExamKey.studentPerformanceResult, { publicId, slug }],
     queryFn,
     ...options,
   };
