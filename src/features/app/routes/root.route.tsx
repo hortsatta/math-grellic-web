@@ -107,7 +107,9 @@ function withSuspense(
 ) {
   const LazyComponent = lazy(lazyImport);
   return (
-    <Suspense fallback={fallback || <BasePageSpinner absolute />}>
+    <Suspense
+      fallback={fallback || <BasePageSpinner className='z-40' absolute />}
+    >
       <LazyComponent />
     </Suspense>
   );
