@@ -34,7 +34,7 @@ export const ScheduleCalendarCard = memo(function ({
   const iconName: IconName | null = useMemo(() => {
     switch (type) {
       case ScheduleType.Lesson:
-        return 'chalkboard-teacher';
+        return 'chalkboard';
       case ScheduleType.Exam:
         return 'exam';
       default:

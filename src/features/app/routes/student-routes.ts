@@ -17,7 +17,7 @@ export const studentRoutes = {
     name: 'lessons',
     to: 'lessons',
     label: 'Lessons',
-    iconName: 'chalkboard-teacher',
+    iconName: 'chalkboard',
     hasRightSidebar: true,
   },
   exam: {

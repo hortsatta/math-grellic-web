@@ -83,9 +83,7 @@ export const TeacherLessonScheduleListOverviewBoard = memo(function ({
       <div className='flex w-full flex-col items-start justify-between gap-2.5 sm:flex-row sm:items-center'>
         <h2 className='pb-1 text-xl'>{title}</h2>
         <div className='flex items-center gap-2.5'>
-          <BaseChip iconName='chalkboard-teacher'>
-            Lesson {orderNumber}
-          </BaseChip>
+          <BaseChip iconName='chalkboard'>Lesson {orderNumber}</BaseChip>
           <BaseDivider className='!h-6' vertical />
           <BaseChip iconName='hourglass'>{duration}</BaseChip>
         </div>

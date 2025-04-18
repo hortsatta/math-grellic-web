@@ -139,9 +139,7 @@ export const StudentLessonSingle = memo(function ({
       <div className='w-full max-w-compact px-4'>
         <div className='flex w-full flex-col items-center justify-between gap-2.5 rounded-lg border border-primary-border-light bg-white px-5 py-2.5 md:h-[70px] md:flex-row md:gap-0'>
           <div className='flex items-center gap-2.5'>
-            <BaseChip iconName='chalkboard-teacher'>
-              Lesson {orderNumber}
-            </BaseChip>
+            <BaseChip iconName='chalkboard'>Lesson {orderNumber}</BaseChip>
             <BaseDivider className='!h-6' vertical />
             <BaseChip iconName='hourglass'>{duration}</BaseChip>
           </div>

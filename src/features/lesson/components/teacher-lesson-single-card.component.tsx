@@ -160,14 +160,12 @@ export const TeacherLessonSingleCard = memo(function ({
           )}
         >
           <div className='flex h-[68px] w-full items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary xs:w-[121px]'>
-            <BaseIcon name='chalkboard-teacher' size={40} weight='light' />
+            <BaseIcon name='chalkboard' size={40} weight='light' />
           </div>
           <div className='flex h-full flex-1 flex-col gap-2'>
             {/* Info chips */}
             <div className='hidden items-center gap-2.5 xs:flex'>
-              <BaseChip iconName='chalkboard-teacher'>
-                Lesson {orderNumber}
-              </BaseChip>
+              <BaseChip iconName='chalkboard'>Lesson {orderNumber}</BaseChip>
               <BaseDivider className='!h-6' vertical />
               <BaseChip iconName='hourglass'>{duration}</BaseChip>
               {isDraft && (
@@ -186,9 +184,7 @@ export const TeacherLessonSingleCard = memo(function ({
         {/* Mobile lesson info */}
         <div className='flex w-full items-center justify-between gap-2.5 xs:hidden'>
           <div className='flex flex-col gap-1'>
-            <BaseChip iconName='chalkboard-teacher'>
-              Lesson {orderNumber}
-            </BaseChip>
+            <BaseChip iconName='chalkboard'>Lesson {orderNumber}</BaseChip>
             <BaseChip iconName='hourglass'>{duration}</BaseChip>
             {isDraft && <BaseChip iconName='file-dashed'>Draft</BaseChip>}
           </div>

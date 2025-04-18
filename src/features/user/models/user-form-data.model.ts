@@ -20,6 +20,14 @@ export type UserRegisterLastStepFormData = {
   confirmPassword: string;
 };
 
+export type AdminUserUpdateFormData = {
+  phoneNumber: string;
+  aboutMe: string;
+  messengerLink: string;
+  emails: string[];
+  profileImageUrl?: string;
+};
+
 export type TeacherUserUpdateFormData = {
   phoneNumber: string;
   aboutMe: string;

@@ -10,6 +10,11 @@ import {
   superAdminRoutes,
 } from '#/app/routes/super-admin-routes';
 import {
+  generateAdminRouteLinks,
+  adminBaseRoute,
+  adminRoutes,
+} from '#/app/routes/admin-routes';
+import {
   generateTeacherRouteLinks,
   teacherBaseRoute,
   teacherRoutes,
@@ -46,7 +51,6 @@ export const CoreHeader = memo(function ({
 
   const [publicId, role] = useMemo(() => [user?.publicId, user?.role], [user]);
 
-  // TODO specify student or teacher links
   const navLinks = useMemo(() => {
     switch (role) {
       case UserRole.Student:
@@ -54,8 +58,7 @@ export const CoreHeader = memo(function ({
       case UserRole.Teacher:
         return generateTeacherRouteLinks();
       case UserRole.Admin:
-        // TODO admin
-        return [];
+        return generateAdminRouteLinks();
       case UserRole.SuperAdmin:
         return generateSuperAdminRouteLinks();
     }
@@ -81,7 +84,7 @@ export const CoreHeader = memo(function ({
         navigate(`/${teacherBaseRoute}/${teacherRoutes.account.to}`);
         break;
       case UserRole.Admin:
-        // navigate(`/${teacherBaseRoute}/${teacherRoutes.account.to}`);
+        navigate(`/${adminBaseRoute}/${adminRoutes.account.to}`);
         break;
       case UserRole.SuperAdmin:
         navigate(`/${superAdminBaseRoute}/${superAdminRoutes.account.to}`);

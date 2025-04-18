@@ -6,7 +6,7 @@ const lessonBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 const lessonListLink = {
   to: lessonBaseRoute,
   label: 'Lesson List',
-  icons: [{ name: 'chalkboard-teacher' }] as GroupLink['icons'],
+  icons: [{ name: 'chalkboard' }] as GroupLink['icons'],
 };
 
 const createLessonLink = {
@@ -14,7 +14,7 @@ const createLessonLink = {
   label: 'Create Lesson',
   icons: [
     { name: 'plus', size: 16 },
-    { name: 'chalkboard-teacher' },
+    { name: 'chalkboard' },
   ] as GroupLink['icons'],
 };
 

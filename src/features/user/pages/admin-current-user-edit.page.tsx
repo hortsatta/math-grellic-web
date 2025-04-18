@@ -3,7 +3,7 @@ import { useLoaderData } from 'react-router-dom';
 
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { UserRole } from '../models/user.model';
-import { useTeacherCurrenUserEdit } from '../hooks/use-teacher-current-user-edit.hook';
+import { useAdminCurrenUserEdit } from '../hooks/use-admin-current-user-edit.hook';
 import { CurrentUserUpdateForm } from '../components/current-user-update-form.component';
 
 import type {
@@ -12,14 +12,14 @@ import type {
   TeacherUserUpdateFormData,
 } from '../models/user-form-data.model';
 
-function TeacherUserAccountEditPage() {
+function AdminUserAccountEditPage() {
   const {
     loading,
     isDone,
     setIsDone,
-    teacherUserFormData,
-    editCurrentTeacherUser,
-  } = useTeacherCurrenUserEdit();
+    adminUserFormData,
+    editCurrentAdminUser,
+  } = useAdminCurrenUserEdit();
 
   const data: any = useLoaderData();
 
@@ -29,24 +29,24 @@ function TeacherUserAccountEditPage() {
         | AdminUserUpdateFormData
         | TeacherUserUpdateFormData
         | StudentUserUpdateFormData,
-    ) => editCurrentTeacherUser(data as TeacherUserUpdateFormData),
-    [editCurrentTeacherUser],
+    ) => editCurrentAdminUser(data as AdminUserUpdateFormData),
+    [editCurrentAdminUser],
   );
 
   return (
     <BaseDataSuspense resolve={data?.main}>
-      {!!teacherUserFormData && (
+      {!!adminUserFormData && (
         <CurrentUserUpdateForm
           isDone={isDone}
           loading={loading}
-          formData={teacherUserFormData}
+          formData={adminUserFormData}
           onSubmit={handleSubmit}
           onDone={setIsDone}
-          role={UserRole.Teacher}
+          role={UserRole.Admin}
         />
       )}
     </BaseDataSuspense>
   );
 }
 
-export default TeacherUserAccountEditPage;
+export default AdminUserAccountEditPage;

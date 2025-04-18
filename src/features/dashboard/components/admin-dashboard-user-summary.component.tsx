@@ -1,12 +1,7 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import cx from 'classix';
 
-import {
-  superAdminBaseRoute,
-  superAdminRoutes,
-} from '#/app/routes/super-admin-routes';
-import { UserGender } from '#/user/models/user.model';
-import { ADMIN_NAME } from '#/user/helpers/user.helper';
+import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
@@ -22,38 +17,30 @@ type Props = ComponentProps<typeof BaseSurface> & {
   loading?: boolean;
 };
 
-const USER_ACCOUNT_PATH = `/${superAdminBaseRoute}/${superAdminRoutes.account.to}`;
+const USER_ACCOUNT_PATH = `/${adminBaseRoute}/${adminRoutes.account.to}`;
 
 const links = [
   {
-    to: `/${superAdminBaseRoute}/${superAdminRoutes.admin.to}/${superAdminRoutes.admin.createTo}`,
-    label: 'Register administrator',
+    to: `/${adminBaseRoute}/${adminRoutes.teacher.to}/${adminRoutes.teacher.createTo}`,
+    label: 'Register teacher',
     icons: [
       { name: 'plus', size: 16 },
-      { name: 'users-four' },
+      { name: 'chalkboard-teacher' },
     ] as GroupLink['icons'],
   },
   {
-    to: `/${superAdminBaseRoute}/${superAdminRoutes.admin.to}`,
-    label: 'View all administrator',
-    icons: [{ name: 'users-four' }] as GroupLink['icons'],
+    to: `/${adminBaseRoute}/${adminRoutes.teacher.to}`,
+    label: 'View all teachers',
+    icons: [{ name: 'chalkboard-teacher' }] as GroupLink['icons'],
   },
 ];
 
-export const SuperAdminDashboardUserSummary = memo(function ({
+export const AdminDashboardUserSummary = memo(function ({
   className,
   loading,
   user,
   ...moreProps
 }: Props) {
-  const transformedUser = useMemo(
-    () => ({
-      ...user,
-      userAccount: { firstName: ADMIN_NAME, gender: UserGender.Male },
-    }),
-    [user],
-  );
-
   return (
     <BaseSurface
       className={cx(
@@ -69,10 +56,7 @@ export const SuperAdminDashboardUserSummary = memo(function ({
         <>
           <div className='flex w-full animate-fastFadeIn flex-col gap-4 2xl:min-w-[400px]'>
             {user && (
-              <DashboardUserWelcome
-                to={USER_ACCOUNT_PATH}
-                user={transformedUser as any}
-              />
+              <DashboardUserWelcome to={USER_ACCOUNT_PATH} user={user} />
             )}
             <BaseDivider />
             <DashboardShortcutMenu

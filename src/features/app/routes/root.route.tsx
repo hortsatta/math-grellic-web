@@ -72,6 +72,7 @@ import { coreRouteHandle } from '#/core/core-route-handle';
 import { currentUserRouteHandle } from '#/user/route/current-user-handle';
 import { adminUserRouteHandle } from '#/user/route/admin-user-handle';
 import { dashboardRouteHandle } from '#/dashboard/route/dashboard-handle.route';
+import { schoolYearRouteHandle } from '#/school-year/route/school-year-handle.route';
 import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.route';
 import { teacherExamRouteHandle } from '#/exam/route/teacher-exam-handle.route';
 import { teacherActivityRouteHandle } from '#/activity/route/teacher-activity-handle.route';
@@ -96,6 +97,7 @@ import { UserRegisterEmailConfirmLastStepPage } from '#/user/pages/user-register
 
 import { staticRoutes } from './static-routes';
 import { superAdminBaseRoute, superAdminRoutes } from './super-admin-routes';
+import { adminBaseRoute, adminRoutes } from './admin-routes';
 import { teacherBaseRoute, teacherRoutes } from './teacher-routes';
 import { studentBaseRoute, studentRoutes } from './student-routes';
 
@@ -213,8 +215,93 @@ const rootRoutes = createRoutesFromElements(
         handle={coreRouteHandle.notFound}
       />
     </Route>
-    {/* TODO admin */}
+    {/* ADMIN */}
+    <Route
+      path={adminBaseRoute}
+      element={
+        <AuthProtectedRoute roles={[UserRole.Admin]}>
+          <CoreLayout />
+        </AuthProtectedRoute>
+      }
+    >
+      <Route
+        index
+        element={withSuspense(
+          () => import('#/dashboard/pages/admin-dashboard.page'),
+        )}
+        handle={dashboardRouteHandle}
+      />
+      {/* ADMIN CURRENT USER */}
+      <Route path={adminRoutes.account.to} element={<Outlet />}>
+        <Route
+          index
+          element={withSuspense(
+            () => import('#/user/pages/admin-current-user-single.page'),
+          )}
+          handle={currentUserRouteHandle.single}
+        />
+        <Route
+          path={adminRoutes.account.editTo}
+          element={withSuspense(
+            () => import('#/user/pages/admin-current-user-edit.page'),
+          )}
+          handle={currentUserRouteHandle.edit}
+        />
+      </Route>
+      {/* SCHOOL YEAR */}
+      <Route path={adminRoutes.schoolYear.to} element={<Outlet />}>
+        <Route
+          index
+          element={withSuspense(
+            () => import('#/school-year/pages/school-year-list.page'),
+          )}
+          handle={schoolYearRouteHandle.list}
+          // loader={getPaginatedSchoolYearsLoader(queryClient)}
+        />
+      </Route>
 
+      {/* ADMIN TEACHER */}
+      {/* <Route path={teacherRoutes.student.to} element={<Outlet />}>
+        <Route
+          index
+          element={withSuspense(
+            () => import('#/user/pages/student-user-list.page'),
+          )}
+          handle={studentUserRouteHandle.list}
+          loader={getPaginatedStudentUserLoader(queryClient)}
+        />
+        <Route path=':id' element={<Outlet />}>
+          <Route
+            index
+            element={withSuspense(
+              () => import('#/user/pages/student-user-single.page'),
+            )}
+            handle={studentUserRouteHandle.single}
+            loader={getStudentUserByIdLoader(queryClient)}
+          />
+          <Route
+            path={teacherRoutes.student.editTo}
+            element={withSuspense(
+              () => import('#/user/pages/student-user-edit.page'),
+            )}
+            handle={studentUserRouteHandle.edit}
+            loader={getStudentUserByIdLoader(queryClient)}
+          />
+        </Route>
+        <Route
+          path={teacherRoutes.student.createTo}
+          element={withSuspense(
+            () => import('#/user/pages/student-user-create.page'),
+          )}
+          handle={studentUserRouteHandle.create}
+        />
+      </Route> */}
+      <Route
+        path='*'
+        element={<CorePageNotFound to={`/${adminBaseRoute}`} />}
+        handle={coreRouteHandle.notFound}
+      />
+    </Route>
     {/* TEACHER */}
     <Route
       path={teacherBaseRoute}

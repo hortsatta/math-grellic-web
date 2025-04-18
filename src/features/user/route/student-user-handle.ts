@@ -7,7 +7,7 @@ const studentUserBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 const studentUserListLink = {
   to: studentUserBaseRoute,
   label: 'Student List',
-  icons: [{ name: 'users-four' }] as GroupLink['icons'],
+  icons: [{ name: 'student' }] as GroupLink['icons'],
 };
 
 const createStudentUserLink = {
@@ -15,7 +15,7 @@ const createStudentUserLink = {
   label: 'Enroll Student',
   icons: [
     { name: 'plus', size: 16 },
-    { name: 'users-four' },
+    { name: 'student' },
   ] as GroupLink['icons'],
 };
 

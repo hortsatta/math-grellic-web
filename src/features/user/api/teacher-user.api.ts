@@ -22,6 +22,7 @@ import type {
 } from '../models/user-form-data.model';
 
 const BASE_URL = 'users';
+const STUDENT_URL = 'students';
 const TEACHER_BASE_URL = `${BASE_URL}/teachers`;
 
 export function registerTeacherUser(
@@ -67,7 +68,7 @@ export function getPaginatedStudentsByCurrentTeacherUser(
   const { take, skip } = pagination || {};
 
   const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/students/list`;
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/list`;
     const searchParams = generateSearchParams({
       q,
       status,
@@ -103,7 +104,7 @@ export function getStudentsByCurrentTeacherUser(
   const { queryKey, ...moreOptions } = options || {};
 
   const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/students/list/all`;
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/list/all`;
     const searchParams = generateSearchParams({
       q,
       ids: ids?.join(','),
@@ -136,7 +137,7 @@ export function getStudentCountByCurrentTeacherUser(
   const { queryKey, ...moreOptions } = options || {};
 
   const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/students/count`;
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/count`;
     const searchParams = generateSearchParams({ status });
 
     try {
@@ -168,7 +169,7 @@ export function getStudentByIdAndCurrentTeacherUser(
   const { id, exclude, include } = keys;
 
   const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/students/${id}`;
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/${id}`;
     const searchParams = generateSearchParams({ exclude, include });
 
     try {
@@ -226,7 +227,7 @@ export function editStudent(
     studentId: number;
     data: UserUpsertFormData;
   }): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/students/${studentId}`;
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/${studentId}`;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { email, password, confirmPassword, ...moreData } = data;
     const json = transformToStudentUserUpdateDto(moreData);
@@ -247,7 +248,7 @@ export function deleteStudent(
   options?: Omit<UseMutationOptions<boolean, Error, number, any>, 'mutationFn'>,
 ) {
   const mutationFn = async (id: number): Promise<boolean> => {
-    const url = `${TEACHER_BASE_URL}/students/${id}`;
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/${id}`;
 
     try {
       const success: boolean = await kyInstance.delete(url).json();
@@ -279,7 +280,7 @@ export function setStudentApprovalStatus(
     studentId: number;
     approvalStatus: UserApprovalStatus;
   }): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/students/approve/${studentId}`;
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/approve/${studentId}`;
     const json = { approvalStatus };
 
     try {

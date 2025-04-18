@@ -4,6 +4,7 @@ import cx from 'classix';
 import { generateDashboardPath } from '#/utils/path.util';
 import { homeNavItem } from '#/app/routes/static-routes';
 import { generateSuperAdminRouteLinks } from '#/app/routes/super-admin-routes';
+import { generateAdminRouteLinks } from '#/app/routes/admin-routes';
 import { generateTeacherRouteLinks } from '#/app/routes/teacher-routes';
 import { generateStudentRouteLinks } from '#/app/routes/student-routes';
 import { SidebarMode } from '#/base/models/base.model';
@@ -55,8 +56,7 @@ export const CoreSidebar = memo(function ({
       case UserRole.Teacher:
         return generateTeacherRouteLinks();
       case UserRole.Admin:
-        // TODO admin links
-        return [];
+        return generateAdminRouteLinks();
       case UserRole.SuperAdmin:
         return generateSuperAdminRouteLinks();
     }

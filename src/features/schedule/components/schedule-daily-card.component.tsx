@@ -83,7 +83,7 @@ export const ScheduleDailyCard = memo(function ({
     }
 
     if (scheduleType === ScheduleType.Lesson) {
-      return 'chalkboard-teacher';
+      return 'chalkboard';
     } else if (scheduleType === ScheduleType.Exam) {
       return 'exam';
     } else {
@@ -97,7 +97,7 @@ export const ScheduleDailyCard = memo(function ({
     }
 
     const iconName =
-      scheduleType === ScheduleType.Lesson ? 'chalkboard-teacher' : 'exam';
+      scheduleType === ScheduleType.Lesson ? 'chalkboard' : 'exam';
 
     const orderNumber =
       scheduleType === ScheduleType.Lesson

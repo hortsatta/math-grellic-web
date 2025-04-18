@@ -15,6 +15,7 @@ import type {
   User,
 } from '../models/user.model';
 import type {
+  AdminUserUpdateFormData,
   StudentUserUpdateFormData,
   TeacherUserUpdateFormData,
   UserUpsertFormData,
@@ -241,7 +242,7 @@ export function transformToAdminUserUpsertDtoBySuperAdmin(
       };
 }
 
-export function transformToAdminUserUpsertDto({
+export function transformToAdminUserUpdateDto({
   profileImageUrl,
   firstName,
   lastName,
@@ -418,6 +419,23 @@ export function transformToUserRegisterFormData({
     teacherId,
     password: 'xxxxxxxxxxxx',
     confirmPassword: 'xxxxxxxxxxxx',
+  };
+}
+
+export function transformToAdminUserAccountFormData({
+  profileImageUrl,
+  userAccount,
+}: any): AdminUserUpdateFormData {
+  const { phoneNumber, aboutMe, messengerLink, emails } = userAccount || {};
+
+  return {
+    phoneNumber: phoneNumber?.length
+      ? phoneNumber?.slice(1, phoneNumber.length)
+      : undefined,
+    aboutMe: aboutMe || undefined,
+    messengerLink: messengerLink || undefined,
+    emails: emails || undefined,
+    profileImageUrl: profileImageUrl || undefined,
   };
 }
 

@@ -29,7 +29,7 @@ const links = [
     label: 'New lesson',
     icons: [
       { name: 'plus', size: 16 },
-      { name: 'chalkboard-teacher' },
+      { name: 'chalkboard' },
     ] as GroupLink['icons'],
   },
   {
@@ -58,7 +58,7 @@ const links = [
     label: 'Enroll student',
     icons: [
       { name: 'plus', size: 16 },
-      { name: 'users-four' },
+      { name: 'student' },
     ] as GroupLink['icons'],
   },
 ];

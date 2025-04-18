@@ -44,12 +44,6 @@ export default defineConfig({
         ),
       },
       {
-        find: '#/dashboard',
-        replacement: fileURLToPath(
-          new URL('./src/features/dashboard', import.meta.url),
-        ),
-      },
-      {
         find: '#/auth',
         replacement: fileURLToPath(
           new URL('./src/features/auth', import.meta.url),
@@ -59,6 +53,18 @@ export default defineConfig({
         find: '#/user',
         replacement: fileURLToPath(
           new URL('./src/features/user', import.meta.url),
+        ),
+      },
+      {
+        find: '#/dashboard',
+        replacement: fileURLToPath(
+          new URL('./src/features/dashboard', import.meta.url),
+        ),
+      },
+      {
+        find: '#/school-year',
+        replacement: fileURLToPath(
+          new URL('./src/features/school-year', import.meta.url),
         ),
       },
       {

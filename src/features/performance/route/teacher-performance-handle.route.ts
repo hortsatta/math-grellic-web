@@ -12,7 +12,7 @@ const performanceListLink = {
 const studentListLink = {
   to: `/${teacherBaseRoute}/${teacherRoutes.student.to}`,
   label: 'Student List',
-  icons: [{ name: 'users-four' }] as GroupLink['icons'],
+  icons: [{ name: 'student' }] as GroupLink['icons'],
 };
 
 export const teacherStudentPerformanceRouteHandle: {

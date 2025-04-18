@@ -46,11 +46,7 @@ export const LessonItem = memo(function ({
     >
       <div className='flex items-center gap-4'>
         <div className='flex h-11 w-11 items-center justify-center rounded bg-slate-200'>
-          <BaseIcon
-            name='chalkboard-teacher'
-            className='opacity-60'
-            size={36}
-          />
+          <BaseIcon name='chalkboard' className='opacity-60' size={36} />
         </div>
         <div
           className={cx(
