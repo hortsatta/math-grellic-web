@@ -25,7 +25,7 @@ const teacherUserListLink = {
   icons: [{ name: 'chalkboard-teacher' }] as GroupLink['icons'],
 };
 
-export const schoolYearRouteHandle: { [key: string]: SceneRouteHandle } = {
+export const adminSchoolYearRouteHandle: { [key: string]: SceneRouteHandle } = {
   list: {
     title: 'School Year',
     links: [createSchoolYearLink, teacherUserListLink],

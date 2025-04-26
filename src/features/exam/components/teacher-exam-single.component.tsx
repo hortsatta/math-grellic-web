@@ -109,7 +109,7 @@ export const TeacherExamSingle = memo(function ({
           <div>
             <h2 className='pb-1 text-xl'>{title}</h2>
             <div className='flex flex-col items-start gap-1 -2lg:flex-row -2lg:gap-2.5'>
-              <BaseChip iconName='chalkboard'>Exam {orderNumber}</BaseChip>
+              <BaseChip iconName='exam'>Exam {orderNumber}</BaseChip>
               <BaseDivider className='hidden !h-6 -2lg:block' vertical />
               <BaseChip iconName='list-numbers'>{totalPointsText}</BaseChip>
               <BaseDivider className='hidden !h-6 -2lg:block' vertical />

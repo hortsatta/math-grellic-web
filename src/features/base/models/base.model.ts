@@ -28,6 +28,7 @@ export type IconName =
   | 'broadcast'
   | 'calendar'
   | 'calendar-check'
+  | 'calendar-x'
   | 'cards'
   | 'caret-circle-down'
   | 'caret-circle-left'

@@ -70,6 +70,43 @@ export function getPaginatedTeachersByCurrentAdminUser(
   };
 }
 
+export function getTeachersByCurrentAdminUser(
+  keys?: { q?: string; ids?: number[]; status?: string },
+  options?: Omit<
+    UseQueryOptions<TeacherUserAccount[], Error, TeacherUserAccount[], any>,
+    'queryFn'
+  >,
+) {
+  const { q, ids, status } = keys || {};
+  const { queryKey, ...moreOptions } = options || {};
+
+  const queryFn = async (): Promise<any> => {
+    const url = `${ADMIN_BASE_URL}/${TEACHER_URL}/list/all`;
+    const searchParams = generateSearchParams({
+      q,
+      ids: ids?.join(','),
+      status,
+    });
+
+    try {
+      const teachers = await kyInstance.get(url, { searchParams }).json();
+      return teachers;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [
+      ...(queryKey?.length ? queryKey : queryUserKey.allStudentList),
+      { q, ids, status },
+    ],
+    queryFn,
+    ...moreOptions,
+  };
+}
+
 export function getTeacherById(
   keys: { id: number; exclude?: string; include?: string },
   options?: Omit<

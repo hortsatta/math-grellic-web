@@ -15,6 +15,10 @@ import {
   getPaginatedAdminUserLoader,
 } from '#/user/route/admin-user-loader';
 import {
+  getAdminPaginatedSchoolYearsLoader,
+  getAdminSchoolYearBySlugLoader,
+} from '#/school-year/route/admin-school-year-loader.route';
+import {
   getTeacherLessonBySlugLoader,
   getTeacherPaginatedLessonsLoader,
 } from '#/lesson/route/teacher-lesson-loader.route';
@@ -72,7 +76,7 @@ import { coreRouteHandle } from '#/core/core-route-handle';
 import { currentUserRouteHandle } from '#/user/route/current-user-handle';
 import { adminUserRouteHandle } from '#/user/route/admin-user-handle';
 import { dashboardRouteHandle } from '#/dashboard/route/dashboard-handle.route';
-import { schoolYearRouteHandle } from '#/school-year/route/school-year-handle.route';
+import { adminSchoolYearRouteHandle } from '#/school-year/route/admin-school-year-handle.route';
 import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.route';
 import { teacherExamRouteHandle } from '#/exam/route/teacher-exam-handle.route';
 import { teacherActivityRouteHandle } from '#/activity/route/teacher-activity-handle.route';
@@ -255,8 +259,33 @@ const rootRoutes = createRoutesFromElements(
           element={withSuspense(
             () => import('#/school-year/pages/school-year-list.page'),
           )}
-          handle={schoolYearRouteHandle.list}
-          // loader={getPaginatedSchoolYearsLoader(queryClient)}
+          handle={adminSchoolYearRouteHandle.list}
+          loader={getAdminPaginatedSchoolYearsLoader(queryClient)}
+        />
+        <Route path=':slug' element={<Outlet />}>
+          <Route
+            index
+            element={withSuspense(
+              () => import('#/school-year/pages/school-year-single.page'),
+            )}
+            handle={adminSchoolYearRouteHandle.single}
+            loader={getAdminSchoolYearBySlugLoader(queryClient)}
+          />
+          <Route
+            path={adminRoutes.schoolYear.editTo}
+            element={withSuspense(
+              () => import('#/school-year/pages/school-year-edit.page'),
+            )}
+            handle={adminSchoolYearRouteHandle.edit}
+            loader={getAdminSchoolYearBySlugLoader(queryClient)}
+          />
+        </Route>
+        <Route
+          path={adminRoutes.schoolYear.createTo}
+          element={withSuspense(
+            () => import('#/school-year/pages/school-year-create.page'),
+          )}
+          handle={adminSchoolYearRouteHandle.create}
         />
       </Route>
 
