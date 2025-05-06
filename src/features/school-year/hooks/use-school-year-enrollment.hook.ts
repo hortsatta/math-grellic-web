@@ -13,6 +13,7 @@ type Result = {
 };
 
 export function useSchoolYearEnrollment(): Result {
+  const user = useBoundStore((state) => state.user);
   const schoolYear = useBoundStore((state) => state.schoolYear);
   const syEnrollment = useBoundStore((state) => state.syEnrollment);
   const setSyEnrollment = useBoundStore((state) => state.setSyEnrollment);
@@ -32,13 +33,13 @@ export function useSchoolYearEnrollment(): Result {
   }, [data?.id]);
 
   useEffect(() => {
-    if (!schoolYear) {
+    if (!schoolYear || !user) {
       return;
     }
 
     refetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [schoolYear]);
+  }, [user?.id, schoolYear]);
 
   return {
     loading: isLoading || isRefetching || syEnrollment === undefined,

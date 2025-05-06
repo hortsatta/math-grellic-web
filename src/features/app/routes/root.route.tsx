@@ -770,7 +770,7 @@ const rootRoutes = createRoutesFromElements(
       <Route
         element={
           <SchoolYearEnrollmentProtectedRoute
-            redirectTo={`/${teacherBaseRoute}/${studentRoutes.enrollment.to}`}
+            redirectTo={`/${studentBaseRoute}/${studentRoutes.enrollment.to}`}
           >
             <Outlet />
           </SchoolYearEnrollmentProtectedRoute>
@@ -931,7 +931,14 @@ const rootRoutes = createRoutesFromElements(
         />
       </Route>
       {/* STUDENT ENROLLMENT */}
-      <Route path={studentRoutes.enrollment.to} element={<div>enroll</div>} />
+      <Route
+        path={studentRoutes.enrollment.to}
+        element={withSuspense(
+          () =>
+            import('#/school-year/pages/student-school-year-enrollment.page'),
+        )}
+        handle={schoolYearEnrollmentHandle}
+      />
       {/* STUDENT CURRENT USER */}
       <Route path={studentRoutes.account.to} element={<Outlet />}>
         <Route

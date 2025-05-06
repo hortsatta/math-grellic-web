@@ -9,12 +9,14 @@ import type { NavItem } from '#/base/models/base.model';
 type Props = ComponentProps<'nav'> & {
   links: NavItem[];
   isExpanded?: boolean;
+  disabled?: boolean;
 };
 
 export const CoreNav = memo(function ({
   className,
   links,
   isExpanded,
+  disabled,
   ...moreProps
 }: Props) {
   return (
@@ -32,6 +34,7 @@ export const CoreNav = memo(function ({
               size={size}
               isExpanded={isExpanded}
               end={end}
+              disabled={disabled}
             />
           </li>
         ))}

@@ -158,12 +158,14 @@ export const SchoolYearEnrollmentCreateForm = memo(function ({
           >
             Enroll Now
           </BaseButton>
-          <BaseIcon
-            className='text-green-500'
-            name='check-circle'
-            size={44}
-            weight='bold'
-          />
+          {isDone && (
+            <BaseIcon
+              className='text-green-500'
+              name='check-circle'
+              size={44}
+              weight='bold'
+            />
+          )}
         </div>
       </form>
     </div>

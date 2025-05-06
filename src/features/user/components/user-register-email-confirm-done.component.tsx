@@ -5,12 +5,16 @@ import { BaseLink } from '#/base/components/base-link.component';
 
 import type { ComponentProps } from 'react';
 
+const title = import.meta.env.VITE_META_TITLE;
+
 type Props = ComponentProps<'div'> & {
+  publicId: string | null;
   isConfirmed: boolean;
 };
 
 export const UserRegisterEmailConfirmDone = memo(function ({
   className,
+  publicId,
   isConfirmed,
   ...moreProps
 }: Props) {
@@ -21,9 +25,17 @@ export const UserRegisterEmailConfirmDone = memo(function ({
           {isConfirmed ? 'Email confirmed!' : 'Email confirmation failed'}
         </h1>
         <p className='mb-8 max-w-xl text-center text-lg xs:text-left'>
-          {isConfirmed
-            ? "Your email has been successfully verified. Your account is now under review, and you'll receive an email notification once it's approved and ready for full access."
-            : 'The email confirmation link is either invalid or has expired. Please request a new confirmation email and try again.'}
+          {isConfirmed ? (
+            <>
+              Your email has been successfully verified and your account has
+              been approved, you can now access the {title} app.
+              <br />
+              <br />
+              Your id is <b>{publicId}</b>. Welcome aboard!
+            </>
+          ) : (
+            'The email confirmation link is either invalid or has expired. Please request a new confirmation email and try again.'
+          )}
         </p>
         <BaseLink to='/' rightIconName='arrow-circle-right'>
           Return to Home

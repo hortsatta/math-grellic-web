@@ -7,13 +7,14 @@ import type { UserRegisterLastStepFormData } from '../models/user-form-data.mode
 const BASE_URL = 'users';
 
 export function confirmUserRegistrationEmail(
-  options?: Omit<UseMutationOptions<boolean, Error, string, any>, 'mutationFn'>,
+  options?: Omit<UseMutationOptions<string, Error, string, any>, 'mutationFn'>,
 ) {
   const mutationFn = async (token: string): Promise<any> => {
     const url = `${BASE_URL}/register/confirm?token=${token}`;
 
     try {
-      return kyInstance.get(url).json();
+      const result = await kyInstance.get(url).json();
+      return (result as { publicId: string }).publicId;
     } catch (error: any) {
       const apiError = await generateApiError(error);
       throw apiError;

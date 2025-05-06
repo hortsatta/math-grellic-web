@@ -6,6 +6,7 @@ import { confirmUserRegistrationEmail } from '../api/user.api';
 
 type Result = {
   loading: boolean;
+  publicId: string | null;
   isConfirmed: boolean | null;
   confirmUserEmail: (token: string) => void;
 };
@@ -15,12 +16,15 @@ export function useUserRegisterEmailConfirm(): Result {
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [isConfirmed, setIsConfirmed] = useState<boolean | null>(null);
+  const [publicId, setIsPublicId] = useState<string | null>(null);
 
   const { mutateAsync } = useMutation(confirmUserRegistrationEmail());
 
   const confirmUserEmail = useCallback(
     async (token: string) => {
       const result = await mutateAsync(token);
+
+      setIsPublicId(result?.trim().length ? result : null);
       setIsConfirmed(!!result);
     },
     [mutateAsync],
@@ -49,6 +53,7 @@ export function useUserRegisterEmailConfirm(): Result {
 
   return {
     loading: loading || isConfirmed === null,
+    publicId,
     isConfirmed,
     confirmUserEmail,
   };

@@ -18,6 +18,7 @@ import { CoreNavItem } from './core-nav-item.component';
 import gridSmPng from '#/assets/images/grid-sm.png';
 
 import type { ComponentProps } from 'react';
+import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
 
 const bgStyle = { backgroundImage: `url(${gridSmPng})` };
 
@@ -26,8 +27,16 @@ export const CoreSidebar = memo(function ({
   ...moreProps
 }: ComponentProps<'aside'>) {
   const user = useBoundStore((state) => state.user);
+  const syEnrollment = useBoundStore((state) => state.syEnrollment);
   const sidebarMode = useBoundStore((state) => state.sidebarMode);
   const setSidebarMode = useBoundStore((state) => state.setSidebarMode);
+
+  const isEnrollmentApproved = useMemo(
+    () =>
+      syEnrollment?.approvalStatus ===
+      SchoolYearEnrollmentApprovalStatus.Approved,
+    [syEnrollment],
+  );
 
   const logoTo = useMemo(() => {
     if (!user) {
@@ -94,6 +103,7 @@ export const CoreSidebar = memo(function ({
           links={navLinks}
           className='absolute left-0 top-1/2 z-0 -translate-y-1/2'
           isExpanded={sidebarMode === SidebarMode.Expanded}
+          disabled={!isEnrollmentApproved}
         />
         <div className='relative z-10 flex shrink-0 grow-0 flex-col items-center justify-center overflow-hidden'>
           <CoreNavItem

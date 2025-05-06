@@ -4,7 +4,7 @@ import { useUserRegisterEmailConfirm } from '../hooks/use-user-register-email-co
 import { UserRegisterEmailConfirmDone } from '../components/user-register-email-confirm-done.component';
 
 export function UserRegisterEmailConfirmPage() {
-  const { loading, isConfirmed } = useUserRegisterEmailConfirm();
+  const { loading, publicId, isConfirmed } = useUserRegisterEmailConfirm();
 
   return (
     <BaseStaticScene id='user-register-email-confirmation'>
@@ -12,7 +12,10 @@ export function UserRegisterEmailConfirmPage() {
         {(loading || isConfirmed == null) && <BasePageSpinner />}
         {!loading && isConfirmed != null && (
           <div className='flex flex-col items-start justify-start rounded-none bg-backdrop/50 pb-12 lg:rounded-20px'>
-            <UserRegisterEmailConfirmDone isConfirmed={isConfirmed} />
+            <UserRegisterEmailConfirmDone
+              publicId={publicId}
+              isConfirmed={isConfirmed}
+            />
           </div>
         )}
       </section>

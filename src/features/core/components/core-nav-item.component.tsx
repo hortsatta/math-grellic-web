@@ -12,6 +12,7 @@ type Props = Omit<ComponentProps<typeof NavLink>, 'className'> &
     className?: string;
     isExpanded?: boolean;
     isMobile?: boolean;
+    disabled?: boolean;
   };
 
 export const CoreNavItem = memo(function ({
@@ -22,16 +23,20 @@ export const CoreNavItem = memo(function ({
   size,
   isExpanded,
   isMobile,
+  disabled,
   ...moreProps
 }: Props) {
   const setClassName = useCallback(
     ({ isActive }: { isActive: boolean }) =>
       cx(
-        'relative flex h-12 items-center gap-5 px-4 font-body text-lg font-medium text-primary transition-colors hover:text-primary-focus-light',
+        'relative flex h-12 items-center gap-5 px-4 font-body text-lg font-medium transition-colors',
         isActive && '!text-primary-focus-light',
+        disabled
+          ? 'pointer-events-auto !cursor-not-allowed text-accent/50'
+          : 'text-primary hover:text-primary-focus-light',
         className,
       ),
-    [className],
+    [className, disabled],
   );
 
   return (

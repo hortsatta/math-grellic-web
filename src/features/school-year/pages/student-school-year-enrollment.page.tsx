@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { teacherBaseRoute } from '#/app/routes/teacher-routes';
+import { studentBaseRoute } from '#/app/routes/student-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { SchoolYearEnrollmentApprovalStatus } from '../models/school-year-enrollment.model';
@@ -11,7 +11,7 @@ import { SchoolYearEnrollmentStatus } from '../components/school-year-enrollment
 
 import type { SchoolYear } from '../models/school-year.model';
 
-function TeacherSchoolYearEnrollmentPage() {
+function StudentSchoolYearEnrollmentPage() {
   const navigate = useNavigate();
 
   const { isDone, setIsDone, createEnrollment } =
@@ -41,7 +41,7 @@ function TeacherSchoolYearEnrollmentPage() {
       return;
     }
 
-    navigate(`/${teacherBaseRoute}`, { replace: true });
+    navigate(`/${studentBaseRoute}`, { replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, syEnrollment]);
 
@@ -83,4 +83,4 @@ function TeacherSchoolYearEnrollmentPage() {
   }
 }
 
-export default TeacherSchoolYearEnrollmentPage;
+export default StudentSchoolYearEnrollmentPage;
