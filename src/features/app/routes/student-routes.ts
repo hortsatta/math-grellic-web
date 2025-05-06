@@ -68,6 +68,12 @@ export const studentRoutes = {
     editTo: 'edit',
     hidden: true,
   },
+  enrollment: {
+    name: 'enrollment',
+    to: 'enrollment',
+    label: 'Enrollment',
+    hidden: true,
+  },
 };
 
 export function generateStudentRouteLinks() {

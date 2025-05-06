@@ -2,7 +2,7 @@ import { defer } from 'react-router-dom';
 
 import { getSchoolYearBySlugAndCurrentAdminUser } from '../api/admin-school-year.api';
 import { getPaginatedSchoolYearsByCurrentAdminUser } from '../api/admin-school-year.api';
-import { defaultParamKeys } from '../hooks/use-school-year-list.hook';
+import { defaultParamKeys } from '../hooks/use-admin-school-year-list.hook';
 
 import type { QueryClient } from '@tanstack/react-query';
 import type { LoaderFunctionArgs } from 'react-router-dom';

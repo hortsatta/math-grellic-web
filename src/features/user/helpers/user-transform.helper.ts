@@ -146,7 +146,6 @@ export function transformToStudentUserAccount({
   gender,
   aboutMe,
   messengerLink,
-  teacherId,
   user,
   lessonSchedules,
   examSchedules,
@@ -202,7 +201,6 @@ export function transformToStudentUserAccount({
     gender,
     aboutMe,
     messengerLink,
-    teacherId,
     lessonSchedules: transformedLessonSchedules,
     examSchedules: transformedExamSchedules,
     lessonCompletions: transformedLessonCompletions,
@@ -353,7 +351,6 @@ export function transformToStudentUserCreateDto({
   phoneNumber,
   gender,
   aboutMe,
-  teacherId,
 }: any) {
   return {
     email,
@@ -366,7 +363,6 @@ export function transformToStudentUserCreateDto({
     phoneNumber: phoneNumber.replace(/\D/g, ''),
     gender,
     aboutMe,
-    teacherId: teacherId ? teacherId.toUpperCase() : undefined,
   };
 }
 
@@ -380,7 +376,6 @@ export function transformToStudentUserUpdateDto({
   gender,
   aboutMe,
   messengerLink,
-  teacherId,
 }: any) {
   return {
     profileImageUrl,
@@ -392,7 +387,6 @@ export function transformToStudentUserUpdateDto({
     gender,
     aboutMe,
     messengerLink,
-    teacherId: teacherId ? teacherId.toUpperCase() : undefined,
   };
 }
 
@@ -403,7 +397,6 @@ export function transformToUserRegisterFormData({
   birthDate,
   phoneNumber,
   gender,
-  teacherId,
   email,
 }: any): UserUpsertFormData {
   return {
@@ -416,7 +409,6 @@ export function transformToUserRegisterFormData({
       : undefined,
     gender,
     middleName,
-    teacherId,
     password: 'xxxxxxxxxxxx',
     confirmPassword: 'xxxxxxxxxxxx',
   };

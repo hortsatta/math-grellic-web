@@ -54,7 +54,6 @@ const schema = z.object({
     .refine((value) => isMobilePhone(value.replace(/[^0-9]/g, ''), 'en-PH'), {
       message: 'Phone number is invalid',
     }),
-  teacherId: z.string().optional(),
   gender: z.nativeEnum(UserGender, {
     required_error: 'Provide your gender',
   }),
@@ -69,7 +68,6 @@ const defaultValues: Partial<UserUpsertFormData> = {
   birthDate: undefined,
   phoneNumber: '',
   gender: undefined,
-  teacherId: undefined,
   approvalStatus: UserApprovalStatus.Pending,
 };
 

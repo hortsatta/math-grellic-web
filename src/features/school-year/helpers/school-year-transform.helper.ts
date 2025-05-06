@@ -21,6 +21,8 @@ export function transformToSchoolYear({
   totalStudentCount,
   isActive,
   isDone,
+  isEnrolled,
+  canEnroll,
 }: any): SchoolYear {
   return {
     status,
@@ -31,11 +33,13 @@ export function transformToSchoolYear({
     endDate: dayjs(endDate).toDate(),
     enrollmentStartDate: dayjs(enrollmentStartDate).toDate(),
     enrollmentEndDate: dayjs(enrollmentEndDate).toDate(),
-    gracePeriodEndDate,
+    gracePeriodEndDate: dayjs(gracePeriodEndDate).toDate(),
     totalTeacherCount,
     totalStudentCount,
     isActive,
     isDone,
+    isEnrolled,
+    canEnroll,
     ...transformToBaseModel(id, createdAt, updatedAt),
   };
 }

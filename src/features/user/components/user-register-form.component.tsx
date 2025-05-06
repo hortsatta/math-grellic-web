@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
@@ -76,7 +76,6 @@ const schema = z
       .refine((value) => isMobilePhone(value.replace(/[^0-9]/g, ''), 'en-PH'), {
         message: 'Phone number is invalid',
       }),
-    teacherId: z.string().length(11, 'ID must be 11 characters long'),
     gender: z.nativeEnum(UserGender, {
       required_error: 'Provide your gender',
     }),
@@ -98,7 +97,6 @@ const defaultValues: Partial<UserUpsertFormData> = {
   birthDate: undefined,
   phoneNumber: '',
   gender: undefined,
-  teacherId: '',
   approvalStatus: UserApprovalStatus.Pending,
 };
 
@@ -122,12 +120,6 @@ export const UserRegisterForm = memo(function ({
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
-  useEffect(() => {
-    // Set default teacher's id if teacher role is selected
-    reset({ teacherId: userRole === UserRole.Teacher ? 'xxxxxxxxxxx' : '' });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userRole]);
 
   const handleReset = useCallback(() => reset(), [reset]);
 
@@ -227,21 +219,9 @@ export const UserRegisterForm = memo(function ({
           />
         </fieldset>
         <fieldset
-          className={cx(
-            'group/field mt-6',
-            userRole === UserRole.Student &&
-              'flex flex-col items-center gap-5 md:flex-row',
-          )}
+          className='group/field mt-6'
           disabled={isSubmitting || isDone}
         >
-          {userRole === UserRole.Student && (
-            <BaseControlledInput
-              label="Teacher's ID"
-              name='teacherId'
-              control={control}
-              asterisk
-            />
-          )}
           <div className='w-full rounded-md border border-accent/40 px-4 pb-2.5 pt-2'>
             <BaseControlledCheckbox
               name='agreeTerms'

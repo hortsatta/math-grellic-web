@@ -8,7 +8,6 @@ import type {
 import type { ActivityCategoryCompletion } from '#/activity/models/activity.model';
 
 export enum UserApprovalStatus {
-  MailPending = 'mail-pending',
   Pending = 'pending',
   Approved = 'approved',
   Rejected = 'rejected',
@@ -70,7 +69,6 @@ export type TeacherUserAccount = UserAccount & {
 };
 
 export type StudentUserAccount = UserAccount & {
-  teacherId: string;
   aboutMe?: string;
   messengerLink?: string;
   lessonSchedules?: LessonSchedule[];

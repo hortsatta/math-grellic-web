@@ -10,7 +10,6 @@ export type UserUpsertFormData = {
   phoneNumber: string;
   gender: UserGender;
   middleName?: string;
-  teacherId?: string;
   approvalStatus?: UserApprovalStatus;
 };
 

@@ -1,0 +1,92 @@
+import { useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { teacherBaseRoute } from '#/app/routes/teacher-routes';
+import { studentBaseRoute } from '#/app/routes/student-routes';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
+import { BasePageSpinner } from '#/base/components/base-spinner.component';
+import { UserRole } from '#/user/models/user.model';
+import { SchoolYearEnrollmentApprovalStatus } from '../models/school-year-enrollment.model';
+import { useSchoolYearEnrollmentCreate } from '../hooks/use-school-year-enrollment-create.hook';
+import { SchoolYearEnrollmentCreateForm } from '../components/school-year-enrollment-create-form.component';
+import { SchoolYearEnrollmentStatus } from '../components/school-year-enrollment-status.component';
+
+import type { SchoolYear } from '../models/school-year.model';
+
+function TeacherSchoolYearEnrollmentPage() {
+  const navigate = useNavigate();
+
+  const { isDone, setIsDone, createEnrollment } =
+    useSchoolYearEnrollmentCreate();
+
+  const user = useBoundStore((state) => state.user);
+  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const syEnrollment = useBoundStore((state) => state.syEnrollment);
+
+  const formData = useMemo(() => {
+    if (!schoolYear || !user) {
+      return null;
+    }
+
+    return {
+      schoolYearId: schoolYear.id,
+      role: user.role,
+    };
+  }, [schoolYear, user]);
+
+  useEffect(() => {
+    if (
+      !user ||
+      syEnrollment?.approvalStatus !==
+        SchoolYearEnrollmentApprovalStatus.Approved
+    ) {
+      return;
+    }
+
+    const to = `/${
+      user.role === UserRole.Student ? studentBaseRoute : teacherBaseRoute
+    }`;
+
+    navigate(to, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, syEnrollment]);
+
+  if (!formData || syEnrollment === undefined) {
+    return <BasePageSpinner />;
+  }
+
+  if (
+    (schoolYear?.isDone && !syEnrollment) ||
+    (schoolYear?.isDone &&
+      syEnrollment?.approvalStatus !==
+        SchoolYearEnrollmentApprovalStatus.Approved)
+  ) {
+    return (
+      <SchoolYearEnrollmentStatus
+        schoolYear={schoolYear as SchoolYear}
+        syEnrollment={syEnrollment}
+        isDoneAndNotEnrolled
+      />
+    );
+  } else if (schoolYear?.isActive && !schoolYear?.isDone && syEnrollment) {
+    return (
+      <SchoolYearEnrollmentStatus
+        schoolYear={schoolYear as SchoolYear}
+        syEnrollment={syEnrollment}
+      />
+    );
+  } else {
+    return (
+      <SchoolYearEnrollmentCreateForm
+        className='mx-auto max-w-compact py-5'
+        schoolYear={schoolYear as SchoolYear}
+        formData={formData}
+        isDone={isDone}
+        onDone={setIsDone}
+        onSubmit={createEnrollment}
+      />
+    );
+  }
+}
+
+export default TeacherSchoolYearEnrollmentPage;

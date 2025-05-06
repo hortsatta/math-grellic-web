@@ -98,6 +98,12 @@ export const teacherRoutes = {
     editTo: 'edit',
     hidden: true,
   },
+  enrollment: {
+    name: 'enrollment',
+    to: 'enrollment',
+    label: 'Enrollment',
+    hidden: true,
+  },
 };
 
 export function generateTeacherRouteLinks() {

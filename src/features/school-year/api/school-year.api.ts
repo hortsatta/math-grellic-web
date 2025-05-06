@@ -1,6 +1,7 @@
 import { generateApiError } from '#/utils/api.util';
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import { querySchoolYearKey } from '#/config/react-query-keys.config';
+import { transformToSchoolYear } from '../helpers/school-year-transform.helper';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 import type { SchoolYear } from '../models/school-year.model';
@@ -31,6 +32,33 @@ export function getCurrentSchoolYear(
 
   return {
     queryKey: [...querySchoolYearKey.current, { exclude, include }],
+    queryFn,
+    ...options,
+  };
+}
+
+export function getSchoolYearsByCurrentUser(
+  options?: Omit<
+    UseQueryOptions<SchoolYear[], Error, SchoolYear[], any>,
+    'queryKey' | 'queryFn'
+  >,
+) {
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/list`;
+
+    try {
+      const schoolYears = await kyInstance.get(url).json();
+      return (schoolYears as any[])?.map(
+        (schoolYear) => transformToSchoolYear(schoolYear) || [],
+      );
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...querySchoolYearKey.userList],
     queryFn,
     ...options,
   };

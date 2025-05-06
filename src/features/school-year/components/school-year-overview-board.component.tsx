@@ -34,16 +34,32 @@ export const SchoolYearOverviewBoard = memo(function ({
               `${dayjs(schoolYear.startDate).format('MMM DD, YYYY')} — ${dayjs(
                 schoolYear.endDate,
               ).format('MMM DD, YYYY')}`,
-              schoolYear.totalTeacherCount <= 0
-                ? 'No teachers enrolled yet'
-                : schoolYear.totalTeacherCount,
-              schoolYear.totalStudentCount <= 0
-                ? 'No students enrolled yet'
-                : schoolYear.totalStudentCount,
+              schoolYear.totalTeacherCount,
+              schoolYear.totalStudentCount,
             ]
           : [],
       [schoolYear],
     );
+
+  const totalTeacherCountText = useMemo(() => {
+    if (!totalTeacherCount || totalTeacherCount <= 0) {
+      return 'No teachers enrolled yet';
+    }
+
+    return `${totalTeacherCount} ${
+      totalTeacherCount > 1 ? 'teachers' : 'teacher'
+    } enrolled`;
+  }, [totalTeacherCount]);
+
+  const totalStudentCountText = useMemo(() => {
+    if (!totalStudentCount || totalStudentCount <= 0) {
+      return 'No teachers enrolled yet';
+    }
+
+    return `${totalStudentCount} ${
+      totalStudentCount > 1 ? 'students' : 'student'
+    } enrolled`;
+  }, [totalStudentCount]);
 
   const handleDetails = useCallback(
     () => slug && onDetails && onDetails(slug),
@@ -70,21 +86,11 @@ export const SchoolYearOverviewBoard = memo(function ({
             <span className={VALUE_CLASSNAME}>{title}</span>
             <div>
               <BaseChip iconName='calendar-check'>{dateRange}</BaseChip>
-              <BaseChip
-                className={cx(
-                  typeof totalTeacherCount === 'string' && 'normal-case',
-                )}
-                iconName='chalkboard-teacher'
-              >
-                {totalTeacherCount}
+              <BaseChip className='!text-sm' iconName='chalkboard-teacher'>
+                {totalTeacherCountText}
               </BaseChip>
-              <BaseChip
-                className={cx(
-                  typeof totalTeacherCount === 'string' && 'normal-case',
-                )}
-                iconName='student'
-              >
-                {totalStudentCount}
+              <BaseChip className='!text-sm' iconName='student'>
+                {totalStudentCountText}
               </BaseChip>
             </div>
           </div>

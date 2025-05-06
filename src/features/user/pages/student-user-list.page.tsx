@@ -36,12 +36,6 @@ const filterOptions = [
     label: capitalize(UserApprovalStatus.Pending),
   },
   {
-    key: 'status-mailpending',
-    name: 'status',
-    value: UserApprovalStatus.MailPending,
-    label: 'Email Pending',
-  },
-  {
     key: 'status-rejected',
     name: 'status',
     value: UserApprovalStatus.Rejected,

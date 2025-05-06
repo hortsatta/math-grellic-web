@@ -38,7 +38,7 @@ export function getPaginatedSchoolYearsByCurrentAdminUser(
   const { take, skip } = pagination || {};
 
   const queryFn = async (): Promise<any> => {
-    const url = `${BASE_URL}/list`;
+    const url = `${BASE_URL}/admins/list`;
     const searchParams = generateSearchParams({
       q,
       status,

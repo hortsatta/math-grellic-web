@@ -34,10 +34,7 @@ export function useStudentUserPendingEnrollmentList(): Result {
   } = useQuery(
     getStudentsByCurrentTeacherUser(
       {
-        status: [
-          UserApprovalStatus.Pending,
-          UserApprovalStatus.MailPending,
-        ].join(','),
+        status: UserApprovalStatus.Pending,
       },
       {
         queryKey: queryUserKey.studentList,

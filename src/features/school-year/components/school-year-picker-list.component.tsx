@@ -4,42 +4,35 @@ import cx from 'classix';
 
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
-import { BaseSearchInput } from '#/base/components/base-search-input.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
-import { generateFullName } from '../helpers/user.helper';
+import { useSchoolYearList } from '../hooks/use-school-year-list.hook';
 
 import type { ComponentProps } from 'react';
-import type { StudentUserAccount } from '../models/user.model';
+import type { SchoolYear } from '../models/school-year.model';
 
 type Props = ComponentProps<'div'> & {
-  students: StudentUserAccount[];
-  selectedStudentIds?: number[];
-  onSearchChange: (value: string | null) => void;
-  onStudentSelect: (id: number) => () => void;
+  selectedSchoolYearId?: number;
+  onSchoolYearSelect: (schoolYear: SchoolYear) => void;
   onCancel: () => void;
   onSubmit: () => void;
-  loading?: boolean;
 };
 
-type StudentUserItemProps = ComponentProps<'button'> & {
-  student: StudentUserAccount;
+type SchoolYearItemProps = ComponentProps<'button'> & {
+  schoolYear: SchoolYear;
   selected?: boolean;
   onClick?: () => void;
 };
 
-export const StudentUserItem = memo(function ({
+export const SchoolYearItem = memo(function ({
   className,
-  student,
+  schoolYear,
   selected,
   onClick,
   ...moreProps
-}: StudentUserItemProps) {
-  const [publicId, fullName] = useMemo(
-    () => [
-      student.publicId,
-      generateFullName(student.firstName, student.lastName, student.middleName),
-    ],
-    [student],
+}: SchoolYearItemProps) {
+  const [title, isActive] = useMemo(
+    () => [schoolYear.title, schoolYear.isActive],
+    [schoolYear],
   );
 
   return (
@@ -54,7 +47,7 @@ export const StudentUserItem = memo(function ({
     >
       <div className='flex items-center gap-4'>
         <div className='flex h-11 w-11 items-center justify-center rounded bg-slate-200'>
-          <BaseIcon name='student' className='opacity-60' size={36} />
+          <BaseIcon name='graduation-cap' className='opacity-60' size={36} />
         </div>
         <div
           className={cx(
@@ -62,8 +55,12 @@ export const StudentUserItem = memo(function ({
             onClick && 'group-hover/usrpicker:text-white',
           )}
         >
-          <span className='text-left font-medium'>{fullName}</span>
-          <small>{publicId}</small>
+          <span className='text-left font-medium'>{title}</span>
+          {isActive && (
+            <small className='uppercase leading-none text-primary-hue-purple-focus group-hover/usrpicker:text-white'>
+              [Current]
+            </small>
+          )}
         </div>
       </div>
       <div className='flex h-9 w-9 items-center justify-center'>
@@ -80,21 +77,19 @@ export const StudentUserItem = memo(function ({
   );
 });
 
-export const StudentUserPickerList = memo(function ({
+export const SchoolYearPickerList = memo(function ({
   className,
-  loading,
-  students,
-  selectedStudentIds,
-  onSearchChange,
-  onStudentSelect,
+  selectedSchoolYearId,
+  onSchoolYearSelect,
   onCancel,
   onSubmit,
   ...moreProps
 }: Props) {
-  // Set active props for each student item
-  const setItemSelected = useCallback(
-    (targetId: number) => !!selectedStudentIds?.find((id) => id === targetId),
-    [selectedStudentIds],
+  const { schoolYears, loading } = useSchoolYearList();
+
+  const handleSchoolYearSelect = useCallback(
+    (schoolYear: SchoolYear) => () => onSchoolYearSelect(schoolYear),
+    [onSchoolYearSelect],
   );
 
   return (
@@ -103,13 +98,6 @@ export const StudentUserPickerList = memo(function ({
       {...moreProps}
     >
       <div className='w-full overflow-hidden'>
-        <div className='px-4'>
-          <BaseSearchInput
-            placeholder='Find a student'
-            onChange={onSearchChange}
-            fullWidth
-          />
-        </div>
         <div className='relative h-[450px] w-full'>
           {loading && (
             <div className='absolute left-0 top-0 flex h-full w-full items-center justify-center'>
@@ -121,15 +109,15 @@ export const StudentUserPickerList = memo(function ({
             defer
           >
             <ul className={cx('w-full', loading && 'opacity-50')}>
-              {(students as StudentUserAccount[]).map((student) => (
+              {(schoolYears as SchoolYear[]).map((schoolYear) => (
                 <li
-                  key={student.id}
+                  key={`sy-${schoolYear.id}`}
                   className='w-full border-b border-primary-border-light py-2 last:border-b-0'
                 >
-                  <StudentUserItem
-                    student={student}
-                    selected={setItemSelected(student.id)}
-                    onClick={onStudentSelect(student.id)}
+                  <SchoolYearItem
+                    schoolYear={schoolYear}
+                    selected={selectedSchoolYearId === schoolYear.id}
+                    onClick={handleSchoolYearSelect(schoolYear)}
                   />
                 </li>
               ))}
@@ -141,7 +129,7 @@ export const StudentUserPickerList = memo(function ({
         <BaseButton variant='link' onClick={onCancel}>
           Cancel
         </BaseButton>
-        <BaseButton onClick={onSubmit}>Select Students</BaseButton>
+        <BaseButton onClick={onSubmit}>Select School Year</BaseButton>
       </div>
     </div>
   );

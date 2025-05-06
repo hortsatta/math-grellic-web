@@ -9,8 +9,8 @@ import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 import { BaseDataPagination } from '#/base/components/base-data-pagination.component';
 import {
   defaultSort,
-  useSchoolYearList,
-} from '../hooks/use-school-year-list.hook';
+  useAdminSchoolYearList,
+} from '../hooks/use-admin-school-year-list.hook';
 import { useSchoolYearCurrent } from '../hooks/use-school-year-current.hook';
 import { SchoolYearList } from '../components/school-year-list.component';
 import { SchoolYearOverviewBoard } from '../components/school-year-overview-board.component';
@@ -51,7 +51,7 @@ function SchoolYearListPage() {
     prevPage,
     handleSchoolYearEdit,
     handleSchoolYearDetails,
-  } = useSchoolYearList();
+  } = useAdminSchoolYearList();
 
   const { loading: currentSchoolYearLoading, schoolYear: currentSchoolYear } =
     useSchoolYearCurrent();
