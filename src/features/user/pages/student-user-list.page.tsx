@@ -8,7 +8,7 @@ import { BaseDataPagination } from '#/base/components/base-data-pagination.compo
 import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { BaseModal } from '#/base/components/base-modal.component';
-import { UserApprovalStatus } from '../models/user.model';
+import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
 import {
   defaultSort,
   useStudentUserList,
@@ -24,22 +24,22 @@ import type { StudentUserAccount } from '../models/user.model';
 
 const filterOptions = [
   {
-    key: 'status-approved',
-    name: 'status',
-    value: UserApprovalStatus.Approved,
+    key: 'estatus-approved',
+    name: 'estatus',
+    value: SchoolYearEnrollmentApprovalStatus.Approved,
     label: 'Enrolled',
   },
   {
-    key: 'status-pending',
-    name: 'status',
-    value: UserApprovalStatus.Pending,
-    label: capitalize(UserApprovalStatus.Pending),
+    key: 'estatus-pending',
+    name: 'estatus',
+    value: SchoolYearEnrollmentApprovalStatus.Pending,
+    label: capitalize(SchoolYearEnrollmentApprovalStatus.Pending),
   },
   {
-    key: 'status-rejected',
-    name: 'status',
-    value: UserApprovalStatus.Rejected,
-    label: capitalize(UserApprovalStatus.Rejected),
+    key: 'estatus-rejected',
+    name: 'estatus',
+    value: SchoolYearEnrollmentApprovalStatus.Rejected,
+    label: capitalize(SchoolYearEnrollmentApprovalStatus.Rejected),
   },
 ];
 
@@ -95,7 +95,10 @@ function StudentUserListPage() {
 
   const handleOpenDetails = useCallback(
     (isOpen: boolean) => (student?: StudentUserAccount) => {
-      if (student?.approvalStatus === UserApprovalStatus.Approved) {
+      if (
+        student?.enrollment?.approvalStatus ===
+        SchoolYearEnrollmentApprovalStatus.Approved
+      ) {
         handleStudentDetails(student.id);
         return;
       }
@@ -107,13 +110,13 @@ function StudentUserListPage() {
   );
 
   const handleStudentStatus = useCallback(
-    (approvalStatus: UserApprovalStatus) => () => {
-      if (!currentStudent) {
+    (approvalStatus: SchoolYearEnrollmentApprovalStatus) => () => {
+      if (!currentStudent || !currentStudent.enrollment) {
         return;
       }
 
       try {
-        setStudentApprovalStatus(currentStudent.id, approvalStatus);
+        setStudentApprovalStatus(currentStudent.enrollment.id, approvalStatus);
         handleOpenDetails(false)();
         pendingListRef?.current?.handleRefresh();
       } catch (error: any) {
@@ -171,17 +174,17 @@ function StudentUserListPage() {
           </div>
           <BaseRightSidebar>
             <div className='flex flex-col gap-2.5'>
+              <StudentUserOverviewBoard
+                enrolledStudentCount={enrolledStudentCount}
+                loading={overviewLoading}
+                onRefresh={overviewRefresh}
+              />
               <StudentUserPendingEnrollmentList
                 ref={pendingListRef}
                 pendingStudents={pendingStudents}
                 loading={pendingLoading}
                 onRefresh={pendingRefresh}
                 onStudentDetails={handleOpenDetails(true)}
-              />
-              <StudentUserOverviewBoard
-                enrolledStudentCount={enrolledStudentCount}
-                loading={overviewLoading}
-                onRefresh={overviewRefresh}
               />
             </div>
           </BaseRightSidebar>
@@ -192,8 +195,12 @@ function StudentUserListPage() {
           <StudentUserSummary
             student={currentStudent}
             loading={isMutateLoading}
-            onApprove={handleStudentStatus(UserApprovalStatus.Approved)}
-            onReject={handleStudentStatus(UserApprovalStatus.Rejected)}
+            onApprove={handleStudentStatus(
+              SchoolYearEnrollmentApprovalStatus.Approved,
+            )}
+            onReject={handleStudentStatus(
+              SchoolYearEnrollmentApprovalStatus.Rejected,
+            )}
             onEdit={handleEdit}
           />
         )}

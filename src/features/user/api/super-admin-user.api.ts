@@ -243,7 +243,11 @@ export function deleteAdmin(
 export function setAdminApprovalStatus(
   options?: Omit<
     UseMutationOptions<
-      { approvalStatus: string; approvalDate: string },
+      {
+        approvalStatus: string;
+        approvalDate: string;
+        approvalRejectedReason: string;
+      },
       Error,
       { adminId: number; approvalStatus: UserApprovalStatus },
       any

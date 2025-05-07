@@ -213,7 +213,11 @@ export function deleteTeacher(
 export function setTeacherApprovalStatus(
   options?: Omit<
     UseMutationOptions<
-      { approvalStatus: string; approvalDate: string },
+      {
+        approvalStatus: string;
+        approvalDate: string;
+        approvalRejectedReason: string;
+      },
       Error,
       { teacherId: number; approvalStatus: UserApprovalStatus },
       any

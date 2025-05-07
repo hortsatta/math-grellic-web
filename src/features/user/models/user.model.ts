@@ -1,4 +1,5 @@
 import type { AuditTrail } from '#/core/models/core.model';
+import type { SchoolYearEnrollment } from '#/school-year/models/school-year-enrollment.model';
 import type { ExamCompletion } from '#/exam/models/exam.model';
 import type { ExamSchedule } from '#/exam/models/exam-schedule.model';
 import type {
@@ -66,6 +67,7 @@ export type TeacherUserAccount = UserAccount & {
   messengerLink?: string;
   emails: string[];
   students?: StudentUserAccount[];
+  enrollment?: SchoolYearEnrollment;
 };
 
 export type StudentUserAccount = UserAccount & {
@@ -76,6 +78,7 @@ export type StudentUserAccount = UserAccount & {
   lessonCompletions?: LessonCompletion[];
   examCompletions?: ExamCompletion[];
   activityCategoryCompletions?: ActivityCategoryCompletion[];
+  enrollment?: SchoolYearEnrollment;
 };
 
 export type UserSlice = {

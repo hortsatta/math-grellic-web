@@ -17,3 +17,8 @@ export type SchoolYearEnrollment = Partial<AuditTrail> & {
   approvalRejectedReason?: string;
   teacherPublicId?: string;
 };
+
+export type SchoolYearEnrollmentNew = {
+  user: User;
+  enrollment: SchoolYearEnrollment;
+};

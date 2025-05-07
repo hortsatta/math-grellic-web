@@ -4,6 +4,8 @@ import { useController } from 'react-hook-form';
 import cx from 'classix';
 
 import { queryUserKey } from '#/config/react-query-keys.config';
+import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseSelect } from '#/base/components/base-select.component';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
@@ -59,6 +61,7 @@ export const StudentUserPicker = memo(
     },
     ref,
   ) {
+    const schoolYear = useBoundStore((state) => state.schoolYear);
     const [keyword, setKeyword] = useState<string | undefined>(undefined);
 
     const {
@@ -67,7 +70,11 @@ export const StudentUserPicker = memo(
       isLoading,
     } = useQuery(
       getStudentsByCurrentTeacherUser(
-        { q: keyword },
+        {
+          q: keyword,
+          schoolYearId: schoolYear?.id,
+          enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Approved,
+        },
         {
           refetchOnWindowFocus: false,
           initialData: [],
@@ -99,7 +106,11 @@ export const StudentUserPicker = memo(
       refetch: selectedStudentsRefetch,
     } = useQuery(
       getStudentsByCurrentTeacherUser(
-        { ids: value || selectedStudentIds || [] },
+        {
+          ids: value || selectedStudentIds || [],
+          schoolYearId: schoolYear?.id,
+          enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Approved,
+        },
         {
           queryKey: queryUserKey.selectedStudentList,
           refetchOnWindowFocus: false,

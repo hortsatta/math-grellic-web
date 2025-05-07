@@ -20,6 +20,7 @@ import type {
   TeacherUserUpdateFormData,
   UserUpsertFormData,
 } from '../models/user-form-data.model';
+import { transformToSchoolYearEnrollment } from '#/school-year/helpers/school-year-enrollment-transform.helper';
 
 export function transformToUser({
   id,
@@ -153,7 +154,7 @@ export function transformToStudentUserAccount({
   examCompletions,
   activityCategoryCompletions,
 }: any): StudentUserAccount {
-  const { email, publicId, approvalStatus } = user || {};
+  const { email, publicId, approvalStatus, enrollment } = user || {};
 
   const transformedLessonSchedules =
     lessonSchedules && lessonSchedules.length
@@ -188,6 +189,10 @@ export function transformToStudentUserAccount({
         )
       : undefined;
 
+  const transformedEnrollment = enrollment
+    ? transformToSchoolYearEnrollment(enrollment)
+    : undefined;
+
   return {
     id,
     email,
@@ -206,6 +211,7 @@ export function transformToStudentUserAccount({
     lessonCompletions: transformedLessonCompletions,
     examCompletions: transformedExamCompletions,
     activityCategoryCompletions: transformedActivityCategoryCompletions,
+    enrollment: transformedEnrollment,
   } as StudentUserAccount;
 }
 

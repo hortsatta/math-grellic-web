@@ -1,20 +1,22 @@
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { BaseStaticScene } from '#/base/components/base-static-scene.component';
-import { useUserRegisterEmailConfirmLastStep } from '../hooks/use-user-register-email-confirm-last-step.hook';
-import { UserRegisterEmailConfirmLastStepForm } from '../components/user-register-email-confirm-last-step-form.component';
-import { UserRegisterEmailConfirmLastStepDone } from '../components/user-register-email-confirm-last-step-done.component';
+import { UserRegisterEmailConfirmLastStepDone } from '#/user/components/user-register-email-confirm-last-step-done.component';
+import { UserRegisterEmailConfirmLastStepForm } from '#/user/components/user-register-email-confirm-last-step-form.component';
+import { useSchoolYearEnrollmentNewLastStep } from '../hooks/use-school-year-enrollment-new-last-step.hook';
 
-function UserRegisterEmailConfirmLastStepPage() {
+function SchoolYearEnrollmentNewLastStepPage() {
   const { loading, publicId, isConfirmed, submitLastStep } =
-    useUserRegisterEmailConfirmLastStep();
+    useSchoolYearEnrollmentNewLastStep();
 
   return (
-    <BaseStaticScene id='user-register-email-last-step'>
+    <BaseStaticScene id='sy-enrollment-new-last-step'>
       <section className='mx-auto w-full max-w-full pt-4 lg:max-w-[966px]'>
         {loading && <BasePageSpinner />}
         <div className='flex flex-col items-start justify-start rounded-none bg-backdrop/50 pb-12 lg:rounded-20px'>
           {isConfirmed == null ? (
             <UserRegisterEmailConfirmLastStepForm
+              title='Confirm Registration and Enrollment'
+              subtitle='Please create your password to procceed.'
               loading={loading}
               onSubmit={submitLastStep}
             />
@@ -30,4 +32,4 @@ function UserRegisterEmailConfirmLastStepPage() {
   );
 }
 
-export default UserRegisterEmailConfirmLastStepPage;
+export default SchoolYearEnrollmentNewLastStepPage;

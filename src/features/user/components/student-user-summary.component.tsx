@@ -5,7 +5,7 @@ import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
-import { UserApprovalStatus } from '#/user/models/user.model';
+import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
 import { formatPhoneNumber, generateFullName } from '../helpers/user.helper';
 import { UserAvatarImg } from './user-avatar-img.component';
 
@@ -30,33 +30,35 @@ export const StudentUserSummary = memo(function ({
   onEdit,
   ...moreProps
 }: Props) {
-  const [publicId, email, approvalStatus, gender, phoneNumber, fullName] =
-    useMemo(
-      () => [
-        student.publicId || '—',
-        student.email,
-        student.approvalStatus,
-        student.gender,
-        formatPhoneNumber(student?.phoneNumber || ''),
-        generateFullName(
-          student.firstName,
-          student.lastName,
-          student.middleName,
-        ),
-      ],
-      [student],
-    );
+  const [
+    publicId,
+    email,
+    enrollmentApprovalStatus,
+    gender,
+    phoneNumber,
+    fullName,
+  ] = useMemo(
+    () => [
+      student.publicId || '—',
+      student.email,
+      student.enrollment?.approvalStatus,
+      student.gender,
+      formatPhoneNumber(student?.phoneNumber || ''),
+      generateFullName(student.firstName, student.lastName, student.middleName),
+    ],
+    [student],
+  );
 
   const [statusLabel, statusIconName] = useMemo(() => {
-    switch (approvalStatus) {
-      case UserApprovalStatus.Approved:
+    switch (enrollmentApprovalStatus) {
+      case SchoolYearEnrollmentApprovalStatus.Approved:
         return ['Enrolled', 'check-square'];
-      case UserApprovalStatus.Rejected:
-        return [approvalStatus, 'x-square'];
+      case SchoolYearEnrollmentApprovalStatus.Rejected:
+        return [enrollmentApprovalStatus, 'x-square'];
       default:
-        return [approvalStatus, 'minus-square'];
+        return [enrollmentApprovalStatus, 'minus-square'];
     }
-  }, [approvalStatus]);
+  }, [enrollmentApprovalStatus]);
 
   return (
     <div
@@ -93,7 +95,8 @@ export const StudentUserSummary = memo(function ({
           <BaseSpinner size='xs' />
         ) : (
           <>
-            {approvalStatus === UserApprovalStatus.Pending && (
+            {enrollmentApprovalStatus ===
+              SchoolYearEnrollmentApprovalStatus.Pending && (
               <>
                 <BaseButton
                   className='!w-full'

@@ -33,6 +33,12 @@ export const staticRoutes = {
       lastStepTo: 'last-step',
     },
   },
+  schoolYearEnroll: {
+    name: 'enroll-new',
+    to: 'sy/enroll-new',
+    label: 'Enroll',
+    confirmTo: 'confirm',
+  },
 };
 
 export const staticRouteLinks = [staticRoutes.about, staticRoutes.training];

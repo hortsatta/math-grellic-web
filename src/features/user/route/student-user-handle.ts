@@ -35,7 +35,7 @@ export const studentUserRouteHandle: { [key: string]: SceneRouteHandle } = {
     links: [studentUserListLink, createStudentUserLink],
   },
   create: {
-    title: 'Enroll a Student',
+    title: 'Enroll a New Student',
     links: [studentUserListLink, performanceLink],
   },
   edit: {

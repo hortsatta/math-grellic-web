@@ -42,10 +42,7 @@ import {
   getTeacherPaginatedMeetingSchedulesLoader,
   getTeacherSchedulesByDateRangeLoader,
 } from '#/schedule/route/teacher-schedule-loader.route';
-import {
-  getPaginatedStudentUserLoader,
-  getStudentUserByIdLoader,
-} from '#/user/route/student-user-loader';
+import { getStudentUserByIdLoader } from '#/user/route/student-user-loader';
 import {
   getStudentLessonBySlugLoader,
   getStudentLessonsLoader,
@@ -98,8 +95,6 @@ import { SchoolYearEnrollmentProtectedRoute } from '#/school-year/components/sch
 import { HomePage } from '#/static/pages/home.page';
 import { AboutPage } from '#/static/pages/about.page';
 import { UserRegisterPage } from '#/user/pages/user-register.page';
-import { UserRegisterEmailConfirmPage } from '#/user/pages/user-register-email-confirm.page';
-import { UserRegisterEmailConfirmLastStepPage } from '#/user/pages/user-register-email-confirm-last-step.page';
 
 import { staticRoutes } from './static-routes';
 import { superAdminBaseRoute, superAdminRoutes } from './super-admin-routes';
@@ -137,14 +132,34 @@ const rootRoutes = createRoutesFromElements(
       />
       <Route path={staticRoutes.userRegister.to} element={<Outlet />}>
         <Route index element={<UserRegisterPage />} />
+        {/* NOT CURRENTLY USED */}
         <Route path={staticRoutes.userRegister.confirm.to} element={<Outlet />}>
-          <Route index element={<UserRegisterEmailConfirmPage />} />
+          <Route
+            index
+            element={withSuspense(
+              () => import('#/user/pages/user-register-email-confirm.page'),
+            )}
+          />
           <Route
             path={staticRoutes.userRegister.confirm.lastStepTo}
-            element={<UserRegisterEmailConfirmLastStepPage />}
+            element={withSuspense(
+              () =>
+                import(
+                  '#/user/pages/user-register-email-confirm-last-step.page'
+                ),
+            )}
           />
         </Route>
       </Route>
+      <Route
+        path={`${staticRoutes.schoolYearEnroll.to}/${staticRoutes.schoolYearEnroll.confirmTo}`}
+        element={withSuspense(
+          () =>
+            import(
+              '#/school-year/pages/school-year-enrollment-new-last-step.page'
+            ),
+        )}
+      />
       <Route
         path='*'
         element={
@@ -697,7 +712,7 @@ const rootRoutes = createRoutesFromElements(
               () => import('#/user/pages/student-user-list.page'),
             )}
             handle={studentUserRouteHandle.list}
-            loader={getPaginatedStudentUserLoader(queryClient)}
+            // loader={getPaginatedStudentUserLoader(queryClient)}
           />
           <Route path=':id' element={<Outlet />}>
             <Route

@@ -137,7 +137,7 @@ export const SchoolYearEnrollmentCreateForm = memo(function ({
         onSubmit={handleSubmit(submitForm, handleSubmitError)}
       >
         {isDone ? <p>{doneText}</p> : <p>{notDoneText}</p>}
-        <fieldset className='w-full max-w-xs' disabled={loading}>
+        <fieldset className='w-full max-w-xs' disabled={isDone || loading}>
           {role === UserRole.Student && (
             <BaseControlledInput
               label="Teacher's ID"

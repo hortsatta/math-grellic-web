@@ -20,14 +20,22 @@ import { StudentUserUpsertFormStep1 } from './student-user-upsert-form-step-1.co
 
 import type { FieldErrors } from 'react-hook-form';
 import type { FormProps, IconName } from '#/base/models/base.model';
+import type { SchoolYearEnrollmentNew } from '#/school-year/models/school-year-enrollment.model';
 import type { User } from '../models/user.model';
 import type { UserUpsertFormData } from '../models/user-form-data.model';
 
 type Props = Omit<
-  FormProps<'div', UserUpsertFormData, Promise<User | null>>,
+  FormProps<
+    'div',
+    UserUpsertFormData,
+    Promise<User | SchoolYearEnrollmentNew | null>
+  >,
   'onSubmit'
 > & {
-  onSubmit: (data: UserUpsertFormData) => Promise<User | null>;
+  onSubmit: (
+    data: UserUpsertFormData,
+  ) => Promise<User | SchoolYearEnrollmentNew | null>;
+  schoolYearTitle?: string;
 };
 
 const STUDENT_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
@@ -75,6 +83,7 @@ export const StudentUserUpsertForm = memo(function ({
   className,
   formData,
   loading: formLoading,
+  schoolYearTitle,
   isDone,
   onDone,
   onSubmit,
@@ -108,7 +117,10 @@ export const StudentUserUpsertForm = memo(function ({
   const [publishButtonLabel, publishButtonIconName]: [string, IconName] =
     useMemo(() => {
       if (!isEdit) {
-        return ['Enroll', 'share-fat'];
+        return [
+          schoolYearTitle?.trim() ? `Enroll for ${schoolYearTitle}` : 'Enroll',
+          'share-fat',
+        ];
       }
 
       if (editApprovalStatus === UserApprovalStatus.Pending) {
@@ -116,7 +128,7 @@ export const StudentUserUpsertForm = memo(function ({
       }
 
       return ['Save Changes', 'floppy-disk-back'];
-    }, [isEdit, editApprovalStatus]);
+    }, [schoolYearTitle, isEdit, editApprovalStatus]);
 
   const handleReset = useCallback(() => {
     reset(isEdit ? formData : defaultValues);
@@ -141,7 +153,7 @@ export const StudentUserUpsertForm = memo(function ({
         toast.success(
           isEdit
             ? 'Student updated'
-            : 'Student registered. A confirmation email has been sent',
+            : 'Student registered and enrolled. A confirmation email has been sent',
         );
 
         onDone && onDone(true);

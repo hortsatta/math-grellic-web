@@ -12,7 +12,11 @@ export const createSchoolYearSlice: StateCreator<
   schoolYear: undefined,
   syEnrollment: undefined,
   setSchoolYear: (schoolYear?: SchoolYear) =>
-    set({ schoolYear: schoolYear || null }),
+    set({
+      schoolYear: schoolYear === undefined ? undefined : schoolYear,
+    }),
   setSyEnrollment: (syEnrollment?: SchoolYearEnrollment) =>
-    set({ syEnrollment: syEnrollment || null }),
+    set({
+      syEnrollment: syEnrollment === undefined ? undefined : syEnrollment,
+    }),
 });

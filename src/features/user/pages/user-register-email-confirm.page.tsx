@@ -3,7 +3,7 @@ import { BaseStaticScene } from '#/base/components/base-static-scene.component';
 import { useUserRegisterEmailConfirm } from '../hooks/use-user-register-email-confirm.hook';
 import { UserRegisterEmailConfirmDone } from '../components/user-register-email-confirm-done.component';
 
-export function UserRegisterEmailConfirmPage() {
+function UserRegisterEmailConfirmPage() {
   const { loading, publicId, isConfirmed } = useUserRegisterEmailConfirm();
 
   return (
@@ -22,3 +22,5 @@ export function UserRegisterEmailConfirmPage() {
     </BaseStaticScene>
   );
 }
+
+export default UserRegisterEmailConfirmPage;
