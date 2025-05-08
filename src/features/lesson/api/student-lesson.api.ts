@@ -10,21 +10,26 @@ import type {
 import type {
   Lesson,
   LessonCompletion,
-  StudentLessonList
+  StudentLessonList,
 } from '../models/lesson.model';
 
 const BASE_URL = 'lessons';
 
 export function getLessonsByCurrentStudentUser(
-  q?: string,
+  keys: { q?: string; schoolYearId?: number },
   options?: Omit<
     UseQueryOptions<StudentLessonList, Error, StudentLessonList, any>,
     'queryKey' | 'queryFn'
   >,
 ) {
+  const { q, schoolYearId } = keys || {};
+
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students/list`;
-    const searchParams = generateSearchParams({ q });
+    const searchParams = generateSearchParams({
+      q,
+      sy: schoolYearId?.toString(),
+    });
 
     try {
       const lessons = await kyInstance.get(url, { searchParams }).json();
@@ -43,14 +48,23 @@ export function getLessonsByCurrentStudentUser(
 }
 
 export function getLessonBySlugAndCurrentStudentUser(
-  keys: { slug: string; exclude?: string; include?: string },
+  keys: {
+    slug: string;
+    schoolYearId?: number;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<UseQueryOptions<Lesson, Error, Lesson, any>, 'queryFn'>,
 ) {
-  const { slug, exclude, include } = keys;
+  const { slug, schoolYearId, exclude, include } = keys;
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/${slug}/students`;
-    const searchParams = generateSearchParams({ exclude, include });
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+      exclude,
+      include,
+    });
 
     try {
       const lesson = await kyInstance.get(url, { searchParams }).json();
@@ -73,20 +87,20 @@ export function setLessonCompletion(
     UseMutationOptions<
       LessonCompletion | null,
       Error,
-      { slug: string; isCompleted: boolean },
+      { id: number; isCompleted: boolean },
       any
     >,
     'mutationFn'
   >,
 ) {
   const mutationFn = async ({
-    slug,
+    id,
     isCompleted,
   }: {
-    slug: string;
+    id: number;
     isCompleted: boolean;
   }): Promise<any> => {
-    const url = `${BASE_URL}/${slug}/students/completion`;
+    const url = `${BASE_URL}/${id}/students/completion`;
     const json = { isCompleted };
 
     try {

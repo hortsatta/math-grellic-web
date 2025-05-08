@@ -167,6 +167,7 @@ export function transformToLessonUpsertDto({
   startDate,
   startTime,
   studentIds,
+  schoolYearId,
 }: any) {
   const durationSeconds = duration
     ? convertDurationToSeconds(duration)
@@ -186,6 +187,7 @@ export function transformToLessonUpsertDto({
     excerpt,
     startDate: transformedStartDate,
     studentIds: transformedStudentsIds,
+    schoolYearId,
   };
 }
 

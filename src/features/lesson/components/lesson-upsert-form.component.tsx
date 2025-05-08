@@ -28,7 +28,11 @@ import type { FormProps, IconName } from '#/base/models/base.model';
 import type { Lesson } from '../models/lesson.model';
 import type { LessonUpsertFormData } from '../models/lesson-form-data.model';
 
-type Props = FormProps<'div', LessonUpsertFormData, Promise<Lesson>>;
+type Props = FormProps<
+  'div',
+  LessonUpsertFormData,
+  Promise<Lesson | undefined>
+> & { schoolYearId: number };
 
 const LESSON_PREVIEW_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}/${teacherRoutes.lesson.previewTo}`;
 const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
@@ -76,6 +80,7 @@ const schema = z
       })
       .optional(),
     studentIds: z.array(z.number()).nullable().optional(),
+    schoolYearId: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     if (data.startDate || data.startTime) {
@@ -116,11 +121,13 @@ const defaultValues: Partial<LessonUpsertFormData> = {
   startDate: undefined,
   startTime: undefined,
   studentIds: [],
+  schoolYearId: undefined,
 };
 
 export const LessonUpsertForm = memo(function ({
   className,
   formData,
+  schoolYearId,
   loading: formLoading,
   isDone,
   onDone,
@@ -141,7 +148,7 @@ export const LessonUpsertForm = memo(function ({
 
   const methods = useForm<LessonUpsertFormData>({
     shouldFocusError: false,
-    defaultValues: formData || defaultValues,
+    defaultValues: formData || { ...defaultValues, schoolYearId },
     resolver: zodResolver(schema),
   });
 
@@ -206,6 +213,11 @@ export const LessonUpsertForm = memo(function ({
 
         const targetData = status ? { ...data, status } : data;
         const lesson = await onSubmit(targetData);
+
+        if (!lesson) {
+          toast.error('Cannot update lesson, please try again');
+          return;
+        }
 
         toast.success(
           `${isEdit ? 'Updated' : 'Created'} ${lesson.title} (No. ${

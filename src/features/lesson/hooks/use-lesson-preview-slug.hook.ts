@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToLesson } from '../helpers/lesson-transform.helper';
 import { getLessonBySlugAndCurrentTeacherUser } from '../api/teacher-lesson.api';
 
@@ -13,11 +14,12 @@ type Result = {
 };
 
 export function useLessonPreviewSlug(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const { slug } = useParams();
 
   const { data: lesson } = useQuery(
     getLessonBySlugAndCurrentTeacherUser(
-      { slug: slug || '', exclude: 'schedules' },
+      { slug: slug || '', schoolYearId: schoolYear?.id, exclude: 'schedules' },
       {
         enabled: !!slug,
         refetchOnWindowFocus: false,

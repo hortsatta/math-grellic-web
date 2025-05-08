@@ -74,8 +74,12 @@ export function useStudentLessonSingle(): Result {
   }, [isUpcoming, lesson, serverClock]);
 
   const setLessonCompletion = useCallback(
-    (isCompleted: boolean) => mutateAsync({ slug: slug || '', isCompleted }),
-    [slug, mutateAsync],
+    async (isCompleted: boolean) => {
+      if (!lesson) return null;
+
+      return await mutateAsync({ id: lesson.id, isCompleted });
+    },
+    [lesson, mutateAsync],
   );
 
   // Stop clock ticking if current lesson is already available

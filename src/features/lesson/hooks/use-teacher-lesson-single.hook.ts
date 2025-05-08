@@ -5,6 +5,7 @@ import { getLessonBySlugAndCurrentTeacherUser } from '../api/teacher-lesson.api'
 import { transformToLesson } from '../helpers/lesson-transform.helper';
 
 import type { Lesson } from '../models/lesson.model';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 
 type Result = {
   loading: boolean;
@@ -12,6 +13,7 @@ type Result = {
 };
 
 export function useTeacherLessonSingle(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const { slug } = useParams();
 
   const {
@@ -20,7 +22,7 @@ export function useTeacherLessonSingle(): Result {
     isFetching,
   } = useQuery(
     getLessonBySlugAndCurrentTeacherUser(
-      { slug: slug || '' },
+      { slug: slug || '', schoolYearId: schoolYear?.id },
       {
         enabled: !!slug,
         refetchOnWindowFocus: false,

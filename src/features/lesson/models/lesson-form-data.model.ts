@@ -13,6 +13,7 @@ export type LessonUpsertFormData = {
   startDate?: Date;
   startTime?: string;
   studentIds?: number[];
+  schoolYearId?: number;
 };
 
 export type LessonScheduleUpsertFormData = {
