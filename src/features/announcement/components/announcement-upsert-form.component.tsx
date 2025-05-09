@@ -110,8 +110,8 @@ export const AnnouncementUpsertForm = memo(function ({
   }, [withPreview, formData]);
 
   const handleReset = useCallback(() => {
-    reset(isEdit ? formData : defaultValues);
-  }, [isEdit, formData, reset]);
+    reset(isEdit ? formData : { ...defaultValues, schoolYearId });
+  }, [schoolYearId, isEdit, formData, reset]);
 
   const submitForm = useCallback(
     async (data: AnnouncementUpsertFormData) => {

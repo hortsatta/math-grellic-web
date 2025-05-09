@@ -11,6 +11,9 @@ import { SchoolYearEnrollmentStatus } from '../components/school-year-enrollment
 
 import type { SchoolYear } from '../models/school-year.model';
 
+const WRAPPER_CLASSNAME =
+  'flex h-full w-full flex-1 animate-fadeIn flex-col items-center justify-center pb-8';
+
 function TeacherSchoolYearEnrollmentPage() {
   const navigate = useNavigate();
 
@@ -56,29 +59,35 @@ function TeacherSchoolYearEnrollmentPage() {
         SchoolYearEnrollmentApprovalStatus.Approved)
   ) {
     return (
-      <SchoolYearEnrollmentStatus
-        schoolYear={schoolYear as SchoolYear}
-        syEnrollment={syEnrollment}
-        isDoneAndNotEnrolled
-      />
+      <div className={WRAPPER_CLASSNAME}>
+        <SchoolYearEnrollmentStatus
+          schoolYear={schoolYear as SchoolYear}
+          syEnrollment={syEnrollment}
+          isDoneAndNotEnrolled
+        />
+      </div>
     );
   } else if (schoolYear?.isActive && !schoolYear?.isDone && syEnrollment) {
     return (
-      <SchoolYearEnrollmentStatus
-        schoolYear={schoolYear as SchoolYear}
-        syEnrollment={syEnrollment}
-      />
+      <div className={WRAPPER_CLASSNAME}>
+        <SchoolYearEnrollmentStatus
+          schoolYear={schoolYear as SchoolYear}
+          syEnrollment={syEnrollment}
+        />
+      </div>
     );
   } else {
     return (
-      <SchoolYearEnrollmentCreateForm
-        className='mx-auto max-w-compact py-5'
-        schoolYear={schoolYear as SchoolYear}
-        formData={formData}
-        isDone={isDone}
-        onDone={setIsDone}
-        onSubmit={createEnrollment}
-      />
+      <div className={WRAPPER_CLASSNAME}>
+        <SchoolYearEnrollmentCreateForm
+          className='mx-auto max-w-compact py-5'
+          schoolYear={schoolYear as SchoolYear}
+          formData={formData}
+          isDone={isDone}
+          onDone={setIsDone}
+          onSubmit={createEnrollment}
+        />
+      </div>
     );
   }
 }

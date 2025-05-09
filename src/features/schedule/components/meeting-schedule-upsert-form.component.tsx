@@ -193,8 +193,8 @@ export const MeetingScheduleUpsertForm = memo(function ({
   }, [startDate]);
 
   const handleReset = useCallback(() => {
-    reset(isEdit ? formData : defaultValues);
-  }, [isEdit, formData, reset]);
+    reset(isEdit ? formData : { ...defaultValues, schoolYearId });
+  }, [schoolYearId, isEdit, formData, reset]);
 
   const submitForm = useCallback(
     async (data: MeetingScheduleUpsertFormData) => {

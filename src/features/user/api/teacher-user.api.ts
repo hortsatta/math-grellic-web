@@ -181,17 +181,26 @@ export function getStudentCountByCurrentTeacherUser(
 }
 
 export function getStudentByIdAndCurrentTeacherUser(
-  keys: { id: number; exclude?: string; include?: string },
+  keys: {
+    id: number;
+    schoolYearId?: number;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<
     UseQueryOptions<StudentUserAccount, Error, StudentUserAccount, any>,
     'queryFn'
   >,
 ) {
-  const { id, exclude, include } = keys;
+  const { id, schoolYearId, exclude, include } = keys;
 
   const queryFn = async (): Promise<any> => {
     const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/${id}`;
-    const searchParams = generateSearchParams({ exclude, include });
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+      exclude,
+      include,
+    });
 
     try {
       const student = await kyInstance.get(url, { searchParams }).json();

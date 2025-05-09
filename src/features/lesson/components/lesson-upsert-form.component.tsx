@@ -148,7 +148,9 @@ export const LessonUpsertForm = memo(function ({
 
   const methods = useForm<LessonUpsertFormData>({
     shouldFocusError: false,
-    defaultValues: formData || { ...defaultValues, schoolYearId },
+    defaultValues: formData
+      ? { ...formData, startDate: undefined, startTime: undefined }
+      : { ...defaultValues, schoolYearId },
     resolver: zodResolver(schema),
   });
 
@@ -191,8 +193,12 @@ export const LessonUpsertForm = memo(function ({
   );
 
   const handleReset = useCallback(() => {
-    reset(isEdit ? formData : defaultValues);
-  }, [isEdit, formData, reset]);
+    reset(
+      isEdit
+        ? { ...formData, startDate: undefined, startTime: undefined }
+        : { ...defaultValues, schoolYearId },
+    );
+  }, [schoolYearId, isEdit, formData, reset]);
 
   const handleSubmitError = useCallback(
     (errors: FieldErrors<LessonUpsertFormData>) => {

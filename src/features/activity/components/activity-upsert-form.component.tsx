@@ -448,8 +448,8 @@ export const ActivityUpsertForm = memo(function ({
   }, [gameType]);
 
   const handleReset = useCallback(() => {
-    reset(isEdit ? formData : defaultValues);
-  }, [isEdit, formData, reset]);
+    reset(isEdit ? formData : { ...defaultValues, schoolYearId });
+  }, [schoolYearId, isEdit, formData, reset]);
 
   const handleSubmitError = useCallback(
     (errors: FieldErrors<ActivityUpsertFormData>) => {

@@ -278,7 +278,7 @@ const defaultValues: Partial<ExamUpsertFormData> = {
   visibleQuestionsCount: undefined,
   passingPoints: undefined,
   questions: [defaultQuestion],
-  scheduleTitle: '',
+  scheduleTitle: undefined,
   startDate: undefined,
   endDate: undefined,
   startTime: undefined,
@@ -309,7 +309,17 @@ export const ExamUpsertForm = memo(function ({
 
   const methods = useForm<ExamUpsertFormData>({
     shouldFocusError: false,
-    defaultValues: formData || { ...defaultValues, schoolYearId },
+    defaultValues: formData
+      ? {
+          ...formData,
+          scheduleTitle: undefined,
+          startDate: undefined,
+          endDate: undefined,
+          startTime: undefined,
+          endTime: undefined,
+          studentIds: undefined,
+        }
+      : { ...defaultValues, schoolYearId },
     resolver: zodResolver(schema),
   });
 
@@ -336,8 +346,20 @@ export const ExamUpsertForm = memo(function ({
     );
 
   const handleReset = useCallback(() => {
-    reset(isEdit ? formData : defaultValues);
-  }, [isEdit, formData, reset]);
+    reset(
+      isEdit
+        ? {
+            ...formData,
+            scheduleTitle: undefined,
+            startDate: undefined,
+            endDate: undefined,
+            startTime: undefined,
+            endTime: undefined,
+            studentIds: undefined,
+          }
+        : { ...defaultValues, schoolYearId },
+    );
+  }, [schoolYearId, isEdit, formData, reset]);
 
   const handleSubmitError = useCallback(
     (errors: FieldErrors<ExamUpsertFormData>) => {
