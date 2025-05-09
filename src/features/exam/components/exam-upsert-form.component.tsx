@@ -30,7 +30,9 @@ import type { FormProps, IconName } from '#/base/models/base.model';
 import type { Exam } from '../models/exam.model';
 import type { ExamUpsertFormData } from '../models/exam-form-data.model';
 
-type Props = FormProps<'div', ExamUpsertFormData, Promise<Exam>>;
+type Props = FormProps<'div', ExamUpsertFormData, Promise<Exam | undefined>> & {
+  schoolYearId: number;
+};
 
 const EXAM_PREVIEW_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}/${teacherRoutes.exam.previewTo}`;
 const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
@@ -122,6 +124,7 @@ const schema = z
       .optional(),
     studentIds: z.array(z.number()).nullable().optional(),
     slug: z.string().optional(),
+    schoolYearId: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     if (
@@ -275,17 +278,19 @@ const defaultValues: Partial<ExamUpsertFormData> = {
   visibleQuestionsCount: undefined,
   passingPoints: undefined,
   questions: [defaultQuestion],
-  scheduleTitle: '',
+  scheduleTitle: undefined,
   startDate: undefined,
   endDate: undefined,
   startTime: undefined,
   endTime: undefined,
   studentIds: undefined,
+  schoolYearId: undefined,
 };
 
 export const ExamUpsertForm = memo(function ({
   className,
   formData,
+  schoolYearId,
   loading: formLoading,
   isDone,
   onDone,
@@ -304,7 +309,17 @@ export const ExamUpsertForm = memo(function ({
 
   const methods = useForm<ExamUpsertFormData>({
     shouldFocusError: false,
-    defaultValues: formData || defaultValues,
+    defaultValues: formData
+      ? {
+          ...formData,
+          scheduleTitle: undefined,
+          startDate: undefined,
+          endDate: undefined,
+          startTime: undefined,
+          endTime: undefined,
+          studentIds: undefined,
+        }
+      : { ...defaultValues, schoolYearId },
     resolver: zodResolver(schema),
   });
 
@@ -331,8 +346,20 @@ export const ExamUpsertForm = memo(function ({
     );
 
   const handleReset = useCallback(() => {
-    reset(isEdit ? formData : defaultValues);
-  }, [isEdit, formData, reset]);
+    reset(
+      isEdit
+        ? {
+            ...formData,
+            scheduleTitle: undefined,
+            startDate: undefined,
+            endDate: undefined,
+            startTime: undefined,
+            endTime: undefined,
+            studentIds: undefined,
+          }
+        : { ...defaultValues, schoolYearId },
+    );
+  }, [schoolYearId, isEdit, formData, reset]);
 
   const handleSubmitError = useCallback(
     (errors: FieldErrors<ExamUpsertFormData>) => {
@@ -347,6 +374,11 @@ export const ExamUpsertForm = memo(function ({
       try {
         const targetData = status ? { ...data, status } : data;
         const exam = await onSubmit(targetData);
+
+        if (!exam) {
+          toast.error('Cannot update exam, please try again');
+          return;
+        }
 
         toast.success(
           `${isEdit ? 'Updated' : 'Created'} ${exam.title} (No. ${

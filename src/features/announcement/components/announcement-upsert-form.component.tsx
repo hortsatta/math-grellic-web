@@ -24,6 +24,7 @@ type Props = FormProps<
   AnnouncementUpsertFormData,
   Promise<Announcement | void>
 > & {
+  schoolYearId: number;
   withPreview?: boolean;
 };
 
@@ -47,6 +48,7 @@ const schema = z.object({
     .array(z.number(), { required_error: 'Assign students' })
     .nullable()
     .optional(),
+  schoolYearId: z.number().optional(),
 });
 
 const defaultValues: Partial<AnnouncementUpsertFormData> = {
@@ -55,11 +57,13 @@ const defaultValues: Partial<AnnouncementUpsertFormData> = {
   startDate: undefined,
   startTime: undefined,
   studentIds: undefined,
+  schoolYearId: undefined,
 };
 
 export const AnnouncementUpsertForm = memo(function ({
   className,
   formData,
+  schoolYearId,
   loading: formLoading,
   withPreview,
   isDone,
@@ -76,7 +80,7 @@ export const AnnouncementUpsertForm = memo(function ({
     reset,
     handleSubmit,
   } = useForm<AnnouncementUpsertFormData>({
-    defaultValues: formData || defaultValues,
+    defaultValues: formData || { ...defaultValues, schoolYearId },
     resolver: zodResolver(schema),
   });
 
@@ -106,8 +110,8 @@ export const AnnouncementUpsertForm = memo(function ({
   }, [withPreview, formData]);
 
   const handleReset = useCallback(() => {
-    reset(isEdit ? formData : defaultValues);
-  }, [isEdit, formData, reset]);
+    reset(isEdit ? formData : { ...defaultValues, schoolYearId });
+  }, [schoolYearId, isEdit, formData, reset]);
 
   const submitForm = useCallback(
     async (data: AnnouncementUpsertFormData) => {

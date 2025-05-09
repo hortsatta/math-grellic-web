@@ -4,4 +4,5 @@ export type AnnouncementUpsertFormData = {
   startDate: Date;
   startTime: string;
   studentIds: number[];
+  schoolYearId?: number;
 };

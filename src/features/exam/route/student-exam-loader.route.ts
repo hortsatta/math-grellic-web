@@ -31,6 +31,7 @@ export function getStudentExamBySlugLoader(
 export function getStudentExamsLoader(queryClient: QueryClient) {
   return async () => {
     const query = getExamsByCurrentStudentUser();
+
     return defer({
       main:
         queryClient.getQueryData(query.queryKey as string[]) ??

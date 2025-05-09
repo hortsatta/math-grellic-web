@@ -302,6 +302,7 @@ export function transformToExamUpsertDto({
   endDate,
   endTime,
   studentIds,
+  schoolYearId,
 }: any) {
   const transformedStartDate = startDate
     ? dayjs(`${dayjs(startDate).format('YYYY-MM-DD')} ${startTime}`).toDate()
@@ -334,6 +335,7 @@ export function transformToExamUpsertDto({
     startDate: transformedStartDate,
     endDate: transformedEndDate,
     studentIds: transformedStudentsIds,
+    schoolYearId,
   };
 }
 

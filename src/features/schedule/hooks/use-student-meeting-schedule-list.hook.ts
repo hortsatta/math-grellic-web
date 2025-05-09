@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToMeetingSchedule } from '../helpers/schedule-transform.helper';
 import { getMeetingSchedulesByCurrentStudentUser } from '../api/student-schedule.api';
 
@@ -19,13 +20,15 @@ type Result = {
 };
 
 export function useStudentMeetingScheduleList(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
+
   const {
     data: list,
     isLoading,
     isRefetching,
     refetch,
   } = useQuery(
-    getMeetingSchedulesByCurrentStudentUser({
+    getMeetingSchedulesByCurrentStudentUser(schoolYear?.id, {
       refetchOnWindowFocus: false,
       select: (data: any) => {
         const {

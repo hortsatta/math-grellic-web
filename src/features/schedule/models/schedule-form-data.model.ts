@@ -7,4 +7,5 @@ export type MeetingScheduleUpsertFormData = {
   endTime: string;
   studentIds: number[];
   description?: string;
+  schoolYearId?: number;
 };

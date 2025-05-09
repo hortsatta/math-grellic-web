@@ -3,13 +3,15 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { queryClient } from '#/config/react-query-client.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
+import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
+import { setStudentApprovalStatus as setStudentApprovalStatusApi } from '#/school-year/api/school-year-enrollment.api';
 import { transformToStudentUserAccount } from '../helpers/user-transform.helper';
+import { UserApprovalStatus } from '../models/user.model';
 import {
   getStudentsByCurrentTeacherUser,
-  setStudentApprovalStatus as setStudentApprovalStatusApi,
   deleteStudent as deleteStudentApi,
 } from '../api/teacher-user.api';
-import { UserApprovalStatus } from '../models/user.model';
 
 import type { StudentUserAccount } from '../models/user.model';
 
@@ -20,12 +22,14 @@ type Result = {
   refresh: () => void;
   setStudentApprovalStatus: (
     id: number,
-    approvalStatus: UserApprovalStatus,
+    approvalStatus: SchoolYearEnrollmentApprovalStatus,
   ) => Promise<any>;
   deleteStudent: (id: number) => Promise<boolean | undefined>;
 };
 
 export function useStudentUserPendingEnrollmentList(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
+
   const {
     data: pendingStudents,
     isLoading,
@@ -34,10 +38,9 @@ export function useStudentUserPendingEnrollmentList(): Result {
   } = useQuery(
     getStudentsByCurrentTeacherUser(
       {
-        status: [
-          UserApprovalStatus.Pending,
-          UserApprovalStatus.MailPending,
-        ].join(','),
+        schoolYearId: schoolYear?.id,
+        status: UserApprovalStatus.Approved,
+        enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Pending,
       },
       {
         queryKey: queryUserKey.studentList,
@@ -51,6 +54,7 @@ export function useStudentUserPendingEnrollmentList(): Result {
     ),
   );
 
+  // TODO approval status of enrollment
   const {
     mutateAsync: mutateSetStudentApprovalStatus,
     isLoading: isStatusLoading,
@@ -60,9 +64,9 @@ export function useStudentUserPendingEnrollmentList(): Result {
     useMutation(deleteStudentApi());
 
   const setStudentApprovalStatus = useCallback(
-    async (id: number, approvalStatus: UserApprovalStatus) => {
+    async (id: number, approvalStatus: SchoolYearEnrollmentApprovalStatus) => {
       const result = await mutateSetStudentApprovalStatus({
-        studentId: id,
+        enrollmentId: id,
         approvalStatus,
       });
 

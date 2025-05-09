@@ -10,6 +10,7 @@ import {
 } from '#/app/routes/super-admin-routes';
 import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
 import { UserRole } from '#/user/models/user.model';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
@@ -73,7 +74,7 @@ export const CoreMobileNav = memo(function ({
       case UserRole.Teacher:
         return `/${teacherBaseRoute}`;
       case UserRole.Admin:
-        return `/`;
+        return `/${adminBaseRoute}`;
       case UserRole.SuperAdmin:
         return `/${superAdminBaseRoute}`;
     }
@@ -86,7 +87,7 @@ export const CoreMobileNav = memo(function ({
       case UserRole.Teacher:
         return `/${teacherBaseRoute}/${teacherRoutes.account.to}`;
       case UserRole.Admin:
-        return `/`;
+        return `/${adminBaseRoute}/${adminRoutes.account.to}`;
       case UserRole.SuperAdmin:
         return `/${superAdminBaseRoute}/${superAdminRoutes.account.to}`;
     }

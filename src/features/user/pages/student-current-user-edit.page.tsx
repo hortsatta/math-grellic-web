@@ -2,12 +2,14 @@ import { useCallback } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
+import { UserRole } from '../models/user.model';
 import { CurrentUserUpdateForm } from '../components/current-user-update-form.component';
 import { useStudentCurrenUserEdit } from '../hooks/use-student-current-user-edit.hook';
 
 import type {
   StudentUserUpdateFormData,
   TeacherUserUpdateFormData,
+  AdminUserUpdateFormData,
 } from '../models/user-form-data.model';
 
 function StudentUserAccountEditPage() {
@@ -22,8 +24,12 @@ function StudentUserAccountEditPage() {
   const data: any = useLoaderData();
 
   const handleSubmit = useCallback(
-    (data: TeacherUserUpdateFormData | StudentUserUpdateFormData) =>
-      editCurrentStudentUser(data as StudentUserUpdateFormData),
+    (
+      data:
+        | AdminUserUpdateFormData
+        | TeacherUserUpdateFormData
+        | StudentUserUpdateFormData,
+    ) => editCurrentStudentUser(data as StudentUserUpdateFormData),
     [editCurrentStudentUser],
   );
 
@@ -36,7 +42,7 @@ function StudentUserAccountEditPage() {
           formData={studentUserFormData}
           onSubmit={handleSubmit}
           onDone={setIsDone}
-          isStudent
+          role={UserRole.Student}
         />
       )}
     </BaseDataSuspense>

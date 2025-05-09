@@ -31,6 +31,7 @@ export function getStudentActivityBySlugLoader(
 export function getStudentActivitiesLoader(queryClient: QueryClient) {
   return async () => {
     const query = getActivitiesByCurrentStudentUser();
+
     return defer({
       main:
         queryClient.getQueryData(query.queryKey as string[]) ??

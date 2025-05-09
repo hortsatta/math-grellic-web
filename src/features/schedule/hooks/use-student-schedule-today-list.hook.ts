@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import dayjs from '#/config/dayjs.config';
 import { getDateTimeNow } from '#/core/api/core.api';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToTimelineSchedules } from '../helpers/schedule-transform.helper';
 import { getSchedulesByDateAndCurrentStudentUser } from '../api/student-schedule.api';
 
@@ -17,6 +18,8 @@ type Result = {
 };
 
 export function useStudentScheduleTodayList(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
+
   const {
     data: today,
     isLoading: isTodayLoading,
@@ -36,11 +39,14 @@ export function useStudentScheduleTodayList(): Result {
     isRefetching: isTimelineSchedulesRefetching,
     refetch: refreshTimelineSchedules,
   } = useQuery(
-    getSchedulesByDateAndCurrentStudentUser(today || new Date(), {
-      enabled: !!today,
-      refetchOnWindowFocus: false,
-      select: (data: any) => transformToTimelineSchedules(data),
-    }),
+    getSchedulesByDateAndCurrentStudentUser(
+      { date: today || new Date(), schoolYearId: schoolYear?.id },
+      {
+        enabled: !!today,
+        refetchOnWindowFocus: false,
+        select: (data: any) => transformToTimelineSchedules(data),
+      },
+    ),
   );
 
   const schedules = useMemo(() => {

@@ -7,6 +7,7 @@ import isMobilePhone from 'validator/lib/isMobilePhone';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
+import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseButton } from '#/base/components/base-button.components';
@@ -16,10 +17,12 @@ import {
   BaseControlledPhoneInput,
 } from '#/base/components/base-input.component';
 import { BaseControlledTextArea } from '#/base/components/base-textarea.component';
+import { UserRole } from '../models/user.model';
 
 import type { FormProps } from '#/base/models/base.model';
 import type { User } from '../models/user.model';
 import type {
+  AdminUserUpdateFormData,
   StudentUserUpdateFormData,
   TeacherUserUpdateFormData,
 } from '../models/user-form-data.model';
@@ -27,13 +30,18 @@ import type {
 type Props = Omit<
   FormProps<
     'div',
-    TeacherUserUpdateFormData | StudentUserUpdateFormData,
+    | AdminUserUpdateFormData
+    | TeacherUserUpdateFormData
+    | StudentUserUpdateFormData,
     Promise<User>
   >,
   'formData'
 > & {
-  formData: TeacherUserUpdateFormData | StudentUserUpdateFormData;
-  isStudent?: boolean;
+  formData:
+    | AdminUserUpdateFormData
+    | TeacherUserUpdateFormData
+    | StudentUserUpdateFormData;
+  role: UserRole;
 };
 
 const textAreaClassName = '!min-h-[140px]';
@@ -80,7 +88,7 @@ export const CurrentUserUpdateForm = memo(function ({
   className,
   formData,
   loading: formLoading,
-  isStudent,
+  role,
   isDone,
   onDone,
   onSubmit,
@@ -93,7 +101,11 @@ export const CurrentUserUpdateForm = memo(function ({
     formState: { isSubmitting },
     reset,
     handleSubmit,
-  } = useForm<TeacherUserUpdateFormData | StudentUserUpdateFormData>({
+  } = useForm<
+    | AdminUserUpdateFormData
+    | TeacherUserUpdateFormData
+    | StudentUserUpdateFormData
+  >({
     shouldFocusError: false,
     defaultValues: formData,
     resolver: zodResolver(schema),
@@ -104,18 +116,28 @@ export const CurrentUserUpdateForm = memo(function ({
     [formLoading, isSubmitting, isDone],
   );
 
-  const accountPath = useMemo(
-    () =>
-      isStudent
-        ? `/${studentBaseRoute}/${studentRoutes.account.to}`
-        : `/${teacherBaseRoute}/${teacherRoutes.account.to}`,
-    [isStudent],
-  );
+  const [isTeacher, accountPath] = useMemo(() => {
+    switch (role) {
+      case UserRole.Student:
+        return [false, `/${studentBaseRoute}/${studentRoutes.account.to}`];
+      case UserRole.Teacher:
+        return [true, `/${teacherBaseRoute}/${teacherRoutes.account.to}`];
+      case UserRole.Admin:
+        return [false, `/${adminBaseRoute}/${adminRoutes.account.to}`];
+      default:
+        return [false, null];
+    }
+  }, [role]);
 
   const handleReset = useCallback(() => reset(), [reset]);
 
   const submitForm = useCallback(
-    async (data: TeacherUserUpdateFormData | StudentUserUpdateFormData) => {
+    async (
+      data:
+        | AdminUserUpdateFormData
+        | TeacherUserUpdateFormData
+        | StudentUserUpdateFormData,
+    ) => {
       try {
         const targetData =
           data.phoneNumber?.length === 10
@@ -128,7 +150,7 @@ export const CurrentUserUpdateForm = memo(function ({
         await onSubmit(targetData);
 
         toast.success('Your account was updated'), onDone && onDone(true);
-        navigate(accountPath);
+        accountPath && navigate(accountPath);
       } catch (error: any) {
         toast.error(error.message);
       }
@@ -186,7 +208,7 @@ export const CurrentUserUpdateForm = memo(function ({
                 fullWidth
               />
             </div>
-            {!isStudent && (
+            {isTeacher && (
               <BaseControlledInput
                 label='Website'
                 name='website'
@@ -202,7 +224,7 @@ export const CurrentUserUpdateForm = memo(function ({
               className={textAreaClassName}
               fullWidth
             />
-            {!isStudent && (
+            {isTeacher && (
               <>
                 <BaseControlledTextArea
                   label='Educational Background'

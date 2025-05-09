@@ -36,6 +36,7 @@ export type ExamUpsertFormData = {
   endDate?: Date;
   endTime?: string;
   studentIds?: number[];
+  schoolYearId?: number;
 };
 
 export type ExamAnswerFormData = {

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToActivity } from '../helpers/activity-transform.helper';
 import { getActivityBySlugAndCurrentTeacherUser } from '../api/teacher-activity.api';
 
@@ -16,11 +17,12 @@ type Result = {
 
 export function useActivityPreviewSlug(): Result {
   const { slug } = useParams();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [isDone, setIsDone] = useState(false);
 
   const { data: activity } = useQuery(
     getActivityBySlugAndCurrentTeacherUser(
-      { slug: slug || '' },
+      { slug: slug || '', schoolYearId: schoolYear?.id },
       {
         enabled: !!slug,
         refetchOnWindowFocus: false,

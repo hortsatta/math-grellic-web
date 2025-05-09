@@ -86,7 +86,7 @@ export const StudentLessonSingleCard = memo(function ({
             'flex w-full flex-col items-stretch gap-4 sm:flex-row',
             formattedUpcomingDate &&
               isDashboard &&
-              '-2lg:flex-nowrap flex-wrap justify-between xl:flex-wrap 2xl:flex-nowrap 2xl:justify-start',
+              'flex-wrap justify-between -2lg:flex-nowrap xl:flex-wrap 2xl:flex-nowrap 2xl:justify-start',
           )}
         >
           {/* Image */}
@@ -95,18 +95,18 @@ export const StudentLessonSingleCard = memo(function ({
               'flex h-[90px] w-full items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary sm:w-[161px]',
               '[.fat_&]:h-[117px] [.fat_&]:w-full [.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent',
               isDashboard
-                ? '-2lg:[.fat_&]:!w-[209px] sm:[.fat_&]:!w-[150px] xl:[.fat_&]:!w-[150px] 2xl:[.fat_&]:!w-[209px]'
+                ? 'sm:[.fat_&]:!w-[150px] -2lg:[.fat_&]:!w-[209px] xl:[.fat_&]:!w-[150px] 2xl:[.fat_&]:!w-[209px]'
                 : 'sm:[.fat_&]:w-[209px]',
             )}
           >
-            <BaseIcon name='chalkboard-teacher' size={40} weight='light' />
+            <BaseIcon name='chalkboard' size={40} weight='light' />
           </div>
           <div
             className={cx(
               'flex flex-1',
               formattedUpcomingDate &&
                 isDashboard &&
-                '-2lg:order-none w-full sm:order-last xl:order-last 2xl:order-none 2xl:w-auto',
+                'w-full sm:order-last -2lg:order-none xl:order-last 2xl:order-none 2xl:w-auto',
             )}
           >
             <div
@@ -115,7 +115,7 @@ export const StudentLessonSingleCard = memo(function ({
                 formattedUpcomingDate && 'pt-2.5',
                 formattedUpcomingDate &&
                   isDashboard &&
-                  '-2lg:!pt-2.5 !pt-0 xl:!pt-0 2xl:!pt-2.5',
+                  '!pt-0 -2lg:!pt-2.5 xl:!pt-0 2xl:!pt-2.5',
               )}
             >
               {/* Title and status */}
@@ -146,13 +146,13 @@ export const StudentLessonSingleCard = memo(function ({
                 )}
               </div>
               {/* Info chips */}
-              <div className='-3xs:flex-row -3xs:gap-0 -3xs:items-center flex w-full flex-col items-start justify-between gap-1 [.primary_&]:text-white'>
-                <div className='-3xs:flex-row -3xs:items-center -3xs:gap-2.5 flex flex-col items-start gap-1'>
-                  <BaseChip iconName='chalkboard-teacher'>
+              <div className='flex w-full flex-col items-start justify-between gap-1 -3xs:flex-row -3xs:items-center -3xs:gap-0 [.primary_&]:text-white'>
+                <div className='flex flex-col items-start gap-1 -3xs:flex-row -3xs:items-center -3xs:gap-2.5'>
+                  <BaseChip iconName='chalkboard'>
                     Lesson {orderNumber}
                   </BaseChip>
                   <BaseDivider
-                    className='-3xs:block hidden !h-6 [.primary_&]:border-white/20'
+                    className='hidden !h-6 -3xs:block [.primary_&]:border-white/20'
                     vertical
                   />
                   <BaseChip iconName='hourglass'>{duration}</BaseChip>

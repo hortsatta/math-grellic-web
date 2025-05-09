@@ -35,7 +35,7 @@ export function useStudentUserCreate(): Result {
         return Promise.resolve(null);
       }
 
-      return mutateAsync({ ...data, teacherId: user.publicId });
+      return mutateAsync(data);
     },
     [user, mutateAsync],
   );

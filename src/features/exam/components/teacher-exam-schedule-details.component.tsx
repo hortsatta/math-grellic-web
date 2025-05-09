@@ -56,7 +56,7 @@ export const TeacherExamScheduleDetails = memo(function ({
       <div>
         <div className='flex flex-row items-start justify-between gap-0 pb-1 -3xs:gap-4'>
           <span className='font-medium'>Assigned Students</span>
-          <BaseChip iconName='users-four'>{studentCount}</BaseChip>
+          <BaseChip iconName='student'>{studentCount}</BaseChip>
         </div>
         <ul className='w-full'>
           {students.map((student) => (

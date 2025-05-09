@@ -49,7 +49,7 @@ export const SuperAdminDashboardUserSummary = memo(function ({
   const transformedUser = useMemo(
     () => ({
       ...user,
-      userAccount: { firstName: ADMIN_NAME, gender: UserGender },
+      userAccount: { firstName: ADMIN_NAME, gender: UserGender.Male },
     }),
     [user],
   );

@@ -21,7 +21,7 @@ const sceneLinks = [
   {
     to: `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`,
     label: 'Lesson List',
-    icons: [{ name: 'plus', size: 16 }, { name: 'chalkboard-teacher' }],
+    icons: [{ name: 'plus', size: 16 }, { name: 'chalkboard' }],
   },
   {
     to: `/${teacherBaseRoute}/${teacherRoutes.schedule.to}`,

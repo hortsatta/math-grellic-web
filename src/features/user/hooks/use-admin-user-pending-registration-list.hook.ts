@@ -34,10 +34,7 @@ export function useAdminUserPendingRegistrationList(): Result {
   } = useQuery(
     getAdminsByCurrentSuperAdminUser(
       {
-        status: [
-          UserApprovalStatus.MailPending,
-          UserApprovalStatus.Pending,
-        ].join(','),
+        status: UserApprovalStatus.Pending,
       },
       {
         queryKey: queryUserKey.adminList,

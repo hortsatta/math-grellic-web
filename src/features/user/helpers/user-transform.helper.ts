@@ -15,10 +15,12 @@ import type {
   User,
 } from '../models/user.model';
 import type {
+  AdminUserUpdateFormData,
   StudentUserUpdateFormData,
   TeacherUserUpdateFormData,
   UserUpsertFormData,
 } from '../models/user-form-data.model';
+import { transformToSchoolYearEnrollment } from '#/school-year/helpers/school-year-enrollment-transform.helper';
 
 export function transformToUser({
   id,
@@ -145,7 +147,6 @@ export function transformToStudentUserAccount({
   gender,
   aboutMe,
   messengerLink,
-  teacherId,
   user,
   lessonSchedules,
   examSchedules,
@@ -153,7 +154,7 @@ export function transformToStudentUserAccount({
   examCompletions,
   activityCategoryCompletions,
 }: any): StudentUserAccount {
-  const { email, publicId, approvalStatus } = user || {};
+  const { email, publicId, approvalStatus, enrollment } = user || {};
 
   const transformedLessonSchedules =
     lessonSchedules && lessonSchedules.length
@@ -188,6 +189,10 @@ export function transformToStudentUserAccount({
         )
       : undefined;
 
+  const transformedEnrollment = enrollment
+    ? transformToSchoolYearEnrollment(enrollment)
+    : undefined;
+
   return {
     id,
     email,
@@ -201,12 +206,12 @@ export function transformToStudentUserAccount({
     gender,
     aboutMe,
     messengerLink,
-    teacherId,
     lessonSchedules: transformedLessonSchedules,
     examSchedules: transformedExamSchedules,
     lessonCompletions: transformedLessonCompletions,
     examCompletions: transformedExamCompletions,
     activityCategoryCompletions: transformedActivityCategoryCompletions,
+    enrollment: transformedEnrollment,
   } as StudentUserAccount;
 }
 
@@ -241,7 +246,7 @@ export function transformToAdminUserUpsertDtoBySuperAdmin(
       };
 }
 
-export function transformToAdminUserUpsertDto({
+export function transformToAdminUserUpdateDto({
   profileImageUrl,
   firstName,
   lastName,
@@ -352,7 +357,6 @@ export function transformToStudentUserCreateDto({
   phoneNumber,
   gender,
   aboutMe,
-  teacherId,
 }: any) {
   return {
     email,
@@ -365,7 +369,6 @@ export function transformToStudentUserCreateDto({
     phoneNumber: phoneNumber.replace(/\D/g, ''),
     gender,
     aboutMe,
-    teacherId: teacherId ? teacherId.toUpperCase() : undefined,
   };
 }
 
@@ -379,7 +382,6 @@ export function transformToStudentUserUpdateDto({
   gender,
   aboutMe,
   messengerLink,
-  teacherId,
 }: any) {
   return {
     profileImageUrl,
@@ -391,7 +393,6 @@ export function transformToStudentUserUpdateDto({
     gender,
     aboutMe,
     messengerLink,
-    teacherId: teacherId ? teacherId.toUpperCase() : undefined,
   };
 }
 
@@ -402,7 +403,6 @@ export function transformToUserRegisterFormData({
   birthDate,
   phoneNumber,
   gender,
-  teacherId,
   email,
 }: any): UserUpsertFormData {
   return {
@@ -415,9 +415,25 @@ export function transformToUserRegisterFormData({
       : undefined,
     gender,
     middleName,
-    teacherId,
     password: 'xxxxxxxxxxxx',
     confirmPassword: 'xxxxxxxxxxxx',
+  };
+}
+
+export function transformToAdminUserAccountFormData({
+  profileImageUrl,
+  userAccount,
+}: any): AdminUserUpdateFormData {
+  const { phoneNumber, aboutMe, messengerLink, emails } = userAccount || {};
+
+  return {
+    phoneNumber: phoneNumber?.length
+      ? phoneNumber?.slice(1, phoneNumber.length)
+      : undefined,
+    aboutMe: aboutMe || undefined,
+    messengerLink: messengerLink || undefined,
+    emails: emails || undefined,
+    profileImageUrl: profileImageUrl || undefined,
   };
 }
 

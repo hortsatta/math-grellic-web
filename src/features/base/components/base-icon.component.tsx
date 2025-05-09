@@ -22,6 +22,7 @@ import {
   Broadcast,
   Calendar,
   CalendarCheck,
+  CalendarX,
   Cards,
   CaretCircleDown,
   CaretCircleLeft,
@@ -29,6 +30,7 @@ import {
   CaretCircleUp,
   CaretDown,
   CaretRight,
+  Chalkboard,
   ChalkboardTeacher,
   ChartDonut,
   ChatCenteredText,
@@ -61,6 +63,7 @@ import {
   GenderFemale,
   GenderMale,
   GpsSlash,
+  GraduationCap,
   Hourglass,
   House,
   IdentificationBadge,
@@ -96,6 +99,7 @@ import {
   SortDescending,
   SquaresFour,
   Stack,
+  Student,
   SubtractSquare,
   TextAlignCenter,
   TextAlignJustify,
@@ -171,6 +175,8 @@ export const BaseIcon = memo(
           return Calendar;
         case 'calendar-check':
           return CalendarCheck;
+        case 'calendar-x':
+          return CalendarX;
         case 'cards':
           return Cards;
         case 'caret-circle-down':
@@ -185,6 +191,8 @@ export const BaseIcon = memo(
           return CaretRight;
         case 'caret-down':
           return CaretDown;
+        case 'chalkboard':
+          return Chalkboard;
         case 'chalkboard-teacher':
           return ChalkboardTeacher;
         case 'chart-donut':
@@ -249,6 +257,8 @@ export const BaseIcon = memo(
           return GenderMale;
         case 'gps-slash':
           return GpsSlash;
+        case 'graduation-cap':
+          return GraduationCap;
         case 'hourglass':
           return Hourglass;
         case 'house':
@@ -319,6 +329,8 @@ export const BaseIcon = memo(
           return SquaresFour;
         case 'stack':
           return Stack;
+        case 'student':
+          return Student;
         case 'subtract-square':
           return SubtractSquare;
         case 'text-align-center':

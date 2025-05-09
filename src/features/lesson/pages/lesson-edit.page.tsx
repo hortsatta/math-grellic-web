@@ -3,6 +3,7 @@ import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseModal } from '#/base/components/base-modal.component';
@@ -14,6 +15,7 @@ const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 
 function LessonEditPage() {
   const { slug } = useParams();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
 
   const {
     loading,
@@ -46,7 +48,12 @@ function LessonEditPage() {
     }
 
     try {
-      await deleteLesson();
+      const result = await deleteLesson();
+
+      if (result == null) {
+        toast.error('Cannot delete lesson, please try again');
+      }
+
       toast.success(
         `Deleted ${lessonFormData.title} (No. ${lessonFormData.orderNumber})`,
       );
@@ -59,14 +66,17 @@ function LessonEditPage() {
   return (
     <>
       <BaseDataSuspense resolve={data?.main}>
-        <LessonUpsertForm
-          loading={loading}
-          isDone={isDone}
-          formData={lessonFormData}
-          onDone={setIsDone}
-          onSubmit={editLesson}
-          onDelete={handleSetModal(true)}
-        />
+        {schoolYear && (
+          <LessonUpsertForm
+            loading={loading}
+            schoolYearId={schoolYear.id}
+            isDone={isDone}
+            formData={lessonFormData}
+            onDone={setIsDone}
+            onSubmit={editLesson}
+            onDelete={handleSetModal(true)}
+          />
+        )}
       </BaseDataSuspense>
       <BaseModal size='xs' open={openModal} onClose={handleSetModal(false)}>
         <div>

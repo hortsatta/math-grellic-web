@@ -88,7 +88,7 @@ export const BaseStepper = memo(function ({
     return (
       <div className='flex items-center py-2 font-medium text-primary-focus'>
         <div className='mr-1 flex h-full w-5 items-center justify-center'>
-          {currentIndex}
+          {currentIndex + 1}
         </div>
         <span className='w-max'>{label}</span>
       </div>

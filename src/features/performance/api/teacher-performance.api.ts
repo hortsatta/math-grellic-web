@@ -25,6 +25,7 @@ import type {
 const BASE_URL = 'performances/teachers';
 
 export function getClassPerformanceByCurrentTeacherUser(
+  schoolYearId?: number,
   options?: Omit<
     UseQueryOptions<
       TeacherClassPerformance,
@@ -36,8 +37,15 @@ export function getClassPerformanceByCurrentTeacherUser(
   >,
 ) {
   const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/class`;
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+    });
+
     try {
-      const classPerformance = await kyInstance.get(`${BASE_URL}/class`).json();
+      const classPerformance = await kyInstance
+        .get(url, { searchParams })
+        .json();
       return classPerformance;
     } catch (error: any) {
       const apiError = await generateApiError(error);
@@ -53,6 +61,7 @@ export function getClassPerformanceByCurrentTeacherUser(
 }
 
 export function getLessonPerformanceByCurrentTeacherUser(
+  schoolYearId?: number,
   options?: Omit<
     UseQueryOptions<
       TeacherLessonPerformance,
@@ -64,9 +73,14 @@ export function getLessonPerformanceByCurrentTeacherUser(
   >,
 ) {
   const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/lessons`;
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+    });
+
     try {
       const lessonPerformance = await kyInstance
-        .get(`${BASE_URL}/lessons`)
+        .get(url, { searchParams })
         .json();
       return lessonPerformance;
     } catch (error: any) {
@@ -83,14 +97,22 @@ export function getLessonPerformanceByCurrentTeacherUser(
 }
 
 export function getExamPerformanceByCurrentTeacherUser(
+  schoolYearId?: number,
   options?: Omit<
     UseQueryOptions<TeacherExamPerformance, Error, TeacherExamPerformance, any>,
     'queryKey' | 'queryFn'
   >,
 ) {
   const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/exams`;
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+    });
+
     try {
-      const examPerformance = await kyInstance.get(`${BASE_URL}/exams`).json();
+      const examPerformance = await kyInstance
+        .get(url, { searchParams })
+        .json();
       return examPerformance;
     } catch (error: any) {
       const apiError = await generateApiError(error);
@@ -105,8 +127,8 @@ export function getExamPerformanceByCurrentTeacherUser(
   };
 }
 
-// TODO
 export function getActivityPerformanceByCurrentTeacherUser(
+  schoolYearId?: number,
   options?: Omit<
     UseQueryOptions<
       TeacherActivityPerformance,
@@ -118,9 +140,14 @@ export function getActivityPerformanceByCurrentTeacherUser(
   >,
 ) {
   const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/activities`;
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+    });
+
     try {
       const activityPerformance = await kyInstance
-        .get(`${BASE_URL}/activities`)
+        .get(url, { searchParams })
         .json();
       return activityPerformance;
     } catch (error: any) {
@@ -142,6 +169,7 @@ export function getPaginatedStudentPerformancesByCurrentTeacherUser(
     performance?: string;
     sort?: string;
     pagination?: Omit<QueryPagination, 'totalCount'>;
+    schoolYearId?: number;
   },
   options?: Omit<
     UseQueryOptions<
@@ -153,22 +181,22 @@ export function getPaginatedStudentPerformancesByCurrentTeacherUser(
     'queryKey' | 'queryFn'
   >,
 ) {
-  const { q, performance, sort, pagination } = keys || {};
+  const { q, performance, sort, pagination, schoolYearId } = keys || {};
   const { take, skip } = pagination || {};
 
   const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/students/list`;
     const searchParams = generateSearchParams({
       q,
       perf: performance,
       sort,
       skip: skip?.toString() || '0',
       take: take?.toString() || '0',
+      sy: schoolYearId?.toString(),
     });
 
     try {
-      const students = await kyInstance
-        .get(`${BASE_URL}/students/list`, { searchParams })
-        .json();
+      const students = await kyInstance.get(url, { searchParams }).json();
       return students;
     } catch (error: any) {
       const apiError = await generateApiError(error);
@@ -187,18 +215,27 @@ export function getPaginatedStudentPerformancesByCurrentTeacherUser(
 }
 
 export function getStudentPerformanceByPublicIdAndCurrentTeacherUser(
-  keys: { publicId: string; exclude?: string; include?: string },
+  keys: {
+    publicId: string;
+    schoolYearId?: number;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<
     UseQueryOptions<StudentPerformance, Error, StudentPerformance, any>,
     'queryFn'
   >,
 ) {
-  const { publicId: pId, exclude, include } = keys;
+  const { publicId: pId, schoolYearId, exclude, include } = keys;
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students/${publicId}`;
-    const searchParams = generateSearchParams({ exclude, include });
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+      exclude,
+      include,
+    });
 
     try {
       const student = await kyInstance.get(url, { searchParams }).json();
@@ -220,15 +257,24 @@ export function getStudentPerformanceByPublicIdAndCurrentTeacherUser(
 }
 
 export function getStudentLessonsByPublicIdAndCurrentTeacherUser(
-  keys: { publicId: string; exclude?: string; include?: string },
+  keys: {
+    publicId: string;
+    schoolYearId?: number;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<UseQueryOptions<Lesson[], Error, Lesson[], any>, 'queryFn'>,
 ) {
-  const { publicId: pId, exclude, include } = keys;
+  const { publicId: pId, schoolYearId, exclude, include } = keys;
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students/${publicId}/lessons`;
-    const searchParams = generateSearchParams({ exclude, include });
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+      exclude,
+      include,
+    });
 
     try {
       const lessons = await kyInstance.get(url, { searchParams }).json();
@@ -250,15 +296,24 @@ export function getStudentLessonsByPublicIdAndCurrentTeacherUser(
 }
 
 export function getStudentExamsByPublicIdAndCurrentTeacherUser(
-  keys: { publicId: string; exclude?: string; include?: string },
+  keys: {
+    publicId: string;
+    schoolYearId?: number;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<UseQueryOptions<Exam[], Error, Exam[], any>, 'queryFn'>,
 ) {
-  const { publicId: pId, exclude, include } = keys;
+  const { publicId: pId, schoolYearId, exclude, include } = keys;
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students/${publicId}/exams`;
-    const searchParams = generateSearchParams({ exclude, include });
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+      exclude,
+      include,
+    });
 
     try {
       const exams = await kyInstance.get(url, { searchParams }).json();
@@ -280,18 +335,27 @@ export function getStudentExamsByPublicIdAndCurrentTeacherUser(
 }
 
 export function getStudentActivitiesByPublicIdAndCurrentTeacherUser(
-  keys: { publicId: string; exclude?: string; include?: string },
+  keys: {
+    publicId: string;
+    schoolYearId?: number;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<
     UseQueryOptions<Activity[], Error, Activity[], any>,
     'queryFn'
   >,
 ) {
-  const { publicId: pId, exclude, include } = keys;
+  const { publicId: pId, schoolYearId, exclude, include } = keys;
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students/${publicId}/activities`;
-    const searchParams = generateSearchParams({ exclude, include });
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+      exclude,
+      include,
+    });
 
     try {
       const activities = await kyInstance.get(url, { searchParams }).json();
@@ -317,16 +381,18 @@ export function getStudentExamWithCompletionsByPublicIdAndSlug(
     publicId: string;
     slug: string;
     scheduleId?: number;
+    schoolYearId?: number;
   },
   options?: Omit<UseQueryOptions<Exam, Error, Exam, any>, 'queryFn'>,
 ) {
-  const { publicId: pId, slug, scheduleId } = keys;
+  const { publicId: pId, slug, scheduleId, schoolYearId } = keys;
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students/${publicId}/exams/${slug}`;
     const searchParams = generateSearchParams({
       scheduleId: scheduleId?.toString(),
+      sy: schoolYearId?.toString(),
     });
 
     try {
@@ -346,15 +412,25 @@ export function getStudentExamWithCompletionsByPublicIdAndSlug(
 }
 
 export function getStudentActivityWithCompletionsByPublicIdAndSlug(
-  keys: { publicId: string; slug: string; exclude?: string; include?: string },
+  keys: {
+    publicId: string;
+    slug: string;
+    schoolYearId?: number;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<UseQueryOptions<Activity, Error, Activity, any>, 'queryFn'>,
 ) {
-  const { publicId: pId, slug, exclude, include } = keys;
+  const { publicId: pId, slug, schoolYearId, exclude, include } = keys;
   const publicId = pId.toLowerCase();
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students/${publicId}/activities/${slug}`;
-    const searchParams = generateSearchParams({ exclude, include });
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+      exclude,
+      include,
+    });
 
     try {
       const activity = await kyInstance.get(url, { searchParams }).json();

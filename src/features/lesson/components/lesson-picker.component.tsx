@@ -5,6 +5,7 @@ import cx from 'classix';
 
 import { queryClient } from '#/config/react-query-client.config';
 import { queryLessonKey } from '#/config/react-query-keys.config';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseSelect } from '#/base/components/base-select.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
@@ -53,6 +54,7 @@ export const LessonPicker = memo(
     },
     ref,
   ) {
+    const schoolYear = useBoundStore((state) => state.schoolYear);
     const [keyword, setKeyword] = useState<string | undefined>(undefined);
 
     const {
@@ -61,7 +63,7 @@ export const LessonPicker = memo(
       isLoading,
     } = useQuery(
       getLessonsByCurrentTeacherUser(
-        { q: keyword },
+        { q: keyword, schoolYearId: schoolYear?.id },
         {
           refetchOnWindowFocus: false,
           initialData: [],
@@ -93,7 +95,7 @@ export const LessonPicker = memo(
       refetch: selectedLessonsRefetch,
     } = useQuery(
       getLessonsByCurrentTeacherUser(
-        { ids: value || selectedLessonIds || [] },
+        { ids: value || selectedLessonIds || [], schoolYearId: schoolYear?.id },
         {
           queryKey: queryLessonKey.selectedLessonList,
           refetchOnWindowFocus: false,

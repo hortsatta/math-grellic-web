@@ -97,6 +97,7 @@ export function transformToAnnouncementUpsertDto({
   startDate,
   startTime,
   studentIds,
+  schoolYearId,
 }: any) {
   const formattedStartDate = dayjs(startDate).format('YYYY-MM-DD');
 
@@ -110,5 +111,6 @@ export function transformToAnnouncementUpsertDto({
     description,
     startDate: transformedStartDate,
     studentIds: transformedStudentsIds,
+    schoolYearId,
   };
 }

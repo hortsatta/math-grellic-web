@@ -23,6 +23,7 @@ export function getPaginatedLessonsByCurrentTeacherUser(
     status?: string;
     sort?: string;
     pagination?: Omit<QueryPagination, 'totalCount'>;
+    schoolYearId?: number;
   },
   options?: Omit<
     UseQueryOptions<
@@ -34,7 +35,7 @@ export function getPaginatedLessonsByCurrentTeacherUser(
     'queryKey' | 'queryFn'
   >,
 ) {
-  const { q, status, sort, pagination } = keys || {};
+  const { q, status, sort, pagination, schoolYearId } = keys || {};
   const { take, skip } = pagination || {};
 
   const queryFn = async (): Promise<any> => {
@@ -45,6 +46,7 @@ export function getPaginatedLessonsByCurrentTeacherUser(
       sort,
       skip: skip?.toString() || '0',
       take: take?.toString() || '0',
+      sy: schoolYearId?.toString(),
     });
 
     try {
@@ -69,10 +71,11 @@ export function getLessonsByCurrentTeacherUser(
     q?: string;
     status?: string;
     sort?: string;
+    schoolYearId?: number;
   },
   options?: Omit<UseQueryOptions<Lesson[], Error, Lesson[], any>, 'queryFn'>,
 ) {
-  const { ids, q, status, sort } = keys || {};
+  const { ids, q, status, sort, schoolYearId } = keys || {};
   const { queryKey, ...moreOptions } = options || {};
 
   const queryFn = async (): Promise<any> => {
@@ -82,6 +85,7 @@ export function getLessonsByCurrentTeacherUser(
       q,
       status,
       sort,
+      sy: schoolYearId?.toString(),
     });
 
     try {
@@ -104,12 +108,17 @@ export function getLessonsByCurrentTeacherUser(
 }
 
 export function getLessonSnippetsByCurrentTeacherUser(
-  take?: number,
+  keys?: { take?: number; schoolYearId?: number },
   options?: Omit<UseQueryOptions<Lesson[], Error, Lesson[], any>, 'queryFn'>,
 ) {
+  const { take, schoolYearId } = keys || {};
+
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/teachers/list/snippets`;
-    const searchParams = generateSearchParams({ take: take?.toString() });
+    const searchParams = generateSearchParams({
+      take: take?.toString(),
+      sy: schoolYearId?.toString(),
+    });
 
     try {
       const lessons = await kyInstance.get(url, { searchParams }).json();
@@ -128,14 +137,25 @@ export function getLessonSnippetsByCurrentTeacherUser(
 }
 
 export function getLessonBySlugAndCurrentTeacherUser(
-  keys: { slug: string; status?: string; exclude?: string; include?: string },
+  keys: {
+    slug: string;
+    status?: string;
+    schoolYearId?: number;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<UseQueryOptions<Lesson, Error, Lesson, any>, 'queryFn'>,
 ) {
-  const { slug, status, exclude, include } = keys;
+  const { slug, status, schoolYearId, exclude, include } = keys;
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/${slug}/teachers`;
-    const searchParams = generateSearchParams({ status, exclude, include });
+    const searchParams = generateSearchParams({
+      status,
+      sy: schoolYearId?.toString(),
+      exclude,
+      include,
+    });
 
     try {
       const lesson = await kyInstance.get(url, { searchParams }).json();
@@ -179,20 +199,20 @@ export function editLesson(
     UseMutationOptions<
       Lesson,
       Error,
-      { slug: string; data: LessonUpsertFormData },
+      { id: number; data: LessonUpsertFormData },
       any
     >,
     'mutationFn'
   >,
 ) {
   const mutationFn = async ({
-    slug,
+    id,
     data,
   }: {
-    slug: string;
+    id: number;
     data: LessonUpsertFormData;
   }): Promise<any> => {
-    const url = `${BASE_URL}/${slug}`;
+    const url = `${BASE_URL}/${id}`;
     const json = transformToLessonUpsertDto(data);
 
     try {
@@ -208,10 +228,10 @@ export function editLesson(
 }
 
 export function deleteLesson(
-  options?: Omit<UseMutationOptions<boolean, Error, string, any>, 'mutationFn'>,
+  options?: Omit<UseMutationOptions<boolean, Error, number, any>, 'mutationFn'>,
 ) {
-  const mutationFn = async (slug: string): Promise<boolean> => {
-    const url = `${BASE_URL}/${slug}`;
+  const mutationFn = async (id: number): Promise<boolean> => {
+    const url = `${BASE_URL}/${id}`;
 
     try {
       const success: boolean = await kyInstance.delete(url).json();

@@ -79,14 +79,14 @@ export function transformToExamScheduleCreateDto({
     `${formattedStartDate} ${startTime}`,
   ).toDate();
   const transformedEndDate = dayjs(`${formattedEndDate} ${endTime}`).toDate();
-  const transformedStudentsIds = !studentIds?.length ? null : studentIds;
+  const transformedStudentIds = !studentIds?.length ? null : studentIds;
 
   return {
     examId,
     title,
     startDate: transformedStartDate,
     endDate: transformedEndDate,
-    studentIds: transformedStudentsIds,
+    studentIds: transformedStudentIds,
   };
 }
 

@@ -10,7 +10,6 @@ export type UserUpsertFormData = {
   phoneNumber: string;
   gender: UserGender;
   middleName?: string;
-  teacherId?: string;
   approvalStatus?: UserApprovalStatus;
 };
 
@@ -18,6 +17,14 @@ export type UserRegisterLastStepFormData = {
   token: string;
   password: string;
   confirmPassword: string;
+};
+
+export type AdminUserUpdateFormData = {
+  phoneNumber: string;
+  aboutMe: string;
+  messengerLink: string;
+  emails: string[];
+  profileImageUrl?: string;
 };
 
 export type TeacherUserUpdateFormData = {

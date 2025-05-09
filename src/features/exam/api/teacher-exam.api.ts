@@ -24,6 +24,7 @@ export function getPaginatedExamsByCurrentTeacherUser(
     status?: string;
     sort?: string;
     pagination?: Omit<QueryPagination, 'totalCount'>;
+    schoolYearId?: number;
   },
   options?: Omit<
     UseQueryOptions<
@@ -35,7 +36,7 @@ export function getPaginatedExamsByCurrentTeacherUser(
     'queryKey' | 'queryFn'
   >,
 ) {
-  const { q, status, sort, pagination } = keys || {};
+  const { q, status, sort, pagination, schoolYearId } = keys || {};
   const { take, skip } = pagination || {};
 
   const queryFn = async (): Promise<any> => {
@@ -46,6 +47,7 @@ export function getPaginatedExamsByCurrentTeacherUser(
       sort,
       skip: skip?.toString() || '0',
       take: take?.toString() || '0',
+      sy: schoolYearId?.toString(),
     });
 
     try {
@@ -65,12 +67,17 @@ export function getPaginatedExamsByCurrentTeacherUser(
 }
 
 export function getExamSnippetsByCurrentTeacherUser(
-  take?: number,
+  keys?: { take?: number; schoolYearId?: number },
   options?: Omit<UseQueryOptions<Exam[], Error, Exam[], any>, 'queryFn'>,
 ) {
+  const { take, schoolYearId } = keys || {};
+
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/teachers/list/snippets`;
-    const searchParams = generateSearchParams({ take: take?.toString() });
+    const searchParams = generateSearchParams({
+      take: take?.toString(),
+      sy: schoolYearId?.toString(),
+    });
 
     try {
       const exams = await kyInstance.get(url, { searchParams }).json();
@@ -89,14 +96,25 @@ export function getExamSnippetsByCurrentTeacherUser(
 }
 
 export function getExamBySlugAndCurrentTeacherUser(
-  keys: { slug: string; status?: string; exclude?: string; include?: string },
+  keys: {
+    slug: string;
+    status?: string;
+    schoolYearId?: number;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<UseQueryOptions<Exam, Error, Exam, any>, 'queryFn'>,
 ) {
-  const { slug, status, exclude, include } = keys;
+  const { slug, status, schoolYearId, exclude, include } = keys;
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/${slug}/teachers`;
-    const searchParams = generateSearchParams({ status, exclude, include });
+    const searchParams = generateSearchParams({
+      status,
+      sy: schoolYearId?.toString(),
+      exclude,
+      include,
+    });
 
     try {
       const exam = await kyInstance.get(url, { searchParams }).json();
@@ -119,23 +137,23 @@ export function validateUpsertExam(
     UseMutationOptions<
       boolean,
       Error,
-      { data: ExamUpsertFormData; slug?: string },
+      { data: ExamUpsertFormData; id?: number },
       any
     >,
     'mutationFn'
   >,
 ) {
   const mutationFn = async ({
-    slug,
+    id,
     data,
   }: {
     data: ExamUpsertFormData;
-    slug?: string;
+    id?: number;
   }): Promise<boolean> => {
     const url = `${BASE_URL}/validate`;
     const json = transformToExamUpsertDto(data);
     const searchParams = generateSearchParams({
-      slug: slug?.toString(),
+      id: id?.toString(),
     });
 
     try {
@@ -177,7 +195,7 @@ export function editExam(
       Exam,
       Error,
       {
-        slug: string;
+        id: number;
         data: ExamUpsertFormData;
         strict?: boolean;
       },
@@ -187,15 +205,15 @@ export function editExam(
   >,
 ) {
   const mutationFn = async ({
-    slug,
+    id,
     data,
     strict,
   }: {
-    slug: string;
+    id: number;
     data: ExamUpsertFormData;
     strict?: boolean;
   }): Promise<any> => {
-    const url = `${BASE_URL}/${slug}`;
+    const url = `${BASE_URL}/${id}`;
     const json = transformToExamUpsertDto(data);
     const searchParams = generateSearchParams({
       strict: (+(strict || 0)).toString(),
@@ -214,10 +232,10 @@ export function editExam(
 }
 
 export function deleteExam(
-  options?: Omit<UseMutationOptions<boolean, Error, string, any>, 'mutationFn'>,
+  options?: Omit<UseMutationOptions<boolean, Error, number, any>, 'mutationFn'>,
 ) {
-  const mutationFn = async (slug: string): Promise<boolean> => {
-    const url = `${BASE_URL}/${slug}`;
+  const mutationFn = async (id: number): Promise<boolean> => {
+    const url = `${BASE_URL}/${id}`;
 
     try {
       const success: boolean = await kyInstance.delete(url).json();
@@ -236,7 +254,7 @@ export function uploadExamImages(
     UseMutationOptions<
       string[],
       Error,
-      { data: ExamUpsertFormData; strict?: boolean },
+      { data: ExamUpsertFormData; schoolYearId?: number; strict?: boolean },
       any
     >,
     'mutationFn'
@@ -244,18 +262,17 @@ export function uploadExamImages(
 ) {
   const mutationFn = async (options: {
     data: ExamUpsertFormData;
+    schoolYearId?: number;
     strict?: boolean;
   }): Promise<any> => {
-    const { data, strict } = options;
+    const { data, schoolYearId, strict } = options;
     const url = `upload/${BASE_URL}/images`;
     const { orderNumber, questions } = data;
     const formData = await generateImageFormData(orderNumber || 0, questions);
-    const searchParams =
-      strict != null
-        ? generateSearchParams({
-            strict: (+strict).toString(),
-          })
-        : undefined;
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+      strict: (+!!strict).toString(),
+    });
 
     try {
       return kyInstance.post(url, { body: formData, searchParams }).json();

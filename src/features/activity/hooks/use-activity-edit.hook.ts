@@ -4,6 +4,7 @@ import isBase64 from 'validator/lib/isBase64';
 
 import { queryClient } from '#/config/react-query-client.config';
 import { queryActivityKey } from '#/config/react-query-keys.config';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import {
   transformToActivity,
   transformToActivityFormData,
@@ -24,11 +25,12 @@ type Result = {
   isDone: boolean;
   setIsDone: (isDone: boolean) => void;
   activityFormData: ActivityUpsertFormData | undefined;
-  editActivity: (data: ActivityUpsertFormData) => Promise<Activity>;
+  editActivity: (data: ActivityUpsertFormData) => Promise<Activity | undefined>;
   deleteActivity: () => Promise<boolean>;
 };
 
 export function useActivityEdit(slug?: string): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [isDone, setIsDone] = useState(false);
 
   const {
@@ -76,7 +78,7 @@ export function useActivityEdit(slug?: string): Result {
     isFetching: isQueryFetching,
   } = useQuery(
     getActivityBySlugAndCurrentTeacherUser(
-      { slug: slug || '' },
+      { slug: slug || '', schoolYearId: schoolYear?.id },
       {
         enabled: !!slug,
         refetchOnWindowFocus: false,
@@ -92,6 +94,8 @@ export function useActivityEdit(slug?: string): Result {
 
   const editActivity = useCallback(
     async (data: ActivityUpsertFormData) => {
+      if (!activity) return;
+
       const isStage = data.game.type === ActivityCategoryType.Stage;
 
       const hasImages = data.categories.some((category) => {
@@ -123,11 +127,15 @@ export function useActivityEdit(slug?: string): Result {
       });
       // If no images then proceed to update activity
       if (!hasImages) {
-        return mutateEditActivity({ slug: slug || '', data });
+        return mutateEditActivity({ id: activity.id, data });
       }
 
-      await validateUpsertActivity({ data, slug });
-      const images = await mutateUploadActivityImages({ data, strict: true });
+      await validateUpsertActivity({ data, id: activity.id });
+      const images = await mutateUploadActivityImages({
+        data,
+        schoolYearId: schoolYear?.id,
+        strict: true,
+      });
       // Clone value for shifting of array
       const clonedImages = images;
       // Apply image url to question/choice text for activity creation
@@ -200,12 +208,13 @@ export function useActivityEdit(slug?: string): Result {
       };
 
       return mutateEditActivity({
-        slug: slug || '',
+        id: activity.id,
         data: transformedFormData,
       });
     },
     [
-      slug,
+      activity,
+      schoolYear,
       validateUpsertActivity,
       mutateUploadActivityImages,
       mutateEditActivity,
@@ -213,12 +222,10 @@ export function useActivityEdit(slug?: string): Result {
   );
 
   const deleteActivity = useCallback(async () => {
-    if (!slug?.trim()) {
-      return false;
-    }
+    if (!activity) return false;
 
-    return mutateDeleteActivity(slug);
-  }, [slug, mutateDeleteActivity]);
+    return mutateDeleteActivity(activity.id);
+  }, [activity, mutateDeleteActivity]);
 
   return {
     loading:

@@ -32,6 +32,7 @@ export function getStudentUserByIdLoader(
 export function getPaginatedStudentUserLoader(queryClient: QueryClient) {
   return async () => {
     const query = getPaginatedStudentsByCurrentTeacherUser(defaultParamKeys);
+
     return defer({
       main:
         queryClient.getQueryData(query.queryKey as string[]) ??

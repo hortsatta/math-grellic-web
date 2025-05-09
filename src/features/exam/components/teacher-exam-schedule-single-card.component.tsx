@@ -90,7 +90,7 @@ export const TeacherExamScheduleSingleCard = memo(function ({
         <BaseDivider className='hidden !h-6 sm:block' vertical />
         <BaseChip iconName='hourglass'>{duration}</BaseChip>
         <BaseDivider className='hidden !h-6 sm:block' vertical />
-        <BaseChip iconName='users-four'>{studentCount}</BaseChip>
+        <BaseChip iconName='student'>{studentCount}</BaseChip>
       </div>
     </div>
   );

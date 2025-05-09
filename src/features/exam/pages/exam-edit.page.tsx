@@ -3,6 +3,7 @@ import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
@@ -14,6 +15,7 @@ const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
 
 function ExamEditPage() {
   const { slug } = useParams();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
 
   const { loading, isDone, setIsDone, examFormData, editExam, deleteExam } =
     useExamEdit(slug);
@@ -53,14 +55,17 @@ function ExamEditPage() {
   return (
     <>
       <BaseDataSuspense resolve={data?.main}>
-        <ExamUpsertForm
-          loading={loading}
-          isDone={isDone}
-          formData={examFormData}
-          onDone={setIsDone}
-          onSubmit={editExam}
-          onDelete={handleSetModal(true)}
-        />
+        {schoolYear && (
+          <ExamUpsertForm
+            loading={loading}
+            schoolYearId={schoolYear.id}
+            isDone={isDone}
+            formData={examFormData}
+            onDone={setIsDone}
+            onSubmit={editExam}
+            onDelete={handleSetModal(true)}
+          />
+        )}
       </BaseDataSuspense>
       <BaseModal size='xs' open={openModal} onClose={handleSetModal(false)}>
         <div>

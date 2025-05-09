@@ -56,9 +56,7 @@ const LessonInfo = memo(function ({
       <BaseSurface rounded='sm'>
         <div className='flex items-center gap-2.5'>
           {/* Info */}
-          <BaseChip iconName='chalkboard-teacher'>
-            Lesson {orderNumber}
-          </BaseChip>
+          <BaseChip iconName='chalkboard'>Lesson {orderNumber}</BaseChip>
           <BaseDivider className='!h-6' vertical />
           <BaseChip iconName='hourglass'>{duration}</BaseChip>
         </div>
@@ -150,7 +148,7 @@ const ExamInfo = memo(function ({
       <BaseSurface rounded='sm'>
         <div className='flex items-center gap-2.5'>
           {/* Info */}
-          <BaseChip iconName='chalkboard-teacher'>Exam {orderNumber}</BaseChip>
+          <BaseChip iconName='chalkboard'>Exam {orderNumber}</BaseChip>
           <BaseDivider className='!h-6' vertical />
           <BaseChip iconName='list-numbers'>{totalPointsText}</BaseChip>
           <BaseDivider className='!h-6' vertical />

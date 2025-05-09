@@ -6,6 +6,7 @@ import {
   superAdminBaseRoute,
   superAdminPath,
 } from '#/app/routes/super-admin-routes';
+import { adminBaseRoute, adminPath } from '#/app/routes/admin-routes';
 import { teacherBaseRoute, teacherPath } from '#/app/routes/teacher-routes';
 import { studentBaseRoute, studentPath } from '#/app/routes/student-routes';
 import { UserRole } from '#/user/models/user.model';
@@ -45,6 +46,7 @@ export const BaseScene = memo(function ({
       {
         [studentPath]: [UserRole.Student, studentPath],
         [teacherPath]: [UserRole.Teacher, teacherPath],
+        [adminPath]: [UserRole.Admin, adminPath],
         [superAdminPath]: [UserRole.SuperAdmin, superAdminPath],
       }[path] || []
     );
@@ -63,7 +65,7 @@ export const BaseScene = memo(function ({
         {
           [UserRole.Student]: studentBaseRoute,
           [UserRole.Teacher]: teacherBaseRoute,
-          [UserRole.Admin]: teacherBaseRoute,
+          [UserRole.Admin]: adminBaseRoute,
           [UserRole.SuperAdmin]: superAdminBaseRoute,
         }[userRole] || '';
 

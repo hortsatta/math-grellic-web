@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { hasImage, replaceImageSrcs } from '#/utils/html.util';
 import { queryClient } from '#/config/react-query-client.config';
 import { queryExamKey } from '#/config/react-query-keys.config';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import {
   createExam as createExamApi,
   validateUpsertExam as validateUpsertExamApi,
@@ -21,6 +22,7 @@ type Result = {
 };
 
 export function useExamCreate(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [isDone, setIsDone] = useState(false);
 
   const { mutateAsync: validateUpsertExam, isLoading: isValidateExamLoading } =
@@ -53,7 +55,10 @@ export function useExamCreate(): Result {
       ]);
 
       if (hasImage(htmls)) {
-        const images = await mutateUploadExamImages({ data });
+        const images = await mutateUploadExamImages({
+          data,
+          schoolYearId: schoolYear?.id,
+        });
         // Replace base64 images from text field with uploaded images url
         data.questions.forEach((question) => {
           // Filter images by question order number and no 'c' character present in filename
@@ -83,7 +88,7 @@ export function useExamCreate(): Result {
 
       return mutateCreateExam(data);
     },
-    [validateUpsertExam, mutateUploadExamImages, mutateCreateExam],
+    [schoolYear, validateUpsertExam, mutateUploadExamImages, mutateCreateExam],
   );
 
   return {

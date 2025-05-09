@@ -19,6 +19,7 @@ import type { AnnouncementUpsertFormData } from '../models/announcement-form-dat
 const BASE_URL = 'announcements';
 
 export function getAnnouncementsByCurrentTeacherUser(
+  schoolYearId?: number,
   options?: Omit<
     UseQueryOptions<TeacherAnnouncements, Error, TeacherAnnouncements, any>,
     'queryKey' | 'queryFn'
@@ -26,9 +27,14 @@ export function getAnnouncementsByCurrentTeacherUser(
 ) {
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/teachers/list`;
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+    });
 
     try {
-      const teacherAnnouncements = await kyInstance.get(url).json();
+      const teacherAnnouncements = await kyInstance
+        .get(url, { searchParams })
+        .json();
       return teacherAnnouncements;
     } catch (error: any) {
       const apiError = await generateApiError(error);

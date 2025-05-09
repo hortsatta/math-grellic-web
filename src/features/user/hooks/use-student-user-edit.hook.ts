@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { queryClient } from '#/config/react-query-client.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import {
   transformToStudentUserAccount,
   transformToUserRegisterFormData,
@@ -26,6 +27,7 @@ type Result = {
 };
 
 export function useStudentUserEdit(id?: number): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [isDone, setIsDone] = useState(false);
 
   const { mutateAsync: mutateEditStudent, isLoading } = useMutation(
@@ -66,7 +68,7 @@ export function useStudentUserEdit(id?: number): Result {
     isFetching: isQueryFetching,
   } = useQuery(
     getStudentByIdAndCurrentTeacherUserApi(
-      { id: id || 0 },
+      { id: id || 0, schoolYearId: schoolYear?.id },
       {
         enabled: !!id,
         refetchOnWindowFocus: false,

@@ -240,12 +240,22 @@ export const TeacherExamSingleCard = memo(function ({
             >
               <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
               <BaseDivider
-                className='hidden !h-6 xs:block -2lg:hidden xl:block 2xl:hidden'
+                className={cx(
+                  'hidden !h-6',
+                  isDashboard
+                    ? 'xs:block -2lg:hidden xl:block 2xl:hidden'
+                    : 'xs:block sm:hidden',
+                )}
                 vertical
               />
               <BaseChip iconName='clock'>{scheduleTime}</BaseChip>
               <BaseDivider
-                className='hidden !h-6 xs:block -2lg:hidden xl:block 2xl:hidden'
+                className={cx(
+                  'hidden !h-6',
+                  isDashboard
+                    ? 'xs:block -2lg:hidden xl:block 2xl:hidden'
+                    : 'xs:block sm:hidden',
+                )}
                 vertical
               />
               <BaseChip iconName='hourglass'>{scheduleDuration}</BaseChip>

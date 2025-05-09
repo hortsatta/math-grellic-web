@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { hasImage, replaceImageSrcs } from '#/utils/html.util';
 import { queryClient } from '#/config/react-query-client.config';
 import { queryExamKey } from '#/config/react-query-keys.config';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import {
   transformToExam,
   transformToExamFormData,
@@ -24,11 +25,12 @@ type Result = {
   isDone: boolean;
   setIsDone: (isDone: boolean) => void;
   examFormData: ExamUpsertFormData | undefined;
-  editExam: (data: ExamUpsertFormData) => Promise<Exam>;
+  editExam: (data: ExamUpsertFormData) => Promise<Exam | undefined>;
   deleteExam: () => Promise<boolean>;
 };
 
 export function useExamEdit(slug?: string): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [isDone, setIsDone] = useState(false);
 
   const { mutateAsync: validateUpsertExam, isLoading: isValidateExamLoading } =
@@ -74,7 +76,7 @@ export function useExamEdit(slug?: string): Result {
     isFetching: isQueryFetching,
   } = useQuery(
     getExamBySlugAndCurrentTeacherUser(
-      { slug: slug || '' },
+      { slug: slug || '', schoolYearId: schoolYear?.id },
       {
         enabled: !!slug,
         refetchOnWindowFocus: false,
@@ -92,8 +94,10 @@ export function useExamEdit(slug?: string): Result {
 
   const editExam = useCallback(
     async (data: ExamUpsertFormData) => {
+      if (!exam) return;
+
       // Validate exam data before creation
-      await validateUpsertExam({ data, slug });
+      await validateUpsertExam({ data, id: exam.id });
       // If includes any image, then upload image first
       const htmls = data.questions.flatMap((q) => [
         q.text,
@@ -106,7 +110,11 @@ export function useExamEdit(slug?: string): Result {
       const hasExamImages = hasImage(htmls);
 
       if (hasExamImages) {
-        const images = await mutateUploadExamImages({ data, strict: true });
+        const images = await mutateUploadExamImages({
+          data,
+          schoolYearId: schoolYear?.id,
+          strict: true,
+        });
         // Replace base64 images from text field with uploaded images url
         data.questions.forEach((question) => {
           // Filter images by question order number and no 'c' character present in filename
@@ -135,21 +143,25 @@ export function useExamEdit(slug?: string): Result {
       }
 
       return mutateEditExam({
-        slug: slug || '',
+        id: exam.id,
         data,
         strict: !hasExamImages,
       });
     },
-    [slug, validateUpsertExam, mutateEditExam, mutateUploadExamImages],
+    [
+      exam,
+      schoolYear,
+      validateUpsertExam,
+      mutateEditExam,
+      mutateUploadExamImages,
+    ],
   );
 
   const deleteExam = useCallback(async () => {
-    if (!slug?.trim()) {
-      return false;
-    }
+    if (!exam) return false;
 
-    return mutateDeleteExam(slug);
-  }, [slug, mutateDeleteExam]);
+    return mutateDeleteExam(exam.id);
+  }, [exam, mutateDeleteExam]);
 
   return {
     loading:

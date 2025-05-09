@@ -6,7 +6,7 @@ import {
   formatPhoneNumber,
   generateFullName,
 } from '#/user/helpers/user.helper';
-import { UserApprovalStatus } from '#/user/models/user.model';
+import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
 import { UserAvatarImg } from '#/user/components/user-avatar-img.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseChip } from '#/base/components/base-chip.component';
@@ -87,33 +87,35 @@ export const StudentUserSingleCard = memo(function ({
   onEdit,
   ...moreProps
 }: Props) {
-  const [publicId, email, approvalStatus, gender, phoneNumber, fullName] =
-    useMemo(
-      () => [
-        student.publicId || '—',
-        student.email,
-        student.approvalStatus,
-        student.gender,
-        formatPhoneNumber(student.phoneNumber),
-        generateFullName(
-          student.firstName,
-          student.lastName,
-          student.middleName,
-        ),
-      ],
-      [student],
-    );
+  const [
+    publicId,
+    email,
+    enrollmentApprovalStatus,
+    gender,
+    phoneNumber,
+    fullName,
+  ] = useMemo(
+    () => [
+      student.publicId || '—',
+      student.email,
+      student.enrollment?.approvalStatus,
+      student.gender,
+      formatPhoneNumber(student.phoneNumber),
+      generateFullName(student.firstName, student.lastName, student.middleName),
+    ],
+    [student],
+  );
 
   const [statusLabel, statusIconName] = useMemo(() => {
-    switch (approvalStatus) {
-      case UserApprovalStatus.Approved:
+    switch (enrollmentApprovalStatus) {
+      case SchoolYearEnrollmentApprovalStatus.Approved:
         return ['Enrolled', 'check-square'];
-      case UserApprovalStatus.Rejected:
-        return [approvalStatus, 'x-square'];
+      case SchoolYearEnrollmentApprovalStatus.Rejected:
+        return [enrollmentApprovalStatus, 'x-square'];
       default:
-        return [approvalStatus, 'minus-square'];
+        return [enrollmentApprovalStatus, 'minus-square'];
     }
-  }, [approvalStatus]);
+  }, [enrollmentApprovalStatus]);
 
   return (
     <BaseSurface

@@ -6,10 +6,13 @@ import { queryClient } from '#/config/react-query-client.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import { PAGINATION_TAKE } from '#/utils/api.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
+import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
+import { setStudentApprovalStatus as setStudentApprovalStatusApi } from '#/school-year/api/school-year-enrollment.api';
+import { UserApprovalStatus } from '../models/user.model';
 import { transformToStudentUserAccount } from '../helpers/user-transform.helper';
 import {
   getPaginatedStudentsByCurrentTeacherUser,
-  setStudentApprovalStatus as setStudentApprovalStatusApi,
   deleteStudent as deleteStudentApi,
 } from '../api/teacher-user.api';
 
@@ -18,10 +21,7 @@ import type {
   QueryPagination,
   QuerySort,
 } from '#/base/models/base.model';
-import type {
-  StudentUserAccount,
-  UserApprovalStatus,
-} from '../models/user.model';
+import type { StudentUserAccount } from '../models/user.model';
 
 type Result = {
   students: StudentUserAccount[];
@@ -39,7 +39,7 @@ type Result = {
   handleStudentDetails: (id: number) => void;
   setStudentApprovalStatus: (
     id: number,
-    approvalStatus: UserApprovalStatus,
+    approvalStatus: SchoolYearEnrollmentApprovalStatus,
   ) => Promise<any>;
   deleteStudent: (id: number) => Promise<boolean | undefined>;
 };
@@ -53,13 +53,15 @@ export const defaultSort = {
 
 export const defaultParamKeys = {
   q: undefined,
-  status: undefined,
+  status: UserApprovalStatus.Approved,
   sort: `${defaultSort.field},${defaultSort.order}`,
   pagination: { take: PAGINATION_TAKE, skip: 0 },
+  enrollmentStatus: undefined,
 };
 
 export function useStudentUserList(): Result {
   const navigate = useNavigate();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [keyword, setKeyword] = useState<string | null>(null);
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
   const [sort, setSort] = useState<QuerySort>(defaultSort);
@@ -70,13 +72,13 @@ export function useStudentUserList(): Result {
     setSkip(0);
   }, [keyword, filters, sort]);
 
-  const status = useMemo(() => {
+  const enrollmentStatus = useMemo(() => {
     if (!filters.length) {
       return undefined;
     }
 
     return filters
-      .filter((f) => f.name === 'status')
+      .filter((f) => f.name === 'estatus')
       .map((f) => f.value)
       .join(',');
   }, [filters]);
@@ -87,7 +89,14 @@ export function useStudentUserList(): Result {
 
   const { data, isLoading, isRefetching, refetch } = useQuery(
     getPaginatedStudentsByCurrentTeacherUser(
-      { q: keyword || undefined, status, sort: querySort, pagination },
+      {
+        q: keyword || undefined,
+        status: UserApprovalStatus.Approved,
+        sort: querySort,
+        pagination,
+        schoolYearId: schoolYear?.id,
+        enrollmentStatus,
+      },
       {
         refetchOnWindowFocus: false,
         select: (data: any[]) => {
@@ -164,9 +173,9 @@ export function useStudentUserList(): Result {
   );
 
   const setStudentApprovalStatus = useCallback(
-    async (id: number, approvalStatus: UserApprovalStatus) => {
+    async (id: number, approvalStatus: SchoolYearEnrollmentApprovalStatus) => {
       const result = await mutateSetStudentApprovalStatus({
-        studentId: id,
+        enrollmentId: id,
         approvalStatus,
       });
 

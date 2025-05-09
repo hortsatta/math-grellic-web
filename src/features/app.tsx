@@ -6,6 +6,7 @@ import { useOverlayScrollbars } from 'overlayscrollbars-react';
 
 import { queryClient } from '#/config/react-query-client.config';
 import { AuthSessionSubscriber } from './auth/components/auth-session-subscriber.component';
+import { SchoolYearEnrollmentSessionSubscriber } from './school-year/components/school-year-enrollment-session-subscriber.component';
 import { router } from './app/routes/root.route';
 import '#/config/dayjs.config';
 
@@ -31,6 +32,7 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthSessionSubscriber />
+      <SchoolYearEnrollmentSessionSubscriber />
       <RouterProvider router={router} future={{ v7_startTransition: true }} />
       <Toaster containerClassName='mb-12' position='bottom-center' />
     </QueryClientProvider>

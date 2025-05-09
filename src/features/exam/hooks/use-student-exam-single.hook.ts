@@ -44,6 +44,7 @@ export function useStudentExamSingle(): Result {
   const { serverClock, startClock, stopClock } = useClockSocket();
   const socket = useBoundStore((state) => state.socket);
   const user = useBoundStore((state) => state.user);
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [isDone, setIsDone] = useState(false);
   const [isExpired, setIsExpired] = useState(false);
   const [roomName, setRoomName] = useState<string | null>(null);
@@ -58,7 +59,7 @@ export function useStudentExamSingle(): Result {
     isFetching,
   } = useQuery(
     getExamBySlugAndCurrentStudentUser(
-      { slug: slug || '' },
+      { slug: slug || '', schoolYearId: schoolYear?.id },
       {
         enabled: !!slug,
         refetchOnWindowFocus: false,
@@ -141,6 +142,8 @@ export function useStudentExamSingle(): Result {
 
   const setExamCompletion = useCallback(
     async (data: StudentExamFormData) => {
+      if (!exam) return null;
+
       if (!exam?.schedules?.length)
         throw new Error('Cannot submit exam, please try again');
 
@@ -155,9 +158,9 @@ export function useStudentExamSingle(): Result {
 
       const scheduleId = exam.schedules[0].id;
 
-      return mutateAsync({ slug: slug || '', data: { ...data, scheduleId } });
+      return mutateAsync({ id: exam.id, data: { ...data, scheduleId } });
     },
-    [slug, roomName, exam, user, socket, stopExam, mutateAsync],
+    [roomName, exam, user, socket, stopExam, mutateAsync],
   );
 
   // Stop clock ticking if current lesson is already available

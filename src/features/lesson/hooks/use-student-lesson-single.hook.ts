@@ -6,6 +6,7 @@ import { getDayJsDuration } from '#/utils/time.util';
 import { queryClient } from '#/config/react-query-client.config';
 import { queryLessonKey } from '#/config/react-query-keys.config';
 import { useClockSocket } from '#/core/hooks/use-clock-socket.hook';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToLesson } from '../helpers/lesson-transform.helper';
 import {
   getLessonBySlugAndCurrentStudentUser,
@@ -29,6 +30,7 @@ type Result = {
 export function useStudentLessonSingle(): Result {
   const { serverClock, startClock, stopClock } = useClockSocket();
   const { slug } = useParams();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
 
   const {
     data: lesson,
@@ -36,7 +38,7 @@ export function useStudentLessonSingle(): Result {
     isFetching,
   } = useQuery(
     getLessonBySlugAndCurrentStudentUser(
-      { slug: slug || '' },
+      { slug: slug || '', schoolYearId: schoolYear?.id },
       {
         enabled: !!slug,
         refetchOnWindowFocus: false,
@@ -74,8 +76,12 @@ export function useStudentLessonSingle(): Result {
   }, [isUpcoming, lesson, serverClock]);
 
   const setLessonCompletion = useCallback(
-    (isCompleted: boolean) => mutateAsync({ slug: slug || '', isCompleted }),
-    [slug, mutateAsync],
+    async (isCompleted: boolean) => {
+      if (!lesson) return null;
+
+      return await mutateAsync({ id: lesson.id, isCompleted });
+    },
+    [lesson, mutateAsync],
   );
 
   // Stop clock ticking if current lesson is already available

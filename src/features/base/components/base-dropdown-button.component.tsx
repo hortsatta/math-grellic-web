@@ -13,6 +13,7 @@ type Props = ComponentProps<'button'> & {
   alwaysShowCheck?: boolean;
   center?: boolean;
   iconName?: IconName;
+  disableFixedHeight?: boolean;
 };
 
 export const BaseDropdownButton = memo(
@@ -25,6 +26,7 @@ export const BaseDropdownButton = memo(
       checked,
       alwaysShowCheck,
       center,
+      disableFixedHeight,
       children,
       ...moreProps
     },
@@ -53,8 +55,9 @@ export const BaseDropdownButton = memo(
       >
         <div
           className={cx(
-            'relative flex h-4 w-full items-center',
+            'relative flex w-full items-center',
             center ? 'justify-center' : 'justify-between',
+            !disableFixedHeight && 'h-4',
           )}
         >
           <div className='flex h-full items-center gap-2'>

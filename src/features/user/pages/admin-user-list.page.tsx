@@ -30,10 +30,10 @@ const filterOptions = [
     label: 'Registered',
   },
   {
-    key: 'status-mailpending',
+    key: 'status-pending',
     name: 'status',
-    value: UserApprovalStatus.MailPending,
-    label: 'Email Pending',
+    value: UserApprovalStatus.Pending,
+    label: 'Pending',
   },
   {
     key: 'status-rejected',

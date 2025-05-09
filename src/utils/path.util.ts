@@ -1,5 +1,6 @@
 import { staticRoutes } from '#/app/routes/static-routes';
 import { superAdminBaseRoute } from '#/app/routes/super-admin-routes';
+import { adminBaseRoute } from '#/app/routes/admin-routes';
 import { teacherBaseRoute } from '#/app/routes/teacher-routes';
 import { studentBaseRoute } from '#/app/routes/student-routes';
 import { UserRole } from '#/user/models/user.model';
@@ -20,8 +21,7 @@ export function generateDashboardPath(role: UserRole) {
     case UserRole.Student:
       return `/${studentBaseRoute}`;
     case UserRole.Admin:
-      // TODO admin path
-      return '';
+      return `/${adminBaseRoute}`;
     case UserRole.SuperAdmin:
       return `/${superAdminBaseRoute}`;
   }

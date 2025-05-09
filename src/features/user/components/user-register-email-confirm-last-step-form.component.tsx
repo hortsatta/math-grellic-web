@@ -5,15 +5,18 @@ import { z } from 'zod';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
+import { BaseButton } from '#/base/components/base-button.components';
 import { BaseControlledInput } from '#/base/components/base-input.component';
 import { BaseControlledPasswordInput } from '#/base/components/base-password-input.component';
 
 import type { FormProps } from '#/base/models/base.model';
 import type { UserRegisterLastStepFormData } from '../models/user-form-data.model';
-import { BaseButton } from '#/base/components/base-button.components';
 
 type FormData = Omit<UserRegisterLastStepFormData, 'token'>;
-type Props = FormProps<'div', FormData, void>;
+type Props = FormProps<'div', FormData, void> & {
+  title?: string;
+  subtitle?: string;
+};
 
 const schema = z
   .object({
@@ -38,6 +41,8 @@ export const UserRegisterEmailConfirmLastStepForm = memo(function ({
   loading: formLoading,
   isDone,
   onSubmit,
+  title = 'Confirm Registration',
+  subtitle = 'Please create your password to complete your registration.',
   ...moreProps
 }: Props) {
   const [showPassword, setShowPassword] = useState(false);
@@ -74,11 +79,9 @@ export const UserRegisterEmailConfirmLastStepForm = memo(function ({
     <div className={cx('w-full px-4 pt-8 lg:px-11', className)} {...moreProps}>
       <div className='mb-12'>
         <h1 className='mb-2 w-full text-center leading-tight xs:leading-normal sm:text-left'>
-          Confirm Registration
+          {title}
         </h1>
-        <p className='max-w-[600px] text-lg'>
-          Please create your password to complete your registration.
-        </p>
+        <p className='max-w-[600px] text-lg'>{subtitle}</p>
       </div>
       <FormProvider {...methods}>
         <form

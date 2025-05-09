@@ -2,6 +2,7 @@ import { memo, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { transformToExam } from '#/exam/helpers/exam-transform.helper';
 import { StudentExamQuestionResult } from '#/exam/components/student-exam-question-result.component';
@@ -20,6 +21,7 @@ export const TeacherStudentExamPerformanceResult = memo(function ({
   ...moreProps
 }: Props) {
   const { publicId } = useParams();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
 
   const {
     data: exam,
@@ -27,7 +29,12 @@ export const TeacherStudentExamPerformanceResult = memo(function ({
     isLoading,
   } = useQuery(
     getStudentExamWithCompletionsByPublicIdAndSlug(
-      { publicId: publicId || '', slug, scheduleId },
+      {
+        publicId: publicId || '',
+        slug,
+        scheduleId,
+        schoolYearId: schoolYear?.id,
+      },
       {
         refetchOnWindowFocus: false,
         enabled: !!publicId,

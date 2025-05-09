@@ -5,6 +5,7 @@ import { getDayJsDuration } from '#/utils/time.util';
 import { queryClient } from '#/config/react-query-client.config';
 import { queryLessonKey } from '#/config/react-query-keys.config';
 import { useClockSocket } from '#/core/hooks/use-clock-socket.hook';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToLesson } from '../helpers/lesson-transform.helper';
 import { getLessonsByCurrentStudentUser } from '../api/student-lesson.api';
 
@@ -24,6 +25,7 @@ type Result = {
 
 export function useStudentLessonList(): Result {
   const { serverClock, startClock, stopClock } = useClockSocket();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [keyword, setKeyword] = useState<string | null>(null);
 
   const {
@@ -32,27 +34,30 @@ export function useStudentLessonList(): Result {
     isRefetching,
     refetch,
   } = useQuery(
-    getLessonsByCurrentStudentUser(keyword || undefined, {
-      refetchOnWindowFocus: false,
-      select: (data: any) => {
-        const { latestLesson, upcomingLesson, previousLessons } = data;
-        const transformedLatestLesson = latestLesson
-          ? transformToLesson(latestLesson)
-          : null;
-        const transformedUpcomingLesson = upcomingLesson
-          ? transformToLesson(upcomingLesson)
-          : null;
-        const transformedPreviousLessons = previousLessons?.length
-          ? previousLessons.map((item: any) => transformToLesson(item))
-          : [];
+    getLessonsByCurrentStudentUser(
+      { q: keyword || undefined, schoolYearId: schoolYear?.id },
+      {
+        refetchOnWindowFocus: false,
+        select: (data: any) => {
+          const { latestLesson, upcomingLesson, previousLessons } = data;
+          const transformedLatestLesson = latestLesson
+            ? transformToLesson(latestLesson)
+            : null;
+          const transformedUpcomingLesson = upcomingLesson
+            ? transformToLesson(upcomingLesson)
+            : null;
+          const transformedPreviousLessons = previousLessons?.length
+            ? previousLessons.map((item: any) => transformToLesson(item))
+            : [];
 
-        return {
-          latestLesson: transformedLatestLesson,
-          upcomingLesson: transformedUpcomingLesson,
-          previousLessons: transformedPreviousLessons,
-        };
+          return {
+            latestLesson: transformedLatestLesson,
+            upcomingLesson: transformedUpcomingLesson,
+            previousLessons: transformedPreviousLessons,
+          };
+        },
       },
-    }),
+    ),
   );
 
   const { latestLesson, upcomingLesson, previousLessons } = useMemo(

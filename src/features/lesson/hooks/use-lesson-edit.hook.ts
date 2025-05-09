@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { queryLessonKey } from '#/config/react-query-keys.config';
 import { queryClient } from '#/config/react-query-client.config';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import {
   transformToLesson,
   transformToLessonFormData,
@@ -21,11 +22,12 @@ type Result = {
   isDone: boolean;
   setIsDone: (isDone: boolean) => void;
   lessonFormData: LessonUpsertFormData | undefined;
-  editLesson: (data: LessonUpsertFormData) => Promise<Lesson>;
-  deleteLesson: () => Promise<boolean>;
+  editLesson: (data: LessonUpsertFormData) => Promise<Lesson | undefined>;
+  deleteLesson: () => Promise<boolean | undefined>;
 };
 
 export function useLessonEdit(slug?: string): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [isDone, setIsDone] = useState(false);
 
   const { mutateAsync: mutateEditLesson, isLoading } = useMutation(
@@ -63,7 +65,7 @@ export function useLessonEdit(slug?: string): Result {
     isFetching: isQueryFetching,
   } = useQuery(
     getLessonBySlugAndCurrentTeacherUser(
-      { slug: slug || '' },
+      { slug: slug || '', schoolYearId: schoolYear?.id },
       {
         enabled: !!slug,
         refetchOnWindowFocus: false,
@@ -81,22 +83,22 @@ export function useLessonEdit(slug?: string): Result {
 
   const editLesson = useCallback(
     async (data: LessonUpsertFormData) => {
+      if (!lesson) return;
+
       const updatedLesson = await mutateEditLesson({
-        slug: slug || '',
+        id: lesson.id,
         data,
       });
       return updatedLesson;
     },
-    [slug, mutateEditLesson],
+    [lesson, mutateEditLesson],
   );
 
   const deleteLesson = useCallback(async () => {
-    if (!slug?.trim()) {
-      return false;
-    }
+    if (!lesson) return false;
 
-    return mutateDeleteLesson(slug);
-  }, [slug, mutateDeleteLesson]);
+    return mutateDeleteLesson(lesson.id);
+  }, [lesson, mutateDeleteLesson]);
 
   return {
     loading: isLoading || isDeleteLoading || isQueryLoading || isQueryFetching,

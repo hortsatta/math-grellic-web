@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToExam } from '../helpers/exam-transform.helper';
 import { getExamBySlugAndCurrentTeacherUser } from '../api/teacher-exam.api';
 
@@ -24,6 +25,7 @@ type Result = {
 
 export function useExamPreviewSlug(): Result {
   const { slug } = useParams();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [isDone, setIsDone] = useState(false);
   const [examCompletion, setExamCompletion] = useState<ExamCompletion | null>(
     null,
@@ -31,7 +33,7 @@ export function useExamPreviewSlug(): Result {
 
   const { data: exam } = useQuery(
     getExamBySlugAndCurrentTeacherUser(
-      { slug: slug || '', exclude: 'schedules' },
+      { slug: slug || '', schoolYearId: schoolYear?.id, exclude: 'schedules' },
       {
         enabled: !!slug,
         refetchOnWindowFocus: false,

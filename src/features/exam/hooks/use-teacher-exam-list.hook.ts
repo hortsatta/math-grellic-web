@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { PAGINATION_TAKE } from '#/utils/api.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { getPaginatedExamsByCurrentTeacherUser } from '../api/teacher-exam.api';
 import { transformToExam } from '../helpers/exam-transform.helper';
 
@@ -47,6 +48,7 @@ export const defaultParamKeys = {
 
 export function useTeacherExamList(): Result {
   const navigate = useNavigate();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [keyword, setKeyword] = useState<string | null>(null);
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
   const [sort, setSort] = useState<QuerySort>(defaultSort);
@@ -74,7 +76,13 @@ export function useTeacherExamList(): Result {
 
   const { data, isLoading, isRefetching, refetch } = useQuery(
     getPaginatedExamsByCurrentTeacherUser(
-      { q: keyword || undefined, status, sort: querySort, pagination },
+      {
+        q: keyword || undefined,
+        status,
+        sort: querySort,
+        pagination,
+        schoolYearId: schoolYear?.id,
+      },
       {
         refetchOnWindowFocus: false,
         select: (data: any[]) => {

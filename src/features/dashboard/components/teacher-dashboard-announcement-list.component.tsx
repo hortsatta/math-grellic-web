@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { transformToAnnouncementFormData } from '#/announcement/helpers/announcement-transform.helper';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
@@ -27,7 +28,7 @@ type Props = ComponentProps<typeof BaseSurface> & {
     id: number,
     data: AnnouncementUpsertFormData,
   ) => Promise<Announcement>;
-  onDelete?: (id: number) => void;
+  onDelete?: (id: number) => Promise<boolean>;
   onRefresh?: () => void;
 };
 
@@ -41,6 +42,7 @@ export const TeacherDashboardAnnouncementList = memo(function ({
   onRefresh,
   ...moreProps
 }: Props) {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [announcement, setAnnouncement] = useState<Announcement | null>(null);
 
   const [announcementFormData, setAnnouncementFormData] =
@@ -231,17 +233,20 @@ export const TeacherDashboardAnnouncementList = memo(function ({
             />
           </div>
         ) : (
-          <AnnouncementUpsertForm
-            loading={loading}
-            formData={
-              editAnnouncement
-                ? editAnnouncement.formData
-                : announcementFormData || undefined
-            }
-            onSubmit={handleUpsertAnnouncement}
-            onDelete={handleDeleteAnnouncement}
-            withPreview={!editAnnouncement}
-          />
+          schoolYear && (
+            <AnnouncementUpsertForm
+              schoolYearId={schoolYear.id}
+              loading={loading}
+              formData={
+                editAnnouncement
+                  ? editAnnouncement.formData
+                  : announcementFormData || undefined
+              }
+              onSubmit={handleUpsertAnnouncement}
+              onDelete={handleDeleteAnnouncement}
+              withPreview={!editAnnouncement}
+            />
+          )
         )}
       </BaseModal>
     </>

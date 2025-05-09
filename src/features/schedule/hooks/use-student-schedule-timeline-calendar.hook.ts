@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import dayjs from '#/config/dayjs.config';
 import { DAYS_PER_WEEK } from '#/utils/time.util';
 import { getDateTimeNow } from '#/core/api/core.api';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToTimelineSchedules } from '../helpers/schedule-transform.helper';
 import { getSchedulesByDateRangeAndCurrentStudentUser } from '../api/student-schedule.api';
 
@@ -19,6 +20,7 @@ type Result = {
 };
 
 export function useStudentScheduleTimelineCalendar(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [weekIndex, setWeekIndex] = useState(0);
 
   const [from, to] = useMemo(() => {
@@ -50,7 +52,7 @@ export function useStudentScheduleTimelineCalendar(): Result {
     refetch,
   } = useQuery(
     getSchedulesByDateRangeAndCurrentStudentUser(
-      { from, to },
+      { from, to, schoolYearId: schoolYear?.id },
       {
         refetchOnWindowFocus: false,
         select: (data: any) => transformToTimelineSchedules(data),

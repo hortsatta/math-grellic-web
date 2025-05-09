@@ -17,7 +17,7 @@ export const studentRoutes = {
     name: 'lessons',
     to: 'lessons',
     label: 'Lessons',
-    iconName: 'chalkboard-teacher',
+    iconName: 'chalkboard',
     hasRightSidebar: true,
   },
   exam: {
@@ -66,6 +66,12 @@ export const studentRoutes = {
     label: 'Account',
     teacherAccountTo: 'teacher',
     editTo: 'edit',
+    hidden: true,
+  },
+  enrollment: {
+    name: 'enrollment',
+    to: 'enrollment',
+    label: 'Enrollment',
     hidden: true,
   },
 };

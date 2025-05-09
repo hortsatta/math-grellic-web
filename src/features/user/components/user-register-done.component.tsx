@@ -19,7 +19,7 @@ export const UserRegisterDone = memo(function ({
           Before accessing the platform, there's one final step.
           <br />
           <br />
-          We've sent a confirmation email to your address—please check your
+          We've sent a confirmation email to your address — please check your
           inbox and follow the link to verify your email. Thank you.
         </p>
         <BaseLink to='/' rightIconName='arrow-circle-right'>

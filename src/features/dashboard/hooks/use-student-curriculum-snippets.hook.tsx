@@ -10,6 +10,7 @@ import { transformToActivity } from '#/activity/helpers/activity-transform.helpe
 import { getLessonsByCurrentStudentUser } from '#/lesson/api/student-lesson.api';
 import { getExamsByCurrentStudentUser } from '#/exam/api/student-exam.api';
 import { getActivitiesByCurrentStudentUser } from '#/activity/api/student-activity.api';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { useClockSocket } from '#/core/hooks/use-clock-socket.hook';
 
 import type {
@@ -38,6 +39,7 @@ type Result = {
 };
 
 export function useStudentCurriculumSnippets(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const { serverClock, startClock, stopClock } = useClockSocket();
 
   const {
@@ -46,27 +48,30 @@ export function useStudentCurriculumSnippets(): Result {
     isRefetching: isLessonRefetching,
     refetch: refetchLesson,
   } = useQuery(
-    getLessonsByCurrentStudentUser(undefined, {
-      refetchOnWindowFocus: false,
-      select: (data: any) => {
-        const { latestLesson, upcomingLesson, previousLessons } = data;
-        const transformedLatestLesson = latestLesson
-          ? transformToLesson(latestLesson)
-          : null;
-        const transformedUpcomingLesson = upcomingLesson
-          ? transformToLesson(upcomingLesson)
-          : null;
-        const transformedPreviousLessons = previousLessons?.length
-          ? previousLessons.map((item: any) => transformToLesson(item))
-          : [];
+    getLessonsByCurrentStudentUser(
+      { schoolYearId: schoolYear?.id },
+      {
+        refetchOnWindowFocus: false,
+        select: (data: any) => {
+          const { latestLesson, upcomingLesson, previousLessons } = data;
+          const transformedLatestLesson = latestLesson
+            ? transformToLesson(latestLesson)
+            : null;
+          const transformedUpcomingLesson = upcomingLesson
+            ? transformToLesson(upcomingLesson)
+            : null;
+          const transformedPreviousLessons = previousLessons?.length
+            ? previousLessons.map((item: any) => transformToLesson(item))
+            : [];
 
-        return {
-          latestLesson: transformedLatestLesson,
-          upcomingLesson: transformedUpcomingLesson,
-          previousLessons: transformedPreviousLessons,
-        };
+          return {
+            latestLesson: transformedLatestLesson,
+            upcomingLesson: transformedUpcomingLesson,
+            previousLessons: transformedPreviousLessons,
+          };
+        },
       },
-    }),
+    ),
   );
 
   const {
@@ -75,34 +80,38 @@ export function useStudentCurriculumSnippets(): Result {
     isRefetching: isExamRefetching,
     refetch: refetchExam,
   } = useQuery(
-    getExamsByCurrentStudentUser(undefined, {
-      refetchOnWindowFocus: false,
-      select: (data: any) => {
-        const { latestExam, upcomingExam, previousExams, ongoingExams } = data;
-        const transformedLatestExam = latestExam
-          ? transformToExam(latestExam)
-          : null;
+    getExamsByCurrentStudentUser(
+      { schoolYearId: schoolYear?.id },
+      {
+        refetchOnWindowFocus: false,
+        select: (data: any) => {
+          const { latestExam, upcomingExam, previousExams, ongoingExams } =
+            data;
+          const transformedLatestExam = latestExam
+            ? transformToExam(latestExam)
+            : null;
 
-        const transformedUpcomingExam = upcomingExam
-          ? transformToExam(upcomingExam)
-          : null;
+          const transformedUpcomingExam = upcomingExam
+            ? transformToExam(upcomingExam)
+            : null;
 
-        const transformedPreviousExams = previousExams?.length
-          ? previousExams.map((item: any) => transformToExam(item))
-          : [];
+          const transformedPreviousExams = previousExams?.length
+            ? previousExams.map((item: any) => transformToExam(item))
+            : [];
 
-        const transformedOngoingExams = ongoingExams?.length
-          ? ongoingExams.map((item: any) => transformToExam(item))
-          : [];
+          const transformedOngoingExams = ongoingExams?.length
+            ? ongoingExams.map((item: any) => transformToExam(item))
+            : [];
 
-        return {
-          latestExam: transformedLatestExam,
-          upcomingExam: transformedUpcomingExam,
-          previousExams: transformedPreviousExams,
-          ongoingExams: transformedOngoingExams,
-        };
+          return {
+            latestExam: transformedLatestExam,
+            upcomingExam: transformedUpcomingExam,
+            previousExams: transformedPreviousExams,
+            ongoingExams: transformedOngoingExams,
+          };
+        },
       },
-    }),
+    ),
   );
 
   const {

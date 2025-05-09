@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToStudentPerformance } from '../helpers/performance-transform.helper';
 import { getPaginatedStudentPerformancesByCurrentTeacherUser } from '../api/teacher-performance.api';
 import { StudentPerformanceType } from '../models/performance.model';
@@ -16,6 +17,8 @@ type Result = {
 export function useTeacherStudentPerformanceLeaderboard(
   performance: StudentPerformanceType,
 ): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
+
   const {
     data,
     isLoading,
@@ -28,6 +31,7 @@ export function useTeacherStudentPerformanceLeaderboard(
         performance,
         sort: 'rank,asc',
         pagination: { take: 5, skip: 0 },
+        schoolYearId: schoolYear?.id,
       },
       {
         refetchOnWindowFocus: false,

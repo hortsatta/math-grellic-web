@@ -3,8 +3,9 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 import { transformToActivity } from '#/activity/helpers/activity-transform.helper';
-import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { activityGameLabel } from '#/activity/models/activity.model';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
+import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { StudentActivityQuestionResult } from '#/activity/components/student-activity-question-result.component';
 import { getStudentActivityWithCompletionsByPublicIdAndSlug } from '../api/teacher-performance.api';
 
@@ -22,6 +23,7 @@ export const TeacherStudentActivityPerformanceResult = memo(function ({
   ...moreProps
 }: Props) {
   const { publicId } = useParams();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
 
   const {
     data: activity,
@@ -29,7 +31,7 @@ export const TeacherStudentActivityPerformanceResult = memo(function ({
     isLoading,
   } = useQuery(
     getStudentActivityWithCompletionsByPublicIdAndSlug(
-      { publicId: publicId || '', slug },
+      { publicId: publicId || '', slug, schoolYearId: schoolYear?.id },
       {
         refetchOnWindowFocus: false,
         enabled: !!publicId,

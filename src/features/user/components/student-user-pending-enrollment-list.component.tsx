@@ -50,7 +50,7 @@ export const StudentUserPendingEnrollmentList = memo(
 
     const [date, email, phoneNumber, fullName] = useMemo(
       () => [
-        dayjs(currentStudent?.createdAt).format('DD-MM-YYYY'),
+        dayjs(currentStudent?.enrollment?.createdAt).format('DD-MM-YYYY'),
         currentStudent?.email,
         currentStudent ? formatPhoneNumber(currentStudent?.phoneNumber) : '',
         currentStudent

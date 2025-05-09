@@ -15,6 +15,11 @@ export const queryUserKey = {
   allTeacherList: ['users', 'all-teacher-list'],
   allStudentList: ['users', 'all-student-list'],
   selectedStudentList: ['users', 'selected-student-list'],
+  selectedTeacherList: ['users', 'selected-teacher-list'],
+};
+
+export const querySyEnrollmentKey = {
+  currentSyEnrollment: ['sy-enrollments', 'current-sy-enrollment'],
 };
 
 export const queryTeacherPerformanceKey = {
@@ -27,6 +32,13 @@ export const queryTeacherPerformanceKey = {
 export const queryStudentPerformanceKey = {
   list: ['performances', 'list'],
   single: ['performances', 'single'],
+};
+
+export const querySchoolYearKey = {
+  list: ['school-years', 'list'],
+  userList: ['school-years', 'user-list'],
+  single: ['school-years', 'single'],
+  current: ['school-years', 'current'],
 };
 
 export const queryLessonKey = {

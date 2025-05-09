@@ -4,7 +4,7 @@ import { useUserRegisterEmailConfirmLastStep } from '../hooks/use-user-register-
 import { UserRegisterEmailConfirmLastStepForm } from '../components/user-register-email-confirm-last-step-form.component';
 import { UserRegisterEmailConfirmLastStepDone } from '../components/user-register-email-confirm-last-step-done.component';
 
-export function UserRegisterEmailConfirmLastStepPage() {
+function UserRegisterEmailConfirmLastStepPage() {
   const { loading, publicId, isConfirmed, submitLastStep } =
     useUserRegisterEmailConfirmLastStep();
 
@@ -29,3 +29,5 @@ export function UserRegisterEmailConfirmLastStepPage() {
     </BaseStaticScene>
   );
 }
+
+export default UserRegisterEmailConfirmLastStepPage;

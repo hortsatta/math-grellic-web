@@ -22,6 +22,7 @@ import type {
 } from '../models/user-form-data.model';
 
 const BASE_URL = 'users';
+const STUDENT_URL = 'students';
 const TEACHER_BASE_URL = `${BASE_URL}/teachers`;
 
 export function registerTeacherUser(
@@ -52,6 +53,8 @@ export function getPaginatedStudentsByCurrentTeacherUser(
     status?: string;
     sort?: string;
     pagination?: Omit<QueryPagination, 'totalCount'>;
+    schoolYearId?: number;
+    enrollmentStatus?: string;
   },
   options?: Omit<
     UseQueryOptions<
@@ -63,17 +66,20 @@ export function getPaginatedStudentsByCurrentTeacherUser(
     'queryKey' | 'queryFn'
   >,
 ) {
-  const { q, status, sort, pagination } = keys || {};
+  const { q, status, sort, pagination, schoolYearId, enrollmentStatus } =
+    keys || {};
   const { take, skip } = pagination || {};
 
   const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/students/list`;
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/list`;
     const searchParams = generateSearchParams({
       q,
       status,
       sort,
       skip: skip?.toString() || '0',
       take: take?.toString() || '0',
+      sy: schoolYearId?.toString(),
+      estatus: enrollmentStatus,
     });
 
     try {
@@ -86,28 +92,39 @@ export function getPaginatedStudentsByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryUserKey.studentList, { q, status, sort, skip, take }],
+    queryKey: [
+      ...queryUserKey.studentList,
+      { q, status, sort, skip, take, enrollmentStatus },
+    ],
     queryFn,
     ...options,
   };
 }
 
 export function getStudentsByCurrentTeacherUser(
-  keys?: { q?: string; ids?: number[]; status?: string },
+  keys?: {
+    q?: string;
+    ids?: number[];
+    status?: string;
+    schoolYearId?: number;
+    enrollmentStatus?: string;
+  },
   options?: Omit<
     UseQueryOptions<StudentUserAccount[], Error, StudentUserAccount[], any>,
     'queryFn'
   >,
 ) {
-  const { q, ids, status } = keys || {};
+  const { q, ids, status, schoolYearId, enrollmentStatus } = keys || {};
   const { queryKey, ...moreOptions } = options || {};
 
   const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/students/list/all`;
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/list/all`;
     const searchParams = generateSearchParams({
       q,
       ids: ids?.join(','),
       status,
+      sy: schoolYearId?.toString(),
+      estatus: enrollmentStatus,
     });
 
     try {
@@ -122,7 +139,7 @@ export function getStudentsByCurrentTeacherUser(
   return {
     queryKey: [
       ...(queryKey?.length ? queryKey : queryUserKey.allStudentList),
-      { q, ids, status },
+      { q, ids, status, enrollmentStatus },
     ],
     queryFn,
     ...moreOptions,
@@ -130,14 +147,19 @@ export function getStudentsByCurrentTeacherUser(
 }
 
 export function getStudentCountByCurrentTeacherUser(
-  status?: string,
+  keys?: { status?: string; schoolYearId?: number; enrollmentStatus?: string },
   options?: Omit<UseQueryOptions<number, Error, number, any>, 'queryFn'>,
 ) {
+  const { status, schoolYearId, enrollmentStatus } = keys || {};
   const { queryKey, ...moreOptions } = options || {};
 
   const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/students/count`;
-    const searchParams = generateSearchParams({ status });
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/count`;
+    const searchParams = generateSearchParams({
+      status,
+      sy: schoolYearId?.toString(),
+      estatus: enrollmentStatus,
+    });
 
     try {
       const count = await kyInstance.get(url, { searchParams }).json();
@@ -159,17 +181,26 @@ export function getStudentCountByCurrentTeacherUser(
 }
 
 export function getStudentByIdAndCurrentTeacherUser(
-  keys: { id: number; exclude?: string; include?: string },
+  keys: {
+    id: number;
+    schoolYearId?: number;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<
     UseQueryOptions<StudentUserAccount, Error, StudentUserAccount, any>,
     'queryFn'
   >,
 ) {
-  const { id, exclude, include } = keys;
+  const { id, schoolYearId, exclude, include } = keys;
 
   const queryFn = async (): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/students/${id}`;
-    const searchParams = generateSearchParams({ exclude, include });
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/${id}`;
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+      exclude,
+      include,
+    });
 
     try {
       const student = await kyInstance.get(url, { searchParams }).json();
@@ -226,7 +257,7 @@ export function editStudent(
     studentId: number;
     data: UserUpsertFormData;
   }): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/students/${studentId}`;
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/${studentId}`;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { email, password, confirmPassword, ...moreData } = data;
     const json = transformToStudentUserUpdateDto(moreData);
@@ -247,7 +278,7 @@ export function deleteStudent(
   options?: Omit<UseMutationOptions<boolean, Error, number, any>, 'mutationFn'>,
 ) {
   const mutationFn = async (id: number): Promise<boolean> => {
-    const url = `${TEACHER_BASE_URL}/students/${id}`;
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/${id}`;
 
     try {
       const success: boolean = await kyInstance.delete(url).json();
@@ -264,7 +295,11 @@ export function deleteStudent(
 export function setStudentApprovalStatus(
   options?: Omit<
     UseMutationOptions<
-      { approvalStatus: string; approvalDate: string },
+      {
+        approvalStatus: string;
+        approvalDate: string;
+        approvalRejectedReason: string;
+      },
       Error,
       { studentId: number; approvalStatus: UserApprovalStatus },
       any
@@ -279,7 +314,7 @@ export function setStudentApprovalStatus(
     studentId: number;
     approvalStatus: UserApprovalStatus;
   }): Promise<any> => {
-    const url = `${TEACHER_BASE_URL}/students/approve/${studentId}`;
+    const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/approve/${studentId}`;
     const json = { approvalStatus };
 
     try {

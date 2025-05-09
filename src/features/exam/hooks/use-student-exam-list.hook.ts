@@ -5,6 +5,7 @@ import { getDayJsDuration } from '#/utils/time.util';
 import { queryClient } from '#/config/react-query-client.config';
 import { queryExamKey } from '#/config/react-query-keys.config';
 import { useClockSocket } from '#/core/hooks/use-clock-socket.hook';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToExam } from '../helpers/exam-transform.helper';
 import { getExamsByCurrentStudentUser } from '../api/student-exam.api';
 
@@ -27,6 +28,7 @@ type Result = {
 
 export function useStudentExamList(): Result {
   const { serverClock, startClock, stopClock } = useClockSocket();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [keyword, setKeyword] = useState<string | null>(null);
 
   const {
@@ -35,34 +37,38 @@ export function useStudentExamList(): Result {
     isRefetching,
     refetch,
   } = useQuery(
-    getExamsByCurrentStudentUser(keyword || undefined, {
-      refetchOnWindowFocus: false,
-      select: (data: any) => {
-        const { latestExam, upcomingExam, previousExams, ongoingExams } = data;
-        const transformedLatestExam = latestExam
-          ? transformToExam(latestExam)
-          : null;
+    getExamsByCurrentStudentUser(
+      { q: keyword || undefined, schoolYearId: schoolYear?.id },
+      {
+        refetchOnWindowFocus: false,
+        select: (data: any) => {
+          const { latestExam, upcomingExam, previousExams, ongoingExams } =
+            data;
+          const transformedLatestExam = latestExam
+            ? transformToExam(latestExam)
+            : null;
 
-        const transformedUpcomingExam = upcomingExam
-          ? transformToExam(upcomingExam)
-          : null;
+          const transformedUpcomingExam = upcomingExam
+            ? transformToExam(upcomingExam)
+            : null;
 
-        const transformedPreviousExams = previousExams?.length
-          ? previousExams.map((item: any) => transformToExam(item))
-          : [];
+          const transformedPreviousExams = previousExams?.length
+            ? previousExams.map((item: any) => transformToExam(item))
+            : [];
 
-        const transformedOngoingExams = ongoingExams?.length
-          ? ongoingExams.map((item: any) => transformToExam(item))
-          : [];
+          const transformedOngoingExams = ongoingExams?.length
+            ? ongoingExams.map((item: any) => transformToExam(item))
+            : [];
 
-        return {
-          latestExam: transformedLatestExam,
-          upcomingExam: transformedUpcomingExam,
-          previousExams: transformedPreviousExams,
-          ongoingExams: transformedOngoingExams,
-        };
+          return {
+            latestExam: transformedLatestExam,
+            upcomingExam: transformedUpcomingExam,
+            previousExams: transformedPreviousExams,
+            ongoingExams: transformedOngoingExams,
+          };
+        },
       },
-    }),
+    ),
   );
 
   const { latestExam, upcomingExam, previousExams, ongoingExams } = useMemo(
