@@ -100,6 +100,7 @@ export function transformToMeetingScheduleUpsertDto({
   endDate,
   endTime,
   studentIds,
+  schoolYearId,
 }: any) {
   const formattedStartDate = dayjs(startDate).format('YYYY-MM-DD');
   const formattedEndDate = dayjs(endDate).format('YYYY-MM-DD');
@@ -117,5 +118,6 @@ export function transformToMeetingScheduleUpsertDto({
     startDate: transformedStartDate,
     endDate: transformedEndDate,
     studentIds: transformedStudentsIds,
+    schoolYearId,
   };
 }

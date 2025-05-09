@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToLesson } from '#/lesson/helpers/lesson-transform.helper';
 import { getStudentLessonsByPublicIdAndCurrentTeacherUser } from '../api/teacher-performance.api';
 
@@ -13,6 +14,7 @@ type Result = {
 
 export function useTeacherStudentLessonPerformanceList(): Result {
   const { publicId } = useParams();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
 
   const {
     data: lessons,
@@ -20,7 +22,7 @@ export function useTeacherStudentLessonPerformanceList(): Result {
     isLoading,
   } = useQuery(
     getStudentLessonsByPublicIdAndCurrentTeacherUser(
-      { publicId: publicId || '' },
+      { publicId: publicId || '', schoolYearId: schoolYear?.id },
       {
         refetchOnWindowFocus: false,
         enabled: !!publicId,

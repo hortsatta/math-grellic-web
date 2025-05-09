@@ -11,6 +11,7 @@ import type {
 const BASE_URL = 'announcements';
 
 export function getAnnouncementsByCurrentStudentUser(
+  schoolYearId?: number,
   options?: Omit<
     UseQueryOptions<StudentAnnouncements, Error, StudentAnnouncements, any>,
     'queryKey' | 'queryFn'
@@ -18,9 +19,14 @@ export function getAnnouncementsByCurrentStudentUser(
 ) {
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students/list`;
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+    });
 
     try {
-      const studentAnnouncements = await kyInstance.get(url).json();
+      const studentAnnouncements = await kyInstance
+        .get(url, { searchParams })
+        .json();
       return studentAnnouncements;
     } catch (error: any) {
       const apiError = await generateApiError(error);

@@ -33,6 +33,7 @@ export function getStudentMeetingScheduleByIdLoader(
 export function getStudentMeetingSchedulesLoader(queryClient: QueryClient) {
   return async () => {
     const query = getMeetingSchedulesByCurrentStudentUser();
+
     return defer({
       main:
         queryClient.getQueryData(query.queryKey as string[]) ??
@@ -51,6 +52,7 @@ export function getStudentSchedulesByDateRangeLoader(queryClient: QueryClient) {
 
   return async () => {
     const query = getSchedulesByDateRangeAndCurrentStudentUser({ from, to });
+
     return defer({
       main:
         queryClient.getQueryData(query.queryKey as string[]) ??

@@ -7,6 +7,7 @@ import {
 } from '#/performance/api/teacher-performance.api';
 import { transformToStudentPerformance } from '#/performance/helpers/performance-transform.helper';
 import { StudentPerformanceType } from '#/performance/models/performance.model';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 
 import type { QueryObserverBaseResult } from '@tanstack/react-query';
 import type {
@@ -26,6 +27,7 @@ type Result = {
 };
 
 export function useTeacherClassPerformance(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [currentRankingsPerformance, setCurrentRankingsPerformance] = useState(
     StudentPerformanceType.Exam,
   );
@@ -36,7 +38,7 @@ export function useTeacherClassPerformance(): Result {
     isRefetching: isClassRefetching,
     refetch: refreshClass,
   } = useQuery(
-    getClassPerformanceByCurrentTeacherUser({
+    getClassPerformanceByCurrentTeacherUser(schoolYear?.id, {
       refetchOnWindowFocus: false,
     }),
   );
@@ -53,6 +55,7 @@ export function useTeacherClassPerformance(): Result {
         performance: currentRankingsPerformance,
         sort: 'rank,asc',
         pagination: { take: 5, skip: 0 },
+        schoolYearId: schoolYear?.id,
       },
       {
         refetchOnWindowFocus: false,

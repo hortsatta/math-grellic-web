@@ -38,6 +38,7 @@ export function getTeacherPaginatedStudentPerformancesLoader(
   return async () => {
     const query =
       getPaginatedStudentPerformancesByCurrentTeacherUser(defaultParamKeys);
+
     return defer({
       main:
         queryClient.getQueryData(query.queryKey as string[]) ??

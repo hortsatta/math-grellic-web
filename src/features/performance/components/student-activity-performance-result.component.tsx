@@ -6,6 +6,7 @@ import {
   ActivityCategoryLevel,
   ActivityCategoryType,
 } from '#/activity/models/activity.model';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { getStudentActivityWithCompletionsBySlugAndCurrentStudentUser } from '../api/student-performance.api';
@@ -124,13 +125,15 @@ export const StudentActivityPerformanceResult = memo(function ({
   slug,
   ...moreProps
 }: Props) {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
+
   const {
     data: activity,
     isFetching,
     isLoading,
   } = useQuery(
     getStudentActivityWithCompletionsBySlugAndCurrentStudentUser(
-      { slug },
+      { slug, schoolYearId: schoolYear?.id },
       {
         refetchOnWindowFocus: false,
         enabled: !!slug,

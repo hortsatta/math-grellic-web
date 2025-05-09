@@ -2,6 +2,7 @@ import { generateApiError } from '#/utils/api.util';
 import { queryActivityKey } from '#/config/react-query-keys.config';
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
 
+import { generateImageFormData } from '../helpers/activity-form.helper';
 import {
   transformToActivity,
   transformToActivityUpsertDto,
@@ -15,7 +16,6 @@ import type { PaginatedQueryData } from '#/core/models/core.model';
 import type { QueryPagination } from '#/base/models/base.model';
 import type { Activity, Game } from '../models/activity.model';
 import type { ActivityUpsertFormData } from '../models/activity-form-data.model';
-import { generateImageFormData } from '../helpers/activity-form.helper';
 
 const BASE_URL = 'activities';
 
@@ -50,6 +50,7 @@ export function getPaginatedActivitiesByCurrentTeacherUser(
     status?: string;
     sort?: string;
     pagination?: Omit<QueryPagination, 'totalCount'>;
+    schoolYearId?: number;
   },
   options?: Omit<
     UseQueryOptions<
@@ -61,7 +62,7 @@ export function getPaginatedActivitiesByCurrentTeacherUser(
     'queryKey' | 'queryFn'
   >,
 ) {
-  const { q, status, sort, pagination } = keys || {};
+  const { q, status, sort, pagination, schoolYearId } = keys || {};
   const { take, skip } = pagination || {};
 
   const queryFn = async (): Promise<any> => {
@@ -72,6 +73,7 @@ export function getPaginatedActivitiesByCurrentTeacherUser(
       sort,
       skip: skip?.toString() || '0',
       take: take?.toString() || '0',
+      sy: schoolYearId?.toString(),
     });
 
     try {
@@ -91,15 +93,20 @@ export function getPaginatedActivitiesByCurrentTeacherUser(
 }
 
 export function getActivitySnippetsByCurrentTeacherUser(
-  take?: number,
+  keys?: { take?: number; schoolYearId?: number },
   options?: Omit<
     UseQueryOptions<Activity[], Error, Activity[], any>,
     'queryFn'
   >,
 ) {
+  const { take, schoolYearId } = keys || {};
+
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/teachers/list/snippets`;
-    const searchParams = generateSearchParams({ take: take?.toString() });
+    const searchParams = generateSearchParams({
+      take: take?.toString(),
+      sy: schoolYearId?.toString(),
+    });
 
     try {
       const activities = await kyInstance.get(url, { searchParams }).json();
@@ -117,29 +124,66 @@ export function getActivitySnippetsByCurrentTeacherUser(
   };
 }
 
+export function getActivityBySlugAndCurrentTeacherUser(
+  keys: {
+    slug: string;
+    status?: string;
+    schoolYearId?: number;
+    exclude?: string;
+    include?: string;
+  },
+  options?: Omit<UseQueryOptions<Activity, Error, Activity, any>, 'queryFn'>,
+) {
+  const { slug, status, schoolYearId, exclude, include } = keys;
+
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/${slug}/teachers`;
+    const searchParams = generateSearchParams({
+      status,
+      sy: schoolYearId?.toString(),
+      exclude,
+      include,
+    });
+
+    try {
+      const activity = await kyInstance.get(url, { searchParams }).json();
+      return activity;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...queryActivityKey.single, { slug, status, exclude, include }],
+    queryFn,
+    ...options,
+  };
+}
+
 export function validateUpsertActivity(
   options?: Omit<
     UseMutationOptions<
       boolean,
       Error,
-      { data: ActivityUpsertFormData; slug?: string },
+      { data: ActivityUpsertFormData; id?: number },
       any
     >,
     'mutationFn'
   >,
 ) {
   const mutationFn = async ({
-    slug,
+    id,
     data,
   }: {
     data: ActivityUpsertFormData;
-    slug?: string;
+    id?: number;
     scheduleId?: number;
   }): Promise<boolean> => {
     const url = `${BASE_URL}/validate`;
     const json = transformToActivityUpsertDto(data);
     const searchParams = generateSearchParams({
-      slug: slug?.toString(),
+      id: id?.toString(),
     });
 
     try {
@@ -175,52 +219,26 @@ export function createActivity(
   return { mutationFn, ...options };
 }
 
-export function getActivityBySlugAndCurrentTeacherUser(
-  keys: { slug: string; status?: string; exclude?: string; include?: string },
-  options?: Omit<UseQueryOptions<Activity, Error, Activity, any>, 'queryFn'>,
-) {
-  const { slug, status, exclude, include } = keys;
-
-  const queryFn = async (): Promise<any> => {
-    const url = `${BASE_URL}/${slug}/teachers`;
-    const searchParams = generateSearchParams({ status, exclude, include });
-
-    try {
-      const activity = await kyInstance.get(url, { searchParams }).json();
-      return activity;
-    } catch (error: any) {
-      const apiError = await generateApiError(error);
-      throw apiError;
-    }
-  };
-
-  return {
-    queryKey: [...queryActivityKey.single, { slug, status, exclude, include }],
-    queryFn,
-    ...options,
-  };
-}
-
 export function editActivity(
   options?: Omit<
     UseMutationOptions<
       Activity,
       Error,
-      { slug: string; data: ActivityUpsertFormData },
+      { id: number; data: ActivityUpsertFormData },
       any
     >,
     'mutationFn'
   >,
 ) {
   const mutationFn = async ({
-    slug,
+    id,
     data,
   }: {
-    slug: string;
+    id: number;
     data: ActivityUpsertFormData;
     scheduleId?: number;
   }): Promise<any> => {
-    const url = `${BASE_URL}/${slug}`;
+    const url = `${BASE_URL}/${id}`;
     const json = transformToActivityUpsertDto(data);
 
     try {
@@ -236,10 +254,10 @@ export function editActivity(
 }
 
 export function deleteActivity(
-  options?: Omit<UseMutationOptions<boolean, Error, string, any>, 'mutationFn'>,
+  options?: Omit<UseMutationOptions<boolean, Error, number, any>, 'mutationFn'>,
 ) {
-  const mutationFn = async (slug: string): Promise<boolean> => {
-    const url = `${BASE_URL}/${slug}`;
+  const mutationFn = async (id: number): Promise<boolean> => {
+    const url = `${BASE_URL}/${id}`;
 
     try {
       const success: boolean = await kyInstance.delete(url).json();
@@ -258,7 +276,7 @@ export function uploadActivityImages(
     UseMutationOptions<
       string[],
       Error,
-      { data: ActivityUpsertFormData; strict?: boolean },
+      { data: ActivityUpsertFormData; schoolYearId?: number; strict?: boolean },
       any
     >,
     'mutationFn'
@@ -266,14 +284,19 @@ export function uploadActivityImages(
 ) {
   const mutationFn = async (options: {
     data: ActivityUpsertFormData;
+    schoolYearId?: number;
     strict?: boolean;
   }): Promise<any> => {
-    const { data, strict } = options;
+    const { data, schoolYearId, strict } = options;
     const url = `upload/${BASE_URL}/images`;
     const formData = await generateImageFormData(data, strict);
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+      strict: (+!!strict).toString(),
+    });
 
     try {
-      return kyInstance.post(url, { body: formData }).json();
+      return kyInstance.post(url, { body: formData, searchParams }).json();
     } catch (error: any) {
       const apiError = await generateApiError(error);
       throw apiError;

@@ -64,7 +64,7 @@ export function useAnnouncementEdit(): Result {
   );
 
   const deleteAnnouncement = useCallback(
-    async (id: number) => {
+    (id: number) => {
       return mutateDeleteAnnouncement(id);
     },
     [mutateDeleteAnnouncement],

@@ -29,7 +29,7 @@ type Props = FormProps<
   'div',
   MeetingScheduleUpsertFormData,
   Promise<MeetingSchedule>
->;
+> & { schoolYearId: number };
 
 const MEETING_CALENDAR_PATH = `/${teacherBaseRoute}/${teacherRoutes.schedule.to}/${teacherRoutes.schedule.meeting.to}`;
 
@@ -71,6 +71,7 @@ const schema = z
     studentIds: z
       .array(z.number(), { required_error: 'Assign students' })
       .nullable(),
+    schoolYearId: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     if (data.startDate && data.endDate && data.startTime && data.endTime) {
@@ -116,11 +117,13 @@ const defaultValues: Partial<MeetingScheduleUpsertFormData> = {
   startTime: undefined,
   endTime: undefined,
   studentIds: undefined,
+  schoolYearId: undefined,
 };
 
 export const MeetingScheduleUpsertForm = memo(function ({
   className,
   formData,
+  schoolYearId,
   loading: formLoading,
   isDone,
   onDone,
@@ -139,7 +142,7 @@ export const MeetingScheduleUpsertForm = memo(function ({
     setValue,
     handleSubmit,
   } = useForm<MeetingScheduleUpsertFormData>({
-    defaultValues: formData || defaultValues,
+    defaultValues: formData || { ...defaultValues, schoolYearId },
     resolver: zodResolver(schema),
   });
 

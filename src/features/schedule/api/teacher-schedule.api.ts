@@ -22,19 +22,20 @@ import type { MeetingScheduleUpsertFormData } from '../models/schedule-form-data
 const BASE_URL = 'schedules';
 
 export function getSchedulesByDateRangeAndCurrentTeacherUser(
-  keys: { from: Date; to: Date },
+  keys: { from: Date; to: Date; schoolYearId?: number },
   options?: Omit<
     UseQueryOptions<TimelineSchedules, Error, TimelineSchedules, any>,
     'queryKey' | 'queryFn'
   >,
 ) {
-  const { from, to } = keys || {};
+  const { from, to, schoolYearId } = keys || {};
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/teachers`;
     const searchParams = generateSearchParams({
       from: dayjs(from).format('YYYY-MM-DD'),
       to: dayjs(to).format('YYYY-MM-DD'),
+      sy: schoolYearId?.toString(),
     });
 
     try {
@@ -56,17 +57,20 @@ export function getSchedulesByDateRangeAndCurrentTeacherUser(
 }
 
 export function getSchedulesByDateAndCurrentTeacherUser(
-  date: Date,
+  keys: { date: Date; schoolYearId?: number },
   options?: Omit<
     UseQueryOptions<TimelineSchedules, Error, TimelineSchedules, any>,
     'queryKey' | 'queryFn'
   >,
 ) {
+  const { date, schoolYearId } = keys;
+
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/teachers`;
     const searchParams = generateSearchParams({
       from: dayjs(date).format('YYYY-MM-DD'),
       to: dayjs(date).add(1, 'day').format('YYYY-MM-DD'),
+      sy: schoolYearId?.toString(),
     });
 
     try {
@@ -92,6 +96,7 @@ export function getPaginatedMeetingSchedulesByCurrentTeacherUser(
     q?: string;
     sort?: string;
     pagination?: Omit<QueryPagination, 'totalCount'>;
+    schoolYearId?: number;
   },
   options?: Omit<
     UseQueryOptions<
@@ -103,7 +108,7 @@ export function getPaginatedMeetingSchedulesByCurrentTeacherUser(
     'queryKey' | 'queryFn'
   >,
 ) {
-  const { q, sort, pagination } = keys || {};
+  const { q, sort, pagination, schoolYearId } = keys || {};
   const { take, skip } = pagination || {};
 
   const queryFn = async (): Promise<any> => {
@@ -113,6 +118,7 @@ export function getPaginatedMeetingSchedulesByCurrentTeacherUser(
       sort,
       skip: skip?.toString() || '0',
       take: take?.toString() || '0',
+      sy: schoolYearId?.toString(),
     });
 
     try {

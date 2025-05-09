@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 
 import { queryClient } from '#/config/react-query-client.config';
 import { queryActivityKey } from '#/config/react-query-keys.config';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { ActivityCategoryType } from '../models/activity.model';
 import {
   createActivity as createActivityApi,
@@ -21,6 +22,7 @@ type Result = {
 };
 
 export function useActivityCreate(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [isDone, setIsDone] = useState(false);
 
   const {
@@ -73,7 +75,10 @@ export function useActivityCreate(): Result {
       }
 
       await validateUpsertActivity({ data });
-      const images = await mutateUploadActivityImages({ data });
+      const images = await mutateUploadActivityImages({
+        data,
+        schoolYearId: schoolYear?.id,
+      });
       // Clone value for shifting of array
       const clonedImages = images;
       // Apply image url to question/choice text for activity creation
@@ -136,7 +141,12 @@ export function useActivityCreate(): Result {
 
       return mutateCreateActivity(transformedFormData);
     },
-    [validateUpsertActivity, mutateCreateActivity, mutateUploadActivityImages],
+    [
+      schoolYear,
+      validateUpsertActivity,
+      mutateCreateActivity,
+      mutateUploadActivityImages,
+    ],
   );
 
   return {

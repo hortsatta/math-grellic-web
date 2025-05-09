@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToExam } from '#/exam/helpers/exam-transform.helper';
 import { getStudentExamsByCurrentStudentUser } from '../api/student-performance.api';
 
@@ -11,13 +12,15 @@ type Result = {
 };
 
 export function useStudentExamPerformanceList(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
+
   const {
     data: exams,
     isLoading,
     isRefetching,
   } = useQuery(
     getStudentExamsByCurrentStudentUser(
-      {},
+      { schoolYearId: schoolYear?.id },
       {
         refetchOnWindowFocus: false,
         initialData: [],

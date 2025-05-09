@@ -39,7 +39,11 @@ import type {
   ActivityUpsertFormData,
 } from '../models/activity-form-data.model';
 
-type Props = FormProps<'div', ActivityUpsertFormData, Promise<Activity>>;
+type Props = FormProps<
+  'div',
+  ActivityUpsertFormData,
+  Promise<Activity | undefined>
+> & { schoolYearId: number };
 
 const ACTIVITY_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
 
@@ -137,6 +141,7 @@ const schema = z
     excerpt: z.string().optional(),
     categories: z.array(categorySchema).min(1),
     slug: z.string().optional(),
+    schoolYearId: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     if (data.game.type === ActivityCategoryType.Point) {
@@ -370,11 +375,13 @@ const defaultValues: Partial<ActivityUpsertFormData> = {
   orderNumber: null,
   game: undefined,
   categories: [],
+  schoolYearId: undefined,
 };
 
 export const ActivityUpsertForm = memo(function ({
   className,
   formData,
+  schoolYearId,
   loading: formLoading,
   isDone,
   onDone,
@@ -395,7 +402,7 @@ export const ActivityUpsertForm = memo(function ({
 
   const methods = useForm<ActivityUpsertFormData>({
     shouldFocusError: false,
-    defaultValues: formData || defaultValues,
+    defaultValues: formData || { ...defaultValues, schoolYearId },
     resolver: zodResolver(schema),
   });
 
@@ -457,6 +464,11 @@ export const ActivityUpsertForm = memo(function ({
       try {
         const targetData = status ? { ...data, status } : data;
         const activity = await onSubmit(targetData);
+
+        if (!activity) {
+          toast.error('Cannot update activity, please try again');
+          return;
+        }
 
         toast.success(
           `${isEdit ? 'Updated' : 'Created'} ${activity.title} (No. ${

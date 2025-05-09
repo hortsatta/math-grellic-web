@@ -51,6 +51,7 @@ export type ActivityUpsertFormData = {
   slug?: string;
   description?: string;
   excerpt?: string;
+  schoolYearId?: number;
 };
 
 export type ActivityAnswerFormData = {

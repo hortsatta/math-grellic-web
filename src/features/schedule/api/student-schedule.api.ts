@@ -13,19 +13,20 @@ import type {
 const BASE_URL = 'schedules';
 
 export function getSchedulesByDateRangeAndCurrentStudentUser(
-  keys: { from: Date; to: Date },
+  keys: { from: Date; to: Date; schoolYearId?: number },
   options?: Omit<
     UseQueryOptions<TimelineSchedules, Error, TimelineSchedules, any>,
     'queryKey' | 'queryFn'
   >,
 ) {
-  const { from, to } = keys || {};
+  const { from, to, schoolYearId } = keys || {};
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students`;
     const searchParams = generateSearchParams({
       from: dayjs(from).format('YYYY-MM-DD'),
       to: dayjs(to).format('YYYY-MM-DD'),
+      sy: schoolYearId?.toString(),
     });
 
     try {
@@ -48,17 +49,20 @@ export function getSchedulesByDateRangeAndCurrentStudentUser(
 }
 
 export function getSchedulesByDateAndCurrentStudentUser(
-  date: Date,
+  key: { date: Date; schoolYearId?: number },
   options?: Omit<
     UseQueryOptions<TimelineSchedules, Error, TimelineSchedules, any>,
     'queryKey' | 'queryFn'
   >,
 ) {
+  const { date, schoolYearId } = key;
+
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students`;
     const searchParams = generateSearchParams({
       from: dayjs(date).format('YYYY-MM-DD'),
       to: dayjs(date).add(1, 'day').format('YYYY-MM-DD'),
+      sy: schoolYearId?.toString(),
     });
 
     try {
@@ -81,6 +85,7 @@ export function getSchedulesByDateAndCurrentStudentUser(
 }
 
 export function getMeetingSchedulesByCurrentStudentUser(
+  schoolYearId?: number,
   options?: Omit<
     UseQueryOptions<
       StudentMeetingScheduleList,
@@ -93,9 +98,12 @@ export function getMeetingSchedulesByCurrentStudentUser(
 ) {
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/meetings/students`;
+    const searchParams = generateSearchParams({ sy: schoolYearId?.toString() });
 
     try {
-      const meetingSchedules = await kyInstance.get(url).json();
+      const meetingSchedules = await kyInstance
+        .get(url, { searchParams })
+        .json();
       return meetingSchedules;
     } catch (error: any) {
       const apiError = await generateApiError(error);

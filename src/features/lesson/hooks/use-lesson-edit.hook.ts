@@ -95,7 +95,7 @@ export function useLessonEdit(slug?: string): Result {
   );
 
   const deleteLesson = useCallback(async () => {
-    if (!lesson) return;
+    if (!lesson) return false;
 
     return mutateDeleteLesson(lesson.id);
   }, [lesson, mutateDeleteLesson]);

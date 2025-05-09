@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { getLessonBySlugAndCurrentTeacherUser } from '../api/teacher-lesson.api';
 import { transformToLesson } from '../helpers/lesson-transform.helper';
 
 import type { Lesson } from '../models/lesson.model';
-import { useBoundStore } from '#/core/hooks/use-store.hook';
 
 type Result = {
   loading: boolean;
@@ -13,8 +13,8 @@ type Result = {
 };
 
 export function useTeacherLessonSingle(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
   const { slug } = useParams();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
 
   const {
     data: lesson,

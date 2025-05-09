@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { PAGINATION_TAKE } from '#/utils/api.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { getPaginatedStudentPerformancesByCurrentTeacherUser } from '../api/teacher-performance.api';
 import { transformToStudentPerformance } from '../helpers/performance-transform.helper';
 import { StudentPerformanceType } from '../models/performance.model';
@@ -46,6 +47,7 @@ export const defaultParamKeys = {
 
 export function useStudentPerformanceList(): Result {
   const navigate = useNavigate();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [keyword, setKeyword] = useState<string | null>(null);
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
   const [sort, setSort] = useState<QuerySort>(defaultSort);
@@ -80,6 +82,7 @@ export function useStudentPerformanceList(): Result {
         performance,
         sort: querySort,
         pagination,
+        schoolYearId: schoolYear?.id,
       },
       {
         refetchOnWindowFocus: false,

@@ -3,6 +3,7 @@ import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
@@ -14,6 +15,7 @@ const ACTIVITY_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
 
 function ActivityEditPage() {
   const { slug } = useParams();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
 
   const {
     loading,
@@ -59,14 +61,17 @@ function ActivityEditPage() {
   return (
     <>
       <BaseDataSuspense resolve={data?.main}>
-        <ActivityUpsertForm
-          loading={loading}
-          isDone={isDone}
-          formData={activityFormData}
-          onDone={setIsDone}
-          onSubmit={editActivity}
-          onDelete={handleSetModal(true)}
-        />
+        {schoolYear && (
+          <ActivityUpsertForm
+            loading={loading}
+            schoolYearId={schoolYear.id}
+            isDone={isDone}
+            formData={activityFormData}
+            onDone={setIsDone}
+            onSubmit={editActivity}
+            onDelete={handleSetModal(true)}
+          />
+        )}
       </BaseDataSuspense>
       <BaseModal size='xs' open={openModal} onClose={handleSetModal(false)}>
         <div>

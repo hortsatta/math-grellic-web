@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { PAGINATION_TAKE } from '#/utils/api.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToMeetingSchedule } from '../helpers/schedule-transform.helper';
 import { getPaginatedMeetingSchedulesByCurrentTeacherUser } from '../api/teacher-schedule.api';
 
@@ -39,6 +40,7 @@ export const defaultParamKeys = {
 
 export function useTeacherMeetingScheduleList(): Result {
   const navigate = useNavigate();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [keyword, setKeyword] = useState<string | null>(null);
   const [sort, setSort] = useState<QuerySort>(defaultSort);
   const [skip, setSkip] = useState<number>(0);
@@ -50,7 +52,12 @@ export function useTeacherMeetingScheduleList(): Result {
 
   const { data, isLoading, isRefetching, refetch } = useQuery(
     getPaginatedMeetingSchedulesByCurrentTeacherUser(
-      { q: keyword || undefined, sort: querySort, pagination },
+      {
+        q: keyword || undefined,
+        sort: querySort,
+        pagination,
+        schoolYearId: schoolYear?.id,
+      },
       {
         refetchOnWindowFocus: false,
         select: (data: any[]) => {

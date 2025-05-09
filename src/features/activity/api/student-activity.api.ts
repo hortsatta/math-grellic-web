@@ -17,15 +17,20 @@ import type { StudentActivityFormData } from '../models/activity-form-data.model
 const BASE_URL = 'activities';
 
 export function getActivitiesByCurrentStudentUser(
-  q?: string,
+  keys?: { q?: string; schoolYearId?: number },
   options?: Omit<
     UseQueryOptions<StudentActivityList, Error, StudentActivityList, any>,
     'queryKey' | 'queryFn'
   >,
 ) {
+  const { q, schoolYearId } = keys || {};
+
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students/list`;
-    const searchParams = generateSearchParams({ q });
+    const searchParams = generateSearchParams({
+      q,
+      sy: schoolYearId?.toString(),
+    });
 
     try {
       const activities = await kyInstance.get(url, { searchParams }).json();
@@ -44,14 +49,23 @@ export function getActivitiesByCurrentStudentUser(
 }
 
 export function getActivityBySlugAndCurrentStudentUser(
-  keys: { slug: string; exclude?: string; include?: string },
+  keys: {
+    slug: string;
+    schoolYearId?: number;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<UseQueryOptions<Activity, Error, Activity, any>, 'queryFn'>,
 ) {
-  const { slug, exclude, include } = keys;
+  const { slug, schoolYearId, exclude, include } = keys;
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/${slug}/students`;
-    const searchParams = generateSearchParams({ exclude, include });
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+      exclude,
+      include,
+    });
 
     try {
       const activity = await kyInstance.get(url, { searchParams }).json();
@@ -74,20 +88,20 @@ export function setActivityCompletion(
     UseMutationOptions<
       ActivityCategoryCompletion | null,
       Error,
-      { slug: string; data: StudentActivityFormData },
+      { id: number; data: StudentActivityFormData },
       any
     >,
     'mutationFn'
   >,
 ) {
   const mutationFn = async ({
-    slug,
+    id,
     data,
   }: {
-    slug: string;
+    id: number;
     data: StudentActivityFormData;
   }): Promise<any> => {
-    const url = `${BASE_URL}/${slug}/students/completion`;
+    const url = `${BASE_URL}/${id}/students/completion`;
     const json = { questionAnswers: data.answers };
 
     try {

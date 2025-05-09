@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToActivity } from '../helpers/activity-transform.helper';
 import { getActivityBySlugAndCurrentTeacherUser } from '../api/teacher-activity.api';
 
@@ -13,6 +14,7 @@ type Result = {
 
 export function useTeacherActivitySingle(): Result {
   const { slug } = useParams();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
 
   const {
     data: activity,
@@ -20,7 +22,7 @@ export function useTeacherActivitySingle(): Result {
     isFetching,
   } = useQuery(
     getActivityBySlugAndCurrentTeacherUser(
-      { slug: slug || '' },
+      { slug: slug || '', schoolYearId: schoolYear?.id },
       {
         enabled: !!slug,
         refetchOnWindowFocus: false,

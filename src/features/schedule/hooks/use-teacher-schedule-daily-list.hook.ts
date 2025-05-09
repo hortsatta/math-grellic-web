@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import dayjs from '#/config/dayjs.config';
 import { getDateTimeNow } from '#/core/api/core.api';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToTimelineSchedules } from '../helpers/schedule-transform.helper';
 import { ScheduleType } from '../models/schedule.model';
 import { getSchedulesByDateAndCurrentTeacherUser } from '../api/teacher-schedule.api';
@@ -23,6 +24,7 @@ type Result = {
 export function useTeacherScheduleDailyList(
   scheduleType?: ScheduleType,
 ): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
   const {
@@ -45,7 +47,10 @@ export function useTeacherScheduleDailyList(
     refetch: refreshTimelineSchedules,
   } = useQuery(
     getSchedulesByDateAndCurrentTeacherUser(
-      currentDate || today || new Date(),
+      {
+        date: currentDate || today || new Date(),
+        schoolYearId: schoolYear?.id,
+      },
       {
         enabled: !!currentDate || !!today,
         refetchOnWindowFocus: false,

@@ -32,6 +32,7 @@ export function getTeacherLessonBySlugLoader(
 export function getTeacherPaginatedLessonsLoader(queryClient: QueryClient) {
   return async () => {
     const query = getPaginatedLessonsByCurrentTeacherUser(defaultParamKeys);
+
     return defer({
       main:
         queryClient.getQueryData(query.queryKey as string[]) ??

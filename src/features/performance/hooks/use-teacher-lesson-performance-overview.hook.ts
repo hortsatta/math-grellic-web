@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { getLessonPerformanceByCurrentTeacherUser } from '../api/teacher-performance.api';
 
 import type { TeacherLessonPerformance } from '../models/performance.model';
@@ -10,12 +11,14 @@ type Result = {
 };
 
 export function useTeacherLessonPerformanceOverview(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
+
   const {
     data: lessonPerformance,
     isLoading,
     isRefetching,
   } = useQuery(
-    getLessonPerformanceByCurrentTeacherUser({
+    getLessonPerformanceByCurrentTeacherUser(schoolYear?.id, {
       refetchOnWindowFocus: false,
     }),
   );

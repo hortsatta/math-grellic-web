@@ -37,6 +37,7 @@ export function getTeacherPaginatedMeetingSchedulesLoader(
   return async () => {
     const query =
       getPaginatedMeetingSchedulesByCurrentTeacherUser(defaultParamKeys);
+
     return defer({
       main:
         queryClient.getQueryData(query.queryKey as string[]) ??
@@ -55,6 +56,7 @@ export function getTeacherSchedulesByDateRangeLoader(queryClient: QueryClient) {
 
   return async () => {
     const query = getSchedulesByDateRangeAndCurrentTeacherUser({ from, to });
+
     return defer({
       main:
         queryClient.getQueryData(query.queryKey as string[]) ??

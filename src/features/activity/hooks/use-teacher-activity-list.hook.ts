@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { PAGINATION_TAKE } from '#/utils/api.util';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToActivity } from '../helpers/activity-transform.helper';
 import { getPaginatedActivitiesByCurrentTeacherUser } from '../api/teacher-activity.api';
 
@@ -46,6 +47,7 @@ export const defaultParamKeys = {
 
 export function useTeacherActivityList(): Result {
   const navigate = useNavigate();
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [keyword, setKeyword] = useState<string | null>(null);
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
   const [sort, setSort] = useState<QuerySort>(defaultSort);
@@ -73,7 +75,13 @@ export function useTeacherActivityList(): Result {
 
   const { data, isLoading, isRefetching, refetch } = useQuery(
     getPaginatedActivitiesByCurrentTeacherUser(
-      { q: keyword || undefined, status, sort: querySort, pagination },
+      {
+        q: keyword || undefined,
+        status,
+        sort: querySort,
+        pagination,
+        schoolYearId: schoolYear?.id,
+      },
       {
         refetchOnWindowFocus: false,
         select: (data: any[]) => {

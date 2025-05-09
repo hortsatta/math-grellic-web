@@ -391,6 +391,7 @@ export function transformToActivityUpsertDto({
   description,
   excerpt,
   categories,
+  schoolYearId,
 }: any) {
   const categoriesDto =
     categories?.map((category: any) =>
@@ -405,6 +406,7 @@ export function transformToActivityUpsertDto({
     description,
     excerpt,
     categories: categoriesDto,
+    schoolYearId,
   };
 }
 

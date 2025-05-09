@@ -17,15 +17,20 @@ import type { StudentExamFormData } from '../models/exam-form-data.model';
 const BASE_URL = 'exams';
 
 export function getExamsByCurrentStudentUser(
-  q?: string,
+  keys?: { q?: string; schoolYearId?: number },
   options?: Omit<
     UseQueryOptions<StudentExamList, Error, StudentExamList, any>,
     'queryKey' | 'queryFn'
   >,
 ) {
+  const { q, schoolYearId } = keys || {};
+
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/students/list`;
-    const searchParams = generateSearchParams({ q });
+    const searchParams = generateSearchParams({
+      q,
+      sy: schoolYearId?.toString(),
+    });
 
     try {
       const exams = await kyInstance.get(url, { searchParams }).json();
@@ -44,14 +49,23 @@ export function getExamsByCurrentStudentUser(
 }
 
 export function getExamBySlugAndCurrentStudentUser(
-  keys: { slug: string; exclude?: string; include?: string },
+  keys: {
+    slug: string;
+    schoolYearId?: number;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<UseQueryOptions<Exam, Error, Exam, any>, 'queryFn'>,
 ) {
-  const { slug, exclude, include } = keys;
+  const { slug, schoolYearId, exclude, include } = keys;
 
   const queryFn = async (): Promise<any> => {
     const url = `${BASE_URL}/${slug}/students`;
-    const searchParams = generateSearchParams({ exclude, include });
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+      exclude,
+      include,
+    });
 
     try {
       const exam = await kyInstance.get(url, { searchParams }).json();
@@ -74,21 +88,21 @@ export function setExamCompletion(
     UseMutationOptions<
       ExamCompletion | null,
       Error,
-      { slug: string; data: StudentExamFormData },
+      { id: number; data: StudentExamFormData },
       any
     >,
     'mutationFn'
   >,
 ) {
   const mutationFn = async ({
-    slug,
+    id,
     data,
   }: {
-    slug: string;
+    id: number;
     data: StudentExamFormData;
   }): Promise<any> => {
     const { answers, scheduleId } = data;
-    const url = `${BASE_URL}/${slug}/students/completion`;
+    const url = `${BASE_URL}/${id}/students/completion`;
     const json = { questionAnswers: answers, scheduleId };
 
     try {

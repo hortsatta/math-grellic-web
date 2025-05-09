@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { getAnnouncementsByCurrentTeacherUser } from '../api/teacher-announcement.api';
 import { transformToTeacherAnnouncements } from '../helpers/announcement-transform.helper';
 
@@ -13,13 +14,15 @@ type Result = {
 };
 
 export function useTeacherAnnouncementList(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
+
   const {
     data,
     isLoading,
     isRefetching,
     refetch: refresh,
   } = useQuery(
-    getAnnouncementsByCurrentTeacherUser({
+    getAnnouncementsByCurrentTeacherUser(schoolYear?.id, {
       refetchOnWindowFocus: false,
       select: (data: any) => transformToTeacherAnnouncements(data),
     }),

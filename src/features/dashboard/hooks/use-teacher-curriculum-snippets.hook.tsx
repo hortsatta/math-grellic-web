@@ -43,7 +43,7 @@ export function useTeacherCurriculumSnippets(): Result {
     refetch: refreshLessons,
   } = useQuery(
     getLessonSnippetsByCurrentTeacherUser(
-      { take: undefined, schoolYearId: schoolYear?.id },
+      { schoolYearId: schoolYear?.id },
       {
         refetchOnWindowFocus: false,
         select: (data: any[]) => {
@@ -63,16 +63,19 @@ export function useTeacherCurriculumSnippets(): Result {
     isRefetching: isExamsRefetching,
     refetch: refreshExams,
   } = useQuery(
-    getExamSnippetsByCurrentTeacherUser(undefined, {
-      refetchOnWindowFocus: false,
-      select: (data: any[]) => {
-        if (!Array.isArray(data)) {
-          return [];
-        }
+    getExamSnippetsByCurrentTeacherUser(
+      { schoolYearId: schoolYear?.id },
+      {
+        refetchOnWindowFocus: false,
+        select: (data: any[]) => {
+          if (!Array.isArray(data)) {
+            return [];
+          }
 
-        return data.map((item: unknown) => transformToExam(item));
+          return data.map((item: unknown) => transformToExam(item));
+        },
       },
-    }),
+    ),
   );
 
   const {
@@ -81,16 +84,19 @@ export function useTeacherCurriculumSnippets(): Result {
     isRefetching: isActivitiesRefetching,
     refetch: refreshActivities,
   } = useQuery(
-    getActivitySnippetsByCurrentTeacherUser(undefined, {
-      refetchOnWindowFocus: false,
-      select: (data: any[]) => {
-        if (!Array.isArray(data)) {
-          return [];
-        }
+    getActivitySnippetsByCurrentTeacherUser(
+      { schoolYearId: schoolYear?.id },
+      {
+        refetchOnWindowFocus: false,
+        select: (data: any[]) => {
+          if (!Array.isArray(data)) {
+            return [];
+          }
 
-        return data.map((item: unknown) => transformToActivity(item));
+          return data.map((item: unknown) => transformToActivity(item));
+        },
       },
-    }),
+    ),
   );
 
   const handleLessonDetails = useCallback(

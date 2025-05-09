@@ -32,6 +32,7 @@ export function getTeacherExamBySlugLoader(
 export function getTeacherPaginatedExamsLoader(queryClient: QueryClient) {
   return async () => {
     const query = getPaginatedExamsByCurrentTeacherUser(defaultParamKeys);
+
     return defer({
       main:
         queryClient.getQueryData(query.queryKey as string[]) ??

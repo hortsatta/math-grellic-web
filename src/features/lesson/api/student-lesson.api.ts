@@ -16,7 +16,7 @@ import type {
 const BASE_URL = 'lessons';
 
 export function getLessonsByCurrentStudentUser(
-  keys: { q?: string; schoolYearId?: number },
+  keys?: { q?: string; schoolYearId?: number },
   options?: Omit<
     UseQueryOptions<StudentLessonList, Error, StudentLessonList, any>,
     'queryKey' | 'queryFn'
