@@ -34,7 +34,8 @@ type Props = ComponentProps<'div'> & {
   user: User;
   hasRightSidebar: boolean;
   onLogout: () => void;
-  onUserAccountClick?: () => void;
+  onUserAccount?: () => void;
+  onSchoolYear?: () => void;
 };
 
 const logoStyle = {
@@ -44,7 +45,7 @@ const logoStyle = {
   backgroundRepeat: 'no-repeat',
 };
 
-const sidebarIconProps = {
+const buttonIconProps = {
   weight: 'bold' as IconWeight,
 };
 
@@ -54,7 +55,8 @@ export const CoreMobileNav = memo(function ({
   user,
   hasRightSidebar,
   onLogout,
-  onUserAccountClick,
+  onUserAccount,
+  onSchoolYear,
   ...moreProps
 }: Props) {
   const { pathname } = useLocation();
@@ -112,12 +114,24 @@ export const CoreMobileNav = memo(function ({
         )}
         {...moreProps}
       >
-        <BaseIconButton
-          className='box-content !h-full !w-7 px-4'
-          name='list'
-          variant='link'
-          onClick={handleSetModal(true)}
-        />
+        <div>
+          <BaseIconButton
+            className='box-content !h-full !w-7 px-4'
+            name='list'
+            variant='link'
+            iconProps={buttonIconProps}
+            onClick={handleSetModal(true)}
+          />
+          {hasRightSidebar && (
+            <BaseIconButton
+              className='box-content !h-full !w-7 px-2.5 -2xs:px-4'
+              name='cards'
+              variant='link'
+              iconProps={buttonIconProps}
+              onClick={toggleRightSidebarMode}
+            />
+          )}
+        </div>
         <Link
           to={dashboardTo}
           className='absolute left-1/2 h-full -translate-x-1/2 px-2.5'
@@ -131,15 +145,13 @@ export const CoreMobileNav = memo(function ({
             leftIconName='user'
             iconWeight='bold'
           />
-          {hasRightSidebar && (
-            <BaseIconButton
-              className='box-content !h-full !w-7 px-2.5 -2xs:px-4'
-              name='cards'
-              variant='link'
-              iconProps={sidebarIconProps}
-              onClick={toggleRightSidebarMode}
-            />
-          )}
+          <BaseIconButton
+            className='box-content !h-full !w-7 px-4'
+            name='graduation-cap'
+            variant='link'
+            iconProps={buttonIconProps}
+            onClick={onSchoolYear}
+          />
         </div>
       </div>
       <BaseModal size='xs' open={openModal} onClose={handleSetModal(false)}>
@@ -155,7 +167,7 @@ export const CoreMobileNav = memo(function ({
                   'flex items-center gap-1 overflow-hidden rounded-4px border border-accent/50 px-1.5 py-1',
                   'text-sm leading-none transition-all hover:border-primary-focus hover:text-primary-focus',
                 )}
-                onClick={onUserAccountClick}
+                onClick={onUserAccount}
               >
                 <BaseIcon name='identification-badge' size={18} />
                 <span>{publicId}</span>

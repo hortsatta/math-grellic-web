@@ -137,7 +137,8 @@ export const CoreHeader = memo(function ({
             links={navLinks}
             hasRightSidebar={hasRightSidebar}
             onLogout={handleLogout}
-            onUserAccountClick={handleUserAccount}
+            onUserAccount={handleUserAccount}
+            onSchoolYear={switchSchoolYear}
           />
         )}
         <div className='hidden h-[48px] items-center justify-center gap-2.5 lg:flex'>
