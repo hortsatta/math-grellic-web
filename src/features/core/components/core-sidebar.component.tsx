@@ -31,12 +31,15 @@ export const CoreSidebar = memo(function ({
   const sidebarMode = useBoundStore((state) => state.sidebarMode);
   const setSidebarMode = useBoundStore((state) => state.setSidebarMode);
 
-  const isEnrollmentApproved = useMemo(
-    () =>
+  const isEnrollmentApproved = useMemo(() => {
+    if (user?.role === UserRole.Admin || user?.role === UserRole.SuperAdmin)
+      return true;
+
+    return (
       syEnrollment?.approvalStatus ===
-      SchoolYearEnrollmentApprovalStatus.Approved,
-    [syEnrollment],
-  );
+      SchoolYearEnrollmentApprovalStatus.Approved
+    );
+  }, [user?.role, syEnrollment]);
 
   const logoTo = useMemo(() => {
     if (!user) {
