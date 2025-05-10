@@ -1,0 +1,131 @@
+import { memo, useMemo } from 'react';
+import cx from 'classix';
+
+import { BaseChip } from '#/base/components/base-chip.component';
+import { BaseDivider } from '#/base/components/base-divider.component';
+import { BaseButton } from '#/base/components/base-button.components';
+import { BaseSpinner } from '#/base/components/base-spinner.component';
+import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
+import { formatPhoneNumber, generateFullName } from '../helpers/user.helper';
+import { UserAvatarImg } from './user-avatar-img.component';
+
+import type { ComponentProps } from 'react';
+import type { IconName } from '#/base/models/base.model';
+import type { TeacherUserAccount } from '#/user/models/user.model';
+
+type Props = ComponentProps<'div'> & {
+  teacher: TeacherUserAccount;
+  loading?: boolean;
+  onApprove?: () => void;
+  onReject?: () => void;
+  onEdit?: () => void;
+};
+
+export const TeacherUserSummary = memo(function ({
+  className,
+  teacher,
+  loading,
+  onApprove,
+  onReject,
+  onEdit,
+  ...moreProps
+}: Props) {
+  const [
+    publicId,
+    email,
+    enrollmentApprovalStatus,
+    gender,
+    phoneNumber,
+    fullName,
+  ] = useMemo(
+    () => [
+      teacher.publicId || '—',
+      teacher.email,
+      teacher.enrollment?.approvalStatus,
+      teacher.gender,
+      formatPhoneNumber(teacher?.phoneNumber || ''),
+      generateFullName(teacher.firstName, teacher.lastName, teacher.middleName),
+    ],
+    [teacher],
+  );
+
+  const [statusLabel, statusIconName] = useMemo(() => {
+    switch (enrollmentApprovalStatus) {
+      case SchoolYearEnrollmentApprovalStatus.Approved:
+        return ['Enrolled', 'check-square'];
+      case SchoolYearEnrollmentApprovalStatus.Rejected:
+        return [enrollmentApprovalStatus, 'x-square'];
+      default:
+        return [enrollmentApprovalStatus, 'minus-square'];
+    }
+  }, [enrollmentApprovalStatus]);
+
+  return (
+    <div
+      className={cx(
+        'flex w-full flex-col items-center gap-4 pb-2.5',
+        className,
+      )}
+      {...moreProps}
+    >
+      <div className='flex w-full flex-1 flex-col items-center gap-4 pb-2.5 xs:flex-row'>
+        <UserAvatarImg gender={gender} size='lg' />
+        <div className='flex h-full w-full flex-1 flex-col gap-2.5'>
+          {/* Info chips */}
+          <div className='flex flex-col items-start gap-1 -3xs:flex-row -3xs:items-center -3xs:gap-2.5'>
+            <BaseChip iconName='identification-badge'>{publicId}</BaseChip>
+            <BaseDivider className='hidden !h-6 -3xs:block' vertical />
+            <BaseChip iconName='identification-badge'>{phoneNumber}</BaseChip>
+            <BaseDivider className='hidden !h-6 -3xs:block' vertical />
+            <BaseChip iconName={statusIconName as IconName}>
+              {statusLabel}
+            </BaseChip>
+          </div>
+          {/* Title + email */}
+          <div>
+            <h2 className='font-body text-lg font-medium leading-tight tracking-normal text-accent'>
+              {fullName}
+            </h2>
+            <span className='text-sm font-medium'>{email}</span>
+          </div>
+        </div>
+      </div>
+      <div className='flex min-h-[48px] w-full flex-col items-center justify-center gap-2.5 -3xs:flex-row'>
+        {loading ? (
+          <BaseSpinner size='xs' />
+        ) : (
+          <>
+            {enrollmentApprovalStatus ===
+              SchoolYearEnrollmentApprovalStatus.Pending && (
+              <>
+                <BaseButton
+                  className='!w-full'
+                  disabled={loading}
+                  onClick={onApprove}
+                >
+                  Approve Teacher
+                </BaseButton>
+                <BaseButton
+                  className='!w-full'
+                  variant='border'
+                  disabled={loading}
+                  onClick={onReject}
+                >
+                  Reject
+                </BaseButton>
+              </>
+            )}
+            <BaseButton
+              className='!w-full'
+              variant='border'
+              disabled={loading}
+              onClick={onEdit}
+            >
+              Edit
+            </BaseButton>
+          </>
+        )}
+      </div>
+    </div>
+  );
+});

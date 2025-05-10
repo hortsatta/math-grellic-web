@@ -112,7 +112,11 @@ export function transformToTeacherUserAccount({
   emails,
   user,
 }: any): TeacherUserAccount {
-  const { email, publicId, approvalStatus } = user || {};
+  const { email, publicId, approvalStatus, enrollment } = user || {};
+
+  const transformedEnrollment = enrollment
+    ? transformToSchoolYearEnrollment(enrollment)
+    : undefined;
 
   return {
     id,
@@ -133,6 +137,7 @@ export function transformToTeacherUserAccount({
     socialMediaLinks,
     messengerLink,
     emails,
+    enrollment: transformedEnrollment,
     //  students,
   } as TeacherUserAccount;
 }

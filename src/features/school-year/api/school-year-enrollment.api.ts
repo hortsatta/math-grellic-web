@@ -26,7 +26,9 @@ import type {
 const BASE_URL = 'sy-enrollments';
 const STUDENT_URL = 'students';
 const TEACHER_URL = 'teachers';
+const ADMIN_URL = 'admins';
 const TEACHER_BASE_URL = `${BASE_URL}/${TEACHER_URL}`;
+const ADMIN_BASE_URL = `${BASE_URL}/${ADMIN_URL}`;
 
 export function validateSchoolYearEnrollmentNewToken(
   options?: Omit<UseMutationOptions<boolean, Error, string, any>, 'mutationFn'>,
@@ -195,6 +197,46 @@ export function setStudentApprovalStatus(
     approvalStatus: SchoolYearEnrollmentApprovalStatus;
   }): Promise<any> => {
     const url = `${TEACHER_BASE_URL}/${STUDENT_URL}/approve/${enrollmentId}`;
+    const json = { approvalStatus };
+
+    try {
+      const userApproval = await kyInstance.patch(url, { json }).json();
+      return userApproval;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return { mutationFn, ...options };
+}
+
+export function setTeacherApprovalStatus(
+  options?: Omit<
+    UseMutationOptions<
+      {
+        approvalStatus: string;
+        approvalDate: string;
+        approvalRejectedReason: string;
+      },
+      Error,
+      {
+        enrollmentId: number;
+        approvalStatus: SchoolYearEnrollmentApprovalStatus;
+      },
+      any
+    >,
+    'mutationFn'
+  >,
+) {
+  const mutationFn = async ({
+    enrollmentId,
+    approvalStatus,
+  }: {
+    enrollmentId: number;
+    approvalStatus: SchoolYearEnrollmentApprovalStatus;
+  }): Promise<any> => {
+    const url = `${ADMIN_BASE_URL}/${TEACHER_URL}/approve/${enrollmentId}`;
     const json = { approvalStatus };
 
     try {

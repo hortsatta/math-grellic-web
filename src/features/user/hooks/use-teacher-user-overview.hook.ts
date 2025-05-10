@@ -4,26 +4,26 @@ import { queryUserKey } from '#/config/react-query-keys.config';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
 import { UserApprovalStatus } from '../models/user.model';
-import { getStudentCountByCurrentTeacherUser } from '../api/teacher-user.api';
+import { getTeacherCountByCurrentAdminUser } from '../api/admin-user.api';
 
 type Result = {
-  enrolledStudentCount: number;
+  enrolledTeacherCount: number;
   loading: boolean;
   refresh: () => void;
 };
 
-export function useStudentUserOverview(): Result {
+export function useTeacherUserOverview(): Result {
   const schoolYear = useBoundStore((state) => state.schoolYear);
 
   const { data, isLoading, isFetching, refetch } = useQuery(
-    getStudentCountByCurrentTeacherUser(
+    getTeacherCountByCurrentAdminUser(
       {
         status: UserApprovalStatus.Approved,
         schoolYearId: schoolYear?.id,
         enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Approved,
       },
       {
-        queryKey: queryUserKey.allStudentList,
+        queryKey: queryUserKey.allTeacherList,
         refetchOnWindowFocus: false,
         initialData: 0,
       },
@@ -31,7 +31,7 @@ export function useStudentUserOverview(): Result {
   );
 
   return {
-    enrolledStudentCount: data || 0,
+    enrolledTeacherCount: data || 0,
     loading: isLoading || isFetching,
     refresh: refetch,
   };

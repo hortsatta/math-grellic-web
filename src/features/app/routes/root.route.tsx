@@ -305,18 +305,16 @@ const rootRoutes = createRoutesFromElements(
           handle={adminSchoolYearRouteHandle.create}
         />
       </Route>
-
       {/* ADMIN TEACHER */}
-      {/* <Route path={teacherRoutes.student.to} element={<Outlet />}>
+      <Route path={adminRoutes.teacher.to} element={<Outlet />}>
         <Route
           index
           element={withSuspense(
-            () => import('#/user/pages/student-user-list.page'),
+            () => import('#/user/pages/teacher-user-list.page'),
           )}
-          handle={studentUserRouteHandle.list}
-          loader={getPaginatedStudentUserLoader(queryClient)}
+          handle={adminUserRouteHandle.list}
         />
-        <Route path=':id' element={<Outlet />}>
+        {/* <Route path=':id' element={<Outlet />}>
           <Route
             index
             element={withSuspense(
@@ -340,8 +338,8 @@ const rootRoutes = createRoutesFromElements(
             () => import('#/user/pages/student-user-create.page'),
           )}
           handle={studentUserRouteHandle.create}
-        />
-      </Route> */}
+        /> */}
+      </Route>
       <Route
         path='*'
         element={<CorePageNotFound to={`/${adminBaseRoute}`} />}

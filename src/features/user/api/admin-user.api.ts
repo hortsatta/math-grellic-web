@@ -30,6 +30,8 @@ export function getPaginatedTeachersByCurrentAdminUser(
     status?: string;
     sort?: string;
     pagination?: Omit<QueryPagination, 'totalCount'>;
+    schoolYearId?: number;
+    enrollmentStatus?: string;
   },
   options?: Omit<
     UseQueryOptions<
@@ -41,7 +43,8 @@ export function getPaginatedTeachersByCurrentAdminUser(
     'queryKey' | 'queryFn'
   >,
 ) {
-  const { q, status, sort, pagination } = keys || {};
+  const { q, status, sort, pagination, schoolYearId, enrollmentStatus } =
+    keys || {};
   const { take, skip } = pagination || {};
 
   const queryFn = async (): Promise<any> => {
@@ -52,6 +55,8 @@ export function getPaginatedTeachersByCurrentAdminUser(
       sort,
       skip: skip?.toString() || '0',
       take: take?.toString() || '0',
+      sy: schoolYearId?.toString(),
+      estatus: enrollmentStatus,
     });
 
     try {
@@ -71,13 +76,19 @@ export function getPaginatedTeachersByCurrentAdminUser(
 }
 
 export function getTeachersByCurrentAdminUser(
-  keys?: { q?: string; ids?: number[]; status?: string },
+  keys?: {
+    q?: string;
+    ids?: number[];
+    status?: string;
+    schoolYearId?: number;
+    enrollmentStatus?: string;
+  },
   options?: Omit<
     UseQueryOptions<TeacherUserAccount[], Error, TeacherUserAccount[], any>,
     'queryFn'
   >,
 ) {
-  const { q, ids, status } = keys || {};
+  const { q, ids, status, schoolYearId, enrollmentStatus } = keys || {};
   const { queryKey, ...moreOptions } = options || {};
 
   const queryFn = async (): Promise<any> => {
@@ -86,6 +97,8 @@ export function getTeachersByCurrentAdminUser(
       q,
       ids: ids?.join(','),
       status,
+      sy: schoolYearId?.toString(),
+      estatus: enrollmentStatus,
     });
 
     try {
@@ -99,7 +112,7 @@ export function getTeachersByCurrentAdminUser(
 
   return {
     queryKey: [
-      ...(queryKey?.length ? queryKey : queryUserKey.allStudentList),
+      ...(queryKey?.length ? queryKey : queryUserKey.allTeacherList),
       { q, ids, status },
     ],
     queryFn,
@@ -133,6 +146,40 @@ export function getTeacherById(
     queryKey: [...queryUserKey.teacherSingle, { id, exclude, include }],
     queryFn,
     ...options,
+  };
+}
+
+export function getTeacherCountByCurrentAdminUser(
+  keys?: { status?: string; schoolYearId?: number; enrollmentStatus?: string },
+  options?: Omit<UseQueryOptions<number, Error, number, any>, 'queryFn'>,
+) {
+  const { status, schoolYearId, enrollmentStatus } = keys || {};
+  const { queryKey, ...moreOptions } = options || {};
+
+  const queryFn = async (): Promise<any> => {
+    const url = `${ADMIN_BASE_URL}/${TEACHER_URL}/count`;
+    const searchParams = generateSearchParams({
+      status,
+      sy: schoolYearId?.toString(),
+      estatus: enrollmentStatus,
+    });
+
+    try {
+      const count = await kyInstance.get(url, { searchParams }).json();
+      return count;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [
+      ...(queryKey?.length ? queryKey : queryUserKey.allTeacherList),
+      { status },
+    ],
+    queryFn,
+    ...moreOptions,
   };
 }
 
