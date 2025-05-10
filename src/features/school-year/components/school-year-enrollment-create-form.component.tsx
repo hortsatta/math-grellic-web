@@ -145,41 +145,43 @@ export const SchoolYearEnrollmentCreateForm = memo(function ({
   );
 
   return (
-    <div className={cx('w-full max-w-xl', className)} {...moreProps}>
+    <div className={cx('w-full max-w-lg', className)} {...moreProps}>
       <form
         className='flex flex-col gap-4'
         onSubmit={handleSubmit(submitForm, handleSubmitError)}
       >
         {isDone ? <p>{doneText}</p> : <p>{notDoneText}</p>}
-        <fieldset className='w-full max-w-xs' disabled={isDone || loading}>
-          {role === UserRole.Student && (
-            <BaseControlledInput
-              label="Teacher's ID"
-              name='teacherId'
-              control={control}
-              fullWidth
-              asterisk
-            />
-          )}
-        </fieldset>
-        <div className='flex items-center gap-2.5'>
-          <BaseButton
-            className='w-full max-w-xs'
-            rightIconName='share-fat'
-            loading={loading}
-            disabled={isDone || !canEnroll}
-            onClick={handleSubmit(submitForm, handleSubmitError)}
-          >
-            Enroll Now
-          </BaseButton>
-          {isDone && (
-            <BaseIcon
-              className='text-green-500'
-              name='check-circle'
-              size={44}
-              weight='bold'
-            />
-          )}
+        <div className='mx-auto flex w-full max-w-[320px] flex-col gap-4'>
+          <fieldset className='w-full max-w-xs' disabled={isDone || loading}>
+            {role === UserRole.Student && (
+              <BaseControlledInput
+                label="Teacher's ID"
+                name='teacherId'
+                control={control}
+                fullWidth
+                asterisk
+              />
+            )}
+          </fieldset>
+          <div className='flex items-center gap-2.5'>
+            <BaseButton
+              className='w-full max-w-xs'
+              rightIconName='share-fat'
+              loading={loading}
+              disabled={isDone || !canEnroll}
+              onClick={handleSubmit(submitForm, handleSubmitError)}
+            >
+              Enroll Now
+            </BaseButton>
+            {isDone && (
+              <BaseIcon
+                className='text-green-500'
+                name='check-circle'
+                size={44}
+                weight='bold'
+              />
+            )}
+          </div>
         </div>
       </form>
     </div>
