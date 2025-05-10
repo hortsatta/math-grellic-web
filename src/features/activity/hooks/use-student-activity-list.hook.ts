@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToActivity } from '../helpers/activity-transform.helper';
 import { getActivitiesByCurrentStudentUser } from '../api/student-activity.api';
 
@@ -16,6 +17,7 @@ type Result = {
 };
 
 export function useStudentActivityList(): Result {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const [keyword, setKeyword] = useState<string | null>(null);
 
   const {
@@ -24,25 +26,28 @@ export function useStudentActivityList(): Result {
     isRefetching,
     refetch,
   } = useQuery(
-    getActivitiesByCurrentStudentUser(keyword || undefined, {
-      refetchOnWindowFocus: false,
-      select: (data: any) => {
-        const { featuredActivities, otherActivities } = data;
+    getActivitiesByCurrentStudentUser(
+      { q: keyword || undefined, schoolYearId: schoolYear?.id },
+      {
+        refetchOnWindowFocus: false,
+        select: (data: any) => {
+          const { featuredActivities, otherActivities } = data;
 
-        const transformedFeaturedActivities = featuredActivities?.length
-          ? featuredActivities.map((item: any) => transformToActivity(item))
-          : [];
+          const transformedFeaturedActivities = featuredActivities?.length
+            ? featuredActivities.map((item: any) => transformToActivity(item))
+            : [];
 
-        const transformedOtherActivities = otherActivities?.length
-          ? otherActivities.map((item: any) => transformToActivity(item))
-          : [];
+          const transformedOtherActivities = otherActivities?.length
+            ? otherActivities.map((item: any) => transformToActivity(item))
+            : [];
 
-        return {
-          featuredActivities: transformedFeaturedActivities,
-          otherActivities: transformedOtherActivities,
-        };
+          return {
+            featuredActivities: transformedFeaturedActivities,
+            otherActivities: transformedOtherActivities,
+          };
+        },
       },
-    }),
+    ),
   );
 
   const { featuredActivities, otherActivities } = useMemo(
