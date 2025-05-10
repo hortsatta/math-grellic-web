@@ -139,7 +139,7 @@ const Choice = memo(function ({
   );
 
   return (
-    <div className='max-w-qcWrapperInput flex w-full items-start'>
+    <div className='flex w-full max-w-qcWrapperInput items-start'>
       <div className='flex h-12 items-center justify-center'>
         <BaseIconButton
           name='check-fat'
@@ -151,7 +151,7 @@ const Choice = memo(function ({
       </div>
       <div className='relative w-full'>
         {textType !== ActivityTextType.Image ? (
-          <div className='flex h-fit flex-1 basis-full items-center gap-x-2.5 overflow-hidden'>
+          <div className='flex h-fit !max-w-[463.64px] flex-1 basis-full items-center gap-x-2.5 overflow-hidden'>
             {textType === ActivityTextType.Text ? (
               <BaseControlledInput
                 name={choiceName}
@@ -170,7 +170,7 @@ const Choice = memo(function ({
               />
             ) : (
               <BaseControlledMathInput
-                className='flex min-h-[48px] items-center'
+                className='flex min-h-[48px] w-full !max-w-[463.64px] pr-[43px]'
                 name={choiceName}
                 control={control}
                 leftContent={

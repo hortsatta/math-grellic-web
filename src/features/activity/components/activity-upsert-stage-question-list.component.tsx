@@ -203,6 +203,7 @@ const StageQuestionList = memo(function ({
             layout
           >
             <ActivityUpsertStageQuestion
+              className='max-w-[578px]'
               index={index}
               categoryIndex={categoryIndex}
               stageIndex={stageIndex}

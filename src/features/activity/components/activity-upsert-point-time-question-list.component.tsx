@@ -116,6 +116,7 @@ export const ActivityUpsertPointTimeQuestionList = memo(function ({
             layout
           >
             <ActivityUpsertPointTimeQuestion
+              className='max-w-[578px]'
               index={index}
               categoryIndex={categoryIndex}
               onRemove={handleRemove(index)}
