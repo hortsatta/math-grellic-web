@@ -5,9 +5,11 @@ import z from 'zod';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
+import dayjs from '#/config/dayjs.config';
 import { getErrorMessage } from '#/utils/string.util';
 import { UserRole } from '#/user/models/user.model';
 import { BaseButton } from '#/base/components/base-button.components';
+import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseControlledInput } from '#/base/components/base-input.component';
 
 import type { FieldErrors } from 'react-hook-form';
@@ -15,7 +17,6 @@ import type { FormProps } from '#/base/models/base.model';
 import type { SchoolYear } from '../models/school-year.model';
 import type { SchoolYearEnrollment } from '../models/school-year-enrollment.model';
 import type { SchoolYearEnrollmentCreateFormData } from '../models/school-year-enrollment-form-data.model';
-import { BaseIcon } from '#/base/components/base-icon.component';
 
 type Props = FormProps<
   'div',
@@ -92,15 +93,28 @@ export const SchoolYearEnrollmentCreateForm = memo(function ({
     [formLoading, isSubmitting],
   );
 
-  const notDoneText = useMemo(
-    () =>
-      role === UserRole.Student
-        ? `You're almost ready to start learning — but it looks like you
-            haven't enrolled for the ${schoolYear.title} yet. Please enter your teacher's id to complete your enrollment.`
-        : `You're almost ready — but it looks like you
-            haven't enrolled for the ${schoolYear.title} yet. Please tap the button complete your enrollment.`,
-    [role, schoolYear],
-  );
+  const [title, canEnroll, enrollmentStartDateText, enrollmentEndDateText] =
+    useMemo(
+      () => [
+        schoolYear.title,
+        schoolYear.canEnroll,
+        dayjs(schoolYear.startDate).format('MMM DD, YYYY'),
+        dayjs(schoolYear.gracePeriodEndDate).format('MMM DD, YYYY'),
+      ],
+      [schoolYear],
+    );
+
+  const notDoneText = useMemo(() => {
+    if (!canEnroll) {
+      return `It looks like you are not within the enrollment period (${enrollmentStartDateText} - ${enrollmentEndDateText}). Please contact your teacher for assistance.`;
+    }
+
+    return role === UserRole.Student
+      ? `You're almost ready to start learning — but it looks like you
+            haven't enrolled for the ${title} yet. Please enter your teacher's id to complete your enrollment.`
+      : `You're almost ready — but it looks like you
+            haven't enrolled for the ${title} yet. Please tap the button complete your enrollment.`;
+  }, [role, title, canEnroll, enrollmentStartDateText, enrollmentEndDateText]);
 
   const doneText = useMemo(
     () =>
@@ -153,7 +167,7 @@ export const SchoolYearEnrollmentCreateForm = memo(function ({
             className='w-full max-w-xs'
             rightIconName='share-fat'
             loading={loading}
-            disabled={isDone}
+            disabled={isDone || !canEnroll}
             onClick={handleSubmit(submitForm, handleSubmitError)}
           >
             Enroll Now
