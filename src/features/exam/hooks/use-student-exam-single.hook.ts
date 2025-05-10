@@ -196,7 +196,7 @@ export function useStudentExamSingle(): Result {
     socket?.emit(
       'exam-take',
       {
-        slug: exam.slug,
+        id: exam.id,
         questions: exam.questions,
         studentId: user?.userAccount?.id || 0,
       },
