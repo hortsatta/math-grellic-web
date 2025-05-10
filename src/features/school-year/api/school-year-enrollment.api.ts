@@ -1,5 +1,4 @@
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
-import { querySyEnrollmentKey } from '#/config/react-query-keys.config';
 import { generateApiError } from '#/utils/api.util';
 import { UserRole } from '#/user/models/user.model';
 import {
@@ -102,7 +101,7 @@ export function getSchoolYearEnrollment(
   };
 
   return {
-    queryKey: querySyEnrollmentKey.currentSyEnrollment,
+    queryKey: [],
     queryFn,
     ...options,
   };
