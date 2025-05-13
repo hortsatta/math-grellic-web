@@ -2,7 +2,10 @@ import { memo, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import cx from 'classix';
 
-import { convertSecondsToDuration } from '#/utils/time.util';
+import {
+  convertMsToSeconds,
+  convertSecondsToDuration,
+} from '#/utils/time.util';
 import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
@@ -38,15 +41,19 @@ type ScoreProps = {
 const ACTIVITY_LIST_PATH = `/${studentBaseRoute}/${studentRoutes.activity.to}`;
 
 const Score = memo(function ({ game, score }: ScoreProps) {
-  const scoreSuffix = useMemo(() => {
+  const [transformedScore, scoreSuffix] = useMemo(() => {
     const isPlural = (score || 0) > 1;
 
     if (game.type === ActivityCategoryType.Point) {
-      return isPlural ? 'Points' : 'Point';
+      const suffix = isPlural ? 'Points' : 'Point';
+      return [score, suffix];
     } else if (game.type === ActivityCategoryType.Time) {
-      return isPlural ? 'Seconds' : 'Second';
+      const suffix = isPlural ? 'Seconds' : 'Second';
+
+      return [convertMsToSeconds(score || 0), suffix];
     } else {
-      return isPlural ? 'Levels' : 'Level';
+      const suffix = isPlural ? 'Levels' : 'Level';
+      return [score, suffix];
     }
   }, [game, score]);
 
@@ -60,7 +67,7 @@ const Score = memo(function ({ game, score }: ScoreProps) {
       ) : (
         <div className='flex h-full w-full flex-1 flex-col justify-start text-white'>
           <div className='flex h-full flex-1 items-center justify-center bg-primary-hue-teal-focus text-6xl font-medium'>
-            {score}
+            {transformedScore}
           </div>
           <small className='py-1 text-center font-medium uppercase'>
             {scoreSuffix}

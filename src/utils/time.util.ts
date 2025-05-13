@@ -21,6 +21,11 @@ export function convertSecondsToDuration(
   }
 }
 
+export function convertMsToSeconds(ms: number) {
+  const duration = dayjs.duration(ms, 'milliseconds');
+  return duration.seconds();
+}
+
 export function generateCountdownDate(value: Duration | null) {
   if (!value) {
     return null;
