@@ -59,7 +59,10 @@ export function getPaginatedLessonsByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryLessonKey.list, { q, status, sort, skip, take }],
+    queryKey: [
+      ...queryLessonKey.list,
+      { q, status, sort, skip, take, schoolYearId },
+    ],
     queryFn,
     ...options,
   };
@@ -100,7 +103,7 @@ export function getLessonsByCurrentTeacherUser(
   return {
     queryKey: [
       ...(queryKey?.length ? queryKey : queryLessonKey.list),
-      { q, ids, status, sort },
+      { q, ids, status, sort, schoolYearId },
     ],
     queryFn,
     ...moreOptions,
@@ -130,7 +133,7 @@ export function getLessonSnippetsByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryLessonKey.list, { take }],
+    queryKey: [...queryLessonKey.list, { take, schoolYearId }],
     queryFn,
     ...options,
   };
@@ -167,7 +170,10 @@ export function getLessonBySlugAndCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryLessonKey.single, { slug, status, exclude, include }],
+    queryKey: [
+      ...queryLessonKey.single,
+      { slug, status, schoolYearId, exclude, include },
+    ],
     queryFn,
     ...options,
   };

@@ -43,7 +43,7 @@ export function getAnnouncementsByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryAnnouncementKey.list],
+    queryKey: [...queryAnnouncementKey.list, { schoolYearId }],
     queryFn,
     ...options,
   };

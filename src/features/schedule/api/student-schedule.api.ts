@@ -42,7 +42,7 @@ export function getSchedulesByDateRangeAndCurrentStudentUser(
   };
 
   return {
-    queryKey: [...queryScheduleKey.timeline, { from, to }],
+    queryKey: [...queryScheduleKey.timeline, { from, to, schoolYearId }],
     queryFn,
     ...options,
   };
@@ -78,7 +78,7 @@ export function getSchedulesByDateAndCurrentStudentUser(
   };
 
   return {
-    queryKey: [...queryScheduleKey.daily, { date }],
+    queryKey: [...queryScheduleKey.daily, { date, schoolYearId }],
     queryFn,
     ...options,
   };
@@ -112,7 +112,7 @@ export function getMeetingSchedulesByCurrentStudentUser(
   };
 
   return {
-    queryKey: [...queryScheduleKey.list],
+    queryKey: [...queryScheduleKey.list, { schoolYearId }],
     queryFn,
     ...options,
   };

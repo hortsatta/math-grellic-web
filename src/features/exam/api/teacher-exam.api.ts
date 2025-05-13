@@ -60,7 +60,10 @@ export function getPaginatedExamsByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryExamKey.list, { q, status, sort, skip, take }],
+    queryKey: [
+      ...queryExamKey.list,
+      { q, status, sort, skip, take, schoolYearId },
+    ],
     queryFn,
     ...options,
   };
@@ -89,7 +92,7 @@ export function getExamSnippetsByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryExamKey.list, { take }],
+    queryKey: [...queryExamKey.list, { take, schoolYearId }],
     queryFn,
     ...options,
   };
@@ -126,7 +129,10 @@ export function getExamBySlugAndCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryExamKey.single, { slug, status, exclude, include }],
+    queryKey: [
+      ...queryExamKey.single,
+      { slug, status, schoolYearId, exclude, include },
+    ],
     queryFn,
     ...options,
   };

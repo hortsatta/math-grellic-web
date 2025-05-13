@@ -50,7 +50,7 @@ export function getSchedulesByDateRangeAndCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryScheduleKey.timeline, { from, to }],
+    queryKey: [...queryScheduleKey.timeline, { from, to, schoolYearId }],
     queryFn,
     ...options,
   };
@@ -85,7 +85,7 @@ export function getSchedulesByDateAndCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryScheduleKey.daily, { date }],
+    queryKey: [...queryScheduleKey.daily, { date, schoolYearId }],
     queryFn,
     ...options,
   };
@@ -133,7 +133,7 @@ export function getPaginatedMeetingSchedulesByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryScheduleKey.list, { q, sort, skip, take }],
+    queryKey: [...queryScheduleKey.list, { q, sort, skip, take, schoolYearId }],
     queryFn,
     ...options,
   };

@@ -86,7 +86,10 @@ export function getPaginatedActivitiesByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryActivityKey.list, { q, status, sort, skip, take }],
+    queryKey: [
+      ...queryActivityKey.list,
+      { q, status, sort, skip, take, schoolYearId },
+    ],
     queryFn,
     ...options,
   };
@@ -118,7 +121,7 @@ export function getActivitySnippetsByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryActivityKey.list, { take }],
+    queryKey: [...queryActivityKey.list, { take, schoolYearId }],
     queryFn,
     ...options,
   };
@@ -155,7 +158,10 @@ export function getActivityBySlugAndCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryActivityKey.single, { slug, status, exclude, include }],
+    queryKey: [
+      ...queryActivityKey.single,
+      { slug, status, schoolYearId, exclude, include },
+    ],
     queryFn,
     ...options,
   };

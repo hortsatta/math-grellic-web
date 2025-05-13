@@ -41,7 +41,7 @@ export function getLessonsByCurrentStudentUser(
   };
 
   return {
-    queryKey: [...queryLessonKey.list, { q }],
+    queryKey: [...queryLessonKey.list, { q, schoolYearId }],
     queryFn,
     ...options,
   };
@@ -76,7 +76,10 @@ export function getLessonBySlugAndCurrentStudentUser(
   };
 
   return {
-    queryKey: [...queryLessonKey.single, { slug, exclude, include }],
+    queryKey: [
+      ...queryLessonKey.single,
+      { slug, schoolYearId, exclude, include },
+    ],
     queryFn,
     ...options,
   };

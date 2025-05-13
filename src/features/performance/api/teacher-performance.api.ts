@@ -54,7 +54,7 @@ export function getClassPerformanceByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryTeacherPerformanceKey.class],
+    queryKey: [...queryTeacherPerformanceKey.class, { schoolYearId }],
     queryFn,
     ...options,
   };
@@ -90,7 +90,7 @@ export function getLessonPerformanceByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryTeacherPerformanceKey.lesson],
+    queryKey: [...queryTeacherPerformanceKey.lesson, { schoolYearId }],
     queryFn,
     ...options,
   };
@@ -121,7 +121,7 @@ export function getExamPerformanceByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryTeacherPerformanceKey.exam],
+    queryKey: [...queryTeacherPerformanceKey.exam, { schoolYearId }],
     queryFn,
     ...options,
   };
@@ -157,7 +157,7 @@ export function getActivityPerformanceByCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryTeacherPerformanceKey.activity],
+    queryKey: [...queryTeacherPerformanceKey.activity, { schoolYearId }],
     queryFn,
     ...options,
   };
@@ -207,7 +207,7 @@ export function getPaginatedStudentPerformancesByCurrentTeacherUser(
   return {
     queryKey: [
       ...queryStudentPerformanceKey.list,
-      { q, performance, sort, skip, take },
+      { q, performance, sort, skip, take, schoolYearId },
     ],
     queryFn,
     ...options,
@@ -249,7 +249,7 @@ export function getStudentPerformanceByPublicIdAndCurrentTeacherUser(
   return {
     queryKey: [
       ...queryStudentPerformanceKey.single,
-      { publicId, exclude, include },
+      { publicId, schoolYearId, exclude, include },
     ],
     queryFn,
     ...options,
@@ -288,7 +288,7 @@ export function getStudentLessonsByPublicIdAndCurrentTeacherUser(
   return {
     queryKey: [
       ...queryLessonKey.studentPerformance,
-      { publicId, exclude, include },
+      { publicId, schoolYearId, exclude, include },
     ],
     queryFn,
     ...options,
@@ -327,7 +327,7 @@ export function getStudentExamsByPublicIdAndCurrentTeacherUser(
   return {
     queryKey: [
       ...queryExamKey.studentPerformance,
-      { publicId, exclude, include },
+      { publicId, schoolYearId, exclude, include },
     ],
     queryFn,
     ...options,
@@ -369,7 +369,7 @@ export function getStudentActivitiesByPublicIdAndCurrentTeacherUser(
   return {
     queryKey: [
       ...queryActivityKey.studentPerformance,
-      { publicId, exclude, include },
+      { publicId, schoolYearId, exclude, include },
     ],
     queryFn,
     ...options,
@@ -405,7 +405,10 @@ export function getStudentExamWithCompletionsByPublicIdAndSlug(
   };
 
   return {
-    queryKey: [...queryExamKey.studentPerformanceResult, { publicId, slug }],
+    queryKey: [
+      ...queryExamKey.studentPerformanceResult,
+      { publicId, slug, schoolYearId },
+    ],
     queryFn,
     ...options,
   };
@@ -444,7 +447,7 @@ export function getStudentActivityWithCompletionsByPublicIdAndSlug(
   return {
     queryKey: [
       ...queryActivityKey.single,
-      { publicId, slug, exclude, include },
+      { publicId, slug, schoolYearId, exclude, include },
     ],
     queryFn,
     ...options,

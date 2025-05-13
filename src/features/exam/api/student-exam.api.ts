@@ -42,7 +42,7 @@ export function getExamsByCurrentStudentUser(
   };
 
   return {
-    queryKey: [...queryExamKey.list, { q }],
+    queryKey: [...queryExamKey.list, { q, schoolYearId }],
     queryFn,
     ...options,
   };
@@ -77,7 +77,10 @@ export function getExamBySlugAndCurrentStudentUser(
   };
 
   return {
-    queryKey: [...queryExamKey.single, { slug, exclude, include }],
+    queryKey: [
+      ...queryExamKey.single,
+      { slug, schoolYearId, exclude, include },
+    ],
     queryFn,
     ...options,
   };

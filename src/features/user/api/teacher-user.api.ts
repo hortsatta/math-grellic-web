@@ -94,7 +94,7 @@ export function getPaginatedStudentsByCurrentTeacherUser(
   return {
     queryKey: [
       ...queryUserKey.studentList,
-      { q, status, sort, skip, take, enrollmentStatus },
+      { q, status, sort, skip, take, schoolYearId, enrollmentStatus },
     ],
     queryFn,
     ...options,
@@ -139,7 +139,7 @@ export function getStudentsByCurrentTeacherUser(
   return {
     queryKey: [
       ...(queryKey?.length ? queryKey : queryUserKey.allStudentList),
-      { q, ids, status, enrollmentStatus },
+      { q, ids, status, schoolYearId, enrollmentStatus },
     ],
     queryFn,
     ...moreOptions,
@@ -173,7 +173,7 @@ export function getStudentCountByCurrentTeacherUser(
   return {
     queryKey: [
       ...(queryKey?.length ? queryKey : queryUserKey.allStudentList),
-      { status },
+      { status, schoolYearId },
     ],
     queryFn,
     ...moreOptions,
@@ -212,7 +212,10 @@ export function getStudentByIdAndCurrentTeacherUser(
   };
 
   return {
-    queryKey: [...queryUserKey.studentSingle, { id, exclude, include }],
+    queryKey: [
+      ...queryUserKey.studentSingle,
+      { id, schoolYearId, exclude, include },
+    ],
     queryFn,
     ...options,
   };

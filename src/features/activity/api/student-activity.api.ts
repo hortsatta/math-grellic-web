@@ -42,7 +42,7 @@ export function getActivitiesByCurrentStudentUser(
   };
 
   return {
-    queryKey: [...queryActivityKey.list, { q }],
+    queryKey: [...queryActivityKey.list, { q, schoolYearId }],
     queryFn,
     ...options,
   };
@@ -77,7 +77,10 @@ export function getActivityBySlugAndCurrentStudentUser(
   };
 
   return {
-    queryKey: [...queryActivityKey.single, { slug, exclude, include }],
+    queryKey: [
+      ...queryActivityKey.single,
+      { slug, schoolYearId, exclude, include },
+    ],
     queryFn,
     ...options,
   };
