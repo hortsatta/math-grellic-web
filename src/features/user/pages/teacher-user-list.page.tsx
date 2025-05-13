@@ -48,11 +48,11 @@ const defaultFilterOptions = [filterOptions[0]];
 const sortOptions = [
   {
     value: 'name',
-    label: 'Student Name',
+    label: 'Teacher Name',
   },
   {
     value: 'publicId',
-    label: 'Student Id',
+    label: 'Teacher Id',
   },
 ];
 

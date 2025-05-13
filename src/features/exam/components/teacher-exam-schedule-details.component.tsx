@@ -3,7 +3,7 @@ import cx from 'classix';
 
 import dayjs from '#/config/dayjs.config';
 import { convertSecondsToDuration, getDayJsDuration } from '#/utils/time.util';
-import { StudentUserItem } from '#/user/components/student-user-picker-list.component';
+import { UserSingleItem } from '#/user/components/user-single-item.component';
 
 import type { ComponentProps } from 'react';
 import type { ExamSchedule } from '../models/exam-schedule.model';
@@ -61,7 +61,7 @@ export const TeacherExamScheduleDetails = memo(function ({
         <ul className='w-full'>
           {students.map((student) => (
             <li key={student.id} className='w-full'>
-              <StudentUserItem className='!px-1 !py-1' student={student} />
+              <UserSingleItem className='!px-1 !py-1' userAccount={student} />
             </li>
           ))}
         </ul>

@@ -48,7 +48,7 @@ export const CoreNavItem = memo(function ({
           </div>
           <span
             className={cx(
-              'opacity-0 transition-opacity duration-300',
+              'whitespace-nowrap opacity-0 transition-opacity duration-300',
               (isMobile || isExpanded) && '!opacity-100',
             )}
           >

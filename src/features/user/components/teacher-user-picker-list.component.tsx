@@ -1,12 +1,11 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback } from 'react';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import cx from 'classix';
 
-import { generateFullName } from '../helpers/user.helper';
-import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSearchInput } from '#/base/components/base-search-input.component';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
+import { UserSingleItem } from './user-single-item.component';
 
 import type { ComponentProps } from 'react';
 import type { TeacherUserAccount } from '../models/user.model';
@@ -20,69 +19,6 @@ type Props = ComponentProps<'div'> & {
   onSubmit: () => void;
   loading?: boolean;
 };
-
-type TeacherUserItemProps = ComponentProps<'button'> & {
-  teacher: TeacherUserAccount;
-  onClick?: () => void;
-  selected?: boolean;
-};
-
-export const TeacherUserItem = memo(function ({
-  className,
-  teacher,
-  selected,
-  onClick,
-  ...moreProps
-}: TeacherUserItemProps) {
-  const [publicId, fullName] = useMemo(
-    () => [
-      teacher.publicId,
-      generateFullName(teacher.firstName, teacher.lastName, teacher.middleName),
-    ],
-    [teacher],
-  );
-
-  return (
-    <button
-      className={cx(
-        'group/usrpicker flex w-full items-center justify-between overflow-hidden rounded-md px-4 py-2',
-        onClick ? 'hover:bg-primary' : 'pointer-events-none',
-        className,
-      )}
-      onClick={onClick}
-      {...moreProps}
-    >
-      <div className='flex items-center gap-4'>
-        <div className='flex h-11 w-11 items-center justify-center rounded bg-slate-200'>
-          <BaseIcon
-            name='chalkboard-teacher'
-            className='opacity-60'
-            size={36}
-          />
-        </div>
-        <div
-          className={cx(
-            'flex flex-col items-start',
-            onClick && 'group-hover/usrpicker:text-white',
-          )}
-        >
-          <span className='text-left font-medium'>{fullName}</span>
-          <small>{publicId}</small>
-        </div>
-      </div>
-      <div className='flex h-9 w-9 items-center justify-center'>
-        {selected && (
-          <BaseIcon
-            name='check-fat'
-            className='text-green-500'
-            size={28}
-            weight='fill'
-          />
-        )}
-      </div>
-    </button>
-  );
-});
 
 export const TeacherUserPickerList = memo(function ({
   className,
@@ -130,8 +66,8 @@ export const TeacherUserPickerList = memo(function ({
                   key={teacher.id}
                   className='w-full border-b border-primary-border-light py-2 last:border-b-0'
                 >
-                  <TeacherUserItem
-                    teacher={teacher}
+                  <UserSingleItem
+                    userAccount={teacher}
                     selected={setItemSelected(teacher.id)}
                     onClick={onTeacherSelect(teacher.id)}
                   />

@@ -14,7 +14,11 @@ import type {
 } from '@tanstack/react-query';
 import type { QueryPagination } from '#/base/models/base.model';
 import type { PaginatedQueryData } from '#/core/models/core.model';
-import type { TeacherUserAccount, User } from '../models/user.model';
+import type {
+  StudentUserAccount,
+  TeacherUserAccount,
+  User,
+} from '../models/user.model';
 import type {
   AdminUserUpdateFormData,
   UserUpsertFormData,
@@ -22,6 +26,7 @@ import type {
 
 const BASE_URL = 'users';
 const TEACHER_URL = 'teachers';
+const STUDENT_URL = 'students';
 const ADMIN_BASE_URL = `${BASE_URL}/admins`;
 
 export function getPaginatedTeachersByCurrentAdminUser(
@@ -69,7 +74,10 @@ export function getPaginatedTeachersByCurrentAdminUser(
   };
 
   return {
-    queryKey: [...queryUserKey.teacherList, { q, status, sort, skip, take }],
+    queryKey: [
+      ...queryUserKey.teacherList,
+      { q, status, sort, skip, take, schoolYearId, enrollmentStatus },
+    ],
     queryFn,
     ...options,
   };
@@ -113,7 +121,52 @@ export function getTeachersByCurrentAdminUser(
   return {
     queryKey: [
       ...(queryKey?.length ? queryKey : queryUserKey.allTeacherList),
-      { q, ids, status },
+      { q, ids, status, schoolYearId },
+    ],
+    queryFn,
+    ...moreOptions,
+  };
+}
+
+export function getStudentsByCurrentAdmin(
+  keys?: {
+    q?: string;
+    ids?: number[];
+    status?: string;
+    schoolYearId?: number;
+    enrollmentStatus?: string;
+  },
+  options?: Omit<
+    UseQueryOptions<StudentUserAccount[], Error, StudentUserAccount[], any>,
+    'queryFn'
+  >,
+) {
+  const { q, ids, status, schoolYearId, enrollmentStatus } = keys || {};
+  const { queryKey, ...moreOptions } = options || {};
+
+  const queryFn = async (): Promise<any> => {
+    const url = `${ADMIN_BASE_URL}/${STUDENT_URL}/list/all`;
+    const searchParams = generateSearchParams({
+      q,
+      ids: ids?.join(','),
+      status,
+      sy: schoolYearId?.toString(),
+      estatus: enrollmentStatus,
+    });
+
+    try {
+      const students = await kyInstance.get(url, { searchParams }).json();
+      return students;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [
+      ...(queryKey?.length ? queryKey : queryUserKey.allStudentList),
+      { q, ids, status, schoolYearId },
     ],
     queryFn,
     ...moreOptions,

@@ -11,10 +11,8 @@ import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { transformToStudentUserAccount } from '../helpers/user-transform.helper';
 import { getStudentsByCurrentTeacherUser } from '../api/teacher-user.api';
-import {
-  StudentUserItem,
-  StudentUserPickerList,
-} from './student-user-picker-list.component';
+import { StudentUserPickerList } from './student-user-picker-list.component';
+import { UserSingleItem } from './user-single-item.component';
 
 import type { ComponentProps } from 'react';
 import type { UseControllerProps } from 'react-hook-form';
@@ -247,7 +245,7 @@ export const StudentUserPicker = memo(
                   key={student.id}
                   className='w-full border-b border-primary-border-light py-2 last:border-b-0'
                 >
-                  <StudentUserItem student={student} />
+                  <UserSingleItem userAccount={student} />
                 </li>
               ))}
           </ul>

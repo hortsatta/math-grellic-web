@@ -11,7 +11,7 @@ import { BaseLink } from '#/base/components/base-link.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
-import { StudentUserItem } from '#/user/components/student-user-picker-list.component';
+import { UserSingleItem } from '#/user/components/user-single-item.component';
 
 import type { ComponentProps } from 'react';
 import type { MeetingSchedule } from '../models/schedule.model';
@@ -115,7 +115,10 @@ export const TeacherMeetingScheduleSingle = memo(function ({
             <h3 className='mb-2 text-base'>Students</h3>
             <div className='flex flex-col gap-y-2.5'>
               {students.map((student) => (
-                <StudentUserItem key={`stu-${student.id}`} student={student} />
+                <UserSingleItem
+                  key={`stu-${student.id}`}
+                  userAccount={student}
+                />
               ))}
             </div>
           </div>

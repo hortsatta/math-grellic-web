@@ -75,6 +75,7 @@ import { adminUserRouteHandle } from '#/user/route/admin-user-handle';
 import { dashboardRouteHandle } from '#/dashboard/route/dashboard-handle.route';
 import { schoolYearEnrollmentHandle } from '#/school-year/route/school-year-enrollment-handle.route';
 import { adminSchoolYearRouteHandle } from '#/school-year/route/admin-school-year-handle.route';
+import { teacherUserRouteHandle } from '#/user/route/teacher-user-handle';
 import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.route';
 import { teacherExamRouteHandle } from '#/exam/route/teacher-exam-handle.route';
 import { teacherActivityRouteHandle } from '#/activity/route/teacher-activity-handle.route';
@@ -312,7 +313,7 @@ const rootRoutes = createRoutesFromElements(
           element={withSuspense(
             () => import('#/user/pages/teacher-user-list.page'),
           )}
-          handle={adminUserRouteHandle.list}
+          handle={teacherUserRouteHandle.list}
         />
         {/* <Route path=':id' element={<Outlet />}>
           <Route
