@@ -2,6 +2,7 @@ import dayjs from '#/config/dayjs.config';
 import { transformToBaseModel } from '#/base/helpers/base.helper';
 import {
   transformToStudentUserCreateDto,
+  transformToTeacherUserCreateDto,
   transformToUser,
 } from '#/user/helpers/user-transform.helper';
 import { UserRole } from '#/user/models/user.model';
@@ -65,5 +66,15 @@ export function transformToSchoolYearStudentEnrollmentNewCreateDto({
   return {
     studentUser: transformToStudentUserCreateDto(user),
     studentEnrollment: transformToSchoolYearEnrollmentCreateDto(enrollment),
+  };
+}
+
+export function transformToSchoolYearTeacherEnrollmentNewCreateDto({
+  user,
+  enrollment,
+}: any) {
+  return {
+    teacherUser: transformToTeacherUserCreateDto(user),
+    teacherEnrollment: transformToSchoolYearEnrollmentCreateDto(enrollment),
   };
 }

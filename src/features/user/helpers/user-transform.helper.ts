@@ -111,6 +111,7 @@ export function transformToTeacherUserAccount({
   messengerLink,
   emails,
   user,
+  studentCount,
 }: any): TeacherUserAccount {
   const { email, publicId, approvalStatus, enrollment } = user || {};
 
@@ -138,7 +139,7 @@ export function transformToTeacherUserAccount({
     messengerLink,
     emails,
     enrollment: transformedEnrollment,
-    //  students,
+    studentCount,
   } as TeacherUserAccount;
 }
 

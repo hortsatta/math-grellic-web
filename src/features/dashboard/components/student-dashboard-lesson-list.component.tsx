@@ -43,11 +43,11 @@ const LessonCompactCard = memo(function ({ lesson }: { lesson: Lesson }) {
       <BaseSurface className='flex items-start rounded-lg !p-2.5 transition-all group-hover:-translate-y-1 group-hover:ring-1'>
         <div className='flex w-full flex-col gap-2.5'>
           <div className='flex items-center gap-2.5'>
-            <BaseChip iconName='chalkboard' className='text-sm'>
+            <BaseChip iconName='chalkboard' isCompact>
               Lesson {orderNumber}
             </BaseChip>
             <BaseDivider className='!h-6' vertical />
-            <BaseChip iconName='hourglass' className='text-sm'>
+            <BaseChip iconName='hourglass' isCompact>
               {duration}
             </BaseChip>
           </div>

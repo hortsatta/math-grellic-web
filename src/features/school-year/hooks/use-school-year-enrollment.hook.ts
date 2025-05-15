@@ -28,9 +28,11 @@ export function useSchoolYearEnrollment(): Result {
   );
 
   useEffect(() => {
-    setSyEnrollment(data as SchoolYearEnrollment);
+    if (data === null || data === undefined || data?.id !== syEnrollment?.id) {
+      setSyEnrollment(data as SchoolYearEnrollment);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data === null, data === undefined, data?.id]);
+  }, [syEnrollment, data]);
 
   useEffect(() => {
     if (!schoolYear || !user) {

@@ -2,10 +2,7 @@ import { memo, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import cx from 'classix';
 
-import {
-  convertMsToSeconds,
-  convertSecondsToDuration,
-} from '#/utils/time.util';
+import { convertSecondsToDuration } from '#/utils/time.util';
 import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
@@ -49,8 +46,7 @@ const Score = memo(function ({ game, score }: ScoreProps) {
       return [score, suffix];
     } else if (game.type === ActivityCategoryType.Time) {
       const suffix = isPlural ? 'Seconds' : 'Second';
-
-      return [convertMsToSeconds(score || 0), suffix];
+      return [score, suffix];
     } else {
       const suffix = isPlural ? 'Levels' : 'Level';
       return [score, suffix];

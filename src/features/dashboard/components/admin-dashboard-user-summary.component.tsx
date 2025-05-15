@@ -21,17 +21,20 @@ const USER_ACCOUNT_PATH = `/${adminBaseRoute}/${adminRoutes.account.to}`;
 
 const links = [
   {
+    to: `/${adminBaseRoute}/${adminRoutes.schoolYear.to}/${adminRoutes.schoolYear.createTo}`,
+    label: 'Create school year',
+    icons: [
+      { name: 'plus', size: 16 },
+      { name: 'graduation-cap' },
+    ] as GroupLink['icons'],
+  },
+  {
     to: `/${adminBaseRoute}/${adminRoutes.teacher.to}/${adminRoutes.teacher.createTo}`,
     label: 'Register teacher',
     icons: [
       { name: 'plus', size: 16 },
       { name: 'chalkboard-teacher' },
     ] as GroupLink['icons'],
-  },
-  {
-    to: `/${adminBaseRoute}/${adminRoutes.teacher.to}`,
-    label: 'View all teachers',
-    icons: [{ name: 'chalkboard-teacher' }] as GroupLink['icons'],
   },
 ];
 

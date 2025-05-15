@@ -87,7 +87,7 @@ export const SchoolYearEnrollmentUserList = memo(function ({
       className={cx('flex flex-col items-center justify-between', className)}
       {...moreProps}
     >
-      <div className='w-full overflow-hidden'>
+      <div className='w-full overflow-hidden p-1'>
         <div className='px-4'>
           <BaseSearchInput
             placeholder={searchPlaceholder}

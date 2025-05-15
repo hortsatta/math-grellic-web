@@ -165,7 +165,7 @@ const EditForm = memo(function ({
   );
 });
 
-export const StudentUserUpsertFormStep1 = memo(function ({
+export const UserUpsertFormStep1 = memo(function ({
   isEdit,
   disabled,
   ...moreProps

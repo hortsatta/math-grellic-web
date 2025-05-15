@@ -61,6 +61,7 @@ export type IconName =
   | 'feather'
   | 'file-dashed'
   | 'file-text'
+  | 'flag-pennant'
   | 'floppy-disk-back'
   | 'frame-corners'
   | 'function'

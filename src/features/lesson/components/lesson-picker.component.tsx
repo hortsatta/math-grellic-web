@@ -11,7 +11,8 @@ import { BaseSelect } from '#/base/components/base-select.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { transformToLesson } from '../helpers/lesson-transform.helper';
 import { getLessonsByCurrentTeacherUser } from '../api/teacher-lesson.api';
-import { LessonItem, LessonPickerList } from './lesson-picker-list.component';
+import { LessonPickerList } from './lesson-picker-list.component';
+import { LessonSingleItem } from './lesson-single-item.component';
 
 import type { ComponentProps } from 'react';
 import type { UseControllerProps } from 'react-hook-form';
@@ -225,7 +226,7 @@ export const LessonPicker = memo(
                 key={lesson.id}
                 className='w-full border-b border-primary-border-light py-2 last:border-b-0'
               >
-                <LessonItem lesson={lesson} />
+                <LessonSingleItem lesson={lesson} />
               </li>
             ))}
           </ul>

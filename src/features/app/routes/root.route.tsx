@@ -42,6 +42,7 @@ import {
   getTeacherPaginatedMeetingSchedulesLoader,
   getTeacherSchedulesByDateRangeLoader,
 } from '#/schedule/route/teacher-schedule-loader.route';
+import { getTeacherUserByIdLoader } from '#/user/route/teacher-user-loader';
 import { getStudentUserByIdLoader } from '#/user/route/student-user-loader';
 import {
   getStudentLessonBySlugLoader,
@@ -315,31 +316,31 @@ const rootRoutes = createRoutesFromElements(
           )}
           handle={teacherUserRouteHandle.list}
         />
-        {/* <Route path=':id' element={<Outlet />}>
+        <Route path=':id' element={<Outlet />}>
           <Route
             index
             element={withSuspense(
-              () => import('#/user/pages/student-user-single.page'),
+              () => import('#/user/pages/teacher-user-single.page'),
             )}
-            handle={studentUserRouteHandle.single}
-            loader={getStudentUserByIdLoader(queryClient)}
+            handle={teacherUserRouteHandle.single}
+            loader={getTeacherUserByIdLoader(queryClient)}
           />
           <Route
-            path={teacherRoutes.student.editTo}
+            path={adminRoutes.teacher.editTo}
             element={withSuspense(
-              () => import('#/user/pages/student-user-edit.page'),
+              () => import('#/user/pages/teacher-user-edit.page'),
             )}
-            handle={studentUserRouteHandle.edit}
-            loader={getStudentUserByIdLoader(queryClient)}
+            handle={teacherUserRouteHandle.edit}
+            loader={getTeacherUserByIdLoader(queryClient)}
           />
         </Route>
         <Route
-          path={teacherRoutes.student.createTo}
+          path={adminRoutes.teacher.createTo}
           element={withSuspense(
-            () => import('#/user/pages/student-user-create.page'),
+            () => import('#/user/pages/teacher-user-create.page'),
           )}
-          handle={studentUserRouteHandle.create}
-        /> */}
+          handle={teacherUserRouteHandle.create}
+        />
       </Route>
       <Route
         path='*'

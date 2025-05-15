@@ -13,6 +13,7 @@ import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
+import { BaseItemCounterButton } from '#/base/components/base-item-counter-button.component';
 import { SchoolYearEnrollmentUserList } from './school-year-enrollment-user-list.component';
 
 import type { ComponentProps } from 'react';
@@ -46,22 +47,13 @@ const EnrolledUserCount = memo(function ({
   }, [totalEnrolledCount, isStudent]);
 
   return (
-    <button
-      className='flex flex-col gap-1 rounded-md px-5 py-2.5 transition-all hover:cursor-pointer hover:!border-primary-focus hover:shadow-md hover:ring-1 hover:ring-primary-focus'
+    <BaseItemCounterButton
+      countClassName='text-primary'
+      count={totalEnrolledCount}
+      countLabel={totalEnrolledCountText}
+      iconName={isStudent ? 'student' : 'chalkboard-teacher'}
       onClick={onClick}
-    >
-      <div className='flex items-center gap-2.5'>
-        <BaseIcon
-          name={isStudent ? 'student' : 'chalkboard-teacher'}
-          weight='light'
-          size={42}
-        />
-        <span className='text-4xl font-bold text-primary'>
-          {totalEnrolledCount}
-        </span>
-      </div>
-      <span className='text-start leading-tight'>{totalEnrolledCountText}</span>
-    </button>
+    />
   );
 });
 

@@ -45,11 +45,11 @@ const ActivityCompactCard = memo(function ({
       <BaseSurface className='flex items-start rounded-lg !p-2.5 transition-all group-hover:-translate-y-1 group-hover:ring-1'>
         <div className='flex w-full flex-col gap-2.5'>
           <div className='flex items-center gap-2.5'>
-            <BaseChip iconName='game-controller' className='text-sm'>
+            <BaseChip iconName='game-controller' isCompact>
               Activity {orderNumber}
             </BaseChip>
             <BaseDivider className='!h-6' vertical />
-            <BaseChip iconName='dice-three' className='text-sm'>
+            <BaseChip iconName='dice-three' isCompact>
               {gameName}
             </BaseChip>
           </div>
@@ -133,7 +133,7 @@ export const StudentDashboardActivityList = memo(function ({
           <div>
             <h3 className='mb-2.5 text-lg'>More Activities</h3>
             {moreActivities.length ? (
-              <ul className='-2lg:flex-row -2lg:gap-5 flex flex-col items-center gap-2.5 xl:flex-col xl:gap-4 2xl:flex-row 2xl:gap-5'>
+              <ul className='flex flex-col items-center gap-2.5 -2lg:flex-row -2lg:gap-5 xl:flex-col xl:gap-4 2xl:flex-row 2xl:gap-5'>
                 {moreActivities.map((activity) => (
                   <li key={`a-${activity.id}`} className='w-full'>
                     <ActivityCompactCard activity={activity} />

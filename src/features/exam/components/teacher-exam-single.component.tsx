@@ -11,7 +11,7 @@ import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
 import { BaseModal } from '#/base/components/base-modal.component';
-import { LessonItem } from '#/lesson/components/lesson-picker-list.component';
+import { LessonSingleItem } from '#/lesson/components/lesson-single-item.component';
 import { TeacherExamSingleQuestion } from './teacher-exam-single-question.component';
 import { TeacherExamScheduleSingleCard } from './teacher-exam-schedule-single-card.component';
 import { TeacherExamScheduleDetails } from './teacher-exam-schedule-details.component';
@@ -185,7 +185,10 @@ export const TeacherExamSingle = memo(function ({
             </h3>
             <div className='flex flex-col'>
               {coveredLessons?.map((lesson) => (
-                <LessonItem key={`li-${lesson.id}`} lesson={lesson as Lesson} />
+                <LessonSingleItem
+                  key={`li-${lesson.id}`}
+                  lesson={lesson as Lesson}
+                />
               ))}
             </div>
             <BaseDivider />

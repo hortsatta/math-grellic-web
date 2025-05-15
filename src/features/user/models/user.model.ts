@@ -68,6 +68,7 @@ export type TeacherUserAccount = UserAccount & {
   emails: string[];
   students?: StudentUserAccount[];
   enrollment?: SchoolYearEnrollment;
+  studentCount?: number;
 };
 
 export type StudentUserAccount = UserAccount & {

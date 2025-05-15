@@ -173,7 +173,7 @@ export function getStudentCountByCurrentTeacherUser(
   return {
     queryKey: [
       ...(queryKey?.length ? queryKey : queryUserKey.allStudentList),
-      { status, schoolYearId },
+      { status, schoolYearId, enrollmentStatus },
     ],
     queryFn,
     ...moreOptions,

@@ -121,7 +121,7 @@ export function getTeachersByCurrentAdminUser(
   return {
     queryKey: [
       ...(queryKey?.length ? queryKey : queryUserKey.allTeacherList),
-      { q, ids, status, schoolYearId },
+      { q, ids, status, schoolYearId, enrollmentStatus },
     ],
     queryFn,
     ...moreOptions,
@@ -133,15 +133,22 @@ export function getStudentsByCurrentAdmin(
     q?: string;
     ids?: number[];
     status?: string;
+    teacherId?: number;
     schoolYearId?: number;
     enrollmentStatus?: string;
   },
   options?: Omit<
-    UseQueryOptions<StudentUserAccount[], Error, StudentUserAccount[], any>,
+    UseQueryOptions<
+      StudentUserAccount[],
+      Error,
+      StudentUserAccount[] | undefined,
+      any
+    >,
     'queryFn'
   >,
 ) {
-  const { q, ids, status, schoolYearId, enrollmentStatus } = keys || {};
+  const { q, ids, status, teacherId, schoolYearId, enrollmentStatus } =
+    keys || {};
   const { queryKey, ...moreOptions } = options || {};
 
   const queryFn = async (): Promise<any> => {
@@ -151,6 +158,7 @@ export function getStudentsByCurrentAdmin(
       ids: ids?.join(','),
       status,
       sy: schoolYearId?.toString(),
+      teaid: teacherId?.toString(),
       estatus: enrollmentStatus,
     });
 
@@ -166,7 +174,7 @@ export function getStudentsByCurrentAdmin(
   return {
     queryKey: [
       ...(queryKey?.length ? queryKey : queryUserKey.allStudentList),
-      { q, ids, status, schoolYearId },
+      { q, ids, status, teacherId, schoolYearId, enrollmentStatus },
     ],
     queryFn,
     ...moreOptions,
@@ -174,17 +182,28 @@ export function getStudentsByCurrentAdmin(
 }
 
 export function getTeacherById(
-  keys: { id: number; exclude?: string; include?: string },
+  keys: {
+    id: number;
+    schoolYearId?: number;
+    withStats?: boolean;
+    exclude?: string;
+    include?: string;
+  },
   options?: Omit<
     UseQueryOptions<TeacherUserAccount, Error, TeacherUserAccount, any>,
     'queryFn'
   >,
 ) {
-  const { id, exclude, include } = keys;
+  const { id, schoolYearId, withStats, exclude, include } = keys;
 
   const queryFn = async (): Promise<any> => {
     const url = `${ADMIN_BASE_URL}/${TEACHER_URL}/${id}`;
-    const searchParams = generateSearchParams({ exclude, include });
+    const searchParams = generateSearchParams({
+      sy: schoolYearId?.toString(),
+      stats: (+(withStats || 0)).toString(),
+      exclude,
+      include,
+    });
 
     try {
       const teacher = await kyInstance.get(url, { searchParams }).json();
@@ -196,7 +215,10 @@ export function getTeacherById(
   };
 
   return {
-    queryKey: [...queryUserKey.teacherSingle, { id, exclude, include }],
+    queryKey: [
+      ...queryUserKey.teacherSingle,
+      { id, schoolYearId, exclude, include },
+    ],
     queryFn,
     ...options,
   };
@@ -229,7 +251,7 @@ export function getTeacherCountByCurrentAdminUser(
   return {
     queryKey: [
       ...(queryKey?.length ? queryKey : queryUserKey.allTeacherList),
-      { status },
+      { status, schoolYearId, enrollmentStatus },
     ],
     queryFn,
     ...moreOptions,

@@ -55,6 +55,7 @@ import {
   Feather,
   FileDashed,
   FileText,
+  FlagPennant,
   FloppyDiskBack,
   FrameCorners,
   Function,
@@ -241,6 +242,8 @@ export const BaseIcon = memo(
           return FileDashed;
         case 'file-text':
           return FileText;
+        case 'flag-pennant':
+          return FlagPennant;
         case 'floppy-disk-back':
           return FloppyDiskBack;
         case 'frame-corners':

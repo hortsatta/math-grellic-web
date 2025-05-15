@@ -9,7 +9,7 @@ import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
-import { LessonItem } from '#/lesson/components/lesson-picker-list.component';
+import { LessonSingleItem } from '#/lesson/components/lesson-single-item.component';
 
 import type { ComponentProps } from 'react';
 import type { Lesson } from '#/lesson/models/lesson.model';
@@ -116,7 +116,10 @@ export const StudentExamTakeStart = memo(function ({
         {coveredLessons?.length ? (
           <div className='flex flex-col'>
             {coveredLessons?.map((lesson) => (
-              <LessonItem key={`li-${lesson.id}`} lesson={lesson as Lesson} />
+              <LessonSingleItem
+                key={`li-${lesson.id}`}
+                lesson={lesson as Lesson}
+              />
             ))}
           </div>
         ) : (

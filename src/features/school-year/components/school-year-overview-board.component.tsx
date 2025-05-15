@@ -86,10 +86,10 @@ export const SchoolYearOverviewBoard = memo(function ({
             <span className={VALUE_CLASSNAME}>{title}</span>
             <div>
               <BaseChip iconName='calendar-check'>{dateRange}</BaseChip>
-              <BaseChip className='!text-sm' iconName='chalkboard-teacher'>
+              <BaseChip iconName='chalkboard-teacher' isCompact>
                 {totalTeacherCountText}
               </BaseChip>
-              <BaseChip className='!text-sm' iconName='student'>
+              <BaseChip iconName='student' isCompact>
                 {totalStudentCountText}
               </BaseChip>
             </div>

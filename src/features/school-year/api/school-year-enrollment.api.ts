@@ -1,4 +1,5 @@
 import { generateSearchParams, kyInstance } from '#/config/ky.config';
+import { querySyEnrollmentKey } from '#/config/react-query-keys.config';
 import { generateApiError } from '#/utils/api.util';
 import { UserRole } from '#/user/models/user.model';
 import {
@@ -6,6 +7,7 @@ import {
   transformToSchoolYearEnrollmentCreateDto,
   transformToSchoolYearEnrollmentNew,
   transformToSchoolYearStudentEnrollmentNewCreateDto,
+  transformToSchoolYearTeacherEnrollmentNewCreateDto,
 } from '../helpers/school-year-enrollment-transform.helper';
 
 import type {
@@ -103,7 +105,7 @@ export function getSchoolYearEnrollment(
   };
 
   return {
-    queryKey: [],
+    queryKey: [...querySyEnrollmentKey.current, { schoolYearId }],
     queryFn,
     ...options,
   };
@@ -158,6 +160,35 @@ export function enrollNewStudentUser(
   ): Promise<any> => {
     const url = `${TEACHER_BASE_URL}/enroll-new/${STUDENT_URL}`;
     const json = transformToSchoolYearStudentEnrollmentNewCreateDto(data);
+
+    try {
+      const result = await kyInstance.post(url, { json }).json();
+      return transformToSchoolYearEnrollmentNew(result);
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return { mutationFn, ...options };
+}
+
+export function enrollNewTeacherUser(
+  options?: Omit<
+    UseMutationOptions<
+      SchoolYearEnrollmentNew,
+      Error,
+      SchoolYearEnrollmentNewCreateFormData,
+      any
+    >,
+    'mutationFn'
+  >,
+) {
+  const mutationFn = async (
+    data: SchoolYearEnrollmentNewCreateFormData,
+  ): Promise<any> => {
+    const url = `${ADMIN_BASE_URL}/enroll-new/${TEACHER_URL}`;
+    const json = transformToSchoolYearTeacherEnrollmentNewCreateDto(data);
 
     try {
       const result = await kyInstance.post(url, { json }).json();

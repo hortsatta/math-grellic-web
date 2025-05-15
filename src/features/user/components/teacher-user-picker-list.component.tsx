@@ -14,10 +14,10 @@ type Props = ComponentProps<'div'> & {
   teachers: TeacherUserAccount[];
   selectedTeacherIds?: number[];
   onSearchChange: (value: string | null) => void;
-  onTeacherSelect: (id: number) => () => void;
-  onCancel: () => void;
-  onSubmit: () => void;
   loading?: boolean;
+  onTeacherSelect?: (id: number) => () => void;
+  onCancel?: () => void;
+  onSubmit?: () => void;
 };
 
 export const TeacherUserPickerList = memo(function ({
@@ -42,7 +42,7 @@ export const TeacherUserPickerList = memo(function ({
       className={cx('flex flex-col items-center justify-between', className)}
       {...moreProps}
     >
-      <div className='w-full overflow-hidden'>
+      <div className='w-full overflow-hidden p-1'>
         <div className='px-4'>
           <BaseSearchInput
             placeholder='Find a teacher'
@@ -69,7 +69,9 @@ export const TeacherUserPickerList = memo(function ({
                   <UserSingleItem
                     userAccount={teacher}
                     selected={setItemSelected(teacher.id)}
-                    onClick={onTeacherSelect(teacher.id)}
+                    {...(onTeacherSelect && {
+                      onClick: onTeacherSelect(teacher.id),
+                    })}
                   />
                 </li>
               ))}
@@ -77,12 +79,14 @@ export const TeacherUserPickerList = memo(function ({
           </OverlayScrollbarsComponent>
         </div>
       </div>
-      <div className='flex w-full items-center justify-between gap-4 px-5 pt-2.5 xs:px-0'>
-        <BaseButton variant='link' onClick={onCancel}>
-          Cancel
-        </BaseButton>
-        <BaseButton onClick={onSubmit}>Select Teachers</BaseButton>
-      </div>
+      {(!!onCancel || !!onSubmit) && (
+        <div className='flex w-full items-center justify-between gap-4 px-5 pt-2.5 xs:px-0'>
+          <BaseButton variant='link' onClick={onCancel}>
+            Cancel
+          </BaseButton>
+          <BaseButton onClick={onSubmit}>Select Teachers</BaseButton>
+        </div>
+      )}
     </div>
   );
 });

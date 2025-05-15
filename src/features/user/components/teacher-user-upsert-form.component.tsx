@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { getErrorMessage } from '#/utils/string.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
@@ -38,7 +38,7 @@ type Props = Omit<
   schoolYearTitle?: string;
 };
 
-const STUDENT_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
+const TEACHER_LIST_PATH = `/${adminBaseRoute}/${adminRoutes.teacher.to}`;
 
 const stepWrapperProps = {
   className: '!overflow-visible',
@@ -79,7 +79,7 @@ const defaultValues: Partial<UserUpsertFormData> = {
   approvalStatus: UserApprovalStatus.Pending,
 };
 
-export const StudentUserUpsertForm = memo(function ({
+export const TeacherUserUpsertForm = memo(function ({
   className,
   formData,
   loading: formLoading,
@@ -144,7 +144,7 @@ export const StudentUserUpsertForm = memo(function ({
 
   const submitForm = useCallback(
     async (data: UserUpsertFormData, approvalStatus?: UserApprovalStatus) => {
-      // TODO check if edit, delete, back to pending or rejecting if student has completions
+      // TODO check if edit, delete, back to pending or rejecting if teacher has completions
 
       try {
         const targetData = approvalStatus ? { ...data, approvalStatus } : data;
@@ -152,12 +152,12 @@ export const StudentUserUpsertForm = memo(function ({
 
         toast.success(
           isEdit
-            ? 'Student updated'
-            : 'Student registered and enrolled. A confirmation email has been sent',
+            ? 'Teacher updated'
+            : 'Teacher registered and enrolled. A confirmation email has been sent',
         );
 
         onDone && onDone(true);
-        navigate(STUDENT_LIST_PATH);
+        navigate(TEACHER_LIST_PATH);
       } catch (error: any) {
         toast.error(error.message);
       }
@@ -204,14 +204,14 @@ export const StudentUserUpsertForm = memo(function ({
                       onClick={onDelete}
                       disabled={loading}
                     >
-                      Delete Student
+                      Delete Teacher
                     </Menu.Item>
                   </BaseDropdownMenu>
                 )}
               </div>
             }
           >
-            <BaseStepperStep label='Student Info'>
+            <BaseStepperStep label='Teacher Info'>
               <UserUpsertFormStep1 isEdit={isEdit} disabled={loading} />
             </BaseStepperStep>
           </BaseStepper>

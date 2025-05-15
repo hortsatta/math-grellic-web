@@ -51,11 +51,11 @@ const ExamCompactCard = memo(function ({ exam }: { exam: Exam }) {
       <BaseSurface className='flex items-start rounded-lg !p-2.5 transition-all group-hover:-translate-y-1 group-hover:ring-1'>
         <div className='flex w-full flex-col gap-2.5'>
           <div className='flex items-center gap-2.5'>
-            <BaseChip iconName='exam' className='text-sm'>
+            <BaseChip iconName='exam' isCompact>
               Exam {orderNumber}
             </BaseChip>
             <BaseDivider className='!h-6' vertical />
-            <BaseChip iconName='list-numbers' className='text-sm'>
+            <BaseChip iconName='list-numbers' isCompact>
               {totalPointsText}
             </BaseChip>
           </div>
@@ -158,7 +158,7 @@ export const StudentDashboardExamList = memo(function ({
           <div>
             <h3 className='mb-2.5 text-lg'>Previous Exams</h3>
             {filteredPreviousExams.length ? (
-              <ul className='-2lg:flex-row -2lg:gap-5 flex flex-col items-center gap-2.5 xl:flex-col xl:gap-4 2xl:flex-row 2xl:gap-5'>
+              <ul className='flex flex-col items-center gap-2.5 -2lg:flex-row -2lg:gap-5 xl:flex-col xl:gap-4 2xl:flex-row 2xl:gap-5'>
                 {filteredPreviousExams.map((exam) => (
                   <li key={`pe-${exam.id}`} className='w-full'>
                     <ExamCompactCard exam={exam} />
