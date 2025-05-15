@@ -52,7 +52,7 @@ export const queryLessonKey = {
 export const queryExamKey = {
   list: ['exams', 'list'],
   single: ['exams', 'single'],
-  count: ['lessons', 'count'],
+  count: ['exams', 'count'],
   studentPerformance: ['exams', 'student-performance'],
   studentPerformanceResult: ['exams', 'student-performance-result'],
 };
@@ -60,7 +60,7 @@ export const queryExamKey = {
 export const queryActivityKey = {
   list: ['activities', 'list'],
   single: ['activities', 'single'],
-  count: ['lessons', 'count'],
+  count: ['activities', 'count'],
   studentPerformance: ['activities', 'student-performance'],
   gameList: ['activities', 'game-list'],
 };

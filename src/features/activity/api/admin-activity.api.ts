@@ -17,7 +17,7 @@ export function getActivityCountByTeacherId(
   const { teacherId, schoolYearId } = keys;
 
   const queryFn = async (): Promise<any> => {
-    const url = `${ADMIN_BASE_URL}/${teacherId}/count`;
+    const url = `${ADMIN_BASE_URL}/${TEACHER_URL}/${teacherId}/count`;
     const searchParams = generateSearchParams({ sy: schoolYearId?.toString() });
 
     try {
