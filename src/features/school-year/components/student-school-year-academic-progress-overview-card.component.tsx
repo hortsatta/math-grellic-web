@@ -54,7 +54,10 @@ const ProgressResult = memo(function ({
       }
     }, [academicProgress]);
 
-  if (academicProgress === SchoolYearAcademicProgress.Ongoing) {
+  if (
+    academicProgress === SchoolYearAcademicProgress.Ongoing ||
+    academicProgress == null
+  ) {
     return (
       <div className='flex w-full items-center'>
         {isStudent ? 'Your progress for the' : `Student's progress for the`}

@@ -119,7 +119,8 @@ export const StudentDashboardSchoolYearSummary = memo(function ({
       <div className='flex-1 animate-fastFadeIn'>
         <div className='flex h-full flex-col'>
           <h3 className='mb-3.5 text-lg leading-none'>Academic Progress</h3>
-          {academicProgress === SchoolYearAcademicProgress.Ongoing ? (
+          {academicProgress === SchoolYearAcademicProgress.Ongoing ||
+          academicProgress == null ? (
             <div className='flex w-full items-center'>
               Your progress for the{' '}
               <span className='mx-2 font-medium'>{schoolYearTitle}</span> is
