@@ -66,7 +66,7 @@ function LessonEditPage() {
   return (
     <>
       <BaseDataSuspense resolve={data?.main}>
-        {schoolYear && (
+        {schoolYear && lessonFormData && (
           <LessonUpsertForm
             loading={loading}
             schoolYearId={schoolYear.id}

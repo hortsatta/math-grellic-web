@@ -49,14 +49,16 @@ function AdminUserEditPage() {
   return (
     <>
       <BaseDataSuspense resolve={data?.main}>
-        <AdminUserUpsertForm
-          loading={loading}
-          isDone={isDone}
-          formData={adminFormData}
-          onDone={setIsDone}
-          onSubmit={editAdmin}
-          onDelete={handleSetModal(true)}
-        />
+        {adminFormData && (
+          <AdminUserUpsertForm
+            loading={loading}
+            isDone={isDone}
+            formData={adminFormData}
+            onDone={setIsDone}
+            onSubmit={editAdmin}
+            onDelete={handleSetModal(true)}
+          />
+        )}
       </BaseDataSuspense>
       <BaseModal size='xs' open={openModal} onClose={handleSetModal(false)}>
         <div>

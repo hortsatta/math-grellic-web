@@ -61,7 +61,7 @@ function ActivityEditPage() {
   return (
     <>
       <BaseDataSuspense resolve={data?.main}>
-        {schoolYear && (
+        {schoolYear && activityFormData && (
           <ActivityUpsertForm
             loading={loading}
             schoolYearId={schoolYear.id}

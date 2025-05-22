@@ -55,7 +55,7 @@ function ExamEditPage() {
   return (
     <>
       <BaseDataSuspense resolve={data?.main}>
-        {schoolYear && (
+        {schoolYear && examFormData && (
           <ExamUpsertForm
             loading={loading}
             schoolYearId={schoolYear.id}

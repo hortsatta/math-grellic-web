@@ -57,14 +57,16 @@ function SchoolYearEditPage() {
   return (
     <>
       <BaseDataSuspense resolve={data?.main}>
-        <SchoolYearUpsertForm
-          loading={loading}
-          isDone={isDone}
-          formData={schoolYearFormData}
-          onDone={setIsDone}
-          onSubmit={editSchoolYear}
-          onDelete={handleSetModal(true)}
-        />
+        {schoolYearFormData && (
+          <SchoolYearUpsertForm
+            loading={loading}
+            isDone={isDone}
+            formData={schoolYearFormData}
+            onDone={setIsDone}
+            onSubmit={editSchoolYear}
+            onDelete={handleSetModal(true)}
+          />
+        )}
       </BaseDataSuspense>
       <BaseModal size='xs' open={openModal} onClose={handleSetModal(false)}>
         <div>

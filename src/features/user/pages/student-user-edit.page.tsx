@@ -52,14 +52,16 @@ function StudentUserEditPage() {
   return (
     <>
       <BaseDataSuspense resolve={data?.main}>
-        <StudentUserUpsertForm
-          loading={loading}
-          isDone={isDone}
-          formData={studentFormData}
-          onDone={setIsDone}
-          onSubmit={editStudent}
-          onDelete={handleSetModal(true)}
-        />
+        {studentFormData && (
+          <StudentUserUpsertForm
+            loading={loading}
+            isDone={isDone}
+            formData={studentFormData}
+            onDone={setIsDone}
+            onSubmit={editStudent}
+            onDelete={handleSetModal(true)}
+          />
+        )}
       </BaseDataSuspense>
       <BaseModal size='xs' open={openModal} onClose={handleSetModal(false)}>
         <div>

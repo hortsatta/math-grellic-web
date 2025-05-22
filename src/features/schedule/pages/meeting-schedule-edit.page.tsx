@@ -59,7 +59,7 @@ function MeetingScheduleEditPage() {
   return (
     <>
       <BaseDataSuspense resolve={data?.main}>
-        {schoolYear && (
+        {schoolYear && meetingScheduleFormData && (
           <MeetingScheduleUpsertForm
             schoolYearId={schoolYear.id}
             loading={loading}
