@@ -20,8 +20,8 @@ type Props = ComponentProps<typeof BaseSurface> & {
 };
 
 type ProgressResultProps = {
-  academicProgress: SchoolYearAcademicProgress;
   schoolYearTitle: string;
+  academicProgress?: SchoolYearAcademicProgress;
   isStudent?: boolean;
 };
 
@@ -132,13 +132,11 @@ export const StudentSchoolYearAcademicProgressOverviewCard = memo(function ({
           </BaseButton>
         )}
       </div>
-      {academicProgress && (
-        <ProgressResult
-          academicProgress={academicProgress}
-          schoolYearTitle={schoolYearTitle || ''}
-          isStudent={isStudent}
-        />
-      )}
+      <ProgressResult
+        academicProgress={academicProgress}
+        schoolYearTitle={schoolYearTitle || ''}
+        isStudent={isStudent}
+      />
       {academicProgressRemarks && (
         <>
           <BaseDivider />
