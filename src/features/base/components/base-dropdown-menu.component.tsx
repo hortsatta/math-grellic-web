@@ -12,12 +12,14 @@ type Props = Omit<ComponentProps<typeof Menu>, 'children'> & {
   disabled?: boolean;
   customMenuButton?: ReactNode;
   children?: ReactNode;
+  menuItemsClassName?: string;
 };
 
 export const BaseDropdownMenu = memo(function ({
   className,
   disabled,
   customMenuButton,
+  menuItemsClassName,
   children,
   ...moreProps
 }: Props) {
@@ -40,7 +42,10 @@ export const BaseDropdownMenu = memo(function ({
       <Transition as={Fragment} {...menuTransition}>
         <Menu.Items
           as={BaseSurface}
-          className='absolute right-0 z-50 mt-2.5 w-56 origin-top-right !p-1.5 drop-shadow-primary-sm'
+          className={cx(
+            'absolute right-0 z-50 mt-2.5 w-56 origin-top-right !p-1.5 drop-shadow-primary-sm',
+            menuItemsClassName,
+          )}
           rounded='xs'
         >
           {children}

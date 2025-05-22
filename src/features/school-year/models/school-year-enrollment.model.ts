@@ -8,6 +8,12 @@ export enum SchoolYearEnrollmentApprovalStatus {
   Rejected = 'rejected',
 }
 
+export enum SchoolYearAcademicProgress {
+  Ongoing = 'ongoing',
+  Passed = 'passed',
+  Failed = 'failed',
+}
+
 export type SchoolYearEnrollment = Partial<AuditTrail> & {
   id: number;
   approvalStatus: SchoolYearEnrollmentApprovalStatus;
@@ -15,6 +21,8 @@ export type SchoolYearEnrollment = Partial<AuditTrail> & {
   approvalDate: Date | null;
   user?: User;
   approvalRejectedReason?: string;
+  academicProgress?: SchoolYearAcademicProgress;
+  academicProgressRemarks?: string;
   teacherPublicId?: string;
 };
 

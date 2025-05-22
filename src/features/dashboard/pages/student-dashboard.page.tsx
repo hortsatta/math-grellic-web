@@ -10,11 +10,14 @@ import { StudentDashboardUserSummary } from '../components/student-dashboard-use
 import { StudentDashboardCurriculumTabList } from '../components/student-dashboard-curriculum-tab-list.component';
 import { StudentDashboardAnnouncementList } from '../components/student-dashboard-announcement-list.component';
 import { StudentDashboardHelpCard } from '../components/student-dashboard-help-card.component';
+import { StudentDashboardSchoolYearSummary } from '../components/student-dashboard-school-year-summary.component';
 
 const SCHEDULE_PATH = `/${studentBaseRoute}/${studentRoutes.schedule.to}`;
 
 function StudentDashboardPage() {
   const user = useBoundStore((state) => state.user || null);
+  const schoolYear = useBoundStore((state) => state.schoolYear || null);
+  const syEnrollment = useBoundStore((state) => state.syEnrollment || null);
 
   const { loading: performanceLoading, student: studentPerformance } =
     useStudentPerformanceSingle();
@@ -68,6 +71,12 @@ function StudentDashboardPage() {
           loading={loading}
           refresh={refresh}
         />
+        {schoolYear && syEnrollment && (
+          <StudentDashboardSchoolYearSummary
+            schoolYear={schoolYear}
+            enrollment={syEnrollment}
+          />
+        )}
       </div>
       <div className='flex w-full flex-col gap-5 -2lg:w-fit'>
         <StudentDashboardAnnouncementList

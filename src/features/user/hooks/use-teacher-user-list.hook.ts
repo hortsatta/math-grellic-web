@@ -8,7 +8,7 @@ import { PAGINATION_TAKE } from '#/utils/api.util';
 import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
-import { setTeacherApprovalStatus as setTeacherApprovalStatusApi } from '#/school-year/api/school-year-enrollment.api';
+import { setTeacherApprovalStatus as setTeacherApprovalStatusApi } from '#/school-year/api/admin-school-year-enrollment.api';
 import { UserApprovalStatus } from '../models/user.model';
 import { transformToTeacherUserAccount } from '../helpers/user-transform.helper';
 import {

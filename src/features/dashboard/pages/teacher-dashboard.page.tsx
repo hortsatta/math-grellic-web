@@ -8,15 +8,18 @@ import { useAnnouncementCreate } from '#/announcement/hooks/use-announcement-cre
 import { useAnnouncementEdit } from '#/announcement/hooks/use-announcement-edit.hook';
 import { useTeacherClassPerformance } from '../hooks/use-teacher-class-performance.hook';
 import { useTeacherCurriculumSnippets } from '../hooks/use-teacher-curriculum-snippets.hook';
+import { useTeacherStudentSchoolYearAcademicProgress } from '#/school-year/hooks/use-teacher-student-school-year-academic-progress.hook';
 import { TeacherDashboardUserSummary } from '../components/teacher-dashboard-user-summary.component';
 import { TeacherDashboardCurriculumTabList } from '../components/teacher-dashboard-curriculum-tab-list.component';
 import { TeacherDashboardStudentLeaderboard } from '../components/teacher-dashboard-student-leaderboard.component';
 import { TeacherDashboardAnnouncementList } from '../components/teacher-dashboard-announcement-list.component';
+import { TeacherDashboardSchoolYearSummary } from '../components/teacher-dashboard-school-year-summary.component';
 
 const SCHEDULE_PATH = `/${teacherBaseRoute}/${teacherRoutes.schedule.to}`;
 
 function TeacherDashboardPage() {
   const user = useBoundStore((state) => state.user || null);
+  const schoolYear = useBoundStore((state) => state.schoolYear || null);
 
   const {
     classLoading,
@@ -55,6 +58,9 @@ function TeacherDashboardPage() {
     deleteAnnouncement,
   } = useAnnouncementEdit();
 
+  const { loading: academicProgressLoading, studentsAcademicProgress } =
+    useTeacherStudentSchoolYearAcademicProgress();
+
   return (
     <div className='max-w-auto mx-auto flex w-full flex-col items-center justify-center gap-5 pb-8 sm:max-w-[592px] -2lg:max-w-[835px] xl:flex-row xl:items-start'>
       <div className='xl:max-w-auto flex w-full shrink-0 flex-col gap-5 xl:w-[592px] xl:pb-8 2xl:w-auto 2xl:max-w-[835px]'>
@@ -80,6 +86,13 @@ function TeacherDashboardPage() {
           loading={rankingsLoading}
           onTabChange={setCurrentRankingsPerformance}
         />
+        {schoolYear && (
+          <TeacherDashboardSchoolYearSummary
+            schoolYear={schoolYear}
+            studentsAcademicProgress={studentsAcademicProgress}
+            loading={academicProgressLoading}
+          />
+        )}
       </div>
       <div className='flex w-full flex-col gap-5 -2lg:w-fit'>
         <TeacherDashboardAnnouncementList

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { formatPhoneNumber } from '#/user/helpers/user.helper';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { UserAvatarImg } from '#/user/components/user-avatar-img.component';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
@@ -12,6 +13,7 @@ import { StudentPerformanceSingle } from '../components/student-performance-sing
 import type { UserGender } from '#/user/models/user.model';
 
 function StudentPerformanceSinglePage() {
+  const schoolYear = useBoundStore((state) => state.schoolYear);
   const { student } = useStudentPerformanceSingle();
   const data: any = useLoaderData();
 
@@ -61,7 +63,11 @@ function StudentPerformanceSinglePage() {
               scores and achievements.
             </p>
           </div>
-          <StudentPerformanceSingle student={student} isStudent />
+          <StudentPerformanceSingle
+            student={student}
+            schoolYear={schoolYear ?? undefined}
+            isStudent
+          />
         </div>
       )}
     </BaseDataSuspense>

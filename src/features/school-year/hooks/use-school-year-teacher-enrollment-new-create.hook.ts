@@ -5,7 +5,7 @@ import { queryUserKey } from '#/config/react-query-keys.config';
 import { queryClient } from '#/config/react-query-client.config';
 import { UserRole } from '#/user/models/user.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
-import { enrollNewTeacherUser } from '../api/school-year-enrollment.api';
+import { enrollNewTeacherUser } from '../api/admin-school-year-enrollment.api';
 
 import type { SchoolYearEnrollmentNew } from '../models/school-year-enrollment.model';
 import type { UserUpsertFormData } from '#/user/models/user-form-data.model';

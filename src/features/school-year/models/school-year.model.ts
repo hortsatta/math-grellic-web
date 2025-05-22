@@ -20,6 +20,16 @@ export type SchoolYear = Partial<AuditTrail> & {
   description?: string;
 };
 
+export type TeacherStudentSchoolYearAcademicProgress = {
+  passedCount: number;
+  failedCount: number;
+  ongoingCount: number;
+  passedPercent: number;
+  failedPercent: number;
+  ongoingPercent: number;
+  totalStudentCount: number;
+};
+
 export type SchoolYearSlice = {
   schoolYear?: SchoolYear | null;
   syEnrollment?: SchoolYearEnrollment | null;

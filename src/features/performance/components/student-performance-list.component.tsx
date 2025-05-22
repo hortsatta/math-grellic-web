@@ -3,7 +3,6 @@ import cx from 'classix';
 
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseDataEmptyMessage } from '#/base/components/base-data-empty-message.component';
-import { StudentPerformanceType } from '../models/performance.model';
 import {
   StudentPerformanceSingleCard,
   StudentPerformanceSingleCardSkeleton,
@@ -11,14 +10,16 @@ import {
 
 import type { ComponentProps } from 'react';
 import type { StudentPerformance } from '../models/performance.model';
+import { StudentPerformanceAcademicProgressSingleCard } from './student-performance-academic-progress-single-card.component';
 
 const STUDENT_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
 type Props = ComponentProps<'div'> & {
   students: StudentPerformance[];
-  performance: StudentPerformanceType;
+  performance: string;
   loading?: boolean;
   onPerformanceDetails?: (publicId: string) => void;
+  onAcademicProgress?: (publicId: string) => void;
 };
 
 export const StudentPerformanceList = memo(function ({
@@ -27,6 +28,7 @@ export const StudentPerformanceList = memo(function ({
   students,
   performance,
   onPerformanceDetails,
+  onAcademicProgress,
   ...moreProps
 }: Props) {
   const isEmpty = useMemo(() => !students?.length, [students]);
@@ -40,6 +42,17 @@ export const StudentPerformanceList = memo(function ({
       onPerformanceDetails && onPerformanceDetails(publicId);
     },
     [onPerformanceDetails],
+  );
+
+  const handleAcademicProgress = useCallback(
+    (publicId?: string) => () => {
+      if (!publicId) {
+        return;
+      }
+
+      onAcademicProgress && onAcademicProgress(publicId);
+    },
+    [onAcademicProgress],
   );
 
   return (
@@ -62,15 +75,26 @@ export const StudentPerformanceList = memo(function ({
           linkLabel='View All Students'
         />
       ) : (
-        students.map((student) => (
-          <StudentPerformanceSingleCard
-            key={student.publicId?.toLowerCase()}
-            student={student}
-            performance={performance}
-            onDetails={handlePerformanceDetails(student.publicId)}
-            role='row'
-          />
-        ))
+        students.map((student) =>
+          performance !== 'academic-progress' ? (
+            <StudentPerformanceSingleCard
+              key={student.publicId?.toLowerCase()}
+              student={student}
+              performance={performance}
+              onDetails={handlePerformanceDetails(student.publicId)}
+              onAcademicProgress={handleAcademicProgress(student.publicId)}
+              role='row'
+            />
+          ) : (
+            <StudentPerformanceAcademicProgressSingleCard
+              key={student.publicId?.toLowerCase()}
+              student={student}
+              onDetails={handlePerformanceDetails(student.publicId)}
+              onAcademicProgress={handleAcademicProgress(student.publicId)}
+              role='row'
+            />
+          ),
+        )
       )}
     </div>
   );

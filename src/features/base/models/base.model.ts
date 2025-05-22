@@ -63,6 +63,7 @@ export type IconName =
   | 'file-text'
   | 'flag-pennant'
   | 'floppy-disk-back'
+  | 'flow-arrow'
   | 'frame-corners'
   | 'function'
   | 'funnel'

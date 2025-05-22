@@ -1,12 +1,15 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { capitalize } from '#/utils/string.util';
 import { useTeacherClassPerformance } from '#/dashboard/hooks/use-teacher-class-performance.hook';
+import { useTeacherStudentSchoolYearAcademicProgress } from '#/school-year/hooks/use-teacher-student-school-year-academic-progress.hook';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseDataToolbar } from '#/base/components/base-data-toolbar.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { BaseDataPagination } from '#/base/components/base-data-pagination.component';
+import { StudentSchoolYearAcademicProgressUpdateModal } from '#/school-year/components/student-school-year-academic-progress-update-modal.component';
+import { TeacherStudentSchoolYearAcademicProgressOverviewBoard } from '#/school-year/components/teacher-student-school-year-academic-progress-overview-board.component';
 import { StudentPerformanceType } from '../models/performance.model';
 import {
   defaultSort,
@@ -33,6 +36,12 @@ const filterOptions = [
     name: 'performance',
     value: StudentPerformanceType.Lesson,
     label: `Overall ${capitalize(StudentPerformanceType.Lesson)}`,
+  },
+  {
+    key: 'performance-ap',
+    name: 'performance',
+    value: 'academic-progress',
+    label: 'Academic Progress',
   },
 ];
 
@@ -66,9 +75,26 @@ function StudentPerformanceListPage() {
   const { classLoading, teacherClassPerformance } =
     useTeacherClassPerformance();
 
+  const { loading: academicProgressLoading, studentsAcademicProgress } =
+    useTeacherStudentSchoolYearAcademicProgress();
+
   const data: any = useLoaderData();
 
+  const [currentAPPublicId, setCurrentAPPublicId] = useState<
+    string | undefined
+  >(undefined);
+
   const defaulSelectedtFilterOptions = useMemo(() => [filterOptions[0]], []);
+
+  const handleSetAcademicProgress = useCallback(
+    (publicId?: string) => setCurrentAPPublicId(publicId?.trim() || undefined),
+    [],
+  );
+
+  const handleCloseAcademicProgressModal = useCallback(
+    () => setCurrentAPPublicId(undefined),
+    [],
+  );
 
   return (
     <BaseDataSuspense resolve={data?.main}>
@@ -92,6 +118,7 @@ function StudentPerformanceListPage() {
             performance={performance}
             loading={loading}
             onPerformanceDetails={handlePerformanceDetails}
+            onAcademicProgress={handleSetAcademicProgress}
           />
           {!!totalCount && (
             <BaseDataPagination
@@ -103,12 +130,24 @@ function StudentPerformanceListPage() {
           )}
         </div>
         <BaseRightSidebar>
-          <TeacherStudentPerformanceOverviewBoard
-            teacherClassPerformance={teacherClassPerformance}
-            loading={classLoading}
-          />
+          <div className='flex flex-col gap-5'>
+            <TeacherStudentPerformanceOverviewBoard
+              teacherClassPerformance={teacherClassPerformance}
+              loading={classLoading}
+            />
+            <TeacherStudentSchoolYearAcademicProgressOverviewBoard
+              studentsAcademicProgress={studentsAcademicProgress}
+              loading={academicProgressLoading}
+            />
+          </div>
         </BaseRightSidebar>
       </div>
+      <StudentSchoolYearAcademicProgressUpdateModal
+        open={!!currentAPPublicId}
+        publicId={currentAPPublicId}
+        onClose={handleCloseAcademicProgressModal}
+        onSubmit={() => ({}) as any}
+      />
     </BaseDataSuspense>
   );
 }

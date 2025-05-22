@@ -35,10 +35,12 @@ export const querySchoolYearKey = {
   userList: ['school-years', 'user-list'],
   single: ['school-years', 'single'],
   current: ['school-years', 'current'],
+  studentsAcademicProgress: ['school-years', 'students-academic-progress'],
 };
 
 export const querySyEnrollmentKey = {
   current: ['sy-enrollments', 'current-sy-enrollment'],
+  studentSingle: ['sy-enrollments', 'student-single'],
 };
 
 export const queryLessonKey = {

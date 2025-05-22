@@ -57,6 +57,7 @@ import {
   FileText,
   FlagPennant,
   FloppyDiskBack,
+  FlowArrow,
   FrameCorners,
   Function,
   Funnel,
@@ -246,6 +247,8 @@ export const BaseIcon = memo(
           return FlagPennant;
         case 'floppy-disk-back':
           return FloppyDiskBack;
+        case 'flow-arrow':
+          return FlowArrow;
         case 'frame-corners':
           return FrameCorners;
         case 'function':

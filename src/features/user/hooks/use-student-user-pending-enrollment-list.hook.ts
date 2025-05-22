@@ -5,7 +5,7 @@ import { queryClient } from '#/config/react-query-client.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
-import { setStudentApprovalStatus as setStudentApprovalStatusApi } from '#/school-year/api/school-year-enrollment.api';
+import { setStudentApprovalStatus as setStudentApprovalStatusApi } from '#/school-year/api/teacher-school-year-enrollment.api';
 import { transformToStudentUserAccount } from '../helpers/user-transform.helper';
 import { UserApprovalStatus } from '../models/user.model';
 import {

@@ -2,6 +2,7 @@ import { memo, useMemo } from 'react';
 import cx from 'classix';
 
 import { StudentPerformanceType } from '#/performance/models/performance.model';
+import { BaseCircle } from './base-circle.component';
 
 import type { ComponentProps } from 'react';
 
@@ -14,41 +15,6 @@ type Props = ComponentProps<'div'> & {
   performance?: StudentPerformanceType;
   bottomLabelPosition?: boolean;
 };
-
-type CircleProps = ComponentProps<'circle'> & {
-  size: number;
-  percent?: number;
-};
-
-const STROKE_WIDTH = 12;
-
-const Circle = memo(
-  ({ className, percent, size, ...moreProps }: CircleProps) => {
-    const r = useMemo(() => size / 2 - STROKE_WIDTH / 2, [size]);
-
-    const strokeDasharray = useMemo(() => 2 * Math.PI * r, [r]);
-
-    const strokeDashoffset = useMemo(
-      () => (percent ? ((100 - percent) * strokeDasharray) / 100 : 0),
-      [percent, strokeDasharray],
-    );
-
-    return (
-      <circle
-        className={cx(className, percent ? '' : 'opacity-30')}
-        r={r}
-        cx='50%'
-        cy='50%'
-        fill='transparent'
-        strokeWidth={STROKE_WIDTH}
-        strokeDasharray={strokeDasharray}
-        strokeDashoffset={strokeDashoffset}
-        strokeLinecap='round'
-        {...moreProps}
-      />
-    );
-  },
-);
 
 export const BaseProgressCircle = memo(function ({
   className,
@@ -105,8 +71,8 @@ export const BaseProgressCircle = memo(function ({
       <div className='relative z-10'>
         <svg {...svgSize}>
           <g className='origin-center' transform='rotate(-90)'>
-            <Circle className={circleClassname} size={targetSize} />
-            <Circle
+            <BaseCircle className={circleClassname} size={targetSize} />
+            <BaseCircle
               className={circleClassname}
               percent={percent || undefined}
               size={targetSize}

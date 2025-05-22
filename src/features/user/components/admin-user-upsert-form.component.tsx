@@ -39,7 +39,7 @@ const stepWrapperProps = {
 };
 
 const schema = z.object({
-  email: z.string().email('Provide your email address'),
+  email: z.string().email('Provide the email address'),
   firstName: z.string().min(2, 'Name is too short').max(50, 'Name is too long'),
   lastName: z.string().min(2, 'Name is too short').max(50, 'Name is too long'),
   middleName: z
@@ -48,7 +48,7 @@ const schema = z.object({
     .max(50, 'Name is too long')
     .optional(),
   birthDate: z
-    .date({ required_error: 'Provide your date of birth' })
+    .date({ required_error: 'Provide the date of birth' })
     .min(new Date('1900-01-01'), 'Date of birth is too old')
     .max(new Date(), 'Date of birth is too young'),
   phoneNumber: z
@@ -57,7 +57,7 @@ const schema = z.object({
       message: 'Phone number is invalid',
     }),
   gender: z.nativeEnum(UserGender, {
-    required_error: 'Provide your gender',
+    required_error: 'Select gender',
   }),
   approvalStatus: z.nativeEnum(UserApprovalStatus).optional(),
 });
