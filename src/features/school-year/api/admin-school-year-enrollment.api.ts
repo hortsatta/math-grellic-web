@@ -13,7 +13,7 @@ import type {
 import type { SchoolYearEnrollmentNewCreateFormData } from '../models/school-year-enrollment-form-data.model';
 
 const BASE_URL = 'sy-enrollments';
-const ADMIN_URL = 'students';
+const ADMIN_URL = 'admins';
 const TEACHER_URL = 'teachers';
 const ADMIN_BASE_URL = `${BASE_URL}/${ADMIN_URL}`;
 
