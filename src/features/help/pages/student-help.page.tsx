@@ -48,7 +48,7 @@ function StudentHelpPage() {
             make the most of our platform and ensuring a smooth learning
             journey. Whether you're seeking clarification on a challenging
             lesson, in need of assistance with the platform, or just looking for
-            guidance, your intstructor is here to offer you with the support you
+            guidance, your instructor is here to offer you with the support you
             need.
           </p>
           <div className='mx-auto max-w-sm sm:mx-0'>
