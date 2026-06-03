@@ -20,8 +20,8 @@ const section2ContentHtml = {
 export function AboutPage() {
   return (
     <BaseStaticScene title='About Us'>
-      <section className='-2xl:items-start mx-auto mb-24 flex w-full max-w-static-full flex-col items-center justify-between gap-5 px-4 lg:mb-56 lg:flex-row'>
-        <div className='-2xl:max-w-[432px] flex w-full max-w-[240px] justify-center sm:max-w-xs'>
+      <section className='mx-auto mb-24 flex w-full max-w-static-full flex-col items-center justify-between gap-5 px-4 lg:mb-56 lg:flex-row -2xl:items-start'>
+        <div className='flex w-full max-w-[240px] justify-center sm:max-w-xs -2xl:max-w-[432px]'>
           <img src={logoOnlyPng} alt='logo only' width={370} height={358} />
         </div>
         <div className='flex w-full max-w-[702px] flex-col items-center'>
@@ -31,7 +31,7 @@ export function AboutPage() {
           <div
             className='text-justify text-lg'
             dangerouslySetInnerHTML={section1ContentHtml}
-          ></div>
+          />
         </div>
       </section>
       <section className='flex w-full flex-col items-center'>

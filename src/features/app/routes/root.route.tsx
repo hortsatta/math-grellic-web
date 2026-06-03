@@ -96,6 +96,7 @@ import { SchoolYearEnrollmentProtectedRoute } from '#/school-year/components/sch
 
 import { HomePage } from '#/static/pages/home.page';
 import { AboutPage } from '#/static/pages/about.page';
+import { TrainingPage } from '#/static/pages/training.page';
 import { UserRegisterPage } from '#/user/pages/user-register.page';
 
 import { staticRoutes } from './static-routes';
@@ -125,6 +126,7 @@ const rootRoutes = createRoutesFromElements(
     <Route path='/' element={<CoreStaticLayout />}>
       <Route index element={<HomePage />} />
       <Route path={staticRoutes.about.to} element={<AboutPage />} />
+      <Route path={staticRoutes.training.to} element={<TrainingPage />} />
       <Route
         path={staticRoutes.training.to}
         element={
