@@ -8,6 +8,7 @@ import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { generateFullName } from '../helpers/user.helper';
 import { UserRole } from '../models/user.model';
 import { useCurrentUserSingle } from '../hooks/use-current-user-single.hook';
@@ -70,13 +71,15 @@ function AdminCurrentUserSinglePage() {
                 </div>
               </div>
               <div>
-                <BaseLink
-                  to={USER_ACCOUNT_PATH}
-                  className='!px-3'
-                  variant='solid'
-                >
-                  <BaseIcon name='pencil' size={24} />
-                </BaseLink>
+                <BaseTooltip content='Edit'>
+                  <BaseLink
+                    to={USER_ACCOUNT_PATH}
+                    className='!px-3'
+                    variant='solid'
+                  >
+                    <BaseIcon name='pencil' size={24} />
+                  </BaseLink>
+                </BaseTooltip>
               </div>
             </div>
             <div className='flex flex-col items-start justify-between gap-2.5 xs:flex-row xs:items-center xs:gap-0'>

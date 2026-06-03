@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { staticHomeNavItem, staticRoutes } from '#/app/routes/static-routes';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseModal } from '#/base/components/base-modal.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { CoreStaticNavMenu } from './core-static-nav-menu.component';
 
 import type { ComponentProps } from 'react';
@@ -63,11 +64,13 @@ export const CoreStaticNav = memo(function ({
           />
         </nav>
         <div className='block lg:hidden'>
-          <BaseIconButton
-            name='list'
-            variant='link'
-            onClick={handleSetModal(true)}
-          />
+          <BaseTooltip content='Main menu'>
+            <BaseIconButton
+              name='list'
+              variant='link'
+              onClick={handleSetModal(true)}
+            />
+          </BaseTooltip>
         </div>
       </div>
       <BaseModal size='xs' open={openModal} onClose={handleSetModal(false)}>

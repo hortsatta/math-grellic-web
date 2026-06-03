@@ -9,6 +9,7 @@ import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { StudentSchoolYearEnrollmentCounterList } from '#/school-year/components/student-school-year-enrollment-counter-list.component';
 import { LessonCounterList } from '#/lesson/components/lesson-counter-list.component';
 import { ExamCounterList } from '#/exam/components/exam-counter-list.component';
@@ -96,9 +97,11 @@ export const TeacherUserSingle = memo(function ({
             </div>
           </div>
           <div>
-            <BaseLink to={EDIT_PATH} className='!px-3' variant='solid'>
-              <BaseIcon name='pencil' size={24} />
-            </BaseLink>
+            <BaseTooltip content='Edit'>
+              <BaseLink to={EDIT_PATH} className='!px-3' variant='solid'>
+                <BaseIcon name='pencil' size={24} />
+              </BaseLink>
+            </BaseTooltip>
           </div>
         </div>
         <div className='flex items-center justify-between'>

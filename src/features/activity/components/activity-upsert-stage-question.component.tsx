@@ -169,12 +169,16 @@ export const ActivityUpsertStageQuestion = memo(function ({
       <div className='px-2.5'>
         <div className='flex items-start gap-x-2.5'>
           <div className='flex h-input items-center justify-center'>
-            <BaseIconButton
-              name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
-              variant='link'
-              size='sm'
-              onClick={handleIsCollapsed}
-            />
+            <BaseTooltip
+              content={isCollapsed ? 'Show choices' : 'Hide choices'}
+            >
+              <BaseIconButton
+                name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
+                variant='link'
+                size='sm'
+                onClick={handleIsCollapsed}
+              />
+            </BaseTooltip>
           </div>
           <div className='relative w-full'>
             {textType === ActivityTextType.Text ? (
@@ -207,12 +211,14 @@ export const ActivityUpsertStageQuestion = memo(function ({
             </div>
           </div>
           <div className='flex h-input items-center justify-center'>
-            <BaseIconButton
-              name='x'
-              variant='link'
-              size='sm'
-              onClick={onRemove}
-            />
+            <BaseTooltip content='Remove question'>
+              <BaseIconButton
+                name='x'
+                variant='link'
+                size='sm'
+                onClick={onRemove}
+              />
+            </BaseTooltip>
           </div>
         </div>
         {gameName === ActivityGame.EscapeRoom && (

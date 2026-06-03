@@ -18,6 +18,7 @@ import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseModal } from '#/base/components/base-modal.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { useBoundStore } from '../hooks/use-store.hook';
 import { CoreClock } from './core-clock.component';
 import { CoreNavItem } from './core-nav-item.component';
@@ -115,21 +116,25 @@ export const CoreMobileNav = memo(function ({
         {...moreProps}
       >
         <div>
-          <BaseIconButton
-            className='box-content !h-full !w-7 px-4'
-            name='list'
-            variant='link'
-            iconProps={buttonIconProps}
-            onClick={handleSetModal(true)}
-          />
-          {hasRightSidebar && (
+          <BaseTooltip content='Main menu'>
             <BaseIconButton
-              className='box-content !h-full !w-7 px-2.5 -2xs:px-4'
-              name='cards'
+              className='box-content !h-full !w-7 px-4'
+              name='list'
               variant='link'
               iconProps={buttonIconProps}
-              onClick={toggleRightSidebarMode}
+              onClick={handleSetModal(true)}
             />
+          </BaseTooltip>
+          {hasRightSidebar && (
+            <BaseTooltip content='Right sidebar'>
+              <BaseIconButton
+                className='box-content !h-full !w-7 px-2.5 -2xs:px-4'
+                name='cards'
+                variant='link'
+                iconProps={buttonIconProps}
+                onClick={toggleRightSidebarMode}
+              />
+            </BaseTooltip>
           )}
         </div>
         <Link
@@ -139,19 +144,23 @@ export const CoreMobileNav = memo(function ({
           <div style={logoStyle} className='h-full w-[30px]' />
         </Link>
         <div>
-          <BaseLink
-            to={userAccountTo}
-            className='box-content flex h-full w-7 items-center justify-center px-2.5 -2xs:px-4'
-            leftIconName='user'
-            iconWeight='bold'
-          />
-          <BaseIconButton
-            className='box-content !h-full !w-7 px-4'
-            name='graduation-cap'
-            variant='link'
-            iconProps={buttonIconProps}
-            onClick={onSchoolYear}
-          />
+          <BaseTooltip content='Account'>
+            <BaseLink
+              to={userAccountTo}
+              className='box-content flex h-full w-7 items-center justify-center px-2.5 -2xs:px-4'
+              leftIconName='user'
+              iconWeight='bold'
+            />
+          </BaseTooltip>
+          <BaseTooltip content='School year'>
+            <BaseIconButton
+              className='box-content !h-full !w-7 px-4'
+              name='graduation-cap'
+              variant='link'
+              iconProps={buttonIconProps}
+              onClick={onSchoolYear}
+            />
+          </BaseTooltip>
         </div>
       </div>
       <BaseModal size='xs' open={openModal} onClose={handleSetModal(false)}>

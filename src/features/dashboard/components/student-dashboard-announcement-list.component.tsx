@@ -4,6 +4,7 @@ import cx from 'classix';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseModal } from '#/base/components/base-modal.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { AnnouncementCardList } from '#/announcement/components/announcement-card-list.component';
 import { AnnouncementCard } from '#/announcement/components/announcement-card.component';
 
@@ -50,13 +51,15 @@ export const StudentDashboardAnnouncementList = memo(function ({
       >
         <div className='mb-2.5 flex items-center justify-between'>
           <h3 className='text-lg leading-none'>Announcements</h3>
-          <BaseIconButton
-            name='arrow-clockwise'
-            variant='link'
-            className='!h-6 !w-6'
-            disabled={loading}
-            onClick={onRefresh}
-          />
+          <BaseTooltip content='Refresh'>
+            <BaseIconButton
+              name='arrow-clockwise'
+              variant='link'
+              className='!h-6 !w-6'
+              disabled={loading}
+              onClick={onRefresh}
+            />
+          </BaseTooltip>
         </div>
         <AnnouncementCardList
           currentAnnouncements={currentAnnouncements}

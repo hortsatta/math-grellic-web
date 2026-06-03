@@ -2,6 +2,7 @@ import { memo } from 'react';
 import cx from 'classix';
 
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import {
   StudentLessonSingleCard,
   StudentLessonSingleCardSkeleton,
@@ -37,12 +38,14 @@ export const StudentLatestLessonList = memo(function ({
     >
       <div className='flex items-center justify-between'>
         <h2 className='text-lg'>{title}</h2>
-        <BaseIconButton
-          name='arrow-clockwise'
-          variant='link'
-          size='sm'
-          onClick={onRefresh}
-        />
+        <BaseTooltip content='Refresh'>
+          <BaseIconButton
+            name='arrow-clockwise'
+            variant='link'
+            size='sm'
+            onClick={onRefresh}
+          />
+        </BaseTooltip>
       </div>
       {loading ? (
         [...Array(2)].map((_, index) => (

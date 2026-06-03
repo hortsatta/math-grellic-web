@@ -6,6 +6,7 @@ import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseAdvancedRichTextEditor } from '#/base/components/base-advanced-rich-text-editor.component';
 import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 
 import type { ChangeEvent, ComponentProps } from 'react';
 import type {
@@ -118,13 +119,15 @@ export const ExamUpsertQuestionChoice = memo(function ({
   return (
     <div className='flex w-full max-w-qcWrapperInput items-start'>
       <div className='flex h-12 items-center justify-center'>
-        <BaseIconButton
-          name='check-fat'
-          variant='link'
-          size='xs'
-          onClick={onSetAnswer}
-          {...iconButtonProps}
-        />
+        <BaseTooltip content='Mark as correct answer'>
+          <BaseIconButton
+            name='check-fat'
+            variant='link'
+            size='xs'
+            onClick={onSetAnswer}
+            {...iconButtonProps}
+          />
+        </BaseTooltip>
       </div>
       <div className='relative w-full max-w-qcInput'>
         {exActFocusedIndex === focusedIndex ? (
@@ -152,12 +155,14 @@ export const ExamUpsertQuestionChoice = memo(function ({
           />
         )}
       </div>
-      <BaseIconButton
-        name='x-square'
-        variant='link'
-        className='ml-1'
-        onClick={onRemove}
-      />
+      <BaseTooltip content={`Remove choice ${choiceLabel}`}>
+        <BaseIconButton
+          name='x-square'
+          variant='link'
+          className='ml-1'
+          onClick={onRemove}
+        />
+      </BaseTooltip>
     </div>
   );
 });

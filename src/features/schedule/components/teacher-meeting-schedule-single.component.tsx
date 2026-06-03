@@ -11,6 +11,7 @@ import { BaseLink } from '#/base/components/base-link.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { UserSingleItem } from '#/user/components/user-single-item.component';
 
 import type { ComponentProps } from 'react';
@@ -59,13 +60,15 @@ export const TeacherMeetingScheduleSingle = memo(function ({
     <div className={cx('w-full pb-16', className)} {...moreProps}>
       <div className='flex w-full items-center justify-between'>
         <h2 className='text-xl'>{title}</h2>
-        <BaseLink
-          to={teacherRoutes.schedule.meeting.editTo}
-          className='!px-3'
-          variant='solid'
-        >
-          <BaseIcon name='pencil' size={24} />
-        </BaseLink>
+        <BaseTooltip content='Edit'>
+          <BaseLink
+            to={teacherRoutes.schedule.meeting.editTo}
+            className='!px-3'
+            variant='solid'
+          >
+            <BaseIcon name='pencil' size={24} />
+          </BaseLink>
+        </BaseTooltip>
       </div>
       <div className='mt-2.5 flex flex-col gap-y-2.5'>
         <BaseDivider />

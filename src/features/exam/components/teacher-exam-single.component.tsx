@@ -11,6 +11,7 @@ import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
 import { BaseModal } from '#/base/components/base-modal.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { LessonSingleItem } from '#/lesson/components/lesson-single-item.component';
 import { TeacherExamSingleQuestion } from './teacher-exam-single-question.component';
 import { TeacherExamScheduleSingleCard } from './teacher-exam-schedule-single-card.component';
@@ -129,21 +130,25 @@ export const TeacherExamSingle = memo(function ({
             </div>
           </div>
           <div className='flex items-center gap-2'>
-            <BaseLink
-              to={teacherRoutes.exam.previewTo}
-              className='!px-3'
-              variant='solid'
-              target='_blank'
-            >
-              <BaseIcon name='eyes' size={24} />
-            </BaseLink>
-            <BaseLink
-              to={teacherRoutes.exam.editTo}
-              className='!px-3'
-              variant='solid'
-            >
-              <BaseIcon name='pencil' size={24} />
-            </BaseLink>
+            <BaseTooltip content='Preview'>
+              <BaseLink
+                to={teacherRoutes.exam.previewTo}
+                className='!px-3'
+                variant='solid'
+                target='_blank'
+              >
+                <BaseIcon name='eyes' size={24} />
+              </BaseLink>
+            </BaseTooltip>
+            <BaseTooltip content='Edit'>
+              <BaseLink
+                to={teacherRoutes.exam.editTo}
+                className='!px-3'
+                variant='solid'
+              >
+                <BaseIcon name='pencil' size={24} />
+              </BaseLink>
+            </BaseTooltip>
           </div>
         </div>
         <div className='mt-2.5 flex flex-col gap-y-2.5'>

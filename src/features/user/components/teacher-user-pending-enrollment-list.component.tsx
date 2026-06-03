@@ -148,20 +148,24 @@ export const TeacherUserPendingEnrollmentList = memo(
         <div className='flex w-full items-center justify-between'>
           {!!pendingTeachers.length && (
             <div className='flex items-center'>
-              <BaseIconButton
-                name='caret-circle-left'
-                variant='link'
-                className='w-9'
-                disabled={loading}
-                onClick={handlePrev}
-              />
-              <BaseIconButton
-                name='caret-circle-right'
-                variant='link'
-                className='w-9'
-                disabled={loading}
-                onClick={handleNext}
-              />
+              <BaseTooltip content='Previous'>
+                <BaseIconButton
+                  name='caret-circle-left'
+                  variant='link'
+                  className='w-9'
+                  disabled={loading}
+                  onClick={handlePrev}
+                />
+              </BaseTooltip>
+              <BaseTooltip content='Next'>
+                <BaseIconButton
+                  name='caret-circle-right'
+                  variant='link'
+                  className='w-9'
+                  disabled={loading}
+                  onClick={handleNext}
+                />
+              </BaseTooltip>
             </div>
           )}
           <div className='flex items-center gap-[5px]'>

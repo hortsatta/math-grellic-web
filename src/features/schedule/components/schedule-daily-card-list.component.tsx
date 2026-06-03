@@ -10,6 +10,7 @@ import type { ComponentProps } from 'react';
 import type { ExamSchedule } from '#/exam/models/exam-schedule.model';
 import type { LessonSchedule } from '#/lesson/models/lesson.model';
 import type { MeetingSchedule } from '../models/schedule.model';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 
 type Props = ComponentProps<'div'> & {
   schedules: (LessonSchedule | ExamSchedule | MeetingSchedule)[];
@@ -104,20 +105,24 @@ export const ScheduleDailyCardList = memo(function ({
       </div>
       <div className='flex items-stretch'>
         <div className='flex h-8 w-[84px] items-center justify-center overflow-hidden border-r border-r-accent/20 pt-2'>
-          <BaseIconButton
-            name='caret-circle-up'
-            variant='link'
-            className='w-9'
-            disabled={loading || !currentSchedule}
-            onClick={handleChange(false)}
-          />
-          <BaseIconButton
-            name='caret-circle-down'
-            variant='link'
-            className='w-9'
-            disabled={loading || !currentSchedule}
-            onClick={handleChange(true)}
-          />
+          <BaseTooltip content='Previous'>
+            <BaseIconButton
+              name='caret-circle-up'
+              variant='link'
+              className='w-9'
+              disabled={loading || !currentSchedule}
+              onClick={handleChange(false)}
+            />
+          </BaseTooltip>
+          <BaseTooltip content='Next'>
+            <BaseIconButton
+              name='caret-circle-down'
+              variant='link'
+              className='w-9'
+              disabled={loading || !currentSchedule}
+              onClick={handleChange(true)}
+            />
+          </BaseTooltip>
         </div>
         <div className='flex flex-1 items-center justify-center pt-1.5'>
           <BaseLink

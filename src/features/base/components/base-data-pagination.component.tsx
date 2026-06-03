@@ -2,10 +2,11 @@ import { memo, useMemo } from 'react';
 import cx from 'classix';
 
 import { BaseButton } from './base-button.components';
+import { BaseIconButton } from './base-icon-button.component';
+import { BaseTooltip } from './base-tooltip.component';
 
 import type { ComponentProps } from 'react';
 import type { QueryPagination } from '../models/base.model';
-import { BaseIconButton } from './base-icon-button.component';
 
 type Props = ComponentProps<'div'> & {
   totalCount?: number;
@@ -48,16 +49,20 @@ export const BaseDataPagination = memo(function ({
         <div className='text-sm'>{entriesText}</div>
         <div className='flex w-full items-center justify-between gap-2 -2xs:w-fit -2xs:justify-normal'>
           <div className='flex items-center'>
-            <BaseIconButton
-              name='caret-circle-left'
-              variant='link'
-              onClick={onPrev}
-            />
-            <BaseIconButton
-              name='caret-circle-right'
-              variant='link'
-              onClick={onNext}
-            />
+            <BaseTooltip content='Previous'>
+              <BaseIconButton
+                name='caret-circle-left'
+                variant='link'
+                onClick={onPrev}
+              />
+            </BaseTooltip>
+            <BaseTooltip content='Next'>
+              <BaseIconButton
+                name='caret-circle-right'
+                variant='link'
+                onClick={onNext}
+              />
+            </BaseTooltip>
           </div>
           <BaseButton
             className='pointer-events-none !w-28 !px-3.5 !text-sm !font-medium'

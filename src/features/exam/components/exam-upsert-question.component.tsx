@@ -139,12 +139,16 @@ export const ExamUpsertQuestion = memo(function ({
       <div className='px-2.5'>
         <div className='flex items-start'>
           <div className='flex h-input items-center justify-center pr-2'>
-            <BaseIconButton
-              name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
-              variant='link'
-              size='sm'
-              onClick={handleIsCollapsed}
-            />
+            <BaseTooltip
+              content={isCollapsed ? 'Show choices' : 'Hide choices'}
+            >
+              <BaseIconButton
+                name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
+                variant='link'
+                size='sm'
+                onClick={handleIsCollapsed}
+              />
+            </BaseTooltip>
           </div>
           <div className='relative w-full max-w-qcInput'>
             {exActFocusedIndex === focusedIndex ? (
@@ -173,12 +177,14 @@ export const ExamUpsertQuestion = memo(function ({
             )}
           </div>
           <div className='ml-1 flex h-input items-center justify-center'>
-            <BaseIconButton
-              name='x'
-              variant='link'
-              size='sm'
-              onClick={onRemove(index)}
-            />
+            <BaseTooltip content='Remove question'>
+              <BaseIconButton
+                name='x'
+                variant='link'
+                size='sm'
+                onClick={onRemove(index)}
+              />
+            </BaseTooltip>
           </div>
         </div>
         <ExamUpsertQuestionChoiceList

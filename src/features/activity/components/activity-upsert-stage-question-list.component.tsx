@@ -17,6 +17,7 @@ import { BaseButton } from '#/base/components/base-button.components';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { createDefaultStageQuestion } from '../helpers/activity-form.helper';
 import { ActivityGame } from '../models/activity.model';
 import { ActivityUpsertStageQuestion } from './activity-upsert-stage-question.component';
@@ -165,12 +166,16 @@ const StageQuestionList = memo(function ({
       <div className='mb-2.5 flex w-full items-center justify-between border-b border-b-accent/20 px-2.5'>
         <div className='flex items-center gap-2.5'>
           <div className='flex h-input items-center justify-center'>
-            <BaseIconButton
-              name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
-              variant='link'
-              size='xs'
-              onClick={handleIsCollapsed}
-            />
+            <BaseTooltip
+              content={isCollapsed ? 'Show questions' : 'Hide questions'}
+            >
+              <BaseIconButton
+                name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
+                variant='link'
+                size='xs'
+                onClick={handleIsCollapsed}
+              />
+            </BaseTooltip>
           </div>
           <div className='flex items-center gap-2.5'>
             <span className='text-xl font-medium uppercase text-accent/50'>
@@ -181,12 +186,14 @@ const StageQuestionList = memo(function ({
           </div>
         </div>
         <div className='flex h-input items-center justify-center'>
-          <BaseIconButton
-            name='x'
-            variant='link'
-            size='xs'
-            onClick={onStageRemove}
-          />
+          <BaseTooltip content='Remove level'>
+            <BaseIconButton
+              name='x'
+              variant='link'
+              size='xs'
+              onClick={onStageRemove}
+            />
+          </BaseTooltip>
         </div>
       </div>
       <ul

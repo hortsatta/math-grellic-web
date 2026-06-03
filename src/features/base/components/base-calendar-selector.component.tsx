@@ -7,6 +7,7 @@ import dayjs from '#/config/dayjs.config';
 import { BaseDropdownButton } from './base-dropdown-button.component';
 import { BaseIconButton } from './base-icon-button.component';
 import { BaseButton } from './base-button.components';
+import { BaseTooltip } from './base-tooltip.component';
 
 import type { ComponentProps } from 'react';
 
@@ -144,18 +145,22 @@ export const BaseCalendarSelector = memo(function ({
           {date}
         </BaseButton>
         <div className='flex w-fit items-center'>
-          <BaseIconButton
-            name='caret-circle-left'
-            variant='link'
-            className='w-9'
-            onClick={handleChange(false)}
-          />
-          <BaseIconButton
-            name='caret-circle-right'
-            variant='link'
-            className='w-9'
-            onClick={handleChange(true)}
-          />
+          <BaseTooltip content='Previous'>
+            <BaseIconButton
+              name='caret-circle-left'
+              variant='link'
+              className='w-9'
+              onClick={handleChange(false)}
+            />
+          </BaseTooltip>
+          <BaseTooltip content='Next'>
+            <BaseIconButton
+              name='caret-circle-right'
+              variant='link'
+              className='w-9'
+              onClick={handleChange(true)}
+            />
+          </BaseTooltip>
         </div>
       </div>
       {isExpanded && (

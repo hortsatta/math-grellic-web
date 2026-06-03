@@ -14,6 +14,7 @@ import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
 import { BaseItemCounterButton } from '#/base/components/base-item-counter-button.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { SchoolYearEnrollmentUserList } from './school-year-enrollment-user-list.component';
 
 import type { ComponentProps } from 'react';
@@ -127,13 +128,15 @@ export const SchoolYearSingle = memo(function ({
             </div>
           </div>
           <div className='flex items-center gap-2'>
-            <BaseLink
-              to={adminRoutes.schoolYear.editTo}
-              className='!px-3'
-              variant='solid'
-            >
-              <BaseIcon name='pencil' size={24} />
-            </BaseLink>
+            <BaseTooltip content='Edit'>
+              <BaseLink
+                to={adminRoutes.schoolYear.editTo}
+                className='!px-3'
+                variant='solid'
+              >
+                <BaseIcon name='pencil' size={24} />
+              </BaseLink>
+            </BaseTooltip>
           </div>
         </div>
         <div className='mt-2.5 flex flex-col gap-y-2.5'>

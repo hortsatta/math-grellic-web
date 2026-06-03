@@ -7,6 +7,7 @@ import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseLink } from '#/base/components/base-link.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { formatPhoneNumber, generateFullName } from '../helpers/user.helper';
 import { UserAvatarImg } from './user-avatar-img.component';
 import { UserMessengerLink } from './user-messenger-link.component';
@@ -61,9 +62,11 @@ export const AdminUserSingle = memo(function ({
             </div>
           </div>
           <div>
-            <BaseLink to={EDIT_PATH} className='!px-3' variant='solid'>
-              <BaseIcon name='pencil' size={24} />
-            </BaseLink>
+            <BaseTooltip content='Edit'>
+              <BaseLink to={EDIT_PATH} className='!px-3' variant='solid'>
+                <BaseIcon name='pencil' size={24} />
+              </BaseLink>
+            </BaseTooltip>
           </div>
         </div>
         <div className='flex items-center justify-between'>

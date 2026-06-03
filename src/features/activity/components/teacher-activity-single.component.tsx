@@ -10,6 +10,7 @@ import { BaseLink } from '#/base/components/base-link.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { activityGameLabel } from '../models/activity.model';
 import { TeacherActivitySinglePointTimeCategory } from './teacher-activity-single-point-time-category.component';
 import { TeacherActivitySingleStageCategory } from './teacher-activity-single-stage-category.component';
@@ -101,21 +102,25 @@ export const TeacherActivitySingle = memo(function ({
           </div>
         </div>
         <div className='flex items-center gap-2'>
-          <BaseLink
-            to={teacherRoutes.activity.previewTo}
-            className='!px-3'
-            variant='solid'
-            target='_blank'
-          >
-            <BaseIcon name='eyes' size={24} />
-          </BaseLink>
-          <BaseLink
-            to={teacherRoutes.activity.editTo}
-            className='!px-3'
-            variant='solid'
-          >
-            <BaseIcon name='pencil' size={24} />
-          </BaseLink>
+          <BaseTooltip content='Preview'>
+            <BaseLink
+              to={teacherRoutes.activity.previewTo}
+              className='!px-3'
+              variant='solid'
+              target='_blank'
+            >
+              <BaseIcon name='eyes' size={24} />
+            </BaseLink>
+          </BaseTooltip>
+          <BaseTooltip content='Edit'>
+            <BaseLink
+              to={teacherRoutes.activity.editTo}
+              className='!px-3'
+              variant='solid'
+            >
+              <BaseIcon name='pencil' size={24} />
+            </BaseLink>
+          </BaseTooltip>
         </div>
       </div>
       <BaseDivider className='mb-2.5' />

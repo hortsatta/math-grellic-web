@@ -6,6 +6,7 @@ import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 
 import type { ComponentProps } from 'react';
 import type { IconName } from '#/base/models/base.model';
@@ -87,12 +88,14 @@ export const TeacherExamSingleQuestion = memo(function ({
         )}
       >
         <div className='flex items-center justify-center xs:h-input'>
-          <BaseIconButton
-            name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
-            variant='link'
-            size='sm'
-            onClick={handleIsCollapsed}
-          />
+          <BaseTooltip content={isCollapsed ? 'Show choices' : 'Hide choices'}>
+            <BaseIconButton
+              name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
+              variant='link'
+              size='sm'
+              onClick={handleIsCollapsed}
+            />
+          </BaseTooltip>
         </div>
         <span className='order-first py-2.5 pr-2.5 font-medium opacity-70 xs:order-none xs:py-[18px]'>
           {orderNumber.toString().padStart(2, '0')}.

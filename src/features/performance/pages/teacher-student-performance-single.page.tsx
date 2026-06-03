@@ -6,6 +6,7 @@ import {
   formatPhoneNumber,
   generateFullName,
 } from '#/user/helpers/user.helper';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { UserAvatarImg } from '#/user/components/user-avatar-img.component';
 import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
@@ -14,6 +15,7 @@ import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { UserMessengerLink } from '#/user/components/user-messenger-link.component';
 import { StudentSchoolYearAcademicProgressUpdateModal } from '#/school-year/components/student-school-year-academic-progress-update-modal.component';
 import { useTeacherStudentPerformanceSingle } from '../hooks/use-teacher-student-performance-single.hook';
@@ -21,7 +23,6 @@ import { StudentPerformanceSingle } from '../components/student-performance-sing
 
 import type { UserGender } from '#/user/models/user.model';
 import type { ButtonVariant, IconName } from '#/base/models/base.model';
-import { useBoundStore } from '#/core/hooks/use-store.hook';
 
 const STUDENT_USER_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
@@ -94,13 +95,17 @@ function TeacherStudentPerformanceSinglePage() {
                   </div>
                 </div>
                 <div className='flex items-center gap-2.5'>
-                  <BaseIconButton
-                    {...academicProgressButtonProps}
-                    onClick={handleSetAcademicProgress}
-                  />
-                  <BaseLink to={editTo} className='!px-3' variant='solid'>
-                    <BaseIcon name='pencil' size={24} />
-                  </BaseLink>
+                  <BaseTooltip content='Set academic progress'>
+                    <BaseIconButton
+                      {...academicProgressButtonProps}
+                      onClick={handleSetAcademicProgress}
+                    />
+                  </BaseTooltip>
+                  <BaseTooltip content='Edit'>
+                    <BaseLink to={editTo} className='!px-3' variant='solid'>
+                      <BaseIcon name='pencil' size={24} />
+                    </BaseLink>
+                  </BaseTooltip>
                 </div>
               </div>
               <div className='flex flex-col items-start justify-between gap-2.5 xs:flex-row xs:items-center'>

@@ -8,6 +8,7 @@ import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseModal } from '#/base/components/base-modal.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { AnnouncementCardList } from '#/announcement/components/announcement-card-list.component';
 import { AnnouncementCard } from '#/announcement/components/announcement-card.component';
 import { AnnouncementUpsertPreview } from '#/announcement/components/announcement-upsert-preview.component';
@@ -182,13 +183,15 @@ export const TeacherDashboardAnnouncementList = memo(function ({
             >
               View History
             </BaseButton> */}
-            <BaseIconButton
-              name='arrow-clockwise'
-              variant='link'
-              className='!h-6 !w-6'
-              disabled={loading}
-              onClick={onRefresh}
-            />
+            <BaseTooltip content='Refresh'>
+              <BaseIconButton
+                name='arrow-clockwise'
+                variant='link'
+                className='!h-6 !w-6'
+                disabled={loading}
+                onClick={onRefresh}
+              />
+            </BaseTooltip>
           </div>
           <AnnouncementCardList
             currentAnnouncements={currentAnnouncements}
@@ -224,13 +227,15 @@ export const TeacherDashboardAnnouncementList = memo(function ({
               upcoming={isUpcomingAnnouncement}
               fullSize
             />
-            <BaseIconButton
-              name='pencil'
-              variant='solid'
-              size='sm'
-              className='absolute bottom-2 right-2'
-              onClick={handleEditClick}
-            />
+            <BaseTooltip content='Edit'>
+              <BaseIconButton
+                name='pencil'
+                variant='solid'
+                size='sm'
+                className='absolute bottom-2 right-2'
+                onClick={handleEditClick}
+              />
+            </BaseTooltip>
           </div>
         ) : (
           schoolYear && (

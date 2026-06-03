@@ -6,6 +6,7 @@ import { generateOrdinalSuffix } from '#/utils/string.util';
 import { DAYS_PER_WEEK } from '#/utils/time.util';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 
 import type { ComponentProps } from 'react';
 
@@ -78,28 +79,34 @@ export const ScheduleWeeklyCalendarSelector = memo(function ({
     >
       <div>{label}</div>
       <div className='flex w-fit items-center'>
-        <BaseIconButton
-          name='arrow-clockwise'
-          variant='link'
-          size='sm'
-          disabled={loading}
-          onClick={onRefresh}
-        />
+        <BaseTooltip content='Refresh'>
+          <BaseIconButton
+            name='arrow-clockwise'
+            variant='link'
+            size='sm'
+            disabled={loading}
+            onClick={onRefresh}
+          />
+        </BaseTooltip>
         <BaseDivider className='!mx-2 !h-6' vertical />
-        <BaseIconButton
-          name='caret-circle-left'
-          variant='link'
-          className='w-9'
-          disabled={loading}
-          onClick={handleChange(false)}
-        />
-        <BaseIconButton
-          name='caret-circle-right'
-          variant='link'
-          className='w-9'
-          disabled={loading}
-          onClick={handleChange(true)}
-        />
+        <BaseTooltip content='Previous'>
+          <BaseIconButton
+            name='caret-circle-left'
+            variant='link'
+            className='w-9'
+            disabled={loading}
+            onClick={handleChange(false)}
+          />
+        </BaseTooltip>
+        <BaseTooltip content='Next'>
+          <BaseIconButton
+            name='caret-circle-right'
+            variant='link'
+            className='w-9'
+            disabled={loading}
+            onClick={handleChange(true)}
+          />
+        </BaseTooltip>
       </div>
     </div>
   );

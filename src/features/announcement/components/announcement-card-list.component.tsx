@@ -7,6 +7,7 @@ import { AnnouncementCard } from './announcement-card.component';
 
 import type { ComponentProps } from 'react';
 import type { Announcement } from '../models/announcement.model';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 
 type Props = ComponentProps<'div'> & {
   currentAnnouncements: Announcement[];
@@ -94,31 +95,37 @@ export const AnnouncementCardList = memo(function ({
       <div className='flex w-full flex-1 items-center justify-between'>
         <div className='flex items-center gap-1.5'>
           <div>
-            <BaseIconButton
-              name='caret-circle-left'
-              variant='link'
-              className='w-9'
-              disabled={disabled}
-              onClick={handleChange(false)}
-            />
-            <BaseIconButton
-              name='caret-circle-right'
-              variant='link'
-              className='w-9'
-              disabled={disabled}
-              onClick={handleChange(true)}
-            />
+            <BaseTooltip content='Previous'>
+              <BaseIconButton
+                name='caret-circle-left'
+                variant='link'
+                className='w-9'
+                disabled={disabled}
+                onClick={handleChange(false)}
+              />
+            </BaseTooltip>
+            <BaseTooltip content='Next'>
+              <BaseIconButton
+                name='caret-circle-right'
+                variant='link'
+                className='w-9'
+                disabled={disabled}
+                onClick={handleChange(true)}
+              />
+            </BaseTooltip>
           </div>
           {onRefresh && (
             <>
               <BaseDivider className='!h-6' vertical />
-              <BaseIconButton
-                name='arrow-clockwise'
-                variant='link'
-                className='w-9'
-                disabled={disabled}
-                onClick={onRefresh}
-              />
+              <BaseTooltip content='Refresh'>
+                <BaseIconButton
+                  name='arrow-clockwise'
+                  variant='link'
+                  className='w-9'
+                  disabled={disabled}
+                  onClick={onRefresh}
+                />
+              </BaseTooltip>
             </>
           )}
         </div>

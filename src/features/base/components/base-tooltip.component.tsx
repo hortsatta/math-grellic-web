@@ -15,6 +15,7 @@ import {
   useHover,
   useInteractions,
   useMergeRefs,
+  FloatingPortal,
 } from '@floating-ui/react';
 import cx from 'classix';
 
@@ -79,17 +80,19 @@ export const BaseTooltip = memo(
       <>
         {transformedChildren}
         {content && isOpen && (
-          <BaseSurface
-            ref={refs.setFloating}
-            style={floatingStyles}
-            className={cx(
-              'z-max hidden animate-fastFadeIn !rounded !bg-accent !p-0 text-white sm:inline-block',
-              className,
-            )}
-            {...getFloatingProps()}
-          >
-            <small className='block px-2 py-1'>{content}</small>
-          </BaseSurface>
+          <FloatingPortal>
+            <BaseSurface
+              ref={refs.setFloating}
+              style={floatingStyles}
+              className={cx(
+                'z-max hidden animate-fastFadeIn !rounded !bg-accent !p-0 text-white sm:inline-block',
+                className,
+              )}
+              {...getFloatingProps()}
+            >
+              <small className='block px-2 py-1'>{content}</small>
+            </BaseSurface>
+          </FloatingPortal>
         )}
       </>
     );

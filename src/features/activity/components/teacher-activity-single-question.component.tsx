@@ -17,6 +17,7 @@ import type {
   ActivityCategoryQuestion,
   ActivityCategoryQuestionChoice,
 } from '../models/activity.model';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 
 type Props = ComponentProps<typeof BaseSurface> & {
   question: ActivityCategoryQuestion;
@@ -56,9 +57,11 @@ const Choice = memo(function ({
     <li className='w-full border-b border-accent/20 last:border-b-0'>
       <div className='relative flex w-full items-center'>
         {isCorrect && (
-          <div className='z-11 absolute right-0 top-0 flex h-full items-start justify-center px-3 py-2.5 text-green-500 xs:left-0 xs:right-auto'>
-            <BaseIcon name='check-fat' weight='fill' size={20} />
-          </div>
+          <BaseTooltip content='Correct answer'>
+            <div className='z-11 absolute right-0 top-0 flex h-full items-start justify-center px-3 py-2.5 text-green-500 xs:left-0 xs:right-auto'>
+              <BaseIcon name='check-fat' weight='fill' size={20} />
+            </div>
+          </BaseTooltip>
         )}
         <div
           className={cx(
@@ -126,12 +129,14 @@ export const TeacherActivitySingleQuestion = memo(function ({
         )}
       >
         <div className='flex items-center justify-center xs:h-input'>
-          <BaseIconButton
-            name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
-            variant='link'
-            size='sm'
-            onClick={handleIsCollapsed}
-          />
+          <BaseTooltip content={isCollapsed ? 'Show choices' : 'Hide choices'}>
+            <BaseIconButton
+              name={(isCollapsed ? 'caret-right' : 'caret-down') as IconName}
+              variant='link'
+              size='sm'
+              onClick={handleIsCollapsed}
+            />
+          </BaseTooltip>
         </div>
         <span className='order-first py-2.5 pr-2.5 font-medium opacity-70 xs:order-none xs:py-[18px]'>
           {orderNumber.toString().padStart(2, '0')}.

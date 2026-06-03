@@ -141,13 +141,15 @@ const Choice = memo(function ({
   return (
     <div className='flex w-full max-w-qcWrapperInput items-start'>
       <div className='flex h-12 items-center justify-center'>
-        <BaseIconButton
-          name='check-fat'
-          variant='link'
-          size='xs'
-          onClick={onSetAnswer}
-          {...iconButtonProps}
-        />
+        <BaseTooltip content='Mark as correct answer'>
+          <BaseIconButton
+            name='check-fat'
+            variant='link'
+            size='xs'
+            onClick={onSetAnswer}
+            {...iconButtonProps}
+          />
+        </BaseTooltip>
       </div>
       <div className='relative w-full'>
         {textType !== ActivityTextType.Image ? (
@@ -220,12 +222,14 @@ const Choice = memo(function ({
           </BaseTooltip>
         </div>
       </div>
-      <BaseIconButton
-        name='x-square'
-        variant='link'
-        className='ml-1'
-        onClick={onRemove}
-      />
+      <BaseTooltip content={`Remove choice ${choiceLabel}`}>
+        <BaseIconButton
+          name='x-square'
+          variant='link'
+          className='ml-1'
+          onClick={onRemove}
+        />
+      </BaseTooltip>
     </div>
   );
 });

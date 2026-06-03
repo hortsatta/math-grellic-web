@@ -9,7 +9,9 @@ import { generateTeacherRouteLinks } from '#/app/routes/teacher-routes';
 import { generateStudentRouteLinks } from '#/app/routes/student-routes';
 import { SidebarMode } from '#/base/models/base.model';
 import { UserRole } from '#/user/models/user.model';
+import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { useBoundStore } from '../hooks/use-store.hook';
 import { CoreLogo } from './core-logo.component';
 import { CoreNav } from './core-nav.component';
@@ -18,7 +20,6 @@ import { CoreNavItem } from './core-nav-item.component';
 import gridSmPng from '#/assets/images/grid-sm.png';
 
 import type { ComponentProps } from 'react';
-import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
 
 const bgStyle = { backgroundImage: `url(${gridSmPng})` };
 
@@ -114,12 +115,17 @@ export const CoreSidebar = memo(function ({
             isExpanded={sidebarMode === SidebarMode.Expanded}
           />
           {!!modeIconName && (
-            <BaseIconButton
-              name={modeIconName}
-              className='!w-full'
-              variant='link'
-              onClick={handleSwitchMode}
-            />
+            <BaseTooltip
+              content={sidebarMode === SidebarMode.Expanded ? 'Fold' : 'Unfold'}
+              placement={sidebarMode === SidebarMode.Expanded ? 'top' : 'right'}
+            >
+              <BaseIconButton
+                name={modeIconName}
+                className='!w-full'
+                variant='link'
+                onClick={handleSwitchMode}
+              />
+            </BaseTooltip>
           )}
         </div>
       </div>

@@ -3,6 +3,7 @@ import { memo, useCallback, useMemo } from 'react';
 import dayjs from '#/config/dayjs.config';
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { ScheduleDailyCardList } from './schedule-daily-card-list.component';
 
 import type { ComponentProps } from 'react';
@@ -64,20 +65,24 @@ export const TeacherScheduleDailyCardList = memo(function ({
       {title && <h2 className='mb-2.5 text-lg'>{title}</h2>}
       <div className='flex items-stretch border-b border-b-accent/20'>
         <div className='flex h-8 w-[84px] items-center justify-center overflow-hidden border-r border-r-accent/20 pb-2 pt-1'>
-          <BaseIconButton
-            name='caret-circle-left'
-            variant='link'
-            className='w-9'
-            disabled={loading}
-            onClick={handleChange(false)}
-          />
-          <BaseIconButton
-            name='caret-circle-right'
-            variant='link'
-            className='w-9'
-            disabled={loading}
-            onClick={handleChange(true)}
-          />
+          <BaseTooltip content='Previous'>
+            <BaseIconButton
+              name='caret-circle-left'
+              variant='link'
+              className='w-9'
+              disabled={loading}
+              onClick={handleChange(false)}
+            />
+          </BaseTooltip>
+          <BaseTooltip content='Next'>
+            <BaseIconButton
+              name='caret-circle-right'
+              variant='link'
+              className='w-9'
+              disabled={loading}
+              onClick={handleChange(true)}
+            />
+          </BaseTooltip>
         </div>
         <div className='flex flex-1 items-center justify-center'>
           <span className='font-medium'>{currentDateText}</span>

@@ -4,6 +4,7 @@ import cx from 'classix';
 
 import { NavItem } from '#/base/models/base.model';
 import { BaseIcon } from '#/base/components/base-icon.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 
 import type { ComponentProps } from 'react';
 
@@ -43,9 +44,11 @@ export const CoreNavItem = memo(function ({
     <NavLink className={setClassName} to={to} {...moreProps}>
       {({ isActive }) => (
         <>
-          <div className='flex w-9 shrink-0 items-center justify-center'>
-            {!!iconName && <BaseIcon name={iconName} size={size || 32} />}
-          </div>
+          <BaseTooltip content={isExpanded ? '' : label} placement='right-end'>
+            <div className='flex w-9 shrink-0 items-center justify-center'>
+              {!!iconName && <BaseIcon name={iconName} size={size || 32} />}
+            </div>
+          </BaseTooltip>
           <span
             className={cx(
               'whitespace-nowrap opacity-0 transition-opacity duration-300',
