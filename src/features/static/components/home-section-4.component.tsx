@@ -31,7 +31,7 @@ export const HomeSection4 = memo(function ({
   return (
     <section
       className={cx(
-        'mx-auto flex w-full max-w-static-full flex-col items-center justify-between px-4 lg:flex-row -2xl:items-start',
+        'mx-auto flex w-[99%] max-w-static-full flex-col items-center justify-between px-4 lg:flex-row -2xl:items-start',
         className,
       )}
       {...moreProps}
