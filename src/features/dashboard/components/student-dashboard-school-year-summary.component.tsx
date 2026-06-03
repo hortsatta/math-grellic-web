@@ -2,14 +2,12 @@ import { memo, useMemo } from 'react';
 import cx from 'classix';
 
 import dayjs from '#/config/dayjs.config';
-import { SchoolYearAcademicProgress } from '#/school-year/models/school-year-enrollment.model';
 import { BaseChip } from '#/base/components/base-chip.component';
-import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { StudentSchoolYearAcademicProgressResult } from '#/school-year/components/student-school-year-academic-progress-result.component';
 
 import type { ComponentProps } from 'react';
-import type { IconName } from '#/base/models/base.model';
 import type { SchoolYear } from '#/school-year/models/school-year.model';
 import type { SchoolYearEnrollment } from '#/school-year/models/school-year-enrollment.model';
 
@@ -31,7 +29,7 @@ export const StudentDashboardSchoolYearSummary = memo(function ({
     schoolYearIsDone,
   ] = useMemo(
     () => [
-      `${schoolYear.title} Details`,
+      schoolYear.title,
       `${dayjs(schoolYear.startDate).format('MMM DD, YYYY')} — ${dayjs(
         schoolYear.endDate,
       ).format('MMM DD, YYYY')}`,
@@ -60,33 +58,6 @@ export const StudentDashboardSchoolYearSummary = memo(function ({
     ];
   }, [schoolYearIsActive, schoolYearIsDone]);
 
-  const [
-    academicProgressText,
-    academicProgressIconName,
-    academicProgressClassName,
-  ] = useMemo(() => {
-    switch (enrollment.academicProgress) {
-      case SchoolYearAcademicProgress.Passed:
-        return [
-          SchoolYearAcademicProgress.Passed.toUpperCase(),
-          'check-circle',
-          'text-green-500 border-green-500',
-        ];
-      case SchoolYearAcademicProgress.Failed:
-        return [
-          SchoolYearAcademicProgress.Failed.toUpperCase(),
-          'x-circle',
-          'text-red-500 border-red-500',
-        ];
-      default:
-        return [
-          SchoolYearAcademicProgress.Ongoing.toUpperCase(),
-          'clock-countdown',
-          'border-accent',
-        ];
-    }
-  }, [enrollment]);
-
   return (
     <BaseSurface
       className={cx(
@@ -97,7 +68,9 @@ export const StudentDashboardSchoolYearSummary = memo(function ({
     >
       <div className='flex flex-1 animate-fastFadeIn flex-col gap-4'>
         <div className='flex h-full flex-col'>
-          <h3 className='mb-3.5 text-lg leading-none'>{schoolYearTitle}</h3>
+          <h3 className='mb-3.5 text-lg leading-none'>
+            {schoolYearTitle} Details
+          </h3>
           <div className='flex flex-col gap-1 text-sm'>
             <BaseChip iconName='graduation-cap'>
               {schoolYearIsActiveText}
@@ -119,53 +92,19 @@ export const StudentDashboardSchoolYearSummary = memo(function ({
       <div className='flex-1 animate-fastFadeIn'>
         <div className='flex h-full flex-col'>
           <h3 className='mb-3.5 text-lg leading-none'>Academic Progress</h3>
-          {academicProgress === SchoolYearAcademicProgress.Ongoing ||
-          academicProgress == null ? (
-            <div className='flex w-full items-center'>
-              Your progress for the{' '}
-              <span className='mx-2 font-medium'>{schoolYearTitle}</span> is
-              still
-              <p
-                className={cx(
-                  'mx-2 flex items-center gap-1 rounded-4px border-2 px-1.5 py-1 text-sm font-medium',
-                  academicProgressClassName,
-                )}
-              >
-                <BaseIcon
-                  name={academicProgressIconName as IconName}
-                  size={24}
-                  weight='bold'
-                />
-                {academicProgressText}
-              </p>
-            </div>
-          ) : (
-            <div className='flex flex-col gap-5'>
-              <div className='flex w-full items-center'>
-                You have{' '}
-                <p
-                  className={cx(
-                    'mx-2 flex items-center gap-1 rounded-4px border-2 px-1.5 py-1 text-sm font-medium',
-                    academicProgressClassName,
-                  )}
-                >
-                  <BaseIcon
-                    name={academicProgressIconName as IconName}
-                    size={24}
-                    weight='bold'
-                  />
-                  {academicProgressText}
-                </p>
-                the <span className='ml-1 font-medium'>{schoolYearTitle}</span>
+          <div className='flex flex-col gap-5'>
+            <StudentSchoolYearAcademicProgressResult
+              academicProgress={academicProgress}
+              schoolYearTitle={schoolYearTitle || ''}
+              isStudent
+            />
+            {academicProgressRemarks && (
+              <div className='flex flex-col gap-2.5 rounded-lg border border-primary-border/20 bg-primary/5 p-2.5 px-4'>
+                <span className='font-medium'>Remarks</span>
+                <span>{academicProgressRemarks}</span>
               </div>
-              {academicProgressRemarks && (
-                <div className='flex flex-col gap-2.5 rounded border border-accent/20 px-4 py-2.5'>
-                  <span className='font-medium'>Remarks</span>
-                  <span>{academicProgressRemarks}</span>
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </BaseSurface>
