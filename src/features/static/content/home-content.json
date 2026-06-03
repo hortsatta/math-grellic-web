@@ -9,7 +9,7 @@
       {
         "key": "feat1",
         "title": "Maximized Teacher Efficiency",
-        "content": "Spend less time on paperwork and assessments. Easily track students’ progress and give immediate feedback."
+        "content": "Spend less time on paperwork and assessments. Easily track learners’ progress and give immediate feedback."
       },
       {
         "key": "feat2",
@@ -19,7 +19,7 @@
       {
         "key": "feat3",
         "title": "Accessible And Intuitive",
-        "content": "Whether tech-savvy or not, our intuitive interface and simplified features make it a breeze to navigate for both teachers and students."
+        "content": "Whether tech-savvy or not, our intuitive interface and simplified features make it a breeze to navigate for both teachers and learners."
       }
     ]
   },
@@ -43,7 +43,7 @@
       {
         "key": "benefit3",
         "title": "Flexible Study Terms",
-        "content": "Students can schedule classes with their teachers at their convenience, eliminating the need to attend face-to-face classes or visit community learning centers for Alternative Learning System (ALS) classes."
+        "content": "Learners can schedule classes with their teachers at their convenience, eliminating the need to attend face-to-face classes or visit community learning centers for Alternative Learning System (ALS) classes."
       }
     ]
   },
@@ -58,22 +58,22 @@
       {
         "key": "key2",
         "title": "Drills and Exercises",
-        "content": "Drills, exercises, and games are provided for the students to practice their mathematical skills. Unlike in the traditional way of using books, mastering math is just few clicks away, acquiring skills and trophies."
+        "content": "Drills, exercises, and games are provided for the learners to practice their mathematical skills. Unlike in the traditional way of using books, mastering math is just few clicks away, acquiring skills and trophies."
       },
       {
         "key": "key3",
         "title": "Online Assessments",
-        "content": "Summative tests and quizzes online can be answered wherever the students want. Scores are also immediately reflected upon the completion of exams."
+        "content": "Summative tests and quizzes online can be answered wherever the learners want. Scores are also immediately reflected upon the completion of exams."
       },
       {
         "key": "key4",
         "title": "Immediate Feedbacks",
-        "content": "Upon completion of assessments, students gain immediate access to their exam results. Moreover, they have the option to seek clarification from their teacher regarding any ambiguous aspects of the exam."
+        "content": "Upon completion of assessments, learners gain immediate access to their exam results. Moreover, they have the option to seek clarification from their teacher regarding any ambiguous aspects of the exam."
       },
       {
         "key": "key5",
         "title": "Ready Made Statistics",
-        "content": "Students can instantly view their individual progress upon completion of activities, summative tests, and quizzes using scatter plots and tables. An overall statistics comparing the performances of all students in the class are also available both for teachers and students."
+        "content": "Learners can instantly view their individual progress upon completion of activities, summative tests, and quizzes using scatter plots and tables. An overall statistics comparing the performances of all learners in the class are also available both for teachers and learners."
       },
       {
         "key": "key6",

@@ -115,7 +115,7 @@ export const TeacherMeetingScheduleSingle = memo(function ({
           </div>
           <BaseDivider />
           <div>
-            <h3 className='mb-2 text-base'>Students</h3>
+            <h3 className='mb-2 text-base'>Learners</h3>
             <div className='flex flex-col gap-y-2.5'>
               {students.map((student) => (
                 <UserSingleItem

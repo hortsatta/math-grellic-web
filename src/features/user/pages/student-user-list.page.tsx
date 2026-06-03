@@ -48,11 +48,11 @@ const defaultFilterOptions = [filterOptions[0]];
 const sortOptions = [
   {
     value: 'name',
-    label: 'Student Name',
+    label: 'Learner Name',
   },
   {
     value: 'publicId',
-    label: 'Student Id',
+    label: 'Learner Id',
   },
 ];
 
@@ -150,7 +150,7 @@ function StudentUserListPage() {
               filterOptions={filterOptions}
               defaulSelectedtFilterOptions={defaultFilterOptions}
               defaultSelectedSort={defaultSort}
-              searchInputPlaceholder='Find a Student'
+              searchInputPlaceholder='Find a Learner'
               sortOptions={sortOptions}
               onSearchChange={setKeyword}
               onRefresh={refresh}

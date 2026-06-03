@@ -5,13 +5,13 @@ const performanceBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.performance.t
 
 const performanceListLink = {
   to: performanceBaseRoute,
-  label: 'Student Performance',
+  label: 'Learner Performance',
   icons: [{ name: 'chart-donut' }] as GroupLink['icons'],
 };
 
 const studentListLink = {
   to: `/${teacherBaseRoute}/${teacherRoutes.student.to}`,
-  label: 'Student List',
+  label: 'Learner List',
   icons: [{ name: 'student' }] as GroupLink['icons'],
 };
 

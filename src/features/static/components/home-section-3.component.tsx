@@ -20,15 +20,15 @@ export const HomeSection3 = memo(function ({
   return (
     <section
       className={cx(
-        '-2xl:items-start mx-auto flex w-full max-w-static-full flex-col items-center justify-between gap-5 px-4 lg:flex-row',
+        'mx-auto flex w-full max-w-static-full flex-col items-center justify-between gap-5 px-4 lg:flex-row -2xl:items-start',
         className,
       )}
       {...moreProps}
     >
-      <div className='-2xl:max-w-[435px] w-full max-w-xs'>
+      <div className='w-full max-w-xs -2xl:max-w-[435px]'>
         <img
           src={logoOnlyWithStudentPng}
-          alt='logo with student'
+          alt='logo with learner'
           width={435}
           height={421}
         />

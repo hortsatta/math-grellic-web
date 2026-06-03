@@ -24,7 +24,7 @@ export const StudentUserOverviewBoard = memo(function ({
   return (
     <div className={cx('w-full', className)} {...moreProps}>
       <div className='flex items-center justify-between'>
-        <h2 className='text-lg'>Students Overview</h2>
+        <h2 className='text-lg'>Learners Overview</h2>
         <BaseTooltip content='Refresh'>
           <BaseIconButton
             name='arrow-clockwise'
@@ -43,7 +43,7 @@ export const StudentUserOverviewBoard = memo(function ({
               {enrolledStudentCount}
             </span>
             <h3 className='font-body text-sm font-normal tracking-normal text-accent'>
-              Total Students Enrolled
+              Total Learners Enrolled
             </h3>
           </>
         )}

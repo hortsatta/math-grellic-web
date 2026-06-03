@@ -42,8 +42,8 @@ const schema = z.object({
       message: 'Start time is invalid',
     }),
   studentIds: z
-    .array(z.number({ required_error: 'Assign students' }), {
-      required_error: 'Assign students',
+    .array(z.number({ required_error: 'Assign learners' }), {
+      required_error: 'Assign learners',
     })
     .nullable(),
 });

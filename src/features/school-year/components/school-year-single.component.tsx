@@ -37,11 +37,11 @@ const EnrolledUserCount = memo(function ({
 }: EnrolledUserCountProps) {
   const totalEnrolledCountText = useMemo(() => {
     if (!totalEnrolledCount || totalEnrolledCount <= 0) {
-      return `No ${isStudent ? 'students' : 'teachers'} enrolled`;
+      return `No ${isStudent ? 'learners' : 'teachers'} enrolled`;
     }
 
     if (isStudent) {
-      return `${totalEnrolledCount > 1 ? 'Students' : 'Student'} enrolled`;
+      return `${totalEnrolledCount > 1 ? 'Learners' : 'Learner'} enrolled`;
     }
 
     return `${totalEnrolledCount > 1 ? 'Teachers' : 'Teacher'} enrolled`;

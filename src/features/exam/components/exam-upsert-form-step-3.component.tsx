@@ -117,7 +117,7 @@ export const ExamUpsertFormStep3 = memo(function ({
         <div className='flex w-full items-start gap-5'>
           <StudentUserControlledPicker
             name='studentIds'
-            label='Students'
+            label='Learners'
             control={control}
           />
         </div>

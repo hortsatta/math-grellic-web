@@ -25,7 +25,7 @@ export const TeacherStudentSchoolYearAcademicProgressOverviewBoard = memo(
         className={cx('flex w-full flex-col gap-2.5', className)}
         {...moreProps}
       >
-        <h2 className='text-lg'>Students' Academic Progress</h2>
+        <h2 className='text-lg'>Learners' Academic Progress</h2>
         {loading || !studentsAcademicProgress ? (
           <div className='flex w-full items-center justify-center'>
             <BaseSpinner />

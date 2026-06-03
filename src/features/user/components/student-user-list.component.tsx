@@ -57,7 +57,7 @@ export const StudentUserList = memo(function ({
         ))
       ) : isEmpty ? (
         <BaseDataEmptyMessage
-          message='No students available'
+          message='No learners available'
           linkLabel='Enroll'
           linkTo={teacherRoutes.student.createTo}
         />

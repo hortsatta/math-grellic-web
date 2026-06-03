@@ -34,7 +34,7 @@ export function useSchoolYearStudentEnrollmentNewCreate(): Result {
   const enrollNew = useCallback(
     (data: UserUpsertFormData) => {
       if (!schoolYear) {
-        throw new Error('Cannot enroll student, please try again');
+        throw new Error('Cannot enroll learner, please try again');
       }
 
       const transformedData = {

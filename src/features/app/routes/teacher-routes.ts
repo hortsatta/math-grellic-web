@@ -79,7 +79,7 @@ export const teacherRoutes = {
   student: {
     name: 'students',
     to: 'students',
-    label: 'Students',
+    label: 'Learners',
     iconName: 'student',
     createTo: 'enroll',
     editTo: 'edit',

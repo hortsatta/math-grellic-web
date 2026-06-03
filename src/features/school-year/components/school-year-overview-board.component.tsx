@@ -57,7 +57,7 @@ export const SchoolYearOverviewBoard = memo(function ({
     }
 
     return `${totalStudentCount} ${
-      totalStudentCount > 1 ? 'students' : 'student'
+      totalStudentCount > 1 ? 'learners' : 'learner'
     } enrolled`;
   }, [totalStudentCount]);
 

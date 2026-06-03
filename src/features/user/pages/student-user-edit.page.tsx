@@ -42,7 +42,7 @@ function StudentUserEditPage() {
 
     try {
       await deleteStudent();
-      toast.success(`Student deleted`);
+      toast.success('Learner deleted');
       navigate(STUDENT_LIST_PATH);
     } catch (error: any) {
       toast.error(error.message);
@@ -67,14 +67,14 @@ function StudentUserEditPage() {
         <div>
           <div className='mb-4 flex items-center gap-2'>
             <BaseIcon name='trash' size={28} />
-            <span>Delete student?</span>
+            <span>Delete learner?</span>
           </div>
           <BaseButton
             className='!w-full'
             loading={loading}
             onClick={handleDeleteStudent}
           >
-            Delete Student
+            Delete Learner
           </BaseButton>
         </div>
       </BaseModal>

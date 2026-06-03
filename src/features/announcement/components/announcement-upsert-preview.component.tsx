@@ -87,7 +87,7 @@ export const AnnouncementUpsertPreview = memo(function ({
                 )}
               >
                 {description ||
-                  'Share any news or important updates to your students.'}
+                  'Share any news or important updates to your learners.'}
               </p>
               <div
                 className={cx(

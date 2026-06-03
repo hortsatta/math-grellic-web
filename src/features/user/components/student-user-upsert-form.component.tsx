@@ -152,8 +152,8 @@ export const StudentUserUpsertForm = memo(function ({
 
         toast.success(
           isEdit
-            ? 'Student updated'
-            : 'Student registered and enrolled. A confirmation email has been sent',
+            ? 'Learner updated'
+            : 'Learner registered and enrolled. A confirmation email has been sent',
         );
 
         onDone && onDone(true);
@@ -204,14 +204,14 @@ export const StudentUserUpsertForm = memo(function ({
                       onClick={onDelete}
                       disabled={loading}
                     >
-                      Delete Student
+                      Delete Learner
                     </Menu.Item>
                   </BaseDropdownMenu>
                 )}
               </div>
             }
           >
-            <BaseStepperStep label='Student Info'>
+            <BaseStepperStep label='Learner Info'>
               <UserUpsertFormStep1 isEdit={isEdit} disabled={loading} />
             </BaseStepperStep>
           </BaseStepper>

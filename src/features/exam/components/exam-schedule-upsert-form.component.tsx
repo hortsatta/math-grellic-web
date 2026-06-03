@@ -91,7 +91,7 @@ const schema = z
     if (data.studentIds === undefined) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'Assign students',
+        message: 'Assign learners',
         path: ['studentIds'],
       });
     }
@@ -298,7 +298,7 @@ export const ExamScheduleUpsertForm = memo(function ({
             <div className='flex w-full items-start gap-5'>
               <StudentUserControlledPicker
                 name='studentIds'
-                label='Students'
+                label='Learners'
                 control={control}
                 asterisk
               />

@@ -84,7 +84,7 @@ export function useStudentSchoolYearAcademicProgressUpdate(
         data: SchoolYearEnrollmentAcademicProgressFormData;
       });
 
-      toast.success(`Student's academic progress updated`);
+      toast.success(`Learner's academic progress updated`);
 
       queryClient.invalidateQueries({
         queryKey: queryUserKey.studentList,

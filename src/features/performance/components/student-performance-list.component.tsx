@@ -70,9 +70,9 @@ export const StudentPerformanceList = memo(function ({
         ))
       ) : isEmpty ? (
         <BaseDataEmptyMessage
-          message='No students available'
+          message='No learners available'
           linkTo={STUDENT_LIST_PATH}
-          linkLabel='View All Students'
+          linkLabel='View All Learners'
         />
       ) : (
         students.map((student) =>

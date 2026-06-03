@@ -83,13 +83,13 @@ export const UserRegisterRolePicker = memo(function ({
         </div>
         <div className='flex flex-col items-start justify-center gap-10 lg:flex-row'>
           <Button
-            label='Student'
+            label='Learner'
             onClick={handleRoleChange(UserRole.Student)}
             disabled={loading}
           >
             <img
               src={selectStudentPng}
-              alt='select student'
+              alt='select learner'
               width={221}
               height={181}
               className='absolute left-1/2 top-0 z-10 -translate-x-1/2'

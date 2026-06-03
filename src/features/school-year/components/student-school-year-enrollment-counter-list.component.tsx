@@ -56,10 +56,10 @@ export const StudentSchoolYearEnrollmentCounterList = memo(function ({
 
   const totalStudentCountText = useMemo(() => {
     if (!studentCount) {
-      return 'No students enrolled';
+      return 'No learners enrolled';
     }
 
-    return `${studentCount > 1 ? 'Students' : 'Student'} enrolled`;
+    return `${studentCount > 1 ? 'Learners' : 'Learner'} enrolled`;
   }, [studentCount]);
 
   const toggleModal = useCallback(

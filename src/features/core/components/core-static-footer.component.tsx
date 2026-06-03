@@ -62,7 +62,7 @@ export const CoreStaticFooter = memo(function ({
         <div className='mb-40 flex flex-col items-center justify-between lg:flex-row'>
           <img
             src={studentWithNumbersPng}
-            alt='student with numbers'
+            alt='learner with numbers'
             width={667}
             height={474}
             className='max-w-full xs:max-w-lg sm:max-w-xl lg:-translate-x-4 xl:max-w-none'

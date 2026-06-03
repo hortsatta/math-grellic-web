@@ -85,7 +85,7 @@ export const TeacherDashboardSchoolYearSummary = memo(function ({
           <div className='flex-1 animate-fastFadeIn'>
             <div className='flex h-full flex-col'>
               <h3 className='mb-3.5 text-lg leading-none'>
-                Students' Academic Progress
+                Learners' Academic Progress
               </h3>
               <TeacherStudentSchoolYearAcademicProgressSummary
                 className='flex-1 items-center justify-center'

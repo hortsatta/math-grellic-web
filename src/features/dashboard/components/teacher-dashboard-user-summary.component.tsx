@@ -55,7 +55,7 @@ const links = [
   },
   {
     to: `/${teacherBaseRoute}/${teacherRoutes.student.to}/${teacherRoutes.student.createTo}`,
-    label: 'Enroll student',
+    label: 'Enroll learner',
     icons: [
       { name: 'plus', size: 16 },
       { name: 'student' },

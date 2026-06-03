@@ -6,13 +6,13 @@ const studentUserBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
 const studentUserListLink = {
   to: studentUserBaseRoute,
-  label: 'Student List',
+  label: 'Learner List',
   icons: [{ name: 'student' }] as GroupLink['icons'],
 };
 
 const createStudentUserLink = {
   to: `${studentUserBaseRoute}/${teacherRoutes.student.createTo}`,
-  label: 'Enroll Student',
+  label: 'Enroll Learner',
   icons: [
     { name: 'plus', size: 16 },
     { name: 'student' },
@@ -27,19 +27,19 @@ const performanceLink = {
 
 export const studentUserRouteHandle: { [key: string]: SceneRouteHandle } = {
   list: {
-    title: 'Students',
+    title: 'Learners',
     links: [createStudentUserLink, performanceLink],
   },
   single: {
-    title: 'Student Details',
+    title: 'Learner Details',
     links: [studentUserListLink, createStudentUserLink],
   },
   create: {
-    title: 'Enroll a New Student',
+    title: 'Enroll a New Learner',
     links: [studentUserListLink, performanceLink],
   },
   edit: {
-    title: 'Edit Student Details',
+    title: 'Edit Learner Details',
     links: [studentUserListLink, createStudentUserLink],
   },
 };

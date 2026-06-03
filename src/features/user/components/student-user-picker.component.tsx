@@ -37,7 +37,7 @@ const options: SelectOption[] = [
     value: '1',
   },
   {
-    label: 'Select students...',
+    label: 'Select learners...',
     value: '2',
   },
 ];

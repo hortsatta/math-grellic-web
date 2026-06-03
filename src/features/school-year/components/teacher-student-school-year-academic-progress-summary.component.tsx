@@ -60,19 +60,19 @@ export const TeacherStudentSchoolYearAcademicProgressSummary = memo(function ({
             <span className={PERCENT_VALUE_TEXT_CLASSNAME}>
               {passedPercent}%
             </span>
-            <span className={PERCENT_TEXT_CLASSNAME}>Students Passed</span>
+            <span className={PERCENT_TEXT_CLASSNAME}>Learners Passed</span>
           </div>
           <div className={PERCENT_TEXT_WRAPPER_CLASSNAME}>
             <span className={PERCENT_VALUE_TEXT_CLASSNAME}>
               {failedPercent}%
             </span>
-            <span className={PERCENT_TEXT_CLASSNAME}>Students Failed</span>
+            <span className={PERCENT_TEXT_CLASSNAME}>Learners Failed</span>
           </div>
           <div className={PERCENT_TEXT_WRAPPER_CLASSNAME}>
             <span className={PERCENT_VALUE_TEXT_CLASSNAME}>
               {ongoingPercent}%
             </span>
-            <span className={PERCENT_TEXT_CLASSNAME}>Students in Progress</span>
+            <span className={PERCENT_TEXT_CLASSNAME}>Learners in Progress</span>
           </div>
           <BaseDivider />
           <div className={PERCENT_TEXT_WRAPPER_CLASSNAME}>
@@ -80,7 +80,7 @@ export const TeacherStudentSchoolYearAcademicProgressSummary = memo(function ({
               {totalStudentCount}
             </span>
             <span className={PERCENT_TEXT_CLASSNAME}>
-              Total Enrolled Students
+              Total Enrolled Learners
             </span>
           </div>
         </div>

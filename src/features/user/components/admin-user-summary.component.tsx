@@ -96,7 +96,7 @@ export const AdminUserSummary = memo(function ({
                   disabled={loading}
                   onClick={onApprove}
                 >
-                  Approve Student
+                  Approve Learner
                 </BaseButton>
                 <BaseButton
                   className='!w-full'

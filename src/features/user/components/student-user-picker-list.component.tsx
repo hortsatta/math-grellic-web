@@ -45,7 +45,7 @@ export const StudentUserPickerList = memo(function ({
       <div className='w-full overflow-hidden p-1'>
         <div className='px-4'>
           <BaseSearchInput
-            placeholder='Find a student'
+            placeholder='Find a learner'
             onChange={onSearchChange}
             fullWidth
           />
@@ -84,7 +84,7 @@ export const StudentUserPickerList = memo(function ({
           <BaseButton variant='link' onClick={onCancel}>
             Cancel
           </BaseButton>
-          <BaseButton onClick={onSubmit}>Select Students</BaseButton>
+          <BaseButton onClick={onSubmit}>Select Learners</BaseButton>
         </div>
       )}
     </div>

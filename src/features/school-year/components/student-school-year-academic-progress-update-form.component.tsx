@@ -57,8 +57,8 @@ const schema = z.object({
     .int()
     .gt(0),
   academicProgress: z.nativeEnum(SchoolYearAcademicProgress, {
-    required_error: 'Set student progress',
-    invalid_type_error: 'Set student progress',
+    required_error: 'Set learner progress',
+    invalid_type_error: 'Set learner progress',
   }),
   academicProgressRemarks: z.string().optional(),
 });
@@ -95,7 +95,7 @@ export const StudentSchoolYearAcademicProgressUpdateForm = memo(function ({
   const schoolYearOngoingText = useMemo(() => {
     if (schoolYear.isDone) return null;
 
-    return `Note: Current school year is still ongoing, it is preferable to update the student's academic progress at the end of the school year.`;
+    return `Note: Current school year is still ongoing, it is preferable to update the learner's academic progress at the end of the school year.`;
   }, [schoolYear]);
 
   const [
@@ -180,7 +180,7 @@ export const StudentSchoolYearAcademicProgressUpdateForm = memo(function ({
     >
       <div className='flex w-full flex-col gap-4'>
         <h3 className='text-lg leading-tight'>
-          Update student's overall academic progress
+          Update learner's overall academic progress
         </h3>
         {schoolYearOngoingText && (
           <small className='text-primary-hue-orange-focus'>
@@ -194,7 +194,7 @@ export const StudentSchoolYearAcademicProgressUpdateForm = memo(function ({
           <BaseControlledSelect
             className='w-full'
             name='academicProgress'
-            label='Student Progress'
+            label='Learner Progress'
             options={academicProgressOptions}
             control={control}
             fullWidth

@@ -74,7 +74,7 @@ export const SchoolYearEnrollmentUserList = memo(function ({
   );
 
   const searchPlaceholder = useMemo(
-    () => `Find a ${isStudent ? 'student' : 'teacher'}`,
+    () => `Find a ${isStudent ? 'learner' : 'teacher'}`,
     [isStudent],
   );
 
@@ -127,7 +127,7 @@ export const SchoolYearEnrollmentUserList = memo(function ({
             ) : (
               <div className='py-4 text-center opacity-70'>
                 <span>{`No ${
-                  isStudent ? 'students' : 'teachers'
+                  isStudent ? 'learners' : 'teachers'
                 } enrolled`}</span>
               </div>
             )}

@@ -47,7 +47,7 @@ export const StudentSchoolYearAcademicProgressResult = memo(function ({
   ) {
     return (
       <div className='flex w-full flex-wrap items-center gap-2'>
-        {isStudent ? 'Your progress for the' : `Student's progress for the`}
+        {isStudent ? 'Your progress for the' : `Learner's progress for the`}
         <span className='font-medium'>{schoolYearTitle}</span> is still
         <p
           className={cx(
@@ -64,7 +64,7 @@ export const StudentSchoolYearAcademicProgressResult = memo(function ({
 
   return (
     <div className='flex w-full flex-wrap items-center gap-2'>
-      {isStudent ? 'You have' : 'Student has'}{' '}
+      {isStudent ? 'You have' : 'Learner has'}{' '}
       <p
         className={cx(
           'flex items-center gap-1 rounded-4px border-2 px-1.5 py-1 text-sm font-medium',

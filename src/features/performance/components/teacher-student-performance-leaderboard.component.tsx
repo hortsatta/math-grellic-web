@@ -100,7 +100,7 @@ export const TeacherStudentPerformanceLeaderboard = memo(function ({
   loading,
   students,
   performance,
-  title = 'Student Rankings',
+  title = 'Learner Rankings',
   ...moreProps
 }: Props) {
   const offsetStudentCount = useMemo(() => {

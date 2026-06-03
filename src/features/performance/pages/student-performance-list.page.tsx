@@ -48,11 +48,11 @@ const filterOptions = [
 const sortOptions = [
   {
     value: 'rank',
-    label: 'Student Ranking',
+    label: 'Learner Ranking',
   },
   {
     value: 'name',
-    label: 'Student Name',
+    label: 'Learner Name',
   },
 ];
 
@@ -105,7 +105,7 @@ function StudentPerformanceListPage() {
             filterOptions={filterOptions}
             defaulSelectedtFilterOptions={defaulSelectedtFilterOptions}
             defaultSelectedSort={defaultSort}
-            searchInputPlaceholder='Find a Student'
+            searchInputPlaceholder='Find a Learner'
             sortOptions={sortOptions}
             onSearchChange={setKeyword}
             onRefresh={refresh}

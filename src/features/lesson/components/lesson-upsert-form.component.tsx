@@ -104,7 +104,7 @@ const schema = z
     if (data.studentIds === undefined) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'Assign students',
+        message: 'Assign learners',
         path: ['studentIds'],
       });
     }
