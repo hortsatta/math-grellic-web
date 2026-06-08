@@ -63,8 +63,8 @@ export const HomeSection1 = memo(function ({
       <img
         src={teacherWithLogoPng}
         alt='teacher with logo'
-        width={766}
-        height={472}
+        width={861}
+        height={411}
       />
     </section>
   );
