@@ -110,7 +110,7 @@ export const StudentDashboardActivityList = memo(function ({
         <>
           <div className='flex flex-col gap-2.5'>
             <div className='flex items-center justify-between'>
-              <h3 className='text-lg'>Latest Lessons</h3>
+              <h3 className='text-lg'>Latest Activities</h3>
               <BaseLink
                 to={ACTIVITY_LIST_PATH}
                 rightIconName='arrow-circle-right'
