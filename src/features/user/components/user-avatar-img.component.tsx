@@ -30,7 +30,7 @@ export const UserAvatarImg = ({
   return (
     <div
       className={cx(
-        'flex items-center justify-center overflow-hidden rounded bg-accent',
+        'flex shrink-0 items-center justify-center overflow-hidden rounded bg-accent',
         className,
       )}
       {...moreProps}

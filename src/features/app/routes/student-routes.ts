@@ -10,6 +10,7 @@ export const studentRoutes = {
     to: studentBaseRoute,
     label: 'Dashboard',
     iconName: 'squares-four',
+    hasRightSidebar: true,
     end: true,
     size: 36,
   },

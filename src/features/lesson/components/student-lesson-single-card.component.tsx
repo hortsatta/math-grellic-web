@@ -146,7 +146,7 @@ export const StudentLessonSingleCard = memo(function ({
                 )}
               </div>
               {/* Info chips */}
-              <div className='flex w-full flex-col items-start justify-between gap-1 -3xs:flex-row -3xs:items-center -3xs:gap-0 [.primary_&]:text-white'>
+              <div className='flex w-full flex-col items-start justify-between gap-1 -3xs:flex-row -3xs:items-center -3xs:gap-2 [.primary_&]:text-white'>
                 <div className='flex flex-col items-start gap-1 -3xs:flex-row -3xs:items-center -3xs:gap-2.5'>
                   <BaseChip iconName='chalkboard'>
                     Lesson {orderNumber}

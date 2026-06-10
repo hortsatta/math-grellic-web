@@ -83,16 +83,20 @@ export const AnnouncementCardList = memo(function ({
 
   return (
     <div
-      className={cx('flex w-full flex-col bg-inherit', className)}
+      className={cx(
+        'flex w-full flex-1 flex-col items-center bg-inherit',
+        className,
+      )}
       {...moreProps}
     >
       <AnnouncementCard
+        className='flex-1'
         loading={loading}
         announcement={currentAnnouncement}
         upcoming={isCurrentAnnouncementUpcoming}
         onClick={onCardClick}
       />
-      <div className='flex w-full flex-1 items-center justify-between'>
+      <div className='flex w-full items-center justify-between'>
         <div className='flex items-center gap-1.5'>
           <div>
             <BaseTooltip content='Previous'>

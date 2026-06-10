@@ -85,7 +85,7 @@ export const AnnouncementCard = memo(function ({
           ref={descriptionRef}
           className={cx(
             'relative flex-1 font-medium leading-5',
-            !fullSize ? 'line-clamp-3 max-h-16' : 'min-h-[64px]',
+            !fullSize ? 'line-clamp-3 max-h-20' : 'min-h-[64px]',
           )}
         >
           {description}
@@ -125,7 +125,7 @@ export const AnnouncementCard = memo(function ({
     <div
       className={cx(
         'group/announcement relative flex rounded-xl border-[3px] bg-inherit',
-        fullSize ? 'w-full' : 'h-[154px] w-full -2lg:w-[396px]',
+        fullSize ? 'w-full' : 'h-[154px] w-full -2xs:w-[396px]',
         loading && 'items-center !justify-center',
         ...wrapperClassName,
         className,
