@@ -29,14 +29,7 @@ export const ActivityGameLoader = memo(function ({
   activity,
   ...moreProps
 }: Props) {
-  // const gameName = useMemo(() => activity.game.name, [activity]);
-  //const gameName = useMemo(() => activity?.game?.name, [activity]);
-  const gameName = activity?.game?.name?.toLowerCase();
-
-  console.log("activity:", activity);
-  console.log("gameName:", gameName);
-  console.log("resolved src:", gameSrc?.[gameName]);
-
+  const gameName = useMemo(() => activity.game.name, [activity]);
 
   return (
     <div
