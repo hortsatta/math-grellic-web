@@ -1,8 +1,12 @@
+import cx from 'classix';
+
 import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
+import { SidebarMode } from '#/base/models/base.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { useStudentPerformanceSingle } from '#/performance/hooks/use-student-performance-single.hook';
 import { useStudentScheduleTodayList } from '#/schedule/hooks/use-student-schedule-today-list.hook';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { ScheduleDailyCardList } from '#/schedule/components/schedule-daily-card-list.component';
 import { useStudentAnnouncementList } from '#/announcement/hooks/use-student-announcement-list.hook';
 import { useStudentCurriculumSnippets } from '../hooks/use-student-curriculum-snippets.hook';
@@ -11,6 +15,7 @@ import { StudentDashboardCurriculumTabList } from '../components/student-dashboa
 import { StudentDashboardAnnouncementList } from '../components/student-dashboard-announcement-list.component';
 import { StudentDashboardHelpCard } from '../components/student-dashboard-help-card.component';
 import { StudentDashboardSchoolYearSummary } from '../components/student-dashboard-school-year-summary.component';
+import { StudentDashboardOverallProgressChart } from '../components/student-dashboard-overall-progress-chart.component';
 
 const SCHEDULE_PATH = `/${studentBaseRoute}/${studentRoutes.schedule.to}`;
 
@@ -18,6 +23,9 @@ function StudentDashboardPage() {
   const user = useBoundStore((state) => state.user || null);
   const schoolYear = useBoundStore((state) => state.schoolYear || null);
   const syEnrollment = useBoundStore((state) => state.syEnrollment || null);
+  const isRightSidebarExpanded = useBoundStore(
+    (state) => state.rightSidebarMode == SidebarMode.Expanded,
+  );
 
   const { loading: performanceLoading, student: studentPerformance } =
     useStudentPerformanceSingle();
@@ -45,20 +53,27 @@ function StudentDashboardPage() {
   } = useStudentAnnouncementList();
 
   return (
-    <div className='max-w-auto mx-auto flex w-full flex-col items-center justify-center gap-5 pb-8 sm:max-w-[592px] -2lg:max-w-[835px] xl:flex-row xl:items-start'>
-      <div className='xl:max-w-auto flex w-full shrink-0 flex-col gap-5 xl:w-[592px] xl:pb-8 2xl:w-auto 2xl:max-w-[835px]'>
-        <StudentDashboardUserSummary
-          className='min-h-[262px]'
-          user={user}
-          studentPerformance={studentPerformance}
-          loading={!user || performanceLoading}
-        />
-        <StudentDashboardAnnouncementList
-          className='block -2lg:hidden'
-          loading={announcementListLoading}
-          studentAnnouncements={studentAnnouncements}
-          onRefresh={refreshAnnouncements}
-        />
+    <div id='scene-content' className='flex w-full flex-1 items-start pt-5'>
+      <div className='mx-auto flex w-full max-w-[900px] flex-1 shrink-0 flex-col gap-5 self-stretch pb-8'>
+        <div
+          className={cx(
+            'flex flex-col justify-stretch gap-5 md:flex-row',
+            isRightSidebarExpanded && 'lg:flex-col xl:flex-row',
+          )}
+        >
+          <StudentDashboardUserSummary
+            className='min-h-[262px] min-w-0 1.5xl:min-w-[442px]'
+            user={user}
+            studentPerformance={studentPerformance}
+            loading={!user || performanceLoading}
+          />
+          <StudentDashboardAnnouncementList
+            className='min-h-[262px]'
+            loading={announcementListLoading}
+            studentAnnouncements={studentAnnouncements}
+            onRefresh={refreshAnnouncements}
+          />
+        </div>
         <StudentDashboardCurriculumTabList
           latestLesson={latestLesson}
           upcomingLessonWithDuration={upcomingLessonWithDuration}
@@ -71,33 +86,42 @@ function StudentDashboardPage() {
           loading={loading}
           refresh={refresh}
         />
-        {schoolYear && syEnrollment && (
-          <StudentDashboardSchoolYearSummary
-            schoolYear={schoolYear}
-            enrollment={syEnrollment}
+        <div
+          className={cx(
+            'flex flex-col gap-5 md:flex-row',
+            isRightSidebarExpanded && 'lg:flex-col xl:flex-row',
+          )}
+        >
+          <BaseSurface className='!px-4 pb-3 -3xs:min-w-[438px]'>
+            <h3 className='mb-2.5 text-lg leading-none'>Today's Schedule</h3>
+            <ScheduleDailyCardList
+              schedules={schedules}
+              scheduleTo={SCHEDULE_PATH}
+              scheduleEmptyLabel='No schedule for today'
+              loading={todayScheduleLoading}
+              isStudent
+            />
+          </BaseSurface>
+          <StudentDashboardHelpCard
+            isRightSidebarExpanded={isRightSidebarExpanded}
           />
-        )}
+        </div>
+        <div className='bg-gradient sticky bottom-0 h-20 w-full bg-gradient-to-t from-backdrop from-60% to-transparent' />
       </div>
-      <div className='flex w-full flex-col gap-5 -2lg:w-fit'>
-        <StudentDashboardAnnouncementList
-          className='hidden min-h-[262px] -2lg:block'
-          loading={announcementListLoading}
-          studentAnnouncements={studentAnnouncements}
-          onRefresh={refreshAnnouncements}
-        />
-        <BaseSurface className='!px-4 pb-3'>
-          <h3 className='mb-2.5 text-lg leading-none'>Today's Schedule</h3>
-          <ScheduleDailyCardList
-            schedules={schedules}
-            scheduleTo={SCHEDULE_PATH}
-            scheduleEmptyLabel='No schedule for today'
-            loading={todayScheduleLoading}
-            fixedWidth
-            isStudent
+      <BaseRightSidebar>
+        <div className='flex w-full flex-col gap-5'>
+          <StudentDashboardOverallProgressChart
+            studentPerformance={studentPerformance}
+            loading={!user || performanceLoading}
           />
-        </BaseSurface>
-        <StudentDashboardHelpCard />
-      </div>
+          {schoolYear && syEnrollment && (
+            <StudentDashboardSchoolYearSummary
+              schoolYear={schoolYear}
+              enrollment={syEnrollment}
+            />
+          )}
+        </div>
+      </BaseRightSidebar>
     </div>
   );
 }
