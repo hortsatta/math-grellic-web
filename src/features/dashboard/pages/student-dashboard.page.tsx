@@ -53,14 +53,15 @@ function StudentDashboardPage() {
   } = useStudentAnnouncementList();
 
   return (
-    <div id='scene-content' className='flex w-full flex-1 items-start pt-5'>
+    <div
+      id='scene-content'
+      className={cx(
+        'flex w-full flex-1 items-start pt-5',
+        isRightSidebarExpanded && 'rsb-expanded',
+      )}
+    >
       <div className='mx-auto flex w-full max-w-[900px] flex-1 shrink-0 flex-col gap-5 self-stretch pb-8'>
-        <div
-          className={cx(
-            'flex flex-col justify-stretch gap-5 md:flex-row',
-            isRightSidebarExpanded && 'lg:flex-col xl:flex-row',
-          )}
-        >
+        <div className='flex flex-col justify-stretch gap-5 md:flex-row lg:[.rsb-expanded_&]:flex-col xl:[.rsb-expanded_&]:flex-row'>
           <StudentDashboardUserSummary
             className='min-h-[262px] min-w-0 1.5xl:min-w-[442px]'
             user={user}
@@ -86,12 +87,7 @@ function StudentDashboardPage() {
           loading={loading}
           refresh={refresh}
         />
-        <div
-          className={cx(
-            'flex flex-col gap-5 md:flex-row',
-            isRightSidebarExpanded && 'lg:flex-col xl:flex-row',
-          )}
-        >
+        <div className='flex flex-col gap-5 md:flex-row lg:[.rsb-expanded_&]:flex-col xl:[.rsb-expanded_&]:flex-row'>
           <BaseSurface className='!px-4 pb-3 -3xs:min-w-[438px]'>
             <h3 className='mb-2.5 text-lg leading-none'>Today's Schedule</h3>
             <ScheduleDailyCardList
@@ -102,9 +98,7 @@ function StudentDashboardPage() {
               isStudent
             />
           </BaseSurface>
-          <StudentDashboardHelpCard
-            isRightSidebarExpanded={isRightSidebarExpanded}
-          />
+          <StudentDashboardHelpCard />
         </div>
         <div className='bg-gradient sticky bottom-0 h-20 w-full bg-gradient-to-t from-backdrop from-60% to-transparent' />
       </div>

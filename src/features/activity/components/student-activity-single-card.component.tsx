@@ -33,11 +33,12 @@ type Props = ComponentProps<typeof BaseSurface> & {
 type ScoreProps = {
   game: Game;
   score: number | null;
+  isDashboard?: boolean;
 };
 
 const ACTIVITY_LIST_PATH = `/${studentBaseRoute}/${studentRoutes.activity.to}`;
 
-const Score = memo(function ({ game, score }: ScoreProps) {
+const Score = memo(function ({ game, score, isDashboard }: ScoreProps) {
   const [transformedScore, scoreSuffix] = useMemo(() => {
     const isPlural = (score || 0) > 1;
 
@@ -54,7 +55,13 @@ const Score = memo(function ({ game, score }: ScoreProps) {
   }, [game, score]);
 
   return (
-    <div className='flex h-[130px] w-full items-center justify-center overflow-hidden rounded border border-primary-hue-teal-dark bg-primary-hue-teal-dark sm:w-[160px]'>
+    <div
+      className={cx(
+        'flex h-[130px] w-full items-center justify-center overflow-hidden rounded border border-primary-hue-teal-dark bg-primary-hue-teal-dark sm:w-[160px]',
+        isDashboard &&
+          'lg:[.rsb-expanded_&]:w-full -2xl:[.rsb-expanded_&]:w-[160px]',
+      )}
+    >
       {score == null ? (
         <div className='flex h-full w-full items-center justify-center bg-primary-hue-teal-focus'>
           {/* TODO image */}
@@ -165,13 +172,21 @@ export const StudentActivitySingleCard = memo(function ({
           primary
             ? 'primary !border-accent !bg-primary-hue-teal group-hover:!border-primary-hue-teal-focus group-hover:ring-primary-hue-teal-focus group-hover:drop-shadow-primary'
             : 'group-hover:ring-primary-hue-teal-focus group-hover:drop-shadow-primary',
+          isDashboard &&
+            'lg:[.rsb-expanded_&]:!pr-2.5 xl:[.rsb-expanded_&]:!pr-5',
           className,
         )}
         rounded='sm'
         {...moreProps}
       >
-        <div className='flex w-full flex-col items-stretch gap-4 sm:flex-row'>
-          <Score game={game} score={score} />
+        <div
+          className={cx(
+            'flex w-full flex-col items-stretch gap-4 sm:flex-row',
+            isDashboard &&
+              'lg:[.rsb-expanded_&]:flex-col -2xl:[.rsb-expanded_&]:flex-row',
+          )}
+        >
+          <Score game={game} score={score} isDashboard={isDashboard} />
           <div
             className={cx(
               'flex flex-1 flex-col justify-between gap-2.5 sm:gap-0',

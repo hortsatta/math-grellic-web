@@ -12,29 +12,23 @@ import type { ComponentProps } from 'react';
 
 const HELP_PATH = `/${studentBaseRoute}/${studentRoutes.help.to}`;
 
-type Props = ComponentProps<typeof BaseSurface> & {
-  isRightSidebarExpanded?: boolean;
-};
-
 export const StudentDashboardHelpCard = memo(function ({
   className,
-  isRightSidebarExpanded,
   ...moreProps
-}: Props) {
+}: ComponentProps<typeof BaseSurface>) {
   return (
     <Link to={HELP_PATH} className='group'>
       <BaseSurface
         className={cx(
           'relative flex min-h-[310px] flex-col justify-between gap-4 overflow-hidden transition-[border] md:min-h-[341px] md:gap-0',
-          'group-hover:!border-primary-focus group-hover:ring-primary-focus group-hover:drop-shadow-primary',
-          isRightSidebarExpanded && 'md:min-h-[310px] xl:min-h-[341px]',
+          'group-hover:!border-primary-focus group-hover:ring-primary-focus group-hover:drop-shadow-primary md:[.rsb-expanded_&]:min-h-[310px] xl:[.rsb-expanded_&]:min-h-[341px]',
           className,
         )}
         {...moreProps}
       >
-        <div className='w-10/12 md:w-full 1.5xl:w-96'>
+        <div className='relative z-10 w-10/12 md:w-full md:bg-white/70 -2lg:bg-none 1.5xl:w-96 xl:[.rsb-expanded_&]:bg-white/70 1.5xl:[.rsb-expanded_&]:bg-none'>
           <h3 className='mb-2.5 text-lg leading-none'>Help & Support</h3>
-          <span className={cx('inline-block', isRightSidebarExpanded && 'lg')}>
+          <span className='[.rsb-expanded_&]:lg inline-block'>
             Need help? We are here to provide you with the assistance you need
             to make the most of your learning experience.
           </span>
@@ -46,10 +40,7 @@ export const StudentDashboardHelpCard = memo(function ({
               alt='help background'
               width={395}
               height={170}
-              className={cx(
-                'h-[174px] w-full object-cover md:h-full',
-                isRightSidebarExpanded && 'md:h-[174px] xl:h-full',
-              )}
+              className='h-[174px] w-full object-cover md:h-full md:[.rsb-expanded_&]:h-[174px] xl:[.rsb-expanded_&]:h-full'
             />
           </div>
           <img
