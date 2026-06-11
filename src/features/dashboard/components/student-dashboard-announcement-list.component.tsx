@@ -47,7 +47,7 @@ export const StudentDashboardAnnouncementList = memo(function ({
     <>
       <BaseSurface
         className={cx(
-          'border-primary-hue-green flex w-full flex-col border-4 border-dotted !pb-1 !pt-[15px]',
+          '!bg-primary-hue-green-light flex w-full flex-col border-4 border-dotted border-primary-hue-green !pb-1 !pt-[15px]',
           className,
         )}
         {...moreProps}
