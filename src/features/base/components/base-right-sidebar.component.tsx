@@ -8,6 +8,7 @@ import { options } from '#/utils/scrollbar.util';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { useScroll } from '#/core/hooks/use-scroll.hook';
 import { SidebarMode } from '../models/base.model';
+import { BaseIcon } from './base-icon.component';
 import { BaseDivider } from './base-divider.component';
 import { BaseModal } from './base-modal.component';
 
@@ -70,10 +71,32 @@ export const BaseRightSidebar = memo(function ({
       >
         <div className='h-full px-2'>
           <div
-            className='group/btn flex h-full w-4 justify-center transition-colors hover:bg-primary-focus-light/30'
+            className='group/btn relative flex h-full w-4 items-center justify-center '
             role='button'
             onClick={toggleRightSidebarMode}
           >
+            <div className='absolute left-0 top-0 z-10 h-full w-full transition-colors group-hover/btn:bg-primary-focus-light/30' />
+            <div className='absolute top-1/2 flex -translate-y-1/2 flex-col gap-2 bg-backdrop'>
+              <BaseIcon
+                className='opacity-30'
+                name={
+                  rightSidebarMode === SidebarMode.Expanded
+                    ? 'caret-down'
+                    : 'caret-up'
+                }
+              />
+              <span className='font-display text-xs uppercase -tracking-[2px] text-primary/60 [text-orientation:upright] [writing-mode:vertical-rl] group-hover/btn:text-primary'>
+                Sidebar
+              </span>
+              <BaseIcon
+                className='opacity-30'
+                name={
+                  rightSidebarMode === SidebarMode.Expanded
+                    ? 'caret-up'
+                    : 'caret-down'
+                }
+              />
+            </div>
             <BaseDivider vertical />
           </div>
         </div>
