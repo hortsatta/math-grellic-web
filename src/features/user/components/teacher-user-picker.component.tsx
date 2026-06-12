@@ -15,7 +15,10 @@ import { UserSingleItem } from './user-single-item.component';
 import type { ComponentProps } from 'react';
 import type { UseControllerProps } from 'react-hook-form';
 import type { SelectOption } from '#/base/models/base.model';
-import type { TeacherUserAccount } from '../models/user.model';
+import type {
+  TeacherUserAccount,
+  UserApprovalStatus,
+} from '../models/user.model';
 
 type Props = Omit<ComponentProps<'div'>, 'onChange'> & {
   name?: string;
@@ -25,6 +28,7 @@ type Props = Omit<ComponentProps<'div'>, 'onChange'> & {
   errorMessage?: string;
   asterisk?: boolean;
   required?: boolean;
+  approvalStatus?: UserApprovalStatus;
   selectProps?: Omit<ComponentProps<typeof BaseSelect>, 'options'>;
   onChange?: (value: number[] | null) => void;
 };
@@ -51,6 +55,7 @@ export const TeacherUserPicker = memo(
       errorMessage,
       asterisk,
       required,
+      approvalStatus,
       selectProps,
       onChange,
       ...moreProps
@@ -65,7 +70,7 @@ export const TeacherUserPicker = memo(
       isLoading,
     } = useQuery(
       getTeachersByCurrentAdminUser(
-        { q: keyword },
+        { q: keyword, status: approvalStatus },
         {
           refetchOnWindowFocus: false,
           initialData: [],
@@ -97,7 +102,7 @@ export const TeacherUserPicker = memo(
       refetch: selectedTeachersRefetch,
     } = useQuery(
       getTeachersByCurrentAdminUser(
-        { ids: value || selectedTeacherIds || [] },
+        { ids: value || selectedTeacherIds || [], status: approvalStatus },
         {
           queryKey: queryUserKey.selectedTeacherList,
           refetchOnWindowFocus: false,
