@@ -8,11 +8,11 @@ import { StudentPerformanceType } from '#/performance/models/performance.model';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseLink } from '#/base/components/base-link.component';
 import { PerformanceRankAwardImg } from './performance-rank-award-img.component';
 
 import type { ComponentProps } from 'react';
 import type { StudentPerformance } from '#/performance/models/performance.model';
-import { BaseLink } from '#/base/components/base-link.component';
 
 type Props = ComponentProps<'div'> & {
   students: StudentPerformance[];

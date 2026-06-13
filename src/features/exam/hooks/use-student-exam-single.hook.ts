@@ -61,7 +61,6 @@ export function useStudentExamSingle(): Result {
           enabled: !!slug && !!schoolYearId,
           refetchOnWindowFocus: false,
           select: (data: any) => {
-            console.log(data);
             return transformToExam(data, true);
           },
         },
