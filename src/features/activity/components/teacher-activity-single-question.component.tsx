@@ -6,10 +6,11 @@ import { alphabet } from '#/utils/string.util';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { getQuestionImageUrl } from '../helpers/activity-transform.helper';
 import { ActivityTextType } from '../models/activity.model';
 
-import 'mathquill/build/mathquill.css';
+import '#/assets/mathquill/mathquill.css';
 
 import type { ComponentProps } from 'react';
 import type { IconName } from '#/base/models/base.model';
@@ -17,7 +18,6 @@ import type {
   ActivityCategoryQuestion,
   ActivityCategoryQuestionChoice,
 } from '../models/activity.model';
-import { BaseTooltip } from '#/base/components/base-tooltip.component';
 
 type Props = ComponentProps<typeof BaseSurface> & {
   question: ActivityCategoryQuestion;

@@ -1,10 +1,17 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'url';
+import viteImagemin from 'vite-plugin-imagemin';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    viteImagemin({
+      webp: { quality: 82 }, // auto-converts PNGs to WebP at build time
+      optipng: { optimizationLevel: 5 },
+    }),
+  ],
   resolve: {
     alias: [
       {
