@@ -45,6 +45,8 @@ export default {
           'hue-orange': '#b55906',
           'hue-orange-dark': '#954904',
           'hue-orange-focus': '#d06707',
+          'hue-green': '#77bf5a',
+          'hue-green-light': '#f8fff8',
         },
         secondary: '#e04141',
         accent: '#38526d',

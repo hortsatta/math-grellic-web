@@ -158,7 +158,7 @@ export const StudentDashboardExamList = memo(function ({
           <div>
             <h3 className='mb-2.5 text-lg'>Previous Exams</h3>
             {filteredPreviousExams.length ? (
-              <ul className='flex flex-col items-center gap-2.5 -2lg:flex-row -2lg:gap-5 xl:flex-col xl:gap-4 2xl:flex-row 2xl:gap-5'>
+              <ul className='flex flex-col items-stretch gap-2.5 md:flex-row lg:[.rsb-expanded_&]:flex-col xl:[.rsb-expanded_&]:flex-row'>
                 {filteredPreviousExams.map((exam) => (
                   <li key={`pe-${exam.id}`} className='w-full'>
                     <ExamCompactCard exam={exam} />

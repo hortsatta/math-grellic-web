@@ -150,7 +150,7 @@ export const CoreHeader = memo(function ({
                   <Menu.Button
                     as={BaseIconButton}
                     name='list'
-                    variant='solid'
+                    variant={isScrollTop ? 'solid' : 'link'}
                     size='sm'
                   />
                 </div>

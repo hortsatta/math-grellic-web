@@ -30,6 +30,7 @@ import {
   CaretCircleUp,
   CaretDown,
   CaretRight,
+  CaretUp,
   Chalkboard,
   ChalkboardTeacher,
   ChartDonut,
@@ -189,10 +190,12 @@ export const BaseIcon = memo(
           return CaretCircleRight;
         case 'caret-circle-up':
           return CaretCircleUp;
-        case 'caret-right':
-          return CaretRight;
         case 'caret-down':
           return CaretDown;
+        case 'caret-right':
+          return CaretRight;
+        case 'caret-up':
+          return CaretUp;
         case 'chalkboard':
           return Chalkboard;
         case 'chalkboard-teacher':

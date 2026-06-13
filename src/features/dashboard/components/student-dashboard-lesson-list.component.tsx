@@ -40,7 +40,7 @@ const LessonCompactCard = memo(function ({ lesson }: { lesson: Lesson }) {
 
   return (
     <Link to={singleTo} className='group'>
-      <BaseSurface className='flex items-start rounded-lg !p-2.5 transition-all group-hover:-translate-y-1 group-hover:ring-1'>
+      <BaseSurface className='flex h-full items-start rounded-lg !p-2.5 transition-all group-hover:-translate-y-1 group-hover:ring-1'>
         <div className='flex w-full flex-col gap-2.5'>
           <div className='flex items-center gap-2.5'>
             <BaseChip iconName='chalkboard' isCompact>
@@ -139,7 +139,7 @@ export const StudentDashboardLessonList = memo(function ({
           <div>
             <h3 className='mb-2.5 text-lg'>More Lessons</h3>
             {moreLessons.length ? (
-              <ul className='flex flex-col items-center gap-2.5 -2lg:flex-row -2lg:gap-5 xl:flex-col xl:gap-4 2xl:flex-row 2xl:gap-5'>
+              <ul className='flex flex-col items-stretch gap-2.5 md:flex-row lg:[.rsb-expanded_&]:flex-col xl:[.rsb-expanded_&]:flex-row'>
                 {moreLessons.map((lesson) => (
                   <li key={`l-${lesson.id}`} className='w-full'>
                     <LessonCompactCard lesson={lesson} />

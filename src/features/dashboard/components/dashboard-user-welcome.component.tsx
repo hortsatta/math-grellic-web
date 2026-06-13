@@ -2,8 +2,6 @@ import { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import cx from 'classix';
 
-import { SidebarMode } from '#/base/models/base.model';
-import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { UserGender } from '#/user/models/user.model';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { UserAvatarImg } from '#/user/components/user-avatar-img.component';
@@ -22,10 +20,6 @@ export const DashboardUserWelcome = memo(function ({
   to,
   ...moreProps
 }: Props) {
-  const isRightSidebarExpanded = useBoundStore(
-    (state) => state.rightSidebarMode == SidebarMode.Expanded,
-  );
-
   const [publicId, firstName, gender] = useMemo(
     () => [
       user.publicId,
@@ -38,18 +32,12 @@ export const DashboardUserWelcome = memo(function ({
   return (
     <div
       className={cx(
-        'relative flex flex-row items-start justify-between gap-2.5 md:flex-col -2lg:flex-row',
-        isRightSidebarExpanded && '1.5xl:flex-row! lg:flex-col',
+        'relative flex flex-col items-start justify-between gap-2.5 -3xs:flex-row md:flex-col -2lg:flex-row lg:[.rsb-expanded_&]:flex-col 1.5xl:[.rsb-expanded_&]:flex-row',
         className,
       )}
       {...moreProps}
     >
-      <div
-        className={cx(
-          'order-none flex items-center gap-3 md:order-last -2lg:order-none',
-          isRightSidebarExpanded && '1.5xl:order-none! lg:order-last',
-        )}
-      >
+      <div className='order-last flex items-center gap-3 -3xs:order-none md:order-last -2lg:order-none lg:[.rsb-expanded_&]:order-last 1.5xl:[.rsb-expanded_&]:order-none'>
         <UserAvatarImg gender={gender} size='base' />
         <h2 className='flex flex-col text-2xl leading-tight transition-colors group-hover:text-primary-focus-light'>
           <span>Hello,</span>
@@ -59,9 +47,8 @@ export const DashboardUserWelcome = memo(function ({
       <Link
         to={to}
         className={cx(
-          'absolute right-0 flex items-center gap-1 overflow-hidden rounded-4px border border-accent/50 md:relative -2lg:absolute',
-          'px-1.5 py-1 text-sm leading-none transition-all hover:border-primary-focus hover:text-primary-focus',
-          isRightSidebarExpanded && '1.5xl:absolute xl:relative',
+          'relative right-0 flex items-center gap-1 overflow-hidden -3xs:absolute md:relative -2lg:absolute xl:[.rsb-expanded_&]:relative 1.5xl:[.rsb-expanded_&]:absolute',
+          'rounded-4px border border-accent/50 px-1.5 py-1 text-sm leading-none transition-all hover:border-primary-focus hover:text-primary-focus',
         )}
       >
         <BaseIcon name='identification-badge' size={18} />

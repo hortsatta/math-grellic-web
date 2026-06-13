@@ -28,10 +28,6 @@ export const StudentExamCompletionHistoryItem = memo(function ({
   ...moreProps
 }: Props) {
   const [score, date, time] = useMemo(() => {
-    if (!completion) {
-      return [];
-    }
-
     // Get schedule date and time
     const { startDate, endDate } = schedule;
 
@@ -40,7 +36,7 @@ export const StudentExamCompletionHistoryItem = memo(function ({
       endDate,
     ).format('hh:mm A')}`;
 
-    return [completion.score, date, time];
+    return [completion?.score, date, time];
   }, [completion, schedule]);
 
   const hasPassed = useMemo(

@@ -123,6 +123,9 @@ export const StudentExamSingleCard = memo(function ({
           primary
             ? 'primary !border-accent !bg-primary-hue-purple group-hover:!border-primary-hue-purple-focus group-hover:ring-primary-hue-purple-focus group-hover:drop-shadow-primary'
             : 'group-hover:ring-primary-hue-purple-focus group-hover:drop-shadow-primary',
+          !upcomingCountdown &&
+            isDashboard &&
+            'lg:[.rsb-expanded_&]:!pr-2.5 xl:[.rsb-expanded_&]:!pr-5',
           className,
         )}
         rounded='sm'
@@ -131,6 +134,9 @@ export const StudentExamSingleCard = memo(function ({
         <div
           className={cx(
             'flex w-full flex-col items-center gap-4 sm:flex-row',
+            !upcomingCountdown &&
+              isDashboard &&
+              'lg:[.rsb-expanded_&]:flex-col -2xl:[.rsb-expanded_&]:flex-row',
             upcomingCountdown &&
               isDashboard &&
               'flex-wrap justify-between -2lg:flex-nowrap xl:flex-wrap 2xl:flex-nowrap 2xl:justify-start',

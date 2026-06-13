@@ -37,7 +37,7 @@ export const StudentExamSingleCardScore = memo(function ({
     <BaseTooltip content={tooltipContent} placement='right-start'>
       <div
         className={cx(
-          'flex h-[133px] w-full items-center justify-center overflow-hidden rounded-md border border-primary-hue-purple-dark bg-primary-hue-purple-dark sm:w-[100px]',
+          'flex h-[133px] w-full items-center justify-center overflow-hidden rounded-md border border-primary-hue-purple-dark bg-primary-hue-purple-dark sm:w-[100px] lg:[.rsb-expanded_&]:w-full -2xl:[.rsb-expanded_&]:w-[100px]',
           className,
         )}
         {...moreProps}

@@ -1,4 +1,5 @@
 import { defer } from 'react-router-dom';
+import { useBoundStore } from '#/core/hooks/use-store.hook';
 
 import {
   getExamBySlugAndCurrentStudentUser,
@@ -17,7 +18,12 @@ export function getStudentExamBySlugLoader(
       return;
     }
 
-    const keys = { ...queryParams, slug: params.slug };
+    const schoolYearId = useBoundStore.getState().schoolYear?.id;
+    const keys = {
+      ...queryParams,
+      slug: params.slug,
+      schoolYearId: schoolYearId,
+    };
     const query = getExamBySlugAndCurrentStudentUser(keys);
 
     return defer({

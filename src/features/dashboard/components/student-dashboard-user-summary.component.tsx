@@ -70,7 +70,7 @@ export const StudentDashboardUserSummary = memo(function ({
               <h3 className='text-lg'>Overall Rank</h3>
               <span className='text-sm'>Your current position among peers</span>
             </div>
-            <div className='flex min-w-[230px] items-center justify-start gap-5 font-bold text-primary'>
+            <div className='flex min-w-[230px] flex-col items-center justify-center gap-1 font-bold text-primary -3xs:flex-row -3xs:gap-5 md:flex-col md:gap-1 -2lg:flex-row -2lg:gap-5 xl:[.rsb-expanded_&]:flex-col xl:[.rsb-expanded_&]:gap-1 1.5xl:[.rsb-expanded_&]:flex-row 1.5xl:[.rsb-expanded_&]:gap-5'>
               <div className='flex items-center gap-x-2.5'>
                 <span className='text-4xl'>{overallRankText}</span>
                 {overallRank != null && overallRank <= 10 && (
@@ -79,7 +79,10 @@ export const StudentDashboardUserSummary = memo(function ({
               </div>
               {!!overallScore && (
                 <>
-                  <BaseDivider className='!h-10' vertical />
+                  <BaseDivider
+                    className='hidden !h-10 -3xs:inline-block md:hidden -2lg:inline-block xl:[.rsb-expanded_&]:hidden 1.5xl:[.rsb-expanded_&]:inline-block'
+                    vertical
+                  />
                   <span className='font-display text-2xl tracking-tighter'>
                     {overallScoreText}
                   </span>

@@ -44,7 +44,7 @@ export function useStudentExamSingle(): Result {
   const { serverClock, startClock, stopClock } = useClockSocket();
   const socket = useBoundStore((state) => state.socket);
   const user = useBoundStore((state) => state.user);
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [isDone, setIsDone] = useState(false);
   const [isExpired, setIsExpired] = useState(false);
   const [roomName, setRoomName] = useState<string | null>(null);
@@ -53,22 +53,22 @@ export function useStudentExamSingle(): Result {
   const [ongoingDayJsDuration, setOngoingDayJsDuration] =
     useState<Duration | null>(null);
 
-  const {
-    data: exam,
-    isLoading,
-    isFetching,
-  } = useQuery(
-    getExamBySlugAndCurrentStudentUser(
-      { slug: slug || '', schoolYearId: schoolYear?.id },
-      {
-        enabled: !!slug,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToExam(data, true);
+  const queryConfig = useMemo(
+    () =>
+      getExamBySlugAndCurrentStudentUser(
+        { slug: slug || '', schoolYearId },
+        {
+          enabled: !!slug && !!schoolYearId,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToExam(data, true);
+          },
         },
-      },
-    ),
+      ),
+    [slug, schoolYearId],
   );
+
+  const { data: exam, isLoading, isFetching } = useQuery(queryConfig);
 
   const { mutateAsync, isLoading: isMutateLoading } = useMutation(
     setExamCompletionApi({
@@ -197,7 +197,7 @@ export function useStudentExamSingle(): Result {
       'exam-take',
       {
         id: exam.id,
-        questions: exam.questions,
+        questions: exam.questions.map((q) => ({ id: q.id })),
         studentId: user?.userAccount?.id || 0,
       },
       (result: { roomName: string; answers: ExamAnswerFormData[] }) => {

@@ -73,7 +73,7 @@ export const StudentDashboardCurriculumTabList = memo(function ({
         key: 'lesson',
         component: (
           <StudentDashboardLessonList
-            className='w-full sm:w-auto sm:min-w-[550px]'
+            className='w-full sm:w-auto sm:min-w-[550px] lg:min-w-0 xl:min-w-[550px]'
             latestLesson={latestLesson}
             upcomingLessonWithDuration={upcomingLessonWithDuration}
             previousLessons={previousLessons}

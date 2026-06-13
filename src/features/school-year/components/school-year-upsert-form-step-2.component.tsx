@@ -2,6 +2,7 @@ import { memo, useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import dayjs from '#/config/dayjs.config';
+import { UserApprovalStatus } from '#/user/models/user.model';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseControlledInput } from '#/base/components/base-input.component';
 import { BaseControlledRichTextEditor } from '#/base/components/base-rich-text-editor.component';
@@ -57,6 +58,7 @@ export const SchoolYearUpsertFormStep2 = memo(function ({
                 name='teacherIds'
                 label='Teachers'
                 control={control}
+                approvalStatus={UserApprovalStatus.Approved}
               />
             </div>
             <BaseDivider />

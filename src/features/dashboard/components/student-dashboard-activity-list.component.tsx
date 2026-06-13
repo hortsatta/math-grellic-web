@@ -110,7 +110,7 @@ export const StudentDashboardActivityList = memo(function ({
         <>
           <div className='flex flex-col gap-2.5'>
             <div className='flex items-center justify-between'>
-              <h3 className='text-lg'>Latest Lessons</h3>
+              <h3 className='text-lg'>Latest Activities</h3>
               <BaseLink
                 to={ACTIVITY_LIST_PATH}
                 rightIconName='arrow-circle-right'
@@ -133,7 +133,7 @@ export const StudentDashboardActivityList = memo(function ({
           <div>
             <h3 className='mb-2.5 text-lg'>More Activities</h3>
             {moreActivities.length ? (
-              <ul className='flex flex-col items-center gap-2.5 -2lg:flex-row -2lg:gap-5 xl:flex-col xl:gap-4 2xl:flex-row 2xl:gap-5'>
+              <ul className='flex flex-col items-stretch gap-2.5 md:flex-row lg:[.rsb-expanded_&]:flex-col xl:[.rsb-expanded_&]:flex-row'>
                 {moreActivities.map((activity) => (
                   <li key={`a-${activity.id}`} className='w-full'>
                     <ActivityCompactCard activity={activity} />

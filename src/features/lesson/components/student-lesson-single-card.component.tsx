@@ -76,6 +76,9 @@ export const StudentLessonSingleCard = memo(function ({
             ? 'primary !border-accent !bg-primary group-hover:!border-primary-focus group-hover:ring-primary-focus group-hover:drop-shadow-primary'
             : 'group-hover:ring-primary-focus group-hover:drop-shadow-primary',
           fat && 'fat',
+          !formattedUpcomingDate &&
+            isDashboard &&
+            'lg:[.rsb-expanded_&]:!pr-2.5 xl:[.rsb-expanded_&]:!pr-5',
           className,
         )}
         rounded='sm'
@@ -84,6 +87,9 @@ export const StudentLessonSingleCard = memo(function ({
         <div
           className={cx(
             'flex w-full flex-col items-stretch gap-4 sm:flex-row',
+            !formattedUpcomingDate &&
+              isDashboard &&
+              'lg:[.rsb-expanded_&]:[.fat_&]:flex-col xl:[.rsb-expanded_&]:[.fat_&]:flex-row',
             formattedUpcomingDate &&
               isDashboard &&
               'flex-wrap justify-between -2lg:flex-nowrap xl:flex-wrap 2xl:flex-nowrap 2xl:justify-start',
@@ -95,7 +101,7 @@ export const StudentLessonSingleCard = memo(function ({
               'flex h-[90px] w-full items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary sm:w-[161px]',
               '[.fat_&]:h-[117px] [.fat_&]:w-full [.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent',
               isDashboard
-                ? 'sm:[.fat_&]:!w-[150px] -2lg:[.fat_&]:!w-[209px] xl:[.fat_&]:!w-[150px] 2xl:[.fat_&]:!w-[209px]'
+                ? 'sm:[.fat_&]:!w-[150px] -2lg:[.fat_&]:!w-[209px] lg:[.rsb-expanded_&]:[.fat_&]:!w-full xl:[.rsb-expanded_&]:[.fat_&]:!w-[209px]'
                 : 'sm:[.fat_&]:w-[209px]',
             )}
           >
