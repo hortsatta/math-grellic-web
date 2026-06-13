@@ -60,22 +60,26 @@ export function useAdminUserEdit(id?: number): Result {
       }),
     );
 
+  const queryConfig = useMemo(
+    () =>
+      getAdminByIdAndCurrentSuperAdminUserApi(
+        { id: id || 0 },
+        {
+          enabled: !!id,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToAdminUserAccount(data);
+          },
+        },
+      ),
+    [id],
+  );
+
   const {
     data: admin,
     isLoading: isQueryLoading,
     isFetching: isQueryFetching,
-  } = useQuery(
-    getAdminByIdAndCurrentSuperAdminUserApi(
-      { id: id || 0 },
-      {
-        enabled: !!id,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToAdminUserAccount(data);
-        },
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const adminFormData = useMemo(
     () => (admin ? transformToUserRegisterFormData(admin) : undefined),

@@ -1,4 +1,11 @@
-import { forwardRef, memo, useCallback, useEffect, useState } from 'react';
+import {
+  forwardRef,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useController } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import cx from 'classix';
@@ -64,23 +71,27 @@ export const TeacherUserPicker = memo(
   ) {
     const [keyword, setKeyword] = useState<string | undefined>(undefined);
 
+    const teachersQueryConfig = useMemo(
+      () =>
+        getTeachersByCurrentAdminUser(
+          { q: keyword, status: approvalStatus },
+          {
+            refetchOnWindowFocus: false,
+            initialData: [],
+            select: (data: unknown) =>
+              Array.isArray(data)
+                ? data.map((item: any) => transformToTeacherUserAccount(item))
+                : [],
+          },
+        ),
+      [keyword, approvalStatus],
+    );
+
     const {
       data: teachers,
       isFetching,
       isLoading,
-    } = useQuery(
-      getTeachersByCurrentAdminUser(
-        { q: keyword, status: approvalStatus },
-        {
-          refetchOnWindowFocus: false,
-          initialData: [],
-          select: (data: unknown) =>
-            Array.isArray(data)
-              ? data.map((item: any) => transformToTeacherUserAccount(item))
-              : [],
-        },
-      ),
-    );
+    } = useQuery(teachersQueryConfig);
 
     const [openModal, setOpenModal] = useState(false);
 
@@ -95,28 +106,32 @@ export const TeacherUserPicker = memo(
     const [modalSelectedTeacherIds, setModalSelectedTeacherIds] =
       useState<number[]>(selectedTeacherIds);
 
+    const selectedTeachersQueryConfig = useMemo(
+      () =>
+        getTeachersByCurrentAdminUser(
+          { ids: value || selectedTeacherIds || [], status: approvalStatus },
+          {
+            queryKey: queryUserKey.selectedTeacherList,
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            enabled: false,
+            initialData: [],
+            select: (data: unknown) =>
+              Array.isArray(data)
+                ? data.map((item: any) => transformToTeacherUserAccount(item))
+                : [],
+          },
+        ),
+      [value, selectedTeacherIds, approvalStatus],
+    );
+
     const {
       data: selectedTeachers,
       isLoading: isSelectTeachersLoading,
       isFetching: isSelectTeachersFetching,
       refetch: selectedTeachersRefetch,
-    } = useQuery(
-      getTeachersByCurrentAdminUser(
-        { ids: value || selectedTeacherIds || [], status: approvalStatus },
-        {
-          queryKey: queryUserKey.selectedTeacherList,
-          refetchOnWindowFocus: false,
-          refetchOnMount: false,
-          refetchOnReconnect: false,
-          enabled: false,
-          initialData: [],
-          select: (data: unknown) =>
-            Array.isArray(data)
-              ? data.map((item: any) => transformToTeacherUserAccount(item))
-              : [],
-        },
-      ),
-    );
+    } = useQuery(selectedTeachersQueryConfig);
 
     useEffect(() => {
       if (value == null) {

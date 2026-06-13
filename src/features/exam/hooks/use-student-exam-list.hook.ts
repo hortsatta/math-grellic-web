@@ -28,48 +28,52 @@ type Result = {
 
 export function useStudentExamList(): Result {
   const { serverClock, startClock, stopClock } = useClockSocket();
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [keyword, setKeyword] = useState<string | null>(null);
+
+  const queryConfig = useMemo(
+    () =>
+      getExamsByCurrentStudentUser(
+        { q: keyword || undefined, schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            const { latestExam, upcomingExam, previousExams, ongoingExams } =
+              data;
+            const transformedLatestExam = latestExam
+              ? transformToExam(latestExam)
+              : null;
+
+            const transformedUpcomingExam = upcomingExam
+              ? transformToExam(upcomingExam)
+              : null;
+
+            const transformedPreviousExams = previousExams?.length
+              ? previousExams.map((item: any) => transformToExam(item))
+              : [];
+
+            const transformedOngoingExams = ongoingExams?.length
+              ? ongoingExams.map((item: any) => transformToExam(item))
+              : [];
+
+            return {
+              latestExam: transformedLatestExam,
+              upcomingExam: transformedUpcomingExam,
+              previousExams: transformedPreviousExams,
+              ongoingExams: transformedOngoingExams,
+            };
+          },
+        },
+      ),
+    [keyword, schoolYearId],
+  );
 
   const {
     data: list,
     isLoading,
     isRefetching,
     refetch,
-  } = useQuery(
-    getExamsByCurrentStudentUser(
-      { q: keyword || undefined, schoolYearId: schoolYear?.id },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          const { latestExam, upcomingExam, previousExams, ongoingExams } =
-            data;
-          const transformedLatestExam = latestExam
-            ? transformToExam(latestExam)
-            : null;
-
-          const transformedUpcomingExam = upcomingExam
-            ? transformToExam(upcomingExam)
-            : null;
-
-          const transformedPreviousExams = previousExams?.length
-            ? previousExams.map((item: any) => transformToExam(item))
-            : [];
-
-          const transformedOngoingExams = ongoingExams?.length
-            ? ongoingExams.map((item: any) => transformToExam(item))
-            : [];
-
-          return {
-            latestExam: transformedLatestExam,
-            upcomingExam: transformedUpcomingExam,
-            previousExams: transformedPreviousExams,
-            ongoingExams: transformedOngoingExams,
-          };
-        },
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const { latestExam, upcomingExam, previousExams, ongoingExams } = useMemo(
     () =>

@@ -88,22 +88,26 @@ export function useAdminUserList(): Result {
 
   const pagination = useMemo(() => ({ take: PAGINATION_TAKE, skip }), [skip]);
 
-  const { data, isLoading, isRefetching, refetch } = useQuery(
-    getPaginatedAdminsByCurrentSuperAdminUser(
-      { q: keyword || undefined, status, sort: querySort, pagination },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any[]) => {
-          const [items, totalCount] = data;
-          const transformedItems = items.map((item: unknown) =>
-            transformToAdminUserAccount(item),
-          );
+  const queryConfig = useMemo(
+    () =>
+      getPaginatedAdminsByCurrentSuperAdminUser(
+        { q: keyword || undefined, status, sort: querySort, pagination },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any[]) => {
+            const [items, totalCount] = data;
+            const transformedItems = items.map((item: unknown) =>
+              transformToAdminUserAccount(item),
+            );
 
-          return [transformedItems, +totalCount];
+            return [transformedItems, +totalCount];
+          },
         },
-      },
-    ),
+      ),
+    [keyword, status, querySort, pagination],
   );
+
+  const { data, isLoading, isRefetching, refetch } = useQuery(queryConfig);
 
   const {
     mutateAsync: mutateSetAdminApprovalStatus,

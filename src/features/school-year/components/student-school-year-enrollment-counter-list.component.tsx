@@ -28,31 +28,35 @@ export const StudentSchoolYearEnrollmentCounterList = memo(function ({
   const [keyword, setKeyword] = useState<string | undefined>(undefined);
   const [openModal, setOpenModal] = useState(false);
 
+  const queryConfig = useMemo(
+    () =>
+      getStudentsByCurrentAdmin(
+        {
+          q: keyword,
+          teacherId,
+          schoolYearId,
+          enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Approved,
+        },
+        {
+          refetchOnWindowFocus: false,
+          refetchOnMount: false,
+          refetchOnReconnect: false,
+          enabled: !!keyword,
+          select: (data: unknown) =>
+            Array.isArray(data)
+              ? data.map((item: any) => transformToStudentUserAccount(item))
+              : undefined,
+        },
+      ),
+    [keyword, teacherId, schoolYearId],
+  );
+
   const {
     data: students,
     isLoading: isStudentLoading,
     isFetching: isStudentFetching,
     refetch,
-  } = useQuery(
-    getStudentsByCurrentAdmin(
-      {
-        q: keyword,
-        teacherId,
-        schoolYearId,
-        enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Approved,
-      },
-      {
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-        enabled: !!keyword,
-        select: (data: unknown) =>
-          Array.isArray(data)
-            ? data.map((item: any) => transformToStudentUserAccount(item))
-            : undefined,
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const totalStudentCountText = useMemo(() => {
     if (!studentCount) {

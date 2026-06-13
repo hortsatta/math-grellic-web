@@ -36,18 +36,12 @@ export const SchoolYearEnrollmentUserList = memo(function ({
 }: Props) {
   const [keyword, setKeyword] = useState<string | undefined>(undefined);
 
-  const queryFn: any = useMemo(
-    () =>
-      isStudent ? getStudentsByCurrentAdmin : getTeachersByCurrentAdminUser,
-    [isStudent],
-  );
+  const queryConfig = useMemo(() => {
+    const queryFn: any = isStudent
+      ? getStudentsByCurrentAdmin
+      : getTeachersByCurrentAdminUser;
 
-  const {
-    data: userAccounts,
-    isFetching,
-    isLoading,
-  } = useQuery(
-    queryFn(
+    return queryFn(
       {
         q: keyword,
         schoolYearId,
@@ -65,8 +59,10 @@ export const SchoolYearEnrollmentUserList = memo(function ({
               )
             : [],
       },
-    ),
-  );
+    );
+  }, [isStudent, keyword, schoolYearId]);
+
+  const { data: userAccounts, isFetching, isLoading } = useQuery(queryConfig);
 
   const isEmpty = useMemo(
     () => !(userAccounts as any[])?.length,

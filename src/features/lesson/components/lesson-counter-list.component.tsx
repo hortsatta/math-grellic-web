@@ -28,26 +28,30 @@ export const LessonCounterList = memo(function ({
   const [keyword, setKeyword] = useState<string | undefined>(undefined);
   const [openModal, setOpenModal] = useState(false);
 
+  const queryConfig = useMemo(
+    () =>
+      getLessonsByTeacherId(
+        { teacherId, q: keyword, status: RecordStatus.Published, schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          refetchOnMount: false,
+          refetchOnReconnect: false,
+          enabled: !!keyword,
+          select: (data: unknown) =>
+            Array.isArray(data)
+              ? data.map((item: any) => transformToLesson(item))
+              : undefined,
+        },
+      ),
+    [teacherId, keyword, schoolYearId],
+  );
+
   const {
     data: lessons,
     isLoading: isLessonLoading,
     isFetching: isLessonFetching,
     refetch,
-  } = useQuery(
-    getLessonsByTeacherId(
-      { teacherId, q: keyword, status: RecordStatus.Published, schoolYearId },
-      {
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-        enabled: !!keyword,
-        select: (data: unknown) =>
-          Array.isArray(data)
-            ? data.map((item: any) => transformToLesson(item))
-            : undefined,
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const totalLessonCountText = useMemo(() => {
     if (!lessonCount) {

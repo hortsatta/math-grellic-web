@@ -1,4 +1,11 @@
-import { forwardRef, memo, useCallback, useEffect, useState } from 'react';
+import {
+  forwardRef,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useController } from 'react-hook-form';
 import cx from 'classix';
@@ -59,30 +66,34 @@ export const StudentUserPicker = memo(
     },
     ref,
   ) {
-    const schoolYear = useBoundStore((state) => state.schoolYear);
+    const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
     const [keyword, setKeyword] = useState<string | undefined>(undefined);
+
+    const studentsQueryConfig = useMemo(
+      () =>
+        getStudentsByCurrentTeacherUser(
+          {
+            q: keyword,
+            schoolYearId,
+            enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Approved,
+          },
+          {
+            refetchOnWindowFocus: false,
+            initialData: [],
+            select: (data: unknown) =>
+              Array.isArray(data)
+                ? data.map((item: any) => transformToStudentUserAccount(item))
+                : [],
+          },
+        ),
+      [keyword, schoolYearId],
+    );
 
     const {
       data: students,
       isFetching,
       isLoading,
-    } = useQuery(
-      getStudentsByCurrentTeacherUser(
-        {
-          q: keyword,
-          schoolYearId: schoolYear?.id,
-          enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Approved,
-        },
-        {
-          refetchOnWindowFocus: false,
-          initialData: [],
-          select: (data: unknown) =>
-            Array.isArray(data)
-              ? data.map((item: any) => transformToStudentUserAccount(item))
-              : [],
-        },
-      ),
-    );
+    } = useQuery(studentsQueryConfig);
 
     const [openModal, setOpenModal] = useState(false);
 
@@ -97,32 +108,36 @@ export const StudentUserPicker = memo(
     const [modalSelectedStudentIds, setModalSelectedStudentIds] =
       useState<number[]>(selectedStudentIds);
 
+    const selectedStudentsQueryConfig = useMemo(
+      () =>
+        getStudentsByCurrentTeacherUser(
+          {
+            ids: value || selectedStudentIds || [],
+            schoolYearId,
+            enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Approved,
+          },
+          {
+            queryKey: queryUserKey.selectedStudentList,
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            enabled: false,
+            initialData: [],
+            select: (data: unknown) =>
+              Array.isArray(data)
+                ? data.map((item: any) => transformToStudentUserAccount(item))
+                : [],
+          },
+        ),
+      [value, selectedStudentIds, schoolYearId],
+    );
+
     const {
       data: selectedStudents,
       isLoading: isSelectStudentsLoading,
       isFetching: isSelectStudentsFetching,
       refetch: selectedStudentsRefetch,
-    } = useQuery(
-      getStudentsByCurrentTeacherUser(
-        {
-          ids: value || selectedStudentIds || [],
-          schoolYearId: schoolYear?.id,
-          enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Approved,
-        },
-        {
-          queryKey: queryUserKey.selectedStudentList,
-          refetchOnWindowFocus: false,
-          refetchOnMount: false,
-          refetchOnReconnect: false,
-          enabled: false,
-          initialData: [],
-          select: (data: unknown) =>
-            Array.isArray(data)
-              ? data.map((item: any) => transformToStudentUserAccount(item))
-              : [],
-        },
-      ),
-    );
+    } = useQuery(selectedStudentsQueryConfig);
 
     useEffect(() => {
       if (value == null) {

@@ -57,22 +57,26 @@ export function useSchoolYearEdit(slug?: string): Result {
       }),
     );
 
+  const queryConfig = useMemo(
+    () =>
+      getSchoolYearBySlugAndCurrentAdminUser(
+        { slug: slug || '' },
+        {
+          enabled: !!slug,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToSchoolYear(data);
+          },
+        },
+      ),
+    [slug],
+  );
+
   const {
     data: schoolYear,
     isLoading: isQueryLoading,
     isFetching: isQueryFetching,
-  } = useQuery(
-    getSchoolYearBySlugAndCurrentAdminUser(
-      { slug: slug || '' },
-      {
-        enabled: !!slug,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToSchoolYear(data);
-        },
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const schoolYearFormData = useMemo(
     () => (schoolYear ? transformToSchoolYearFormData(schoolYear) : undefined),

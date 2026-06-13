@@ -27,7 +27,7 @@ type Result = {
 };
 
 export function useLessonEdit(slug?: string): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [isDone, setIsDone] = useState(false);
 
   const { mutateAsync: mutateEditLesson, isLoading } = useMutation(
@@ -59,22 +59,26 @@ export function useLessonEdit(slug?: string): Result {
       }),
     );
 
+  const queryConfig = useMemo(
+    () =>
+      getLessonBySlugAndCurrentTeacherUser(
+        { slug: slug || '', schoolYearId },
+        {
+          enabled: !!slug,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToLesson(data);
+          },
+        },
+      ),
+    [slug, schoolYearId],
+  );
+
   const {
     data: lesson,
     isLoading: isQueryLoading,
     isFetching: isQueryFetching,
-  } = useQuery(
-    getLessonBySlugAndCurrentTeacherUser(
-      { slug: slug || '', schoolYearId: schoolYear?.id },
-      {
-        enabled: !!slug,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToLesson(data);
-        },
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const lessonFormData = useMemo(
     () => (lesson ? transformToLessonFormData(lesson) : undefined),

@@ -38,22 +38,22 @@ export function useStudentSchoolYearAcademicProgressUpdate(
 ): Result {
   const [isDone, setIsDone] = useState(false);
 
-  const {
-    data: enrollment,
-    isLoading,
-    isRefetching,
-  } = useQuery(
-    getStudentEnrollmentByPublicIdAndCurrentTeacherUser(
-      { publicId: publicId ?? '', schoolYearId: schoolYearId ?? 0 },
-      {
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-        enabled: !!publicId && !!schoolYearId,
-        select: (data: unknown) => transformToSchoolYearEnrollment(data),
-      },
-    ),
+  const queryConfig = useMemo(
+    () =>
+      getStudentEnrollmentByPublicIdAndCurrentTeacherUser(
+        { publicId: publicId ?? '', schoolYearId: schoolYearId ?? 0 },
+        {
+          refetchOnWindowFocus: false,
+          refetchOnMount: false,
+          refetchOnReconnect: false,
+          enabled: !!publicId && !!schoolYearId,
+          select: (data: unknown) => transformToSchoolYearEnrollment(data),
+        },
+      ),
+    [publicId, schoolYearId],
   );
+
+  const { data: enrollment, isLoading, isRefetching } = useQuery(queryConfig);
 
   const { mutateAsync, isLoading: isAcademicProgressUpdateLoading } =
     useMutation(setStudentAcademicProgressByPublicIdAndTeacherIdApi({}));

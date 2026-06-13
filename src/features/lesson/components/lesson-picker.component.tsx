@@ -1,4 +1,11 @@
-import { forwardRef, memo, useCallback, useEffect, useState } from 'react';
+import {
+  forwardRef,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useController } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import cx from 'classix';
@@ -55,26 +62,30 @@ export const LessonPicker = memo(
     },
     ref,
   ) {
-    const schoolYear = useBoundStore((state) => state.schoolYear);
+    const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
     const [keyword, setKeyword] = useState<string | undefined>(undefined);
+
+    const lessonsQueryConfig = useMemo(
+      () =>
+        getLessonsByCurrentTeacherUser(
+          { q: keyword, schoolYearId },
+          {
+            refetchOnWindowFocus: false,
+            initialData: [],
+            select: (data: unknown) =>
+              Array.isArray(data)
+                ? data.map((item: any) => transformToLesson(item))
+                : [],
+          },
+        ),
+      [keyword, schoolYearId],
+    );
 
     const {
       data: lessons,
       isFetching,
       isLoading,
-    } = useQuery(
-      getLessonsByCurrentTeacherUser(
-        { q: keyword, schoolYearId: schoolYear?.id },
-        {
-          refetchOnWindowFocus: false,
-          initialData: [],
-          select: (data: unknown) =>
-            Array.isArray(data)
-              ? data.map((item: any) => transformToLesson(item))
-              : [],
-        },
-      ),
-    );
+    } = useQuery(lessonsQueryConfig);
 
     const [openModal, setOpenModal] = useState(false);
 
@@ -89,28 +100,32 @@ export const LessonPicker = memo(
     const [modalSelectedLessonIds, setModalSelectedLessonIds] =
       useState<number[]>(selectedLessonIds);
 
+    const selectedLessonsQueryConfig = useMemo(
+      () =>
+        getLessonsByCurrentTeacherUser(
+          { ids: value || selectedLessonIds || [], schoolYearId },
+          {
+            queryKey: queryLessonKey.selectedLessonList,
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            enabled: false,
+            initialData: [],
+            select: (data: unknown) =>
+              Array.isArray(data)
+                ? data.map((item: any) => transformToLesson(item))
+                : [],
+          },
+        ),
+      [value, selectedLessonIds, schoolYearId],
+    );
+
     const {
       data: selectedLessons,
       isLoading: isSelectLessonsLoading,
       isFetching: isSelectLessonsFetching,
       refetch: selectedLessonsRefetch,
-    } = useQuery(
-      getLessonsByCurrentTeacherUser(
-        { ids: value || selectedLessonIds || [], schoolYearId: schoolYear?.id },
-        {
-          queryKey: queryLessonKey.selectedLessonList,
-          refetchOnWindowFocus: false,
-          refetchOnMount: false,
-          refetchOnReconnect: false,
-          enabled: false,
-          initialData: [],
-          select: (data: unknown) =>
-            Array.isArray(data)
-              ? data.map((item: any) => transformToLesson(item))
-              : [],
-        },
-      ),
-    );
+    } = useQuery(selectedLessonsQueryConfig);
 
     useEffect(() => {
       if ((value && !value?.length) || !selectedLessonIds.length) {

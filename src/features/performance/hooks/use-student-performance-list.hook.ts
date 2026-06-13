@@ -47,7 +47,7 @@ export const defaultParamKeys = {
 
 export function useStudentPerformanceList(): Result {
   const navigate = useNavigate();
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [keyword, setKeyword] = useState<string | null>(null);
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
   const [sort, setSort] = useState<QuerySort>(defaultSort);
@@ -75,29 +75,33 @@ export function useStudentPerformanceList(): Result {
 
   const pagination = useMemo(() => ({ take: PAGINATION_TAKE, skip }), [skip]);
 
-  const { data, isLoading, isRefetching, refetch } = useQuery(
-    getPaginatedStudentPerformancesByCurrentTeacherUser(
-      {
-        q: keyword || undefined,
-        performance,
-        sort: querySort,
-        pagination,
-        schoolYearId: schoolYear?.id,
-      },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any[]) => {
-          const [items, totalCount] = data;
-          const transformedItems =
-            items?.map((item: unknown) =>
-              transformToStudentPerformance(item),
-            ) || [];
-
-          return [transformedItems, +totalCount];
+  const queryConfig = useMemo(
+    () =>
+      getPaginatedStudentPerformancesByCurrentTeacherUser(
+        {
+          q: keyword || undefined,
+          performance,
+          sort: querySort,
+          pagination,
+          schoolYearId,
         },
-      },
-    ),
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any[]) => {
+            const [items, totalCount] = data;
+            const transformedItems =
+              items?.map((item: unknown) =>
+                transformToStudentPerformance(item),
+              ) || [];
+
+            return [transformedItems, +totalCount];
+          },
+        },
+      ),
+    [keyword, performance, querySort, pagination, schoolYearId],
   );
+
+  const { data, isLoading, isRefetching, refetch } = useQuery(queryConfig);
 
   const students = useMemo(() => {
     const [items] = data || [];

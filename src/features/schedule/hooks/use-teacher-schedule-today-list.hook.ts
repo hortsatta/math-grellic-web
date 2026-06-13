@@ -18,7 +18,7 @@ type Result = {
 };
 
 export function useTeacherScheduleTodayList(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
 
   const {
     data: today,
@@ -33,21 +33,25 @@ export function useTeacherScheduleTodayList(): Result {
     }),
   );
 
+  const timelineSchedulesQueryConfig = useMemo(
+    () =>
+      getSchedulesByDateAndCurrentTeacherUser(
+        { date: today || new Date(), schoolYearId },
+        {
+          enabled: !!today,
+          refetchOnWindowFocus: false,
+          select: (data: any) => transformToTimelineSchedules(data),
+        },
+      ),
+    [today, schoolYearId],
+  );
+
   const {
     data: timelineSchedules,
     isLoading: isTimelineSchedulesLoading,
     isRefetching: isTimelineSchedulesRefetching,
     refetch: refreshTimelineSchedules,
-  } = useQuery(
-    getSchedulesByDateAndCurrentTeacherUser(
-      { date: today || new Date(), schoolYearId: schoolYear?.id },
-      {
-        enabled: !!today,
-        refetchOnWindowFocus: false,
-        select: (data: any) => transformToTimelineSchedules(data),
-      },
-    ),
-  );
+  } = useQuery(timelineSchedulesQueryConfig);
 
   const schedules = useMemo(() => {
     const { lessonSchedules, examSchedules, meetingSchedules } =

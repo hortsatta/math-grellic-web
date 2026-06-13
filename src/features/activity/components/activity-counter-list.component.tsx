@@ -28,26 +28,30 @@ export const ActivityCounterList = memo(function ({
   const [keyword, setKeyword] = useState<string | undefined>(undefined);
   const [openModal, setOpenModal] = useState(false);
 
+  const queryConfig = useMemo(
+    () =>
+      getActivitiesByTeacherId(
+        { teacherId, q: keyword, status: RecordStatus.Published, schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          refetchOnMount: false,
+          refetchOnReconnect: false,
+          enabled: !!keyword && !!teacherId,
+          select: (data: unknown) =>
+            Array.isArray(data)
+              ? data.map((item: any) => transformToActivity(item))
+              : undefined,
+        },
+      ),
+    [teacherId, keyword, schoolYearId],
+  );
+
   const {
     data: activities,
     isLoading: isActivityLoading,
     isFetching: isActivityFetching,
     refetch,
-  } = useQuery(
-    getActivitiesByTeacherId(
-      { teacherId, q: keyword, status: RecordStatus.Published, schoolYearId },
-      {
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-        enabled: !!keyword,
-        select: (data: unknown) =>
-          Array.isArray(data)
-            ? data.map((item: any) => transformToActivity(item))
-            : undefined,
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const totalActivityCountText = useMemo(() => {
     if (!activityCount) {

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
@@ -14,24 +15,24 @@ type Result = {
 
 export function useTeacherExamSingle(): Result {
   const { slug } = useParams();
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
 
-  const {
-    data: exam,
-    isLoading,
-    isFetching,
-  } = useQuery(
-    getExamBySlugAndCurrentTeacherUser(
-      { slug: slug || '', schoolYearId: schoolYear?.id },
-      {
-        enabled: !!slug,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToExam(data, true);
+  const queryConfig = useMemo(
+    () =>
+      getExamBySlugAndCurrentTeacherUser(
+        { slug: slug || '', schoolYearId },
+        {
+          enabled: !!slug,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToExam(data, true);
+          },
         },
-      },
-    ),
+      ),
+    [slug, schoolYearId],
   );
+
+  const { data: exam, isLoading, isFetching } = useQuery(queryConfig);
 
   return { loading: isLoading || isFetching, exam };
 }

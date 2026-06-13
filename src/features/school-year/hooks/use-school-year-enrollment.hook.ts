@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { useBoundStore } from '#/core/hooks/use-store.hook';
@@ -14,18 +14,22 @@ type Result = {
 
 export function useSchoolYearEnrollment(): Result {
   const user = useBoundStore((state) => state.user);
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const syEnrollment = useBoundStore((state) => state.syEnrollment);
   const setSyEnrollment = useBoundStore((state) => state.setSyEnrollment);
 
-  const { data, isLoading, isRefetching, refetch } = useQuery(
-    getSchoolYearEnrollment(schoolYear?.id, {
-      refetchOnWindowFocus: false,
-      initialData: syEnrollment,
-      select: (data: unknown) =>
-        data ? transformToSchoolYearEnrollment(data) : null,
-    }),
+  const queryConfig = useMemo(
+    () =>
+      getSchoolYearEnrollment(schoolYearId, {
+        refetchOnWindowFocus: false,
+        initialData: syEnrollment,
+        select: (data: unknown) =>
+          data ? transformToSchoolYearEnrollment(data) : null,
+      }),
+    [schoolYearId, syEnrollment],
   );
+
+  const { data, isLoading, isRefetching, refetch } = useQuery(queryConfig);
 
   useEffect(() => {
     if (data === null || data === undefined || data?.id !== syEnrollment?.id) {
@@ -35,13 +39,13 @@ export function useSchoolYearEnrollment(): Result {
   }, [syEnrollment, data]);
 
   useEffect(() => {
-    if (!schoolYear || !user) {
+    if (!schoolYearId || !user) {
       return;
     }
 
     refetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id, schoolYear]);
+  }, [user?.id, schoolYearId]);
 
   return {
     loading: isLoading || isRefetching || syEnrollment === undefined,

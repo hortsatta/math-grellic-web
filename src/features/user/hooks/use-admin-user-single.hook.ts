@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
@@ -14,22 +15,22 @@ type Result = {
 export function useAdminUserSingle(): Result {
   const { id } = useParams();
 
-  const {
-    data: admin,
-    isLoading,
-    isFetching,
-  } = useQuery(
-    getAdminByIdAndCurrentSuperAdminUser(
-      { id: +(id || 0) },
-      {
-        enabled: !!id,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToAdminUserAccount(data);
+  const queryConfig = useMemo(
+    () =>
+      getAdminByIdAndCurrentSuperAdminUser(
+        { id: +(id || 0) },
+        {
+          enabled: !!id,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToAdminUserAccount(data);
+          },
         },
-      },
-    ),
+      ),
+    [id],
   );
+
+  const { data: admin, isLoading, isFetching } = useQuery(queryConfig);
 
   return {
     loading: isLoading || isFetching,

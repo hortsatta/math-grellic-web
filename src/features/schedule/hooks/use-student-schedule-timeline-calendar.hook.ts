@@ -20,7 +20,7 @@ type Result = {
 };
 
 export function useStudentScheduleTimelineCalendar(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [weekIndex, setWeekIndex] = useState(0);
 
   const [from, to] = useMemo(() => {
@@ -45,20 +45,24 @@ export function useStudentScheduleTimelineCalendar(): Result {
     }),
   );
 
+  const timelineSchedulesQueryConfig = useMemo(
+    () =>
+      getSchedulesByDateRangeAndCurrentStudentUser(
+        { from, to, schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any) => transformToTimelineSchedules(data),
+        },
+      ),
+    [from, to, schoolYearId],
+  );
+
   const {
     data: timelineSchedules,
     isLoading,
     isRefetching,
     refetch,
-  } = useQuery(
-    getSchedulesByDateRangeAndCurrentStudentUser(
-      { from, to, schoolYearId: schoolYear?.id },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any) => transformToTimelineSchedules(data),
-      },
-    ),
-  );
+  } = useQuery(timelineSchedulesQueryConfig);
 
   const handleWeekChange = useCallback((valueToAdd: number) => {
     setWeekIndex((prev) => prev + valueToAdd);

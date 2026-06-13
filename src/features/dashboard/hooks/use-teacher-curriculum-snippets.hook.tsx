@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
@@ -34,70 +34,82 @@ const ACTIVITY_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
 
 export function useTeacherCurriculumSnippets(): Result {
   const navigate = useNavigate();
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
+
+  const lessonsQueryConfig = useMemo(
+    () =>
+      getLessonSnippetsByCurrentTeacherUser(
+        { schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any[]) => {
+            if (!Array.isArray(data)) {
+              return [];
+            }
+
+            return data.map((item: unknown) => transformToLesson(item));
+          },
+        },
+      ),
+    [schoolYearId],
+  );
+
+  const examsQueryConfig = useMemo(
+    () =>
+      getExamSnippetsByCurrentTeacherUser(
+        { schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any[]) => {
+            if (!Array.isArray(data)) {
+              return [];
+            }
+
+            return data.map((item: unknown) => transformToExam(item));
+          },
+        },
+      ),
+    [schoolYearId],
+  );
+
+  const activitiesQueryConfig = useMemo(
+    () =>
+      getActivitySnippetsByCurrentTeacherUser(
+        { schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any[]) => {
+            if (!Array.isArray(data)) {
+              return [];
+            }
+
+            return data.map((item: unknown) => transformToActivity(item));
+          },
+        },
+      ),
+    [schoolYearId],
+  );
 
   const {
     data: lessonsData,
     isLoading: isLessonsLoading,
     isRefetching: isLessonsRefetching,
     refetch: refreshLessons,
-  } = useQuery(
-    getLessonSnippetsByCurrentTeacherUser(
-      { schoolYearId: schoolYear?.id },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any[]) => {
-          if (!Array.isArray(data)) {
-            return [];
-          }
-
-          return data.map((item: unknown) => transformToLesson(item));
-        },
-      },
-    ),
-  );
+  } = useQuery(lessonsQueryConfig);
 
   const {
     data: examsData,
     isLoading: isExamsLoading,
     isRefetching: isExamsRefetching,
     refetch: refreshExams,
-  } = useQuery(
-    getExamSnippetsByCurrentTeacherUser(
-      { schoolYearId: schoolYear?.id },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any[]) => {
-          if (!Array.isArray(data)) {
-            return [];
-          }
-
-          return data.map((item: unknown) => transformToExam(item));
-        },
-      },
-    ),
-  );
+  } = useQuery(examsQueryConfig);
 
   const {
     data: activitiesData,
     isLoading: isActivitiesLoading,
     isRefetching: isActivitiesRefetching,
     refetch: refreshActivities,
-  } = useQuery(
-    getActivitySnippetsByCurrentTeacherUser(
-      { schoolYearId: schoolYear?.id },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any[]) => {
-          if (!Array.isArray(data)) {
-            return [];
-          }
-
-          return data.map((item: unknown) => transformToActivity(item));
-        },
-      },
-    ),
-  );
+  } = useQuery(activitiesQueryConfig);
 
   const handleLessonDetails = useCallback(
     (slug: string) => {

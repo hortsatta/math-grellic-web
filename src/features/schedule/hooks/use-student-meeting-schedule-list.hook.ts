@@ -20,51 +20,55 @@ type Result = {
 };
 
 export function useStudentMeetingScheduleList(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
+
+  const queryConfig = useMemo(
+    () =>
+      getMeetingSchedulesByCurrentStudentUser(schoolYearId, {
+        refetchOnWindowFocus: false,
+        select: (data: any) => {
+          const {
+            upcomingMeetingSchedules,
+            currentMeetingSchedules,
+            previousMeetingSchedules,
+          } = data;
+          const transformedUpcomingMeetingSchedules =
+            upcomingMeetingSchedules?.length
+              ? upcomingMeetingSchedules.map((item: any) =>
+                  transformToMeetingSchedule(item),
+                )
+              : [];
+
+          const transformedCurrentMeetingSchedules =
+            currentMeetingSchedules?.length
+              ? currentMeetingSchedules.map((item: any) =>
+                  transformToMeetingSchedule(item),
+                )
+              : [];
+
+          const transformedPreviousMeetingSchedules =
+            previousMeetingSchedules?.length
+              ? previousMeetingSchedules.map((item: any) =>
+                  transformToMeetingSchedule(item),
+                )
+              : [];
+
+          return {
+            upcomingMeetingSchedules: transformedUpcomingMeetingSchedules,
+            currentMeetingSchedules: transformedCurrentMeetingSchedules,
+            previousMeetingSchedules: transformedPreviousMeetingSchedules,
+          };
+        },
+      }),
+    [schoolYearId],
+  );
 
   const {
     data: list,
     isLoading,
     isRefetching,
     refetch,
-  } = useQuery(
-    getMeetingSchedulesByCurrentStudentUser(schoolYear?.id, {
-      refetchOnWindowFocus: false,
-      select: (data: any) => {
-        const {
-          upcomingMeetingSchedules,
-          currentMeetingSchedules,
-          previousMeetingSchedules,
-        } = data;
-        const transformedUpcomingMeetingSchedules =
-          upcomingMeetingSchedules?.length
-            ? upcomingMeetingSchedules.map((item: any) =>
-                transformToMeetingSchedule(item),
-              )
-            : [];
-
-        const transformedCurrentMeetingSchedules =
-          currentMeetingSchedules?.length
-            ? currentMeetingSchedules.map((item: any) =>
-                transformToMeetingSchedule(item),
-              )
-            : [];
-
-        const transformedPreviousMeetingSchedules =
-          previousMeetingSchedules?.length
-            ? previousMeetingSchedules.map((item: any) =>
-                transformToMeetingSchedule(item),
-              )
-            : [];
-
-        return {
-          upcomingMeetingSchedules: transformedUpcomingMeetingSchedules,
-          currentMeetingSchedules: transformedCurrentMeetingSchedules,
-          previousMeetingSchedules: transformedPreviousMeetingSchedules,
-        };
-      },
-    }),
-  );
+  } = useQuery(queryConfig);
 
   const {
     upcomingMeetingSchedules,

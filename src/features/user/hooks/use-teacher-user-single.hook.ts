@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
@@ -22,67 +23,78 @@ type Result = {
 };
 
 export function useTeacherUserSingle(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const { id } = useParams();
 
-  const {
-    data: teacher,
-    isLoading,
-    isFetching,
-  } = useQuery(
-    getTeacherById(
-      { id: +(id || 0), schoolYearId: schoolYear?.id, withStats: true },
-      {
-        enabled: !!id,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToTeacherUserAccount(data);
+  const teacherQueryConfig = useMemo(
+    () =>
+      getTeacherById(
+        { id: +(id || 0), schoolYearId, withStats: true },
+        {
+          enabled: !!id,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToTeacherUserAccount(data);
+          },
         },
-      },
-    ),
+      ),
+    [id, schoolYearId],
   );
+
+  const lessonCountQueryConfig = useMemo(
+    () =>
+      getLessonCountByTeacherId(
+        { teacherId: +(id || 0), schoolYearId },
+        {
+          enabled: !!id,
+          refetchOnWindowFocus: false,
+        },
+      ),
+    [id, schoolYearId],
+  );
+
+  const examCountQueryConfig = useMemo(
+    () =>
+      getExamCountByTeacherId(
+        { teacherId: +(id || 0), schoolYearId },
+        {
+          enabled: !!id,
+          refetchOnWindowFocus: false,
+        },
+      ),
+    [id, schoolYearId],
+  );
+
+  const activityCountQueryConfig = useMemo(
+    () =>
+      getActivityCountByTeacherId(
+        { teacherId: +(id || 0), schoolYearId },
+        {
+          enabled: !!id,
+          refetchOnWindowFocus: false,
+        },
+      ),
+    [id, schoolYearId],
+  );
+  const { data: teacher, isLoading, isFetching } = useQuery(teacherQueryConfig);
 
   const {
     data: lessonCount,
     isLoading: isLessonCountLoading,
     isFetching: isLessonCountFetching,
-  } = useQuery(
-    getLessonCountByTeacherId(
-      { teacherId: +(id || 0), schoolYearId: schoolYear?.id },
-      {
-        enabled: !!id,
-        refetchOnWindowFocus: false,
-      },
-    ),
-  );
+  } = useQuery(lessonCountQueryConfig);
 
   const {
     data: examCount,
     isLoading: isExamCountLoading,
     isFetching: isExamCountFetching,
-  } = useQuery(
-    getExamCountByTeacherId(
-      { teacherId: +(id || 0), schoolYearId: schoolYear?.id },
-      {
-        enabled: !!id,
-        refetchOnWindowFocus: false,
-      },
-    ),
-  );
+  } = useQuery(examCountQueryConfig);
 
   const {
     data: activityCount,
     isLoading: isActivityCountLoading,
     isFetching: isActivityCountFetching,
-  } = useQuery(
-    getActivityCountByTeacherId(
-      { teacherId: +(id || 0), schoolYearId: schoolYear?.id },
-      {
-        enabled: !!id,
-        refetchOnWindowFocus: false,
-      },
-    ),
-  );
+  } = useQuery(activityCountQueryConfig);
 
   return {
     loading: isLoading || isFetching,

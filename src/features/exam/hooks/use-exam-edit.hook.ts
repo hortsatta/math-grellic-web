@@ -30,7 +30,7 @@ type Result = {
 };
 
 export function useExamEdit(slug?: string): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [isDone, setIsDone] = useState(false);
 
   const { mutateAsync: validateUpsertExam, isLoading: isValidateExamLoading } =
@@ -70,22 +70,26 @@ export function useExamEdit(slug?: string): Result {
       }),
     );
 
+  const queryConfig = useMemo(
+    () =>
+      getExamBySlugAndCurrentTeacherUser(
+        { slug: slug || '', schoolYearId },
+        {
+          enabled: !!slug,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToExam(data);
+          },
+        },
+      ),
+    [slug, schoolYearId],
+  );
+
   const {
     data: exam,
     isLoading: isQueryLoading,
     isFetching: isQueryFetching,
-  } = useQuery(
-    getExamBySlugAndCurrentTeacherUser(
-      { slug: slug || '', schoolYearId: schoolYear?.id },
-      {
-        enabled: !!slug,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToExam(data);
-        },
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const examFormData = useMemo(
     () => (exam ? transformToExamFormData(exam) : undefined),
@@ -112,7 +116,7 @@ export function useExamEdit(slug?: string): Result {
       if (hasExamImages) {
         const images = await mutateUploadExamImages({
           data,
-          schoolYearId: schoolYear?.id,
+          schoolYearId,
           strict: true,
         });
         // Replace base64 images from text field with uploaded images url
@@ -150,7 +154,7 @@ export function useExamEdit(slug?: string): Result {
     },
     [
       exam,
-      schoolYear,
+      schoolYearId,
       validateUpsertExam,
       mutateEditExam,
       mutateUploadExamImages,

@@ -17,7 +17,7 @@ type Result = {
 };
 
 export function useStudentScheduleMonthlyCalendar(today: Date | null): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [currentDate, setCurrentDate] = useState<Date | null>(today);
 
   const [from, to] = useMemo(() => {
@@ -32,19 +32,23 @@ export function useStudentScheduleMonthlyCalendar(today: Date | null): Result {
     ];
   }, [currentDate]);
 
+  const queryConfig = useMemo(
+    () =>
+      getSchedulesByDateRangeAndCurrentStudentUser(
+        { from, to, schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any) => transformToTimelineSchedules(data),
+        },
+      ),
+    [from, to, schoolYearId],
+  );
+
   const {
     data: timelineSchedules,
     isLoading,
     isRefetching,
-  } = useQuery(
-    getSchedulesByDateRangeAndCurrentStudentUser(
-      { from, to, schoolYearId: schoolYear?.id },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any) => transformToTimelineSchedules(data),
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   return {
     loading: isLoading || isRefetching,

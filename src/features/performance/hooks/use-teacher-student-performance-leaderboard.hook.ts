@@ -17,36 +17,40 @@ type Result = {
 export function useTeacherStudentPerformanceLeaderboard(
   performance: StudentPerformanceType,
 ): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
+
+  const queryConfig = useMemo(
+    () =>
+      getPaginatedStudentPerformancesByCurrentTeacherUser(
+        {
+          q: undefined,
+          performance,
+          sort: 'rank,asc',
+          pagination: { take: 5, skip: 0 },
+          schoolYearId,
+        },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any[]) => {
+            const [items, totalCount] = data;
+            const transformedItems =
+              items?.map((item: unknown) =>
+                transformToStudentPerformance(item),
+              ) || [];
+
+            return [transformedItems, +totalCount];
+          },
+        },
+      ),
+    [performance, schoolYearId],
+  );
 
   const {
     data,
     isLoading,
     isRefetching,
     refetch: refresh,
-  } = useQuery(
-    getPaginatedStudentPerformancesByCurrentTeacherUser(
-      {
-        q: undefined,
-        performance,
-        sort: 'rank,asc',
-        pagination: { take: 5, skip: 0 },
-        schoolYearId: schoolYear?.id,
-      },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any[]) => {
-          const [items, totalCount] = data;
-          const transformedItems =
-            items?.map((item: unknown) =>
-              transformToStudentPerformance(item),
-            ) || [];
-
-          return [transformedItems, +totalCount];
-        },
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const students = useMemo(() => {
     const [items] = data || [];

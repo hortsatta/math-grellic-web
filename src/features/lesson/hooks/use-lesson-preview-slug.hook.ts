@@ -14,21 +14,25 @@ type Result = {
 };
 
 export function useLessonPreviewSlug(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const { slug } = useParams();
 
-  const { data: lesson } = useQuery(
-    getLessonBySlugAndCurrentTeacherUser(
-      { slug: slug || '', schoolYearId: schoolYear?.id, exclude: 'schedules' },
-      {
-        enabled: !!slug,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToLesson(data);
+  const queryConfig = useMemo(
+    () =>
+      getLessonBySlugAndCurrentTeacherUser(
+        { slug: slug || '', schoolYearId, exclude: 'schedules' },
+        {
+          enabled: !!slug,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToLesson(data);
+          },
         },
-      },
-    ),
+      ),
+    [slug, schoolYearId],
   );
+
+  const { data: lesson } = useQuery(queryConfig);
 
   const titlePreview = useMemo(
     () => (lesson?.title ? `${lesson?.title} (Preview)` : 'Preview'),

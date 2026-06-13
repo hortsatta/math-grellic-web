@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
+import { useMemo } from 'react';
 
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToLesson } from '#/lesson/helpers/lesson-transform.helper';
@@ -14,26 +15,26 @@ type Result = {
 
 export function useTeacherStudentLessonPerformanceList(): Result {
   const { publicId } = useParams();
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
 
-  const {
-    data: lessons,
-    isRefetching,
-    isLoading,
-  } = useQuery(
-    getStudentLessonsByPublicIdAndCurrentTeacherUser(
-      { publicId: publicId || '', schoolYearId: schoolYear?.id },
-      {
-        refetchOnWindowFocus: false,
-        enabled: !!publicId,
-        initialData: [],
-        select: (data: unknown) =>
-          Array.isArray(data)
-            ? data.map((item: any) => transformToLesson(item))
-            : [],
-      },
-    ),
+  const queryConfig = useMemo(
+    () =>
+      getStudentLessonsByPublicIdAndCurrentTeacherUser(
+        { publicId: publicId || '', schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          enabled: !!publicId,
+          initialData: [],
+          select: (data: unknown) =>
+            Array.isArray(data)
+              ? data.map((item: any) => transformToLesson(item))
+              : [],
+        },
+      ),
+    [publicId, schoolYearId],
   );
+
+  const { data: lessons, isRefetching, isLoading } = useQuery(queryConfig);
 
   return { loading: isLoading || isRefetching, lessons };
 }

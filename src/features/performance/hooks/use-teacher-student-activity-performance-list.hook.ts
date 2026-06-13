@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
@@ -14,26 +15,26 @@ type Result = {
 
 export function useTeacherStudentActivityPerformanceList(): Result {
   const { publicId } = useParams();
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
 
-  const {
-    data: activities,
-    isRefetching,
-    isLoading,
-  } = useQuery(
-    getStudentActivitiesByPublicIdAndCurrentTeacherUser(
-      { publicId: publicId || '', schoolYearId: schoolYear?.id },
-      {
-        refetchOnWindowFocus: false,
-        enabled: !!publicId,
-        initialData: [],
-        select: (data: unknown) =>
-          Array.isArray(data)
-            ? data.map((item: any) => transformToActivity(item))
-            : [],
-      },
-    ),
+  const queryConfig = useMemo(
+    () =>
+      getStudentActivitiesByPublicIdAndCurrentTeacherUser(
+        { publicId: publicId || '', schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          enabled: !!publicId,
+          initialData: [],
+          select: (data: unknown) =>
+            Array.isArray(data)
+              ? data.map((item: any) => transformToActivity(item))
+              : [],
+        },
+      ),
+    [publicId, schoolYearId],
   );
+
+  const { data: activities, isRefetching, isLoading } = useQuery(queryConfig);
 
   return { loading: isLoading || isRefetching, activities };
 }

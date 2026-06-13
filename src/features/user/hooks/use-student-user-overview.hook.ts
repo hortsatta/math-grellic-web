@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { queryUserKey } from '#/config/react-query-keys.config';
@@ -13,22 +14,26 @@ type Result = {
 };
 
 export function useStudentUserOverview(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
 
-  const { data, isLoading, isFetching, refetch } = useQuery(
-    getStudentCountByCurrentTeacherUser(
-      {
-        status: UserApprovalStatus.Approved,
-        schoolYearId: schoolYear?.id,
-        enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Approved,
-      },
-      {
-        queryKey: queryUserKey.allStudentList,
-        refetchOnWindowFocus: false,
-        initialData: 0,
-      },
-    ),
+  const queryConfig = useMemo(
+    () =>
+      getStudentCountByCurrentTeacherUser(
+        {
+          status: UserApprovalStatus.Approved,
+          schoolYearId,
+          enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Approved,
+        },
+        {
+          queryKey: queryUserKey.allStudentList,
+          refetchOnWindowFocus: false,
+          initialData: 0,
+        },
+      ),
+    [schoolYearId],
   );
+
+  const { data, isLoading, isFetching, refetch } = useQuery(queryConfig);
 
   return {
     enrolledStudentCount: data || 0,

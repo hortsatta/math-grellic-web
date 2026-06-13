@@ -61,22 +61,26 @@ export function useMeetingScheduleEdit(id?: number): Result {
     }),
   );
 
+  const queryConfig = useMemo(
+    () =>
+      getMeetingScheduleByIdAndCurrentTeacherUser(
+        { id: id || 0 },
+        {
+          enabled: !!id,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToMeetingSchedule(data);
+          },
+        },
+      ),
+    [id],
+  );
+
   const {
     data: meetingSchedule,
     isLoading: isQueryLoading,
     isFetching: isQueryFetching,
-  } = useQuery(
-    getMeetingScheduleByIdAndCurrentTeacherUser(
-      { id: id || 0 },
-      {
-        enabled: !!id,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToMeetingSchedule(data);
-        },
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const meetingScheduleFormData = useMemo(
     () =>

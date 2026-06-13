@@ -70,22 +70,26 @@ export function useAdminSchoolYearList(): Result {
 
   const pagination = useMemo(() => ({ take: PAGINATION_TAKE, skip }), [skip]);
 
-  const { data, isLoading, isRefetching, refetch } = useQuery(
-    getPaginatedSchoolYearsByCurrentAdminUser(
-      { q: keyword || undefined, status, sort: querySort, pagination },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any[]) => {
-          const [items, totalCount] = data;
-          const transformedItems = items.map((item: unknown) =>
-            transformToSchoolYear(item),
-          );
+  const queryConfig = useMemo(
+    () =>
+      getPaginatedSchoolYearsByCurrentAdminUser(
+        { q: keyword || undefined, status, sort: querySort, pagination },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any[]) => {
+            const [items, totalCount] = data;
+            const transformedItems = items.map((item: unknown) =>
+              transformToSchoolYear(item),
+            );
 
-          return [transformedItems, +totalCount];
+            return [transformedItems, +totalCount];
+          },
         },
-      },
-    ),
+      ),
+    [keyword, status, querySort, pagination],
   );
+
+  const { data, isLoading, isRefetching, refetch } = useQuery(queryConfig);
 
   const [schoolYears, dataCount] = useMemo(() => {
     const [items, count] = data || [];

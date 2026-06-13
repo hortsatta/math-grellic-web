@@ -39,107 +39,122 @@ type Result = {
 };
 
 export function useStudentCurriculumSnippets(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const { serverClock, startClock, stopClock } = useClockSocket();
+
+  const lessonListQueryConfig = useMemo(
+    () =>
+      getLessonsByCurrentStudentUser(
+        { schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            const { latestLesson, upcomingLesson, previousLessons } = data;
+            const transformedLatestLesson = latestLesson
+              ? transformToLesson(latestLesson)
+              : null;
+            const transformedUpcomingLesson = upcomingLesson
+              ? transformToLesson(upcomingLesson)
+              : null;
+            const transformedPreviousLessons = previousLessons?.length
+              ? previousLessons.map((item: any) => transformToLesson(item))
+              : [];
+
+            return {
+              latestLesson: transformedLatestLesson,
+              upcomingLesson: transformedUpcomingLesson,
+              previousLessons: transformedPreviousLessons,
+            };
+          },
+        },
+      ),
+    [schoolYearId],
+  );
+
+  const examListQueryConfig = useMemo(
+    () =>
+      getExamsByCurrentStudentUser(
+        { schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            const { latestExam, upcomingExam, previousExams, ongoingExams } =
+              data;
+            const transformedLatestExam = latestExam
+              ? transformToExam(latestExam)
+              : null;
+
+            const transformedUpcomingExam = upcomingExam
+              ? transformToExam(upcomingExam)
+              : null;
+
+            const transformedPreviousExams = previousExams?.length
+              ? previousExams.map((item: any) => transformToExam(item))
+              : [];
+
+            const transformedOngoingExams = ongoingExams?.length
+              ? ongoingExams.map((item: any) => transformToExam(item))
+              : [];
+
+            return {
+              latestExam: transformedLatestExam,
+              upcomingExam: transformedUpcomingExam,
+              previousExams: transformedPreviousExams,
+              ongoingExams: transformedOngoingExams,
+            };
+          },
+        },
+      ),
+    [schoolYearId],
+  );
+
+  const activityListQueryConfig = useMemo(
+    () =>
+      getActivitiesByCurrentStudentUser(
+        { schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            const { featuredActivities, otherActivities } = data;
+
+            const transformedFeaturedActivities = featuredActivities?.length
+              ? featuredActivities.map((item: any) => transformToActivity(item))
+              : [];
+
+            const transformedOtherActivities = otherActivities?.length
+              ? otherActivities.map((item: any) => transformToActivity(item))
+              : [];
+
+            return {
+              featuredActivities: transformedFeaturedActivities,
+              otherActivities: transformedOtherActivities,
+            };
+          },
+        },
+      ),
+    [schoolYearId],
+  );
 
   const {
     data: lessonList,
     isLoading: isLessonLoading,
     isRefetching: isLessonRefetching,
     refetch: refetchLesson,
-  } = useQuery(
-    getLessonsByCurrentStudentUser(
-      { schoolYearId: schoolYear?.id },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          const { latestLesson, upcomingLesson, previousLessons } = data;
-          const transformedLatestLesson = latestLesson
-            ? transformToLesson(latestLesson)
-            : null;
-          const transformedUpcomingLesson = upcomingLesson
-            ? transformToLesson(upcomingLesson)
-            : null;
-          const transformedPreviousLessons = previousLessons?.length
-            ? previousLessons.map((item: any) => transformToLesson(item))
-            : [];
-
-          return {
-            latestLesson: transformedLatestLesson,
-            upcomingLesson: transformedUpcomingLesson,
-            previousLessons: transformedPreviousLessons,
-          };
-        },
-      },
-    ),
-  );
+  } = useQuery(lessonListQueryConfig);
 
   const {
     data: examList,
     isLoading: isExamLoading,
     isRefetching: isExamRefetching,
     refetch: refetchExam,
-  } = useQuery(
-    getExamsByCurrentStudentUser(
-      { schoolYearId: schoolYear?.id },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          const { latestExam, upcomingExam, previousExams, ongoingExams } =
-            data;
-          const transformedLatestExam = latestExam
-            ? transformToExam(latestExam)
-            : null;
-
-          const transformedUpcomingExam = upcomingExam
-            ? transformToExam(upcomingExam)
-            : null;
-
-          const transformedPreviousExams = previousExams?.length
-            ? previousExams.map((item: any) => transformToExam(item))
-            : [];
-
-          const transformedOngoingExams = ongoingExams?.length
-            ? ongoingExams.map((item: any) => transformToExam(item))
-            : [];
-
-          return {
-            latestExam: transformedLatestExam,
-            upcomingExam: transformedUpcomingExam,
-            previousExams: transformedPreviousExams,
-            ongoingExams: transformedOngoingExams,
-          };
-        },
-      },
-    ),
-  );
+  } = useQuery(examListQueryConfig);
 
   const {
     data: activityList,
     isLoading: isActivityLoading,
     isRefetching: isActivityRefetching,
     refetch: refetchActivity,
-  } = useQuery(
-    getActivitiesByCurrentStudentUser(undefined, {
-      refetchOnWindowFocus: false,
-      select: (data: any) => {
-        const { featuredActivities, otherActivities } = data;
-
-        const transformedFeaturedActivities = featuredActivities?.length
-          ? featuredActivities.map((item: any) => transformToActivity(item))
-          : [];
-
-        const transformedOtherActivities = otherActivities?.length
-          ? otherActivities.map((item: any) => transformToActivity(item))
-          : [];
-
-        return {
-          featuredActivities: transformedFeaturedActivities,
-          otherActivities: transformedOtherActivities,
-        };
-      },
-    }),
-  );
+  } = useQuery(activityListQueryConfig);
 
   const { latestLesson, upcomingLesson, previousLessons } = useMemo(
     () =>

@@ -19,43 +19,56 @@ type Result = {
 
 export function useTeacherMeetingScheduleSingle(): Result {
   const { id } = useParams();
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
 
-  const { data, isLoading, isFetching } = useQuery(
-    getMeetingScheduleByIdAndCurrentTeacherUser(
-      { id: +(id || 0) },
-      {
-        enabled: !!id,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToMeetingSchedule(data);
+  const queryConfig = useMemo(
+    () =>
+      getMeetingScheduleByIdAndCurrentTeacherUser(
+        { id: +(id || 0) },
+        {
+          enabled: !!id,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToMeetingSchedule(data);
+          },
         },
-      },
-    ),
+      ),
+    [id],
+  );
+
+  const { data, isLoading, isFetching } = useQuery(queryConfig);
+
+  const studentIds = useMemo(
+    () => data?.students?.map((s) => s.id) || [],
+    [data],
+  );
+
+  const selectedStudentsQueryConfig = useMemo(
+    () =>
+      getStudentsByCurrentTeacherUser(
+        {
+          ids: studentIds,
+          schoolYearId,
+          enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Approved,
+        },
+        {
+          queryKey: queryUserKey.selectedStudentList,
+          refetchOnWindowFocus: false,
+          initialData: [],
+          select: (data: unknown) =>
+            Array.isArray(data)
+              ? data.map((item: any) => transformToStudentUserAccount(item))
+              : [],
+        },
+      ),
+    [studentIds, schoolYearId],
   );
 
   const {
     data: selectedStudents,
     isLoading: isSelectStudentsLoading,
     isFetching: isSelectStudentsFetching,
-  } = useQuery(
-    getStudentsByCurrentTeacherUser(
-      {
-        ids: data?.students?.map((s) => s.id) || [],
-        schoolYearId: schoolYear?.id,
-        enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Approved,
-      },
-      {
-        queryKey: queryUserKey.selectedStudentList,
-        refetchOnWindowFocus: false,
-        initialData: [],
-        select: (data: unknown) =>
-          Array.isArray(data)
-            ? data.map((item: any) => transformToStudentUserAccount(item))
-            : [],
-      },
-    ),
-  );
+  } = useQuery(selectedStudentsQueryConfig);
 
   const meetingSchedule = useMemo(() => {
     if (!selectedStudents?.length) {

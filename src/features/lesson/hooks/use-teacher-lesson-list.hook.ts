@@ -48,7 +48,7 @@ export const defaultParamKeys = {
 
 export function useTeacherLessonList(): Result {
   const navigate = useNavigate();
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [keyword, setKeyword] = useState<string | null>(null);
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
   const [sort, setSort] = useState<QuerySort>(defaultSort);
@@ -74,28 +74,32 @@ export function useTeacherLessonList(): Result {
 
   const pagination = useMemo(() => ({ take: PAGINATION_TAKE, skip }), [skip]);
 
-  const { data, isLoading, isRefetching, refetch } = useQuery(
-    getPaginatedLessonsByCurrentTeacherUser(
-      {
-        q: keyword || undefined,
-        status,
-        sort: querySort,
-        pagination,
-        schoolYearId: schoolYear?.id,
-      },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any[]) => {
-          const [items, totalCount] = data;
-          const transformedItems = items.map((item: unknown) =>
-            transformToLesson(item),
-          );
-
-          return [transformedItems, +totalCount];
+  const queryConfig = useMemo(
+    () =>
+      getPaginatedLessonsByCurrentTeacherUser(
+        {
+          q: keyword || undefined,
+          status,
+          sort: querySort,
+          pagination,
+          schoolYearId,
         },
-      },
-    ),
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any[]) => {
+            const [items, totalCount] = data;
+            const transformedItems = items.map((item: unknown) =>
+              transformToLesson(item),
+            );
+
+            return [transformedItems, +totalCount];
+          },
+        },
+      ),
+    [keyword, status, querySort, pagination, schoolYearId],
   );
+
+  const { data, isLoading, isRefetching, refetch } = useQuery(queryConfig);
 
   const lessons = useMemo(() => {
     const [items] = data || [];

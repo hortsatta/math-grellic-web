@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
@@ -14,22 +15,22 @@ type Result = {
 export function useSchoolYearSingle(): Result {
   const { slug } = useParams();
 
-  const {
-    data: schoolYear,
-    isLoading,
-    isFetching,
-  } = useQuery(
-    getSchoolYearBySlugAndCurrentAdminUser(
-      { slug: slug || '' },
-      {
-        enabled: !!slug,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToSchoolYear(data);
+  const queryConfig = useMemo(
+    () =>
+      getSchoolYearBySlugAndCurrentAdminUser(
+        { slug: slug || '' },
+        {
+          enabled: !!slug,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToSchoolYear(data);
+          },
         },
-      },
-    ),
+      ),
+    [slug],
   );
+
+  const { data: schoolYear, isLoading, isFetching } = useQuery(queryConfig);
 
   return { loading: isLoading || isFetching, schoolYear };
 }

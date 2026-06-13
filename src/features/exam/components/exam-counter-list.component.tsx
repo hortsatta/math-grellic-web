@@ -28,26 +28,30 @@ export const ExamCounterList = memo(function ({
   const [keyword, setKeyword] = useState<string | undefined>(undefined);
   const [openModal, setOpenModal] = useState(false);
 
+  const queryConfig = useMemo(
+    () =>
+      getExamsByTeacherId(
+        { teacherId, q: keyword, status: RecordStatus.Published, schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          refetchOnMount: false,
+          refetchOnReconnect: false,
+          enabled: !!keyword,
+          select: (data: unknown) =>
+            Array.isArray(data)
+              ? data.map((item: any) => transformToExam(item))
+              : undefined,
+        },
+      ),
+    [teacherId, keyword, schoolYearId],
+  );
+
   const {
     data: exams,
     isLoading: isExamLoading,
     isFetching: isExamFetching,
     refetch,
-  } = useQuery(
-    getExamsByTeacherId(
-      { teacherId, q: keyword, status: RecordStatus.Published, schoolYearId },
-      {
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-        enabled: !!keyword,
-        select: (data: unknown) =>
-          Array.isArray(data)
-            ? data.map((item: any) => transformToExam(item))
-            : undefined,
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const totalExamCountText = useMemo(() => {
     if (!examCount) {

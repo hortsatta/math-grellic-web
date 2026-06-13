@@ -24,7 +24,7 @@ type Result = {
 export function useTeacherScheduleDailyList(
   scheduleType?: ScheduleType,
 ): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
   const {
@@ -40,24 +40,28 @@ export function useTeacherScheduleDailyList(
     }),
   );
 
+  const timelineSchedulesQueryConfig = useMemo(
+    () =>
+      getSchedulesByDateAndCurrentTeacherUser(
+        {
+          date: currentDate || today || new Date(),
+          schoolYearId,
+        },
+        {
+          enabled: !!currentDate || !!today,
+          refetchOnWindowFocus: false,
+          select: (data: any) => transformToTimelineSchedules(data),
+        },
+      ),
+    [currentDate, today, schoolYearId],
+  );
+
   const {
     data: timelineSchedules,
     isLoading: isTimelineSchedulesLoading,
     isRefetching: isTimelineSchedulesRefetching,
     refetch: refreshTimelineSchedules,
-  } = useQuery(
-    getSchedulesByDateAndCurrentTeacherUser(
-      {
-        date: currentDate || today || new Date(),
-        schoolYearId: schoolYear?.id,
-      },
-      {
-        enabled: !!currentDate || !!today,
-        refetchOnWindowFocus: false,
-        select: (data: any) => transformToTimelineSchedules(data),
-      },
-    ),
-  );
+  } = useQuery(timelineSchedulesQueryConfig);
 
   const schedules = useMemo(() => {
     const { lessonSchedules, examSchedules, meetingSchedules } =

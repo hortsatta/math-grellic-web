@@ -40,7 +40,7 @@ export const defaultParamKeys = {
 
 export function useTeacherMeetingScheduleList(): Result {
   const navigate = useNavigate();
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [keyword, setKeyword] = useState<string | null>(null);
   const [sort, setSort] = useState<QuerySort>(defaultSort);
   const [skip, setSkip] = useState<number>(0);
@@ -50,27 +50,31 @@ export function useTeacherMeetingScheduleList(): Result {
 
   const pagination = useMemo(() => ({ take: PAGINATION_TAKE, skip }), [skip]);
 
-  const { data, isLoading, isRefetching, refetch } = useQuery(
-    getPaginatedMeetingSchedulesByCurrentTeacherUser(
-      {
-        q: keyword || undefined,
-        sort: querySort,
-        pagination,
-        schoolYearId: schoolYear?.id,
-      },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any[]) => {
-          const [items, totalCount] = data;
-          const transformedItems = items.map((item: unknown) =>
-            transformToMeetingSchedule(item),
-          );
-
-          return [transformedItems, +totalCount];
+  const queryConfig = useMemo(
+    () =>
+      getPaginatedMeetingSchedulesByCurrentTeacherUser(
+        {
+          q: keyword || undefined,
+          sort: querySort,
+          pagination,
+          schoolYearId,
         },
-      },
-    ),
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any[]) => {
+            const [items, totalCount] = data;
+            const transformedItems = items.map((item: unknown) =>
+              transformToMeetingSchedule(item),
+            );
+
+            return [transformedItems, +totalCount];
+          },
+        },
+      ),
+    [keyword, querySort, pagination, schoolYearId],
   );
+
+  const { data, isLoading, isRefetching, refetch } = useQuery(queryConfig);
 
   const meetingSchedules = useMemo(() => {
     const [items] = data || [];

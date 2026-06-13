@@ -27,9 +27,43 @@ type Result = {
 };
 
 export function useTeacherClassPerformance(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [currentRankingsPerformance, setCurrentRankingsPerformance] = useState(
     StudentPerformanceType.Exam,
+  );
+
+  const classPerformanceQueryConfig = useMemo(
+    () =>
+      getClassPerformanceByCurrentTeacherUser(schoolYearId, {
+        refetchOnWindowFocus: false,
+      }),
+    [schoolYearId],
+  );
+
+  const paginatedStudentRankingsQueryConfig = useMemo(
+    () =>
+      getPaginatedStudentPerformancesByCurrentTeacherUser(
+        {
+          q: undefined,
+          performance: currentRankingsPerformance,
+          sort: 'rank,asc',
+          pagination: { take: 5, skip: 0 },
+          schoolYearId,
+        },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any[]) => {
+            const [items, totalCount] = data;
+            const transformedItems =
+              items?.map((item: unknown) =>
+                transformToStudentPerformance(item),
+              ) || [];
+
+            return [transformedItems, +totalCount];
+          },
+        },
+      ),
+    [currentRankingsPerformance, schoolYearId],
   );
 
   const {
@@ -37,40 +71,14 @@ export function useTeacherClassPerformance(): Result {
     isLoading: isClassLoading,
     isRefetching: isClassRefetching,
     refetch: refreshClass,
-  } = useQuery(
-    getClassPerformanceByCurrentTeacherUser(schoolYear?.id, {
-      refetchOnWindowFocus: false,
-    }),
-  );
+  } = useQuery(classPerformanceQueryConfig);
 
   const {
     data,
     isLoading: isRankingsLoading,
     isRefetching: isRankingsRefetching,
     refetch: refreshRanking,
-  } = useQuery(
-    getPaginatedStudentPerformancesByCurrentTeacherUser(
-      {
-        q: undefined,
-        performance: currentRankingsPerformance,
-        sort: 'rank,asc',
-        pagination: { take: 5, skip: 0 },
-        schoolYearId: schoolYear?.id,
-      },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any[]) => {
-          const [items, totalCount] = data;
-          const transformedItems =
-            items?.map((item: unknown) =>
-              transformToStudentPerformance(item),
-            ) || [];
-
-          return [transformedItems, +totalCount];
-        },
-      },
-    ),
-  );
+  } = useQuery(paginatedStudentRankingsQueryConfig);
 
   const studentRankingsPerformances = useMemo(() => {
     const [items] = data || [];

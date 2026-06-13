@@ -27,7 +27,7 @@ type Result = {
 };
 
 export function useStudentUserEdit(id?: number): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [isDone, setIsDone] = useState(false);
 
   const { mutateAsync: mutateEditStudent, isLoading } = useMutation(
@@ -62,22 +62,26 @@ export function useStudentUserEdit(id?: number): Result {
       }),
     );
 
+  const queryConfig = useMemo(
+    () =>
+      getStudentByIdAndCurrentTeacherUserApi(
+        { id: id || 0, schoolYearId },
+        {
+          enabled: !!id,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToStudentUserAccount(data);
+          },
+        },
+      ),
+    [id, schoolYearId],
+  );
+
   const {
     data: student,
     isLoading: isQueryLoading,
     isFetching: isQueryFetching,
-  } = useQuery(
-    getStudentByIdAndCurrentTeacherUserApi(
-      { id: id || 0, schoolYearId: schoolYear?.id },
-      {
-        enabled: !!id,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToStudentUserAccount(data);
-        },
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const studentFormData = useMemo(
     () => (student ? transformToUserRegisterFormData(student) : undefined),

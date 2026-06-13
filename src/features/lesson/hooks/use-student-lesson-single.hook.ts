@@ -30,24 +30,24 @@ type Result = {
 export function useStudentLessonSingle(): Result {
   const { serverClock, startClock, stopClock } = useClockSocket();
   const { slug } = useParams();
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
 
-  const {
-    data: lesson,
-    isLoading,
-    isFetching,
-  } = useQuery(
-    getLessonBySlugAndCurrentStudentUser(
-      { slug: slug || '', schoolYearId: schoolYear?.id },
-      {
-        enabled: !!slug,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToLesson(data);
+  const queryConfig = useMemo(
+    () =>
+      getLessonBySlugAndCurrentStudentUser(
+        { slug: slug || '', schoolYearId },
+        {
+          enabled: !!slug,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToLesson(data);
+          },
         },
-      },
-    ),
+      ),
+    [slug, schoolYearId],
   );
+
+  const { data: lesson, isLoading, isFetching } = useQuery(queryConfig);
 
   const { mutateAsync, isLoading: isMutateLoading } = useMutation(
     setLessonCompletionApi({

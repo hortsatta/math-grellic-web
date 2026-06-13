@@ -25,24 +25,28 @@ type Result = {
 
 export function useExamPreviewSlug(): Result {
   const { slug } = useParams();
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [isDone, setIsDone] = useState(false);
   const [examCompletion, setExamCompletion] = useState<ExamCompletion | null>(
     null,
   );
 
-  const { data: exam } = useQuery(
-    getExamBySlugAndCurrentTeacherUser(
-      { slug: slug || '', schoolYearId: schoolYear?.id, exclude: 'schedules' },
-      {
-        enabled: !!slug,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToExam(data);
+  const queryConfig = useMemo(
+    () =>
+      getExamBySlugAndCurrentTeacherUser(
+        { slug: slug || '', schoolYearId, exclude: 'schedules' },
+        {
+          enabled: !!slug,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToExam(data);
+          },
         },
-      },
-    ),
+      ),
+    [slug, schoolYearId],
   );
+
+  const { data: exam } = useQuery(queryConfig);
 
   const titlePreview = useMemo(
     () => (exam?.title ? `${exam?.title} (Preview)` : 'Preview'),

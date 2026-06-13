@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { getStudentsAcademicProgressByCurrentTeacherUser } from '../api/teacher-school-year-enrollment.api';
@@ -13,18 +14,22 @@ type Result = {
 };
 
 export function useTeacherStudentSchoolYearAcademicProgress(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
+
+  const queryConfig = useMemo(
+    () =>
+      getStudentsAcademicProgressByCurrentTeacherUser(schoolYearId, {
+        refetchOnWindowFocus: false,
+      }),
+    [schoolYearId],
+  );
 
   const {
     data: studentsAcademicProgress,
     isLoading,
     isRefetching,
     refetch,
-  } = useQuery(
-    getStudentsAcademicProgressByCurrentTeacherUser(schoolYear?.id, {
-      refetchOnWindowFocus: false,
-    }),
-  );
+  } = useQuery(queryConfig);
 
   return {
     loading: isLoading || isRefetching,

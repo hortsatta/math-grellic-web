@@ -16,22 +16,26 @@ type Result = {
 export function useStudentMeetingScheduleSingle(): Result {
   const { id } = useParams();
 
+  const queryConfig = useMemo(
+    () =>
+      getMeetingScheduleByIdAndCurrentStudentUser(
+        { id: +(id || 0) },
+        {
+          enabled: !!id,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToMeetingSchedule(data);
+          },
+        },
+      ),
+    [id],
+  );
+
   const {
     data: meetingSchedule,
     isLoading,
     isFetching,
-  } = useQuery(
-    getMeetingScheduleByIdAndCurrentStudentUser(
-      { id: +(id || 0) },
-      {
-        enabled: !!id,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToMeetingSchedule(data);
-        },
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const title = useMemo(() => meetingSchedule?.title || '', [meetingSchedule]);
 

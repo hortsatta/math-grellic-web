@@ -14,19 +14,23 @@ type Result = {
 };
 
 export function useTeacherAnnouncementList(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
+
+  const queryConfig = useMemo(
+    () =>
+      getAnnouncementsByCurrentTeacherUser(schoolYearId, {
+        refetchOnWindowFocus: false,
+        select: (data: any) => transformToTeacherAnnouncements(data),
+      }),
+    [schoolYearId],
+  );
 
   const {
     data,
     isLoading,
     isRefetching,
     refetch: refresh,
-  } = useQuery(
-    getAnnouncementsByCurrentTeacherUser(schoolYear?.id, {
-      refetchOnWindowFocus: false,
-      select: (data: any) => transformToTeacherAnnouncements(data),
-    }),
-  );
+  } = useQuery(queryConfig);
 
   const teacherAnnouncements = useMemo(
     () =>

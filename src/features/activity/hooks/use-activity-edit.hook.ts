@@ -30,7 +30,7 @@ type Result = {
 };
 
 export function useActivityEdit(slug?: string): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [isDone, setIsDone] = useState(false);
 
   const {
@@ -72,20 +72,24 @@ export function useActivityEdit(slug?: string): Result {
       }),
     );
 
+  const queryConfig = useMemo(
+    () =>
+      getActivityBySlugAndCurrentTeacherUser(
+        { slug: slug || '', schoolYearId: schoolYearId },
+        {
+          enabled: !!slug,
+          refetchOnWindowFocus: false,
+          select: (data: any) => transformToActivity(data),
+        },
+      ),
+    [slug, schoolYearId],
+  );
+
   const {
     data: activity,
     isLoading: isQueryLoading,
     isFetching: isQueryFetching,
-  } = useQuery(
-    getActivityBySlugAndCurrentTeacherUser(
-      { slug: slug || '', schoolYearId: schoolYear?.id },
-      {
-        enabled: !!slug,
-        refetchOnWindowFocus: false,
-        select: (data: any) => transformToActivity(data),
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const activityFormData = useMemo(
     () => (activity ? transformToActivityFormData(activity) : undefined),
@@ -133,7 +137,7 @@ export function useActivityEdit(slug?: string): Result {
       await validateUpsertActivity({ data, id: activity.id });
       const images = await mutateUploadActivityImages({
         data,
-        schoolYearId: schoolYear?.id,
+        schoolYearId,
         strict: true,
       });
       // Clone value for shifting of array
@@ -214,7 +218,7 @@ export function useActivityEdit(slug?: string): Result {
     },
     [
       activity,
-      schoolYear,
+      schoolYearId,
       validateUpsertActivity,
       mutateUploadActivityImages,
       mutateEditActivity,

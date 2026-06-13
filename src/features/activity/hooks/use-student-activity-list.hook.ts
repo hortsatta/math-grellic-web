@@ -17,38 +17,42 @@ type Result = {
 };
 
 export function useStudentActivityList(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [keyword, setKeyword] = useState<string | null>(null);
+
+  const queryConfig = useMemo(
+    () =>
+      getActivitiesByCurrentStudentUser(
+        { q: keyword || undefined, schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            const { featuredActivities, otherActivities } = data;
+
+            const transformedFeaturedActivities = featuredActivities?.length
+              ? featuredActivities.map((item: any) => transformToActivity(item))
+              : [];
+
+            const transformedOtherActivities = otherActivities?.length
+              ? otherActivities.map((item: any) => transformToActivity(item))
+              : [];
+
+            return {
+              featuredActivities: transformedFeaturedActivities,
+              otherActivities: transformedOtherActivities,
+            };
+          },
+        },
+      ),
+    [keyword, schoolYearId],
+  );
 
   const {
     data: list,
     isLoading,
     isRefetching,
     refetch,
-  } = useQuery(
-    getActivitiesByCurrentStudentUser(
-      { q: keyword || undefined, schoolYearId: schoolYear?.id },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          const { featuredActivities, otherActivities } = data;
-
-          const transformedFeaturedActivities = featuredActivities?.length
-            ? featuredActivities.map((item: any) => transformToActivity(item))
-            : [];
-
-          const transformedOtherActivities = otherActivities?.length
-            ? otherActivities.map((item: any) => transformToActivity(item))
-            : [];
-
-          return {
-            featuredActivities: transformedFeaturedActivities,
-            otherActivities: transformedOtherActivities,
-          };
-        },
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const { featuredActivities, otherActivities } = useMemo(
     () =>

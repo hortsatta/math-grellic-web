@@ -61,7 +61,7 @@ export const defaultParamKeys = {
 
 export function useStudentUserList(): Result {
   const navigate = useNavigate();
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const [keyword, setKeyword] = useState<string | null>(null);
   const [filters, setFilters] = useState<QueryFilterOption[]>([]);
   const [sort, setSort] = useState<QuerySort>(defaultSort);
@@ -87,29 +87,33 @@ export function useStudentUserList(): Result {
 
   const pagination = useMemo(() => ({ take: PAGINATION_TAKE, skip }), [skip]);
 
-  const { data, isLoading, isRefetching, refetch } = useQuery(
-    getPaginatedStudentsByCurrentTeacherUser(
-      {
-        q: keyword || undefined,
-        status: UserApprovalStatus.Approved,
-        sort: querySort,
-        pagination,
-        schoolYearId: schoolYear?.id,
-        enrollmentStatus,
-      },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any[]) => {
-          const [items, totalCount] = data;
-          const transformedItems = items.map((item: unknown) =>
-            transformToStudentUserAccount(item),
-          );
-
-          return [transformedItems, +totalCount];
+  const queryConfig = useMemo(
+    () =>
+      getPaginatedStudentsByCurrentTeacherUser(
+        {
+          q: keyword || undefined,
+          status: UserApprovalStatus.Approved,
+          sort: querySort,
+          pagination,
+          schoolYearId,
+          enrollmentStatus,
         },
-      },
-    ),
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any[]) => {
+            const [items, totalCount] = data;
+            const transformedItems = items.map((item: unknown) =>
+              transformToStudentUserAccount(item),
+            );
+
+            return [transformedItems, +totalCount];
+          },
+        },
+      ),
+    [keyword, querySort, pagination, schoolYearId, enrollmentStatus],
   );
+
+  const { data, isLoading, isRefetching, refetch } = useQuery(queryConfig);
 
   const {
     mutateAsync: mutateSetStudentApprovalStatus,

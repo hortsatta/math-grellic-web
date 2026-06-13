@@ -21,27 +21,27 @@ export const TeacherStudentExamPerformanceResult = memo(function ({
   ...moreProps
 }: Props) {
   const { publicId } = useParams();
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
 
-  const {
-    data: exam,
-    isFetching,
-    isLoading,
-  } = useQuery(
-    getStudentExamWithCompletionsByPublicIdAndSlug(
-      {
-        publicId: publicId || '',
-        slug,
-        scheduleId,
-        schoolYearId: schoolYear?.id,
-      },
-      {
-        refetchOnWindowFocus: false,
-        enabled: !!publicId,
-        select: (data: unknown) => transformToExam(data),
-      },
-    ),
+  const queryConfig = useMemo(
+    () =>
+      getStudentExamWithCompletionsByPublicIdAndSlug(
+        {
+          publicId: publicId || '',
+          slug,
+          scheduleId,
+          schoolYearId,
+        },
+        {
+          refetchOnWindowFocus: false,
+          enabled: !!publicId,
+          select: (data: unknown) => transformToExam(data),
+        },
+      ),
+    [publicId, slug, scheduleId, schoolYearId],
   );
+
+  const { data: exam, isFetching, isLoading } = useQuery(queryConfig);
 
   const [title, questions, isRandomized, examCompletion, schedule] = useMemo(
     () => [

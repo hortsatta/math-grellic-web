@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
@@ -13,25 +14,25 @@ type Result = {
 };
 
 export function useStudentUserSingle(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
   const { id } = useParams();
 
-  const {
-    data: student,
-    isLoading,
-    isFetching,
-  } = useQuery(
-    getStudentByIdAndCurrentTeacherUser(
-      { id: +(id || 0), schoolYearId: schoolYear?.id },
-      {
-        enabled: !!id,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToStudentUserAccount(data);
+  const queryConfig = useMemo(
+    () =>
+      getStudentByIdAndCurrentTeacherUser(
+        { id: +(id || 0), schoolYearId },
+        {
+          enabled: !!id,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToStudentUserAccount(data);
+          },
         },
-      },
-    ),
+      ),
+    [id, schoolYearId],
   );
+
+  const { data: student, isLoading, isFetching } = useQuery(queryConfig);
 
   return {
     loading: isLoading || isFetching,

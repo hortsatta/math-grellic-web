@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { queryClient } from '#/config/react-query-client.config';
@@ -28,31 +28,35 @@ type Result = {
 };
 
 export function useStudentUserPendingEnrollmentList(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
+
+  const queryConfig = useMemo(
+    () =>
+      getStudentsByCurrentTeacherUser(
+        {
+          schoolYearId,
+          status: UserApprovalStatus.Approved,
+          enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Pending,
+        },
+        {
+          queryKey: queryUserKey.studentList,
+          refetchOnWindowFocus: false,
+          initialData: [],
+          select: (data: unknown) =>
+            Array.isArray(data)
+              ? data.map((item: any) => transformToStudentUserAccount(item))
+              : [],
+        },
+      ),
+    [schoolYearId],
+  );
 
   const {
     data: pendingStudents,
     isLoading,
     isFetching,
     refetch,
-  } = useQuery(
-    getStudentsByCurrentTeacherUser(
-      {
-        schoolYearId: schoolYear?.id,
-        status: UserApprovalStatus.Approved,
-        enrollmentStatus: SchoolYearEnrollmentApprovalStatus.Pending,
-      },
-      {
-        queryKey: queryUserKey.studentList,
-        refetchOnWindowFocus: false,
-        initialData: [],
-        select: (data: unknown) =>
-          Array.isArray(data)
-            ? data.map((item: any) => transformToStudentUserAccount(item))
-            : [],
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   // TODO approval status of enrollment
   const {

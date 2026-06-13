@@ -60,22 +60,26 @@ export function useTeacherUserEdit(id?: number): Result {
       }),
     );
 
+  const queryConfig = useMemo(
+    () =>
+      getTeacherByIdApi(
+        { id: id || 0 },
+        {
+          enabled: !!id,
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToTeacherUserAccount(data);
+          },
+        },
+      ),
+    [id],
+  );
+
   const {
     data: teacher,
     isLoading: isQueryLoading,
     isFetching: isQueryFetching,
-  } = useQuery(
-    getTeacherByIdApi(
-      { id: id || 0 },
-      {
-        enabled: !!id,
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToTeacherUserAccount(data);
-        },
-      },
-    ),
-  );
+  } = useQuery(queryConfig);
 
   const teacherFormData = useMemo(
     () => (teacher ? transformToUserRegisterFormData(teacher) : undefined),

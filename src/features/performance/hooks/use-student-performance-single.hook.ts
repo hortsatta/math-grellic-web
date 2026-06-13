@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { useBoundStore } from '#/core/hooks/use-store.hook';
@@ -12,23 +13,23 @@ type Result = {
 };
 
 export function useStudentPerformanceSingle(): Result {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
 
-  const {
-    data: student,
-    isLoading,
-    isRefetching,
-  } = useQuery(
-    getStudentPerformanceByCurrentStudentUser(
-      { schoolYearId: schoolYear?.id },
-      {
-        refetchOnWindowFocus: false,
-        select: (data: any) => {
-          return transformToStudentPerformance(data);
+  const queryConfig = useMemo(
+    () =>
+      getStudentPerformanceByCurrentStudentUser(
+        { schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          select: (data: any) => {
+            return transformToStudentPerformance(data);
+          },
         },
-      },
-    ),
+      ),
+    [schoolYearId],
   );
+
+  const { data: student, isLoading, isRefetching } = useQuery(queryConfig);
 
   return { loading: isLoading || isRefetching, student };
 }

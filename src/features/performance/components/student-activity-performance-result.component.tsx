@@ -125,22 +125,22 @@ export const StudentActivityPerformanceResult = memo(function ({
   slug,
   ...moreProps
 }: Props) {
-  const schoolYear = useBoundStore((state) => state.schoolYear);
+  const schoolYearId = useBoundStore((state) => state.schoolYear?.id);
 
-  const {
-    data: activity,
-    isFetching,
-    isLoading,
-  } = useQuery(
-    getStudentActivityWithCompletionsBySlugAndCurrentStudentUser(
-      { slug, schoolYearId: schoolYear?.id },
-      {
-        refetchOnWindowFocus: false,
-        enabled: !!slug,
-        select: (data: unknown) => transformToActivity(data),
-      },
-    ),
+  const queryConfig = useMemo(
+    () =>
+      getStudentActivityWithCompletionsBySlugAndCurrentStudentUser(
+        { slug, schoolYearId },
+        {
+          refetchOnWindowFocus: false,
+          enabled: !!slug,
+          select: (data: unknown) => transformToActivity(data),
+        },
+      ),
+    [slug, schoolYearId],
   );
+
+  const { data: activity, isFetching, isLoading } = useQuery(queryConfig);
 
   const [title, gameType, categories] = useMemo(
     () => [activity?.title, activity?.game.type, activity?.categories],
