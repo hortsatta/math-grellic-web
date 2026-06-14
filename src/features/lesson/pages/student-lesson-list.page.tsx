@@ -39,7 +39,7 @@ function StudentLessonListPage() {
             previousLessons={previousLessons}
             loading={loading}
           />
-          <div className='bg-gradient sticky bottom-0 h-20 w-full bg-gradient-to-t from-backdrop from-60% to-transparent' />
+          <div className='bg-gradient sticky bottom-0 z-50 h-20 w-full bg-gradient-to-t from-backdrop from-60% to-transparent' />
         </div>
         <BaseRightSidebar>
           <StudentLessonPerformanceOverviewBoard
