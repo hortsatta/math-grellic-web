@@ -100,19 +100,20 @@ function StudentDashboardPage() {
           </BaseSurface>
           <StudentDashboardHelpCard />
         </div>
-        <div className='bg-gradient sticky bottom-0 h-20 w-full bg-gradient-to-t from-backdrop from-60% to-transparent' />
+        <div className='bg-gradient sticky bottom-0 z-50 h-20 w-full bg-gradient-to-t from-backdrop from-60% to-transparent' />
       </div>
       <BaseRightSidebar>
-        <div className='flex w-full flex-col gap-5'>
+        <div className='flex w-full flex-col gap-4'>
           <StudentDashboardOverallProgressChart
+            schoolYear={schoolYear}
+            enrollment={syEnrollment}
             studentPerformance={studentPerformance}
-            loading={!user || performanceLoading}
+            loading={
+              !user || !syEnrollment || !schoolYear || performanceLoading
+            }
           />
-          {schoolYear && syEnrollment && (
-            <StudentDashboardSchoolYearSummary
-              schoolYear={schoolYear}
-              enrollment={syEnrollment}
-            />
+          {schoolYear && (
+            <StudentDashboardSchoolYearSummary schoolYear={schoolYear} />
           )}
         </div>
       </BaseRightSidebar>
