@@ -176,17 +176,16 @@ export const TeacherActivitySingleCard = memo(function ({
     >
       <div
         className={cx(
-          'group pointer-events-auto flex h-full flex-1 flex-col items-start gap-4',
-          isDashboard
-            ? 'flex-col -2lg:flex-row xl:flex-col xl:items-start 2xl:flex-row 2xl:items-center'
-            : 'md:flex-row md:items-center',
+          'group pointer-events-auto flex h-full flex-1 flex-col items-start gap-2.5 xs:gap-4 md:flex-row md:items-center',
+          isDashboard &&
+            'lg:[.rsb-expanded_&]:flex-col lg:[.rsb-expanded_&]:items-start xl:[.rsb-expanded_&]:flex-row xl:[.rsb-expanded_&]:items-center',
         )}
         tabIndex={0}
         onClick={onDetails}
       >
-        <div className='flex h-full w-full flex-1 flex-col items-start gap-4 xs:flex-row'>
+        <div className='flex h-full w-full flex-1 flex-col items-start gap-2.5 xs:flex-row xs:gap-4'>
           {/* TODO Image */}
-          <div className='flex h-[88px] w-full items-center justify-center overflow-hidden rounded border border-primary-hue-teal bg-primary-hue-teal/30 font-medium xs:w-[121px]'>
+          <div className='flex h-[90px] w-full items-center justify-center overflow-hidden rounded border border-primary-hue-teal bg-primary-hue-teal/30 font-medium xs:h-[88px] xs:w-[121px]'>
             <BaseIcon name='game-controller' size={40} weight='light' />
           </div>
           <div className='flex h-full w-full flex-1 flex-row items-center justify-between xs:w-auto'>
@@ -206,7 +205,7 @@ export const TeacherActivitySingleCard = memo(function ({
                 )}
               </div>
               {/* Title */}
-              <h2 className='font-body text-lg font-medium tracking-normal text-accent group-hover:text-primary-hue-teal-focus'>
+              <h2 className='order-first font-body text-lg font-medium leading-tight tracking-normal text-accent group-hover:text-primary-hue-teal-focus xs:order-none'>
                 {title}
               </h2>
             </div>
@@ -222,14 +221,7 @@ export const TeacherActivitySingleCard = memo(function ({
         </div>
         {/* Category info */}
         {!!categories.length && (
-          <div
-            className={cx(
-              'flex min-w-[190px]',
-              isDashboard
-                ? 'flex-col gap-1 xs:flex-row xs:gap-2.5 -2lg:flex-col -2lg:gap-1 xl:flex-row xl:gap-2.5 2xl:flex-col 2xl:gap-1'
-                : 'flex-col gap-1',
-            )}
-          >
+          <div className='flex min-w-[190px] flex-col gap-1'>
             {categories.map((category, index) => (
               <div key={`cat-${index}`} className='flex items-center gap-2.5'>
                 {!isGameTypeStage ? (
@@ -240,31 +232,12 @@ export const TeacherActivitySingleCard = memo(function ({
                     <span className='text-sm uppercase'>
                       ({getLevelName(category.level)})
                     </span>
-                    {index < categories.length - 1 && isDashboard && (
-                      <BaseDivider
-                        className='hidden !h-6 xs:block -2lg:hidden xl:block 2xl:hidden'
-                        vertical
-                      />
-                    )}
                   </>
                 ) : (
-                  <div
-                    className={cx(
-                      'flex flex-col gap-1',
-                      isDashboard
-                        ? 'flex-col gap-1 xs:flex-row xs:gap-2.5 -2lg:flex-col -2lg:gap-1 xl:flex-row xl:gap-2.5 2xl:flex-col 2xl:gap-1'
-                        : 'flex-col gap-1',
-                    )}
-                  >
+                  <div className='flex flex-col gap-1'>
                     <BaseChip iconName='stack'>
                       {generateStageText(category)}
                     </BaseChip>
-                    {isDashboard && (
-                      <BaseDivider
-                        className='hidden !h-6 xs:block -2lg:hidden xl:block 2xl:hidden'
-                        vertical
-                      />
-                    )}
                     <BaseChip iconName='list-bullets'>
                       {generateStagQuestionCountText(category)}
                     </BaseChip>

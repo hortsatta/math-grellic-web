@@ -71,7 +71,7 @@ const StudentRankCard = memo(function ({
     <div className='flex flex-1 flex-col items-center justify-center gap-2.5 p-2.5'>
       <div
         className={cx(
-          'flex h-10 w-28 items-center justify-center gap-x-2.5 font-bold sm:w-fit',
+          'flex h-10 w-28 items-center justify-center gap-x-2.5 font-bold sm:w-fit lg:[.rsb-expanded_&]:w-28 -2xl:[.rsb-expanded_&]:w-fit',
           performance === StudentPerformanceType.Exam &&
             '!text-primary-hue-purple',
           performance === StudentPerformanceType.Activity &&
@@ -83,7 +83,7 @@ const StudentRankCard = memo(function ({
           <PerformanceRankAwardImg rank={overallRank} />
         )}
       </div>
-      <h4 className='flex flex-row items-start justify-start font-body text-base font-medium leading-tight tracking-normal text-accent sm:flex-col'>
+      <h4 className='flex flex-row items-start justify-start font-body text-base font-medium leading-tight tracking-normal text-accent sm:flex-col lg:[.rsb-expanded_&]:flex-row -2xl:[.rsb-expanded_&]:flex-col'>
         <span className='mr-1'>{lastName}</span>
         <span>{firstWithMiddleName}</span>
       </h4>
@@ -149,7 +149,7 @@ export const TeacherDashboardStudentLeaderboard = memo(function ({
             </div>
           ) : (
             <div className='flex animate-fastFadeIn items-stretch'>
-              <div className='items-star flex flex-1 flex-col sm:flex-row'>
+              <div className='items-star flex flex-1 flex-col sm:flex-row lg:[.rsb-expanded_&]:flex-col -2xl:[.rsb-expanded_&]:flex-row'>
                 {students.map((student, index) => (
                   <Fragment key={`stu-${student.id}`}>
                     <StudentRankCard
@@ -160,19 +160,25 @@ export const TeacherDashboardStudentLeaderboard = memo(function ({
                       ? index < students.length - 1
                       : students.length + offsetStudentCount - 1 && (
                           <>
-                            <BaseDivider className='hidden sm:block' vertical />
-                            <BaseDivider className='block sm:hidden' />
+                            <BaseDivider
+                              className='hidden sm:block lg:[.rsb-expanded_&]:hidden -2xl:[.rsb-expanded_&]:block'
+                              vertical
+                            />
+                            <BaseDivider className='block sm:hidden lg:[.rsb-expanded_&]:block -2xl:[.rsb-expanded_&]:hidden' />
                           </>
                         )}
                   </Fragment>
                 ))}
                 {[...Array(offsetStudentCount)].map((_, index) => (
                   <Fragment key={index}>
-                    <div className='flex-1 basis-[90px] sm:basis-0' />
+                    <div className='flex-1 basis-[90px] sm:basis-0 lg:[.rsb-expanded_&]:basis-[90px] -2xl:[.rsb-expanded_&]:basis-0' />
                     {index < offsetStudentCount - 1 && (
                       <>
-                        <BaseDivider className='hidden sm:block' vertical />
-                        <BaseDivider className='block sm:hidden' />
+                        <BaseDivider
+                          className='hidden sm:block lg:[.rsb-expanded_&]:hidden -2xl:[.rsb-expanded_&]:block'
+                          vertical
+                        />
+                        <BaseDivider className='block sm:hidden lg:[.rsb-expanded_&]:block -2xl:[.rsb-expanded_&]:hidden' />
                       </>
                     )}
                   </Fragment>

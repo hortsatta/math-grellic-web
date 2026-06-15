@@ -77,7 +77,7 @@ export const AnnouncementCard = memo(function ({
     return !announcement ? (
       <span className='inline-block'>No announcements</span>
     ) : (
-      <div className='flex w-full flex-col justify-between gap-2.5 px-4 py-3'>
+      <div className='flex w-full flex-col justify-between gap-2.5 px-5 py-6'>
         <h4 className='w-full pr-8 font-body text-base font-medium normal-case leading-5 tracking-normal text-accent'>
           {title}
         </h4>

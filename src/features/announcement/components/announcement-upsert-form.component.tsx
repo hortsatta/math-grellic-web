@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { Menu } from '@headlessui/react';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,10 +10,12 @@ import cx from 'classix';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
+import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
 import { BaseControlledTimeInput } from '#/base/components/base-time-input.component';
 import { BaseControlledInput } from '#/base/components/base-input.component';
 import { BaseControlledTextArea } from '#/base/components/base-textarea.component';
+import { AnnouncementUpsertPreview } from './announcement-upsert-preview.component';
 
 import type { FormProps, IconName } from '#/base/models/base.model';
 import type { Announcement } from '../models/announcement.model';
@@ -84,30 +86,41 @@ export const AnnouncementUpsertForm = memo(function ({
     resolver: zodResolver(schema),
   });
 
+  const [title, description, startDate, startTime] = useWatch({
+    control,
+    name: ['title', 'description', 'startDate', 'startTime'],
+  });
+
+  const previewData = useMemo(() => {
+    const data: AnnouncementUpsertFormData = {
+      title,
+      description,
+      startDate,
+      startTime,
+      studentIds: [],
+    };
+
+    return data;
+  }, [title, description, startDate, startTime]);
+
   const loading = useMemo(
     () => formLoading || isSubmitting || isDone,
     [formLoading, isSubmitting, isDone],
   );
 
   const [publishButtonLabel, publishButtonIconName]: [string, IconName] =
-    useMemo(() => {
-      if (withPreview) {
-        return ['Preview Announcement', 'share-fat' as IconName];
-      }
+    useMemo(
+      () => [
+        isEdit ? 'Save Changes' : 'Broadcast',
+        (isEdit ? 'floppy-disk-back' : 'broadcast') as IconName,
+      ],
+      [isEdit],
+    );
 
-      return [
-        isEdit ? 'Save Changes' : 'Broadcast Announcement',
-        (isEdit ? 'floppy-disk-back' : 'share-fat') as IconName,
-      ];
-    }, [isEdit, withPreview]);
-
-  const headerAnnouncementText = useMemo(() => {
-    if (withPreview || !formData) {
-      return 'Create Announcement';
-    }
-
-    return 'Edit Announcement';
-  }, [withPreview, formData]);
+  const headerAnnouncementText = useMemo(
+    () => (!formData ? 'Create Announcement' : 'Edit Announcement'),
+    [formData],
+  );
 
   const handleReset = useCallback(() => {
     reset(isEdit ? formData : { ...defaultValues, schoolYearId });
@@ -133,9 +146,13 @@ export const AnnouncementUpsertForm = memo(function ({
   );
 
   return (
-    <div className={cx('w-full', className)} {...moreProps}>
+    <div className={cx('w-full bg-inherit', className)} {...moreProps}>
+      <h3 className='text-lg leading-none'>{headerAnnouncementText}</h3>
+      {withPreview && (
+        <AnnouncementUpsertPreview loading={loading} formData={previewData} />
+      )}
+      <BaseDivider />
       <form onSubmit={handleSubmit(submitForm)}>
-        <h3 className='text-lg leading-none'>{headerAnnouncementText}</h3>
         <div className='mx-auto mb-5 w-full pt-5'>
           <fieldset
             className='group/field flex flex-wrap gap-5'

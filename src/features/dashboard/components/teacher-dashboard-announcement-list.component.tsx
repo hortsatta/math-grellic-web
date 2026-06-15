@@ -4,14 +4,13 @@ import cx from 'classix';
 
 import { transformToAnnouncementFormData } from '#/announcement/helpers/announcement-transform.helper';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
+import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
-import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { AnnouncementCardList } from '#/announcement/components/announcement-card-list.component';
 import { AnnouncementCard } from '#/announcement/components/announcement-card.component';
-import { AnnouncementUpsertPreview } from '#/announcement/components/announcement-upsert-preview.component';
 import { AnnouncementUpsertForm } from '#/announcement/components/announcement-upsert-form.component';
 
 import type { ComponentProps } from 'react';
@@ -54,7 +53,7 @@ export const TeacherDashboardAnnouncementList = memo(function ({
     formData: AnnouncementUpsertFormData;
   } | null>(null);
 
-  const [hasPreviewError, setHasPreviewError] = useState(false);
+  // const [hasPreviewError, setHasPreviewError] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -104,7 +103,7 @@ export const TeacherDashboardAnnouncementList = memo(function ({
     // For create
     if (!editAnnouncement || !onDelete) {
       setAnnouncementFormData(null);
-      setHasPreviewError(false);
+      // setHasPreviewError(false);
       setOpenModal(false);
       return;
     }
@@ -115,104 +114,86 @@ export const TeacherDashboardAnnouncementList = memo(function ({
       toast.success(`Deleted ${editAnnouncement.formData.title}`);
 
       setEditAnnouncement(null);
-      setHasPreviewError(false);
+      // setHasPreviewError(false);
       setOpenModal(false);
     } catch (error: any) {
       toast.error(error.message);
     }
   }, [editAnnouncement, onDelete]);
 
-  // For preview component button
-  const handleCreateAnnouncement = useCallback(async () => {
-    if (!announcementFormData) {
-      setHasPreviewError(true);
-      return;
-    } else if (!onCreate) {
-      return;
-    }
-
-    try {
-      const announcement = await onCreate(announcementFormData);
-      toast.success(`Created ${announcement.title}`);
-      setAnnouncementFormData(null);
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      setHasPreviewError(false);
-    }
-  }, [announcementFormData, onCreate]);
+  const handleReset = useCallback(async () => {
+    setAnnouncementFormData(null);
+    // setHasPreviewError(false);
+  }, []);
 
   // For form button
   const handleUpsertAnnouncement = useCallback(
     async (data: AnnouncementUpsertFormData) => {
-      if (!editAnnouncement) {
-        setAnnouncementFormData(data);
-        setHasPreviewError(false);
-        setOpenModal(false);
-        return;
-      }
-
       try {
-        if (!onEdit) {
-          return;
-        }
+        if (!editAnnouncement) {
+          if (!onCreate) return;
 
-        const announcement = onEdit(editAnnouncement.id, data);
-        setOpenModal(false);
-        return announcement;
+          const announcement = await onCreate(data);
+          toast.success(`Created ${announcement.title}`);
+          handleSetModal(false)();
+        } else {
+          if (!onEdit) return;
+
+          await onEdit(editAnnouncement.id, data);
+          handleSetModal(false)();
+        }
       } catch (error: any) {
         toast.error(error.message);
       }
     },
-    [editAnnouncement, onEdit],
+    [editAnnouncement, onCreate, onEdit, handleSetModal],
   );
 
   return (
     <>
       <BaseSurface
-        className={cx('flex w-full flex-col gap-3.5 !pt-[15px]', className)}
+        className={cx(
+          'flex w-full flex-col border-4 border-dotted border-primary-hue-green !bg-primary-hue-green-light !py-[15px]',
+          className,
+        )}
         {...moreProps}
       >
-        <div className='w-full bg-inherit'>
-          <div className='mb-2.5 flex items-center justify-between'>
-            <h3 className='text-lg leading-none'>Announcements</h3>
-            {/* <BaseButton
+        <div className='mb-2.5 flex items-center justify-between'>
+          <h3 className='text-lg leading-none'>Announcements</h3>
+          {/* <BaseButton
               variant='link'
               size='sm'
               rightIconName='subtract-square'
             >
               View History
             </BaseButton> */}
-            <BaseTooltip content='Refresh'>
-              <BaseIconButton
-                name='arrow-clockwise'
-                variant='link'
-                className='!h-6 !w-6'
-                disabled={loading}
-                onClick={onRefresh}
-              />
-            </BaseTooltip>
-          </div>
-          <AnnouncementCardList
-            currentAnnouncements={currentAnnouncements}
-            upcomingAnnouncements={upcomingAnnouncements}
-            loading={loading}
-            onCardClick={handleCardClick}
-          />
+          <BaseTooltip content='Refresh'>
+            <BaseIconButton
+              name='arrow-clockwise'
+              variant='link'
+              className='!h-6 !w-6'
+              disabled={loading}
+              onClick={onRefresh}
+            />
+          </BaseTooltip>
         </div>
-        <BaseDivider className='mb-[11px]' />
-        <div className='w-full bg-inherit'>
-          <h3 className='mb-3.5 text-lg leading-none'>
-            Broadcast an Announcement
-          </h3>
-          <AnnouncementUpsertPreview
-            loading={loading}
-            formData={announcementFormData}
-            hasError={hasPreviewError}
-            onClick={handleCreateClick}
-            onSubmit={handleCreateAnnouncement}
-          />
-        </div>
+        <AnnouncementCardList
+          className='min-h-[229px]'
+          currentAnnouncements={currentAnnouncements}
+          upcomingAnnouncements={upcomingAnnouncements}
+          loading={loading}
+          onCardClick={handleCardClick}
+        />
+        <BaseButton
+          className='self-end'
+          variant='link'
+          size='sm'
+          rightIconName='broadcast'
+          loading={loading}
+          onClick={handleCreateClick}
+        >
+          Broadcast an Announcement
+        </BaseButton>
       </BaseSurface>
       <BaseModal
         className='overflow-visible'
@@ -249,6 +230,7 @@ export const TeacherDashboardAnnouncementList = memo(function ({
               }
               onSubmit={handleUpsertAnnouncement}
               onDelete={handleDeleteAnnouncement}
+              onReset={handleReset}
               withPreview={!editAnnouncement}
             />
           )

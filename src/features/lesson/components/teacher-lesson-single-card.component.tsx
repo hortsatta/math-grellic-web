@@ -135,7 +135,6 @@ export const TeacherLessonSingleCard = memo(function ({
     <BaseSurface
       className={cx(
         'pointer-events-none flex items-center gap-5 !p-2.5 transition-all hover:cursor-pointer hover:!border-primary-focus hover:shadow-md hover:ring-1 hover:ring-primary-focus',
-        isDashboard && 'xs:!pr-5',
         className,
       )}
       rounded='sm'
@@ -143,23 +142,15 @@ export const TeacherLessonSingleCard = memo(function ({
     >
       <div
         className={cx(
-          'group pointer-events-auto flex flex-1 flex-col items-start gap-2.5 xs:flex-row xs:gap-4',
-          isDashboard
-            ? 'flex-wrap -2lg:flex-nowrap xl:flex-wrap 2xl:flex-nowrap'
-            : 'flex-wrap md:flex-nowrap',
+          'group pointer-events-auto flex flex-1 flex-col flex-wrap items-start gap-2.5 xs:flex-row xs:gap-4 md:flex-nowrap',
+          isDashboard &&
+            'lg:[.rsb-expanded_&]:flex-col -2xl:[.rsb-expanded_&]:flex-row',
         )}
         tabIndex={0}
         onClick={onDetails}
       >
-        <div
-          className={cx(
-            'flex flex-1 flex-col items-start gap-4 xs:flex-row xs:items-center md:w-auto',
-            isDashboard
-              ? 'w-full -2lg:w-auto xl:w-full 2xl:w-auto'
-              : 'w-full md:w-auto',
-          )}
-        >
-          <div className='flex h-[68px] w-full items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary xs:w-[121px]'>
+        <div className='flex w-full flex-1 flex-col items-start gap-4 xs:flex-row xs:items-center md:w-auto'>
+          <div className='flex h-[90px] w-full items-center justify-center overflow-hidden rounded border border-primary bg-primary-focus-light/30 text-primary xs:h-[68px] xs:w-[121px]'>
             <BaseIcon name='chalkboard' size={40} weight='light' />
           </div>
           <div className='flex h-full flex-1 flex-col gap-2'>
@@ -176,7 +167,7 @@ export const TeacherLessonSingleCard = memo(function ({
               )}
             </div>
             {/* Title */}
-            <h2 className='font-body text-lg font-medium tracking-normal text-accent group-hover:text-primary-focus'>
+            <h2 className='font-body text-lg font-medium leading-tight tracking-normal text-accent group-hover:text-primary-focus'>
               {title}
             </h2>
           </div>
@@ -202,17 +193,17 @@ export const TeacherLessonSingleCard = memo(function ({
         {scheduleDate && (
           <div
             className={cx(
-              'flex w-32 pt-1',
-              isDashboard
-                ? 'w-full items-center gap-2.5 -2lg:w-auto xl:w-full 2xl:w-auto'
-                : 'min-w-0 flex-col items-start gap-1 xs:min-w-[240px] xs:flex-row xs:gap-2.5 sm:min-w-0 sm:flex-col sm:gap-1 md:w-auto md:min-w-[240px] md:flex-row md:items-center md:gap-2.5',
+              'flex w-32 min-w-0 flex-col items-start gap-1 pt-1 xs:min-w-[240px] xs:flex-row xs:gap-2.5 sm:min-w-0 sm:flex-col sm:gap-1 md:w-auto md:min-w-[240px] md:flex-row md:items-center md:gap-2.5',
+              isDashboard &&
+                '-2xl:[.rsb-expanded_&]:w-32 -2xl:[.rsb-expanded_&]:min-w-0 -2xl:[.rsb-expanded_&]:flex-col -2xl:[.rsb-expanded_&]:items-start -2xl:[.rsb-expanded_&]:gap-1 xl:[.rsb-expanded_&]:w-auto xl:[.rsb-expanded_&]:min-w-[240px] xl:[.rsb-expanded_&]:flex-row xl:[.rsb-expanded_&]:items-center xl:[.rsb-expanded_&]:gap-2.5',
             )}
           >
             <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
             <BaseDivider
               className={cx(
-                'hidden !h-6',
-                isDashboard ? 'xs:block' : 'xs:block sm:hidden md:block',
+                'hidden !h-6 xs:block sm:hidden md:block',
+                isDashboard &&
+                  '-2xl:[.rsb-expanded_&]:hidden xl:[.rsb-expanded_&]:block',
               )}
               vertical
             />

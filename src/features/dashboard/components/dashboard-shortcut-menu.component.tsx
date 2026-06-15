@@ -42,7 +42,7 @@ export const DashboardShortcutMenu = memo(function ({
   return (
     <div
       className={cx(
-        'grid grid-cols-2 items-center justify-center gap-2.5 -3xs:flex ',
+        'grid grid-cols-1 items-center justify-center gap-2.5 -3xs:flex md:grid md:grid-cols-2 -2lg:flex xl:[.rsb-expanded_&]:grid xl:[.rsb-expanded_&]:grid-cols-2 1.5xl:[.rsb-expanded_&]:flex',
         className,
       )}
       {...moreProps}

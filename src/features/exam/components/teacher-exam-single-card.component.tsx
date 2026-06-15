@@ -177,85 +177,71 @@ export const TeacherExamSingleCard = memo(function ({
       >
         <div
           className={cx(
-            'flex h-full flex-1 flex-col items-center gap-2.5 xs:flex-row xs:gap-4',
-            isDashboard ? 'flex-wrap' : 'flex-wrap sm:flex-nowrap',
+            'flex h-full flex-1 flex-col gap-2.5 xs:gap-4 sm:flex-row sm:gap-2.5',
+            isDashboard &&
+              'lg:[.rsb-expanded_&]:flex-col lg:[.rsb-expanded_&]:gap-4 -2xl:[.rsb-expanded_&]:flex-row -2xl:[.rsb-expanded_&]:gap-2.5',
           )}
         >
-          <div className='flex h-[84px] w-full flex-col items-center overflow-hidden rounded border border-primary bg-primary-hue-purple/30 font-medium xs:w-[121px]'>
-            <div className='flex w-full flex-1 items-center justify-center text-2xl text-primary-hue-purple'>
-              <div className='flex-1 text-center'>{passingPoints}</div>
-              <BaseDivider
-                className='h-4/6 !border-r-2 !border-primary-hue-purple/20'
-                vertical
-              />
-              <div className='flex-1 text-center'>{totalPoints}</div>
-            </div>
-            <div className='bg-primary-hue-primary flex w-full justify-center bg-primary-hue-purple py-1 text-xs uppercase text-white'>
-              Passing / Total
-            </div>
-          </div>
-          <div className='flex h-full w-full flex-1 flex-row items-center justify-between xs:w-auto'>
-            <div className='flex h-full flex-1 flex-col justify-between gap-2 py-2'>
-              {/* Info chips */}
-              <div className='flex items-center gap-2.5'>
-                <BaseChip iconName='exam'>Exam {orderNumber}</BaseChip>
-                {randomizeQuestions && (
-                  <>
-                    <BaseDivider className='!h-6' vertical />
-                    <BaseChip iconName='check-square'>Randomized</BaseChip>
-                  </>
-                )}
-                {isDraft && (
-                  <>
-                    <BaseDivider className='!h-6' vertical />
-                    <BaseChip iconName='file-dashed'>Draft</BaseChip>
-                  </>
-                )}
+          <div className='flex flex-1 flex-col gap-2.5 xs:flex-row xs:gap-4'>
+            <div className='flex h-[90px] w-full flex-col items-center overflow-hidden rounded border border-primary bg-primary-hue-purple/30 font-medium xs:h-[84px] xs:w-[121px]'>
+              <div className='flex w-full flex-1 items-center justify-center text-2xl text-primary-hue-purple'>
+                <div className='flex-1 text-center'>{passingPoints}</div>
+                <BaseDivider
+                  className='h-4/6 !border-r-2 !border-primary-hue-purple/20'
+                  vertical
+                />
+                <div className='flex-1 text-center'>{totalPoints}</div>
               </div>
-              {/* Title */}
-              <h2 className='font-body text-lg font-medium leading-tight tracking-normal text-accent group-hover:text-primary-hue-purple-focus'>
-                {title}
-              </h2>
+              <div className='bg-primary-hue-primary flex w-full justify-center bg-primary-hue-purple py-1 text-xs uppercase text-white'>
+                Passing / Total
+              </div>
             </div>
-            {!isDashboard && (
-              <ContextMenu
-                className='block xs:hidden'
-                isDraft={isDraft}
-                onDetails={onDetails}
-                onPreview={onPreview}
-                onEdit={onEdit}
-                onSchedule={onSchedule}
-              />
-            )}
+            <div className='flex h-full w-full flex-1 flex-row items-center justify-between xs:w-auto'>
+              <div className='flex h-full flex-1 flex-col justify-between gap-2 py-2'>
+                {/* Info chips */}
+                <div className='flex items-center gap-2.5'>
+                  <BaseChip iconName='exam'>Exam {orderNumber}</BaseChip>
+                  {randomizeQuestions && (
+                    <>
+                      <BaseDivider className='!h-6' vertical />
+                      <BaseChip iconName='check-square'>Randomized</BaseChip>
+                    </>
+                  )}
+                  {isDraft && (
+                    <>
+                      <BaseDivider className='!h-6' vertical />
+                      <BaseChip iconName='file-dashed'>Draft</BaseChip>
+                    </>
+                  )}
+                </div>
+                {/* Title */}
+                <h2 className='order-first font-body text-lg font-medium leading-tight tracking-normal text-accent group-hover:text-primary-hue-purple-focus xs:order-none'>
+                  {title}
+                </h2>
+              </div>
+              {!isDashboard && (
+                <ContextMenu
+                  className='block xs:hidden'
+                  isDraft={isDraft}
+                  onDetails={onDetails}
+                  onPreview={onPreview}
+                  onEdit={onEdit}
+                  onSchedule={onSchedule}
+                />
+              )}
+            </div>
           </div>
           {/* Earliest exam schedule */}
           {scheduleDate && (
-            <div
-              className={cx(
-                'flex gap-1',
-                isDashboard
-                  ? 'w-full flex-col xs:w-auto xs:flex-row xs:gap-2.5 -2lg:flex-col -2lg:gap-1 xl:flex-row xl:gap-2.5 2xl:w-auto 2xl:flex-col 2xl:gap-1'
-                  : 'w-full flex-col xs:flex-row xs:gap-2.5 sm:w-auto sm:min-w-[190px] sm:flex-col sm:gap-1',
-              )}
-            >
+            <div className='flex w-full flex-col gap-1 xs:flex-row xs:gap-2.5 sm:w-auto sm:min-w-[190px] sm:flex-col sm:gap-1'>
               <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
               <BaseDivider
-                className={cx(
-                  'hidden !h-6',
-                  isDashboard
-                    ? 'xs:block -2lg:hidden xl:block 2xl:hidden'
-                    : 'xs:block sm:hidden',
-                )}
+                className='hidden !h-6 xs:block sm:hidden'
                 vertical
               />
               <BaseChip iconName='clock'>{scheduleTime}</BaseChip>
               <BaseDivider
-                className={cx(
-                  'hidden !h-6',
-                  isDashboard
-                    ? 'xs:block -2lg:hidden xl:block 2xl:hidden'
-                    : 'xs:block sm:hidden',
-                )}
+                className='hidden !h-6 xs:block sm:hidden'
                 vertical
               />
               <BaseChip iconName='hourglass'>{scheduleDuration}</BaseChip>
