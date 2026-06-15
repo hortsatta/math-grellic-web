@@ -156,26 +156,6 @@ export const CoreHeader = memo(function ({
                 </div>
               }
             >
-              <div className='flex items-center justify-center gap-1 px-2.5 py-1 text-sm opacity-80'>
-                <BaseIcon name='identification-badge' size={20} />
-                {publicId}
-              </div>
-              <BaseDivider className='my-1' />
-              <Menu.Item
-                as={BaseDropdownButton}
-                iconName='user'
-                onClick={handleUserAccount}
-              >
-                Account
-              </Menu.Item>
-              <Menu.Item
-                as={BaseDropdownButton}
-                iconName='sign-out'
-                onClick={handleLogout}
-              >
-                Logout
-              </Menu.Item>
-              <BaseDivider className='my-1' />
               <Menu.Item
                 as={BaseDropdownButton}
                 className='!py-1.5'
@@ -189,6 +169,26 @@ export const CoreHeader = memo(function ({
                     Tap to switch school year
                   </small>
                 </div>
+              </Menu.Item>
+              <BaseDivider className='my-1' />
+              <Menu.Item
+                as={BaseDropdownButton}
+                className='!py-1.5'
+                iconName='identification-badge'
+                disableFixedHeight
+                onClick={handleUserAccount}
+              >
+                <div className='flex flex-col'>
+                  <span className='text-sm'>{publicId}</span>
+                  <small className='text-[12px] opacity-70'>Account</small>
+                </div>
+              </Menu.Item>
+              <Menu.Item
+                as={BaseDropdownButton}
+                iconName='sign-out'
+                onClick={handleLogout}
+              >
+                Logout
               </Menu.Item>
             </BaseDropdownMenu>
           </div>
