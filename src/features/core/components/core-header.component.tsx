@@ -25,7 +25,6 @@ import {
   studentRoutes,
 } from '#/app/routes/student-routes';
 import { BaseDivider } from '#/base/components/base-divider.component';
-import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
