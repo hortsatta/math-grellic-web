@@ -5,9 +5,9 @@ import { useSchoolYearCurrent } from '../hooks/use-school-year-current.hook';
 import { useSchoolYearEnrollment } from '../hooks/use-school-year-enrollment.hook';
 
 export const SchoolYearEnrollmentSessionSubscriber = memo(function () {
+  const userPublicId = useBoundStore((state) => state.user?.publicId);
   const schoolYear = useBoundStore((state) => state.schoolYear);
-  const setSchoolYear = useBoundStore((state) => state.setSchoolYear);
-  const { schoolYear: currentSchoolYear } = useSchoolYearCurrent();
+  const { setCurrentSchoolYear } = useSchoolYearCurrent();
   useSchoolYearEnrollment();
 
   useEffect(() => {
@@ -15,9 +15,9 @@ export const SchoolYearEnrollmentSessionSubscriber = memo(function () {
       return;
     }
 
-    setSchoolYear(currentSchoolYear ?? undefined);
+    setCurrentSchoolYear();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSchoolYear]);
+  }, [userPublicId]);
 
   return null;
 });

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import { queryClient } from '#/config/react-query-client.config';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
@@ -19,7 +19,6 @@ type Result = {
 
 export function useAuth(): Result {
   const setUser = useBoundStore((state) => state.setUser);
-  const user = useBoundStore((state) => state.user);
   const setLessonFormData = useBoundStore((state) => state.setLessonFormData);
   const setExamFormData = useBoundStore((state) => state.setExamFormData);
   const setActivityFormData = useBoundStore(
@@ -31,19 +30,6 @@ export function useAuth(): Result {
   );
   const setSyEnrollment = useBoundStore((state) => state.setSyEnrollment);
   const setSchoolYear = useBoundStore((state) => state.setSchoolYear);
-
-  const { refetch: fetchUser } = useQuery(
-    getCurrentUser({
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      enabled: false,
-      retry: false,
-      retryOnMount: false,
-      initialData: user,
-      select: (data: unknown) => transformToUser(data),
-    }),
-  );
 
   const { mutateAsync: mutateLoginUser } = useMutation(loginUser());
   const { mutateAsync: mutateLogoutUser } = useMutation(logoutUser());
@@ -81,18 +67,21 @@ export function useAuth(): Result {
     }
   }, [setUser, mutateLogoutUser, clearCache]);
 
-  // Fetch data from api and set current user, if error or user does not exist
-  // then logout current session
+  // Fetch data from api and set current user
   const getUser = useCallback(async () => {
-    const { data } = await fetchUser();
+    let user = undefined;
 
-    // if (!data) {
-    //   logout();
-    // }
+    try {
+      const data = await queryClient.fetchQuery(getCurrentUser());
+      if (data) {
+        user = transformToUser(data);
+      }
+    } finally {
+      setUser(user);
+    }
 
-    setUser((data as User) ?? undefined);
-    return data;
-  }, [fetchUser, setUser]);
+    return user;
+  }, [setUser]);
 
   const login = useCallback(
     async (credentials: AuthCredentials) => {
