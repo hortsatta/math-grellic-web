@@ -12,6 +12,7 @@ type Props = ComponentProps<'button'> & {
   size?: ButtonSize;
   leftIconName?: IconName;
   rightIconName?: IconName;
+  multiLine?: boolean;
   bodyFont?: boolean;
   loading?: boolean;
 };
@@ -55,6 +56,7 @@ export const BaseButton = memo(
       size = 'base',
       leftIconName,
       rightIconName,
+      multiLine,
       bodyFont,
       loading,
       disabled,
@@ -114,12 +116,13 @@ export const BaseButton = memo(
         )}
         <div
           className={cx(
-            'inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all',
+            'inline-flex items-center justify-center gap-2 transition-all',
             variant === 'primary' &&
               'relative z-10 h-[50px] rounded-full border-2 border-primary-border bg-gradient-to-r from-primary-focus to-primary-dark group-hover/btn:brightness-125 group-active/btn:translate-y-[5px]',
             variant === 'primary' &&
               disabled &&
               '!border-accent/40 !bg-gray-300 !bg-none',
+            !multiLine && 'whitespace-nowrap',
             loading && '!opacity-30',
           )}
         >

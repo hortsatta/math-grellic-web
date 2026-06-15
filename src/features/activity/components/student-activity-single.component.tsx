@@ -29,8 +29,8 @@ export const StudentActivitySingle = memo(function ({
   className,
   loading,
   activity,
-  preview,
-}: Props) {
+} // preview,
+: Props) {
   const [startActivity, setStartActivity] = useState(false);
   const [localLoading, setLocalLoading] = useState(true);
 
@@ -94,10 +94,10 @@ export const StudentActivitySingle = memo(function ({
               animate='show'
             >
               {score != null && (
-                <BaseSurface className='!p-5' rounded='sm'>
+                <BaseSurface className='w-full !p-5 xs:w-auto' rounded='sm'>
                   <h3 className='text-base'>Current rank and score</h3>
                   <motion.div
-                    className='flex items-center justify-center gap-5 px-5 pb-6 pt-8 text-primary-hue-teal'
+                    className='flex flex-col items-center justify-center gap-5 px-5 pb-6 pt-8 text-primary-hue-teal xs:flex-row'
                     variants={scoreShowItemVariants}
                   >
                     <div className='flex items-center gap-x-2.5'>
@@ -106,8 +106,11 @@ export const StudentActivitySingle = memo(function ({
                         <PerformanceRankAwardImg rank={rank} size='lg' />
                       )}
                     </div>
-                    <BaseDivider className='!h-14' vertical />
-                    <div className='flex items-center gap-2.5 font-display text-4xl font-medium tracking-tighter'>
+                    <BaseDivider
+                      className='hidden !h-14 xs:inline-block'
+                      vertical
+                    />
+                    <div className='flex items-center gap-2.5 font-display text-3xl font-medium tracking-tighter xs:text-4xl'>
                       <span>{score}</span>
                       <span>{scoreSuffix}</span>
                     </div>

@@ -63,17 +63,17 @@ export const TeacherMeetingScheduleSingleCard = memo(function ({
       {...moreProps}
     >
       <div
-        className='group pointer-events-auto flex h-full flex-1 items-start gap-4 md:items-center'
+        className='group pointer-events-auto flex h-full flex-1 flex-col items-start gap-2.5 xs:gap-4 md:flex-row md:items-center'
         tabIndex={0}
         onClick={onDetails}
       >
-        <div className='flex h-full flex-1 items-center gap-4'>
-          <div className='flex h-[90px] w-[121px] items-center justify-center overflow-hidden rounded border border-primary-hue-orange bg-primary-hue-orange-focus/30 text-primary-hue-orange'>
+        <div className='flex h-full w-full flex-1 flex-col items-start gap-2.5 xs:flex-row xs:items-center xs:gap-4'>
+          <div className='flex h-[90px] w-full items-center justify-center overflow-hidden rounded border border-primary-hue-orange bg-primary-hue-orange-focus/30 text-primary-hue-orange xs:w-[121px]'>
             <BaseIcon name='presentation' size={40} weight='light' />
           </div>
           <div className='flex h-full flex-1 flex-col justify-between gap-2 py-1.5'>
             {/* Title */}
-            <h2 className='font-body text-lg font-medium tracking-normal text-accent group-hover:text-primary-hue-orange-focus'>
+            <h2 className='font-body text-lg font-medium leading-tight tracking-normal text-accent group-hover:text-primary-hue-orange-focus'>
               {title}
             </h2>
             <div className='flex justify-start'>

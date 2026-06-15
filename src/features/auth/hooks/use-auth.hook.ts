@@ -50,7 +50,9 @@ export function useAuth(): Result {
 
   const clearCache = useCallback(() => {
     // Clear all query cache
-    queryClient.invalidateQueries();
+    // queryClient.invalidateQueries(); // Only triggers data as stale but old data remains
+    queryClient.clear();
+    useBoundStore.persist.clearStorage();
     // Clear localstorage memory
     setLessonFormData(undefined);
     setExamFormData(undefined);

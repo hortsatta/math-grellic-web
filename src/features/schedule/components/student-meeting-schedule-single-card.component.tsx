@@ -70,19 +70,19 @@ export const StudentMeetingScheduleSingleCard = memo(function ({
         rounded='sm'
         {...moreProps}
       >
-        <div className='flex h-full flex-1 flex-col items-start gap-4 md:flex-row md:items-center'>
-          <div className='flex h-full flex-1 items-center gap-4'>
+        <div className='flex h-full flex-1 flex-col items-start gap-2.5 xs:gap-4 md:flex-row md:items-center'>
+          <div className='flex h-full w-full flex-1 flex-col items-start gap-2.5 xs:w-auto xs:flex-row xs:items-center xs:gap-4'>
             <div
               className={cx(
-                'flex h-[90px] w-[121px] items-center justify-center overflow-hidden rounded border border-primary-hue-orange bg-primary-hue-orange-focus/30 text-primary-hue-orange',
-                '[.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent',
+                'flex h-[90px] w-full items-center justify-center overflow-hidden rounded border border-primary-hue-orange xs:w-[121px]',
+                'bg-primary-hue-orange-focus/30 text-primary-hue-orange [.primary_&]:border-accent [.primary_&]:bg-white/50 [.primary_&]:text-accent',
               )}
             >
               <BaseIcon name='presentation' size={40} weight='light' />
             </div>
             <div className='flex h-full flex-1 flex-col justify-between gap-2 py-1.5'>
               {/* Title */}
-              <h2 className='font-body text-lg font-medium tracking-normal text-accent [.primary_&]:text-white'>
+              <h2 className='font-body text-lg font-medium leading-tight tracking-normal text-accent [.primary_&]:text-white'>
                 {title}
               </h2>
               <div className='flex justify-start'>
@@ -98,11 +98,11 @@ export const StudentMeetingScheduleSingleCard = memo(function ({
               </div>
             </div>
           </div>
-          <div className='flex min-w-[190px] flex-row justify-center gap-2.5 md:flex-col md:gap-1 [.primary_&]:text-white'>
+          <div className='flex min-w-[190px] flex-col justify-center gap-1 xs:flex-row xs:gap-2.5 md:flex-col md:gap-1 [.primary_&]:text-white'>
             <BaseChip iconName='calendar-check'>{scheduleDate}</BaseChip>
-            <BaseDivider className='block !h-6 md:hidden' vertical />
+            <BaseDivider className='hidden !h-6 xs:block md:hidden' vertical />
             <BaseChip iconName='clock'>{scheduleTime}</BaseChip>
-            <BaseDivider className='block !h-6 md:hidden' vertical />
+            <BaseDivider className='hidden !h-6 xs:block md:hidden' vertical />
             <BaseChip iconName='hourglass'>{scheduleDuration}</BaseChip>
           </div>
         </div>

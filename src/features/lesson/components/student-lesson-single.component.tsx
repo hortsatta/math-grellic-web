@@ -13,6 +13,7 @@ import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseRichTextOutput } from '#/base/components/base-rich-text-output.component';
+import { BaseSurface } from '#/base/components/base-surface.component';
 import { LessonVideo } from './lesson-video.component';
 
 import type { ComponentProps } from 'react';
@@ -69,8 +70,7 @@ export const StudentLessonSingle = memo(function ({
   }, [lesson]);
 
   const markAsButtonLabel = useMemo(
-    () =>
-      isCompleted ? 'Unmark Lesson as Completed' : 'Mark Lesson as Completed',
+    () => `${isCompleted ? 'Unmark' : 'Mark'} as Completed`,
     [isCompleted],
   );
 
@@ -137,39 +137,49 @@ export const StudentLessonSingle = memo(function ({
         <LessonVideo className='mb-8 mt-5' url={videoUrl} title={title} />
       )}
       <div className='w-full max-w-compact px-4'>
-        <div className='flex w-full flex-col items-center justify-between gap-2.5 rounded-lg border border-primary-border-light bg-white px-5 py-2.5 md:h-[70px] md:flex-row md:gap-0'>
-          <div className='flex items-center gap-2.5'>
-            <BaseChip iconName='chalkboard'>Lesson {orderNumber}</BaseChip>
-            <BaseDivider className='!h-6' vertical />
-            <BaseChip iconName='hourglass'>{duration}</BaseChip>
+        <BaseSurface className='flex flex-col gap-4 xs:flex-row' rounded='sm'>
+          <div className='flex w-full flex-col items-start justify-between gap-2.5'>
+            <div className='flex items-center gap-2.5'>
+              <BaseChip iconName='chalkboard'>Lesson {orderNumber}</BaseChip>
+              <BaseDivider className='!h-6' vertical />
+              <BaseChip iconName='hourglass'>{duration}</BaseChip>
+              {!formattedUpcomingDate && (
+                <>
+                  <BaseDivider className='!h-6' vertical />
+                  {isCompleted ? (
+                    <BaseIcon
+                      name='check-circle'
+                      className='text-green-500'
+                      size={36}
+                      weight='fill'
+                    />
+                  ) : (
+                    <BaseIcon
+                      name='circle-dashed'
+                      className='text-black/40'
+                      size={36}
+                    />
+                  )}
+                </>
+              )}
+            </div>
+            <span className='max-w-[300px] text-sm opacity-60'>
+              Once you've finished this lesson, mark it as complete to update
+              your progress.
+            </span>
           </div>
           {!formattedUpcomingDate && (
-            <div className='flex items-center gap-2.5'>
-              {isCompleted ? (
-                <BaseIcon
-                  name='check-circle'
-                  className='text-green-500'
-                  size={36}
-                  weight='fill'
-                />
-              ) : (
-                <BaseIcon
-                  name='circle-dashed'
-                  className='text-black/40'
-                  size={36}
-                />
-              )}
-              <BaseButton
-                className='w-72'
-                loading={loading}
-                disabled={preview}
-                onClick={handleOnSetCompletion}
-              >
-                {markAsButtonLabel}
-              </BaseButton>
-            </div>
+            <BaseButton
+              className='!h-auto !w-full !text-left xs:!w-32'
+              loading={loading}
+              disabled={preview}
+              onClick={handleOnSetCompletion}
+              multiLine
+            >
+              {markAsButtonLabel}
+            </BaseButton>
           )}
-        </div>
+        </BaseSurface>
         {formattedUpcomingDate ? (
           <div className='w-full py-8'>{excerpt}</div>
         ) : (
