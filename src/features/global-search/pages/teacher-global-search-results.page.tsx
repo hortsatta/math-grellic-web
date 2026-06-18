@@ -15,6 +15,7 @@ import { TeacherGlobalSearchLessonList } from '../components/teacher-global-sear
 import { TeacherGlobalSearchExamList } from '../components/teacher-global-search-exam-list.component';
 import { TeacherGlobalSearchActivityList } from '../components/teacher-global-search-activity-list.component';
 import { TeacherGlobalSearchStudentPerformanceList } from '../components/teacher-global-search-student-performance-list.component';
+import { TeacherGlobalSearchMeetingScheduleList } from '../components/teacher-global-search-meeting-schedule-list.component';
 import { TeacherGlobalSearchOthersList } from '../components/teacher-global-search-others-list.component';
 
 const filterOptions = [
@@ -41,6 +42,12 @@ const filterOptions = [
     name: 'filter',
     value: SearchFilter.StudentPerformance,
     label: 'Learners',
+  },
+  {
+    key: `filter-${SearchFilter.MeetingSchedule}`,
+    name: 'filter',
+    value: SearchFilter.MeetingSchedule,
+    label: 'Meetings',
   },
   {
     key: `filter-${SearchFilter.Others}`,
@@ -74,10 +81,14 @@ function TeacherGlobalSearchResultsPage() {
 
   const data: any = useLoaderData();
 
-  const { lessons, exams, activities, studentPerformances, others } = useMemo(
-    () => searchResults,
-    [searchResults],
-  );
+  const {
+    lessons,
+    exams,
+    activities,
+    studentPerformances,
+    meetingSchedules,
+    others,
+  } = useMemo(() => searchResults, [searchResults]);
 
   return (
     <BaseDataSuspense resolve={data?.main}>
@@ -109,7 +120,7 @@ function TeacherGlobalSearchResultsPage() {
               <h3 className='mb-5 text-lg leading-none'>
                 Showing {totalCount} results for "{searchKeyword}"
               </h3>
-              <div className='flex flex-col gap-4'>
+              <div className='flex flex-col gap-6'>
                 {!!lessons.length && (
                   <TeacherGlobalSearchLessonList
                     className='animate-fastFadeIn'
@@ -132,6 +143,12 @@ function TeacherGlobalSearchResultsPage() {
                   <TeacherGlobalSearchStudentPerformanceList
                     className='animate-fastFadeIn'
                     studentPerformances={studentPerformances}
+                  />
+                )}
+                {!!meetingSchedules.length && (
+                  <TeacherGlobalSearchMeetingScheduleList
+                    className='animate-fastFadeIn'
+                    meetingSchedules={meetingSchedules}
                   />
                 )}
                 {!!others.length && (

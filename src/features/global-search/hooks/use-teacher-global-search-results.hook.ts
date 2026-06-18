@@ -14,6 +14,7 @@ import { transformToLesson } from '#/lesson/helpers/lesson-transform.helper';
 import { transformToActivity } from '#/activity/helpers/activity-transform.helper';
 import { transformToExam } from '#/exam/helpers/exam-transform.helper';
 import { transformToStudentPerformance } from '#/performance/helpers/performance-transform.helper';
+import { transformToMeetingSchedule } from '#/schedule/helpers/schedule-transform.helper';
 import { SearchFilter } from '../models/global-search.model';
 import { searchByCurrentTeacherUser } from '../api/global-search.api';
 
@@ -160,7 +161,13 @@ export function useTeacherGlobalSearchResults(): Result {
           keepPreviousData: true,
           select: (data: any) => {
             const [
-              { lessons, exams, activities, studentPerformances },
+              {
+                lessons,
+                exams,
+                activities,
+                studentPerformances,
+                meetingSchedules,
+              },
               totalCount,
             ] = data;
 
@@ -180,12 +187,17 @@ export function useTeacherGlobalSearchResults(): Result {
               (student: unknown) => transformToStudentPerformance(student),
             );
 
+            const transformedMeetingSchedules = meetingSchedules.map(
+              (meeting: unknown) => transformToMeetingSchedule(meeting),
+            );
+
             return [
               {
                 lessons: transformedLessons,
                 exams: transformedExams,
                 activities: transformedActivities,
                 studentPerformances: transformedStudentPerformances,
+                meetingSchedules: transformedMeetingSchedules,
                 others: [],
               },
               +totalCount,
@@ -200,7 +212,15 @@ export function useTeacherGlobalSearchResults(): Result {
 
   const [searchResults, dataCount] = useMemo(() => {
     const [searchResults] = data || [
-      [{ lessons: [], exams: [], activities: [], studentPerformances: [] }],
+      [
+        {
+          lessons: [],
+          exams: [],
+          activities: [],
+          studentPerformances: [],
+          meetingSchedules: [],
+        },
+      ],
     ];
 
     const others = currentFilters?.includes(SearchFilter.Others)

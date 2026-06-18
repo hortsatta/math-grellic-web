@@ -4,12 +4,14 @@ import type { Activity } from '#/activity/models/activity.model';
 import type { Exam } from '#/exam/models/exam.model';
 import type { Lesson } from '#/lesson/models/lesson.model';
 import type { StudentPerformance } from '#/performance/models/performance.model';
+import type { MeetingSchedule } from '#/schedule/models/schedule.model';
 
 export enum SearchFilter {
   Lesson = 'lesson',
   Exam = 'exam',
   Activity = 'activity',
   StudentPerformance = 'student-performance',
+  MeetingSchedule = 'meeting-schedule',
   Others = 'others',
 }
 
@@ -25,6 +27,7 @@ export type SearchResults = {
   exams: Exam[];
   activities: Activity[];
   studentPerformances: StudentPerformance[];
+  meetingSchedules: MeetingSchedule[];
   others: OtherLink[];
 };
 
