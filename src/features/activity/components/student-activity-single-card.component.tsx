@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import cx from 'classix';
 
 import { convertSecondsToDuration } from '#/utils/time.util';
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import {
@@ -11,6 +10,7 @@ import {
   activityGameLabel,
   categoryLevel,
 } from '../models/activity.model';
+import { studentActivityBaseRoute } from '../route/student-activity-handle.route';
 
 import { BaseChip } from '#/base/components/base-chip.component';
 
@@ -35,8 +35,6 @@ type ScoreProps = {
   score: number | null;
   isDashboard?: boolean;
 };
-
-const ACTIVITY_LIST_PATH = `/${studentBaseRoute}/${studentRoutes.activity.to}`;
 
 const Score = memo(function ({ game, score, isDashboard }: ScoreProps) {
   const [transformedScore, scoreSuffix] = useMemo(() => {
@@ -90,7 +88,7 @@ export const StudentActivitySingleCard = memo(function ({
 }: Props) {
   const [singleTo, orderNumber, title, game, categories, score] = useMemo(
     () => [
-      `${ACTIVITY_LIST_PATH}/${activity.slug}`,
+      `${studentActivityBaseRoute}/${activity.slug}`,
       activity.orderNumber,
       activity.title,
       activity.game,

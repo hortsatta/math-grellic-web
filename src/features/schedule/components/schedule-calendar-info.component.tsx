@@ -2,13 +2,19 @@ import { memo, useMemo } from 'react';
 
 import dayjs from '#/config/dayjs.config';
 import { convertSecondsToDuration, getDayJsDuration } from '#/utils/time.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { studentRoutes } from '#/app/routes/student-routes';
+import { studentLessonBaseRoute } from '#/lesson/route/student-lesson-handle.route';
+import { teacherLessonBaseRoute } from '#/lesson/route/teacher-lesson-handle.route';
+import { studentExamBaseRoute } from '#/exam/route/student-exam-handle.route';
+import { teacherExamBaseRoute } from '#/exam/route/teacher-exam-handle.route';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { ScheduleType } from '../models/schedule.model';
+import { studentScheduleBaseRoute } from '../route/student-schedule-handle.route';
+import { teacherScheduleBaseRoute } from '../route/teacher-schedule-handle.route';
 
 import type { LessonSchedule } from '#/lesson/models/lesson.model';
 import type { ExamSchedule } from '#/exam/models/exam-schedule.model';
@@ -237,13 +243,21 @@ export const ScheduleCalendarInfo = memo(function ({
   const type = useMemo(() => schedule?.type, [schedule]);
 
   const [lessonBaseTo, examBaseTo, meetingBaseTo] = useMemo(() => {
-    const baseRoute = isStudent ? studentBaseRoute : teacherBaseRoute;
     const routes = isStudent ? studentRoutes : teacherRoutes;
+    const lessonBaseRoute = isStudent
+      ? studentLessonBaseRoute
+      : teacherLessonBaseRoute;
+    const examBaseRoute = isStudent
+      ? studentExamBaseRoute
+      : teacherExamBaseRoute;
+    const meetingBaseRoute = isStudent
+      ? studentScheduleBaseRoute
+      : teacherScheduleBaseRoute;
 
     return [
-      `/${baseRoute}/${routes.lesson.to}`,
-      `/${baseRoute}/${routes.exam.to}`,
-      `/${baseRoute}/${routes.schedule.to}/${routes.schedule.meeting.to}`,
+      lessonBaseRoute,
+      examBaseRoute,
+      `${meetingBaseRoute}/${routes.schedule.meeting.to}`,
     ];
   }, [isStudent]);
 

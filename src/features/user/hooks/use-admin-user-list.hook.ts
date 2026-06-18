@@ -5,11 +5,9 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { PAGINATION_TAKE } from '#/utils/api.util';
 import { queryClient } from '#/config/react-query-client.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
-import {
-  superAdminBaseRoute,
-  superAdminRoutes,
-} from '#/app/routes/super-admin-routes';
+import { superAdminRoutes } from '#/app/routes/super-admin-routes';
 import { transformToAdminUserAccount } from '../helpers/user-transform.helper';
+import { saAdminUserBaseRoute } from '../route/admin-user-handle.route';
 import {
   getPaginatedAdminsByCurrentSuperAdminUser,
   setAdminApprovalStatus as setAdminApprovalStatusApi,
@@ -46,8 +44,6 @@ type Result = {
   ) => Promise<any>;
   deleteAdmin: (id: number) => Promise<boolean | undefined>;
 };
-
-const ADMIN_LIST_PATH = `/${superAdminBaseRoute}/${superAdminRoutes.admin.to}`;
 
 export const defaultSort = {
   field: 'name',
@@ -158,14 +154,16 @@ export function useAdminUserList(): Result {
 
   const handleAdminDetails = useCallback(
     (id: number) => {
-      navigate(`${ADMIN_LIST_PATH}/${id}`);
+      navigate(`${saAdminUserBaseRoute}/${id}`);
     },
     [navigate],
   );
 
   const handleAdminEdit = useCallback(
     (id: number) => {
-      navigate(`${ADMIN_LIST_PATH}/${id}/${superAdminRoutes.admin.editTo}`);
+      navigate(
+        `${saAdminUserBaseRoute}/${id}/${superAdminRoutes.admin.editTo}`,
+      );
     },
     [navigate],
   );

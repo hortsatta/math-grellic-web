@@ -1,7 +1,8 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import cx from 'classix';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherExamBaseRoute } from '#/exam/route/teacher-exam-handle.route';
 import { BaseDataEmptyMessage } from '#/base/components/base-data-empty-message.component';
 import { BaseModal } from '#/base/components/base-modal.component';
 import {
@@ -14,7 +15,7 @@ import type { ComponentProps } from 'react';
 import type { Exam } from '#/exam/models/exam.model';
 import type { ExamSchedule } from '#/exam/models/exam-schedule.model';
 
-const EXAM_CREATE_TO = `/${teacherBaseRoute}/${teacherRoutes.exam.to}/${teacherRoutes.exam.createTo}`;
+const EXAM_CREATE_TO = `${teacherExamBaseRoute}/${teacherRoutes.exam.createTo}`;
 
 type Props = ComponentProps<'div'> & {
   exams: Exam[];

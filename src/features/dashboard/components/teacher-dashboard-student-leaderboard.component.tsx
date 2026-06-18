@@ -2,9 +2,9 @@ import { Fragment, memo, useCallback, useMemo } from 'react';
 import { Tab } from '@headlessui/react';
 import cx from 'classix';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { generateOrdinalSuffix } from '#/utils/string.util';
 import { StudentPerformanceType } from '#/performance/models/performance.model';
+import { teacherPerformanceBaseRoute } from '#/performance/route/teacher-performance-handle.route';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
@@ -26,8 +26,6 @@ type StudentRankCardProps = {
   student: StudentPerformance;
   performance: StudentPerformanceType;
 };
-
-const STUDENT_PERFORMANCE_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.performance.to}`;
 
 const tabCategories = {
   exam: {
@@ -190,7 +188,7 @@ export const TeacherDashboardStudentLeaderboard = memo(function ({
       </Tab.Group>
       <div className='w-full pt-2.5 text-right'>
         <BaseLink
-          to={STUDENT_PERFORMANCE_LIST_PATH}
+          to={teacherPerformanceBaseRoute}
           rightIconName='arrow-circle-right'
           size='xs'
         >

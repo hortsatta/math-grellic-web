@@ -12,7 +12,7 @@ import dayjs from '#/config/dayjs.config';
 import { getErrorMessage } from '#/utils/string.util';
 import { getDayJsDuration } from '#/utils/time.util';
 import { stripHtml } from '#/utils/html.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseDivider } from '#/base/components/base-divider.component';
@@ -22,6 +22,7 @@ import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
 import { defaultQuestion } from '../helpers/exam-form.helper';
+import { teacherExamBaseRoute } from '../route/teacher-exam-handle.route';
 import { ExamUpsertFormStep1 } from './exam-upsert-form-step-1.component';
 import { ExamUpsertFormStep2 } from './exam-upsert-form-step-2.component';
 import { ExamUpsertFormStep3 } from './exam-upsert-form-step-3.component';
@@ -34,8 +35,7 @@ type Props = FormProps<'div', ExamUpsertFormData, Promise<Exam | undefined>> & {
   schoolYearId: number;
 };
 
-const EXAM_PREVIEW_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}/${teacherRoutes.exam.previewTo}`;
-const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
+const EXAM_PREVIEW_PATH = `${teacherExamBaseRoute}/${teacherRoutes.exam.previewTo}`;
 
 const choiceSchema = z.object({
   id: z.number().optional(),
@@ -387,7 +387,7 @@ export const ExamUpsertForm = memo(function ({
         );
 
         onDone && onDone(true);
-        navigate(EXAM_LIST_PATH);
+        navigate(teacherExamBaseRoute);
       } catch (error: any) {
         toast.error(error.message);
       }

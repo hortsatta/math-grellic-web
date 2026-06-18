@@ -8,9 +8,9 @@ import {
   generateCountdownDate,
   getDayJsDuration,
 } from '#/utils/time.util';
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseChip } from '#/base/components/base-chip.component';
+import { studentExamBaseRoute } from '../route/student-exam-handle.route';
 import { StudentExamSingleCardScore } from './student-exam-single-card-score.component';
 import { StudentExamSingleCardStatus } from './student-exam-single-card-status.component';
 
@@ -25,8 +25,6 @@ type Props = ComponentProps<typeof BaseSurface> & {
   ongoingDuration?: Duration | null;
   isDashboard?: boolean;
 };
-
-const EXAM_LIST_PATH = `/${studentBaseRoute}/${studentRoutes.exam.to}`;
 
 export const StudentExamSingleCard = memo(function ({
   className,
@@ -46,7 +44,7 @@ export const StudentExamSingleCard = memo(function ({
     hasMultipleSchedules,
   ] = useMemo(
     () => [
-      `${EXAM_LIST_PATH}/${exam.slug}`,
+      `${studentExamBaseRoute}/${exam.slug}`,
       exam.orderNumber,
       exam.title,
       exam.pointsPerQuestion * exam.visibleQuestionsCount,

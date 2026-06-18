@@ -1,7 +1,10 @@
 import { memo } from 'react';
 import cx from 'classix';
 
-import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
+import { adminRoutes } from '#/app/routes/admin-routes';
+import { adminUserBaseRoute } from '#/user/route/current-user-handle.route';
+import { adminTeacherUserBaseRoute } from '#/user/route/teacher-user-handle.route';
+import { adminSchoolYearBaseRoute } from '#/school-year/route/admin-school-year-handle.route';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
@@ -17,11 +20,9 @@ type Props = ComponentProps<typeof BaseSurface> & {
   loading?: boolean;
 };
 
-const USER_ACCOUNT_PATH = `/${adminBaseRoute}/${adminRoutes.account.to}`;
-
 const links = [
   {
-    to: `/${adminBaseRoute}/${adminRoutes.schoolYear.to}/${adminRoutes.schoolYear.createTo}`,
+    to: `${adminSchoolYearBaseRoute}/${adminRoutes.schoolYear.createTo}`,
     label: 'Create school year',
     icons: [
       { name: 'plus', size: 16 },
@@ -29,7 +30,7 @@ const links = [
     ] as GroupLink['icons'],
   },
   {
-    to: `/${adminBaseRoute}/${adminRoutes.teacher.to}/${adminRoutes.teacher.createTo}`,
+    to: `${adminTeacherUserBaseRoute}/${adminRoutes.teacher.createTo}`,
     label: 'Register teacher',
     icons: [
       { name: 'plus', size: 16 },
@@ -59,7 +60,7 @@ export const AdminDashboardUserSummary = memo(function ({
         <>
           <div className='flex w-full animate-fastFadeIn flex-col gap-4 2xl:min-w-[400px]'>
             {user && (
-              <DashboardUserWelcome to={USER_ACCOUNT_PATH} user={user} />
+              <DashboardUserWelcome to={adminUserBaseRoute} user={user} />
             )}
             <BaseDivider />
             <DashboardShortcutMenu

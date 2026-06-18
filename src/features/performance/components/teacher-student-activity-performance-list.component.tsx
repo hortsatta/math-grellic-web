@@ -1,7 +1,8 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import cx from 'classix';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherActivityBaseRoute } from '#/activity/route/teacher-activity-handle.route';
 import { BaseDataEmptyMessage } from '#/base/components/base-data-empty-message.component';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { TeacherStudentActivityPerformanceResult } from './teacher-student-activity-performance-result.component';
@@ -16,7 +17,7 @@ import type {
   ActivityCategory,
 } from '#/activity/models/activity.model';
 
-const ACTIVITY_CREATE_TO = `/${teacherBaseRoute}/${teacherRoutes.activity.to}/${teacherRoutes.activity.createTo}`;
+const ACTIVITY_CREATE_TO = `${teacherActivityBaseRoute}/${teacherRoutes.activity.createTo}`;
 
 type Props = ComponentProps<'div'> & {
   activities: Activity[];

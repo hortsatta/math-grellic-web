@@ -3,10 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { PAGINATION_TAKE } from '#/utils/api.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { getPaginatedLessonsByCurrentTeacherUser } from '../api/teacher-lesson.api';
 import { transformToLesson } from '../helpers/lesson-transform.helper';
+import { teacherLessonBaseRoute } from '../route/teacher-lesson-handle.route';
 
 import type {
   QueryFilterOption,
@@ -31,8 +32,6 @@ type Result = {
   handleLessonPreview: (slug: string) => void;
   handleLessonSchedule: (slug: string) => void;
 };
-
-const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 
 export const defaultSort = {
   field: 'orderNumber',
@@ -138,7 +137,7 @@ export function useTeacherLessonList(): Result {
   const handleLessonPreview = useCallback((slug: string) => {
     window
       .open(
-        `${LESSON_LIST_PATH}/${slug}/${teacherRoutes.lesson.previewTo}`,
+        `${teacherLessonBaseRoute}/${slug}/${teacherRoutes.lesson.previewTo}`,
         '_blank',
       )
       ?.focus();
@@ -146,14 +145,16 @@ export function useTeacherLessonList(): Result {
 
   const handleLessonDetails = useCallback(
     (slug: string) => {
-      navigate(`${LESSON_LIST_PATH}/${slug}`);
+      navigate(`${teacherLessonBaseRoute}/${slug}`);
     },
     [navigate],
   );
 
   const handleLessonEdit = useCallback(
     (slug: string) => {
-      navigate(`${LESSON_LIST_PATH}/${slug}/${teacherRoutes.lesson.editTo}`);
+      navigate(
+        `${teacherLessonBaseRoute}/${slug}/${teacherRoutes.lesson.editTo}`,
+      );
     },
     [navigate],
   );
@@ -161,7 +162,7 @@ export function useTeacherLessonList(): Result {
   const handleLessonSchedule = useCallback(
     (slug: string) => {
       navigate(
-        `${LESSON_LIST_PATH}/${slug}/${teacherRoutes.lesson.schedule.to}`,
+        `${teacherLessonBaseRoute}/${slug}/${teacherRoutes.lesson.schedule.to}`,
       );
     },
     [navigate],

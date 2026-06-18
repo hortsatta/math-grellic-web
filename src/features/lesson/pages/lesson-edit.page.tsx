@@ -2,16 +2,14 @@ import { useCallback, useMemo, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseButton } from '#/base/components/base-button.components';
+import { teacherLessonBaseRoute } from '../route/teacher-lesson-handle.route';
 import { LessonUpsertForm } from '../components/lesson-upsert-form.component';
 import { useLessonEdit } from '../hooks/use-lesson-edit.hook';
-
-const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
 
 function LessonEditPage() {
   const { slug } = useParams();
@@ -57,7 +55,7 @@ function LessonEditPage() {
       toast.success(
         `Deleted ${lessonFormData.title} (No. ${lessonFormData.orderNumber})`,
       );
-      navigate(LESSON_LIST_PATH);
+      navigate(teacherLessonBaseRoute);
     } catch (error: any) {
       toast.error(error.message);
     }

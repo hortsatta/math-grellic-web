@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 import { PAGINATION_TAKE } from '#/utils/api.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { getPaginatedStudentPerformancesByCurrentTeacherUser } from '../api/teacher-performance.api';
 import { transformToStudentPerformance } from '../helpers/performance-transform.helper';
 import { StudentPerformanceType } from '../models/performance.model';
+import { teacherPerformanceBaseRoute } from '../route/teacher-performance-handle.route';
 
 import type {
   QueryPagination,
@@ -31,7 +32,7 @@ type Result = {
   handlePerformanceDetails: (publicId: string) => void;
 };
 
-const PERFORMANCE_PATH = `/${teacherBaseRoute}/${teacherRoutes.performance.to}/${teacherRoutes.performance.studentTo}`;
+const PERFORMANCE_PATH = `${teacherPerformanceBaseRoute}/${teacherRoutes.performance.studentTo}`;
 
 export const defaultSort = {
   field: 'rank',

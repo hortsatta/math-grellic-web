@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 import { PAGINATION_TAKE } from '#/utils/api.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToActivity } from '../helpers/activity-transform.helper';
 import { getPaginatedActivitiesByCurrentTeacherUser } from '../api/teacher-activity.api';
+import { teacherActivityBaseRoute } from '../route/teacher-activity-handle.route';
 
 import type {
   QueryFilterOption,
@@ -30,8 +31,6 @@ type Result = {
   handleActivityDetails: (slug: string) => void;
   handleActivityPreview: (slug: string) => void;
 };
-
-const ACTIVITY_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
 
 export const defaultSort = {
   field: 'orderNumber',
@@ -137,7 +136,7 @@ export function useTeacherActivityList(): Result {
   const handleActivityPreview = useCallback((slug: string) => {
     window
       .open(
-        `${ACTIVITY_LIST_PATH}/${slug}/${teacherRoutes.activity.previewTo}`,
+        `${teacherActivityBaseRoute}/${slug}/${teacherRoutes.activity.previewTo}`,
         '_blank',
       )
       ?.focus();
@@ -145,7 +144,7 @@ export function useTeacherActivityList(): Result {
 
   const handleActivityDetails = useCallback(
     (slug: string) => {
-      navigate(`${ACTIVITY_LIST_PATH}/${slug}`);
+      navigate(`${teacherActivityBaseRoute}/${slug}`);
     },
     [navigate],
   );
@@ -153,7 +152,7 @@ export function useTeacherActivityList(): Result {
   const handleActivityEdit = useCallback(
     (slug: string) => {
       navigate(
-        `${ACTIVITY_LIST_PATH}/${slug}/${teacherRoutes.activity.editTo}`,
+        `${teacherActivityBaseRoute}/${slug}/${teacherRoutes.activity.editTo}`,
       );
     },
     [navigate],

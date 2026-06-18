@@ -9,16 +9,13 @@ import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { getErrorMessage } from '#/utils/string.util';
-import {
-  superAdminBaseRoute,
-  superAdminRoutes,
-} from '#/app/routes/super-admin-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
 import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
 import { UserGender, UserApprovalStatus } from '../models/user.model';
+import { saAdminUserBaseRoute } from '../route/admin-user-handle.route';
 import { AdminUserUpsertFormStep1 } from './admin-user-upsert-form-step-1.component';
 
 import type { FormProps, IconName } from '#/base/models/base.model';
@@ -31,8 +28,6 @@ type Props = Omit<
 > & {
   onSubmit: (data: UserUpsertFormData) => Promise<User | null>;
 };
-
-const ADMIN_LIST_PATH = `/${superAdminBaseRoute}/${superAdminRoutes.admin.to}`;
 
 const stepWrapperProps = {
   className: '!overflow-visible',
@@ -141,7 +136,7 @@ export const AdminUserUpsertForm = memo(function ({
         );
 
         onDone && onDone(true);
-        navigate(ADMIN_LIST_PATH);
+        navigate(saAdminUserBaseRoute);
       } catch (error: any) {
         toast.error(error.message);
       }

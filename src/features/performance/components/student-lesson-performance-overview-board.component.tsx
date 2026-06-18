@@ -1,12 +1,12 @@
 import { memo, useMemo } from 'react';
 import cx from 'classix';
 
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseProgressCircle } from '#/base/components/base-progress-circle.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { StudentPerformanceType } from '../models/performance.model';
+import { studentPerformanceBaseRoute } from '../route/student-performance-handle.route';
 
 import type { ComponentProps } from 'react';
 import type { StudentPerformance } from '../models/performance.model';
@@ -15,8 +15,6 @@ type Props = ComponentProps<'div'> & {
   studentPerformance?: StudentPerformance | null;
   loading?: boolean;
 };
-
-const PERFORMANCE_PATH = `/${studentBaseRoute}/${studentRoutes.performance.to}`;
 
 const LESSON_WRAPPER_CLASSNAME = 'flex flex-col items-center w-36';
 const LESSON_VALUE_CLASSNAME = 'text-2xl font-bold text-primary';
@@ -84,7 +82,7 @@ export const StudentLessonPerformanceOverviewBoard = memo(function ({
       )}
       <div className='flex flex-1 items-center justify-center'>
         <BaseLink
-          to={PERFORMANCE_PATH}
+          to={studentPerformanceBaseRoute}
           rightIconName='arrow-circle-right'
           size='xs'
         >

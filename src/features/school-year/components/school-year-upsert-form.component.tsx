@@ -10,13 +10,13 @@ import cx from 'classix';
 import dayjs from '#/config/dayjs.config';
 import { getErrorMessage } from '#/utils/string.util';
 import { RecordStatus } from '#/core/models/core.model';
-import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
 import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
+import { adminSchoolYearBaseRoute } from '../route/admin-school-year-handle.route';
 import { SchoolYearUpsertFormStep1 } from './school-year-upsert-form-step-1.component';
 import { SchoolYearUpsertFormStep2 } from './school-year-upsert-form-step-2.component';
 
@@ -26,8 +26,6 @@ import type { SchoolYear } from '../models/school-year.model';
 import type { SchoolYearUpsertFormData } from '../models/school-year-form-data.model';
 
 type Props = FormProps<'div', SchoolYearUpsertFormData, Promise<SchoolYear>>;
-
-const SCHOOL_YEAR_LIST_PATH = `/${adminBaseRoute}/${adminRoutes.schoolYear.to}`;
 
 const schema = z
   .object({
@@ -198,7 +196,7 @@ export const SchoolYearUpsertForm = memo(function ({
         );
 
         onDone && onDone(true);
-        navigate(SCHOOL_YEAR_LIST_PATH);
+        navigate(adminSchoolYearBaseRoute);
       } catch (error: any) {
         toast.error(error.message);
       }

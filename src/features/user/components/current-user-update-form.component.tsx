@@ -7,9 +7,6 @@ import isMobilePhone from 'validator/lib/isMobilePhone';
 import toast from 'react-hot-toast';
 import cx from 'classix';
 
-import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import {
@@ -18,6 +15,11 @@ import {
 } from '#/base/components/base-input.component';
 import { BaseControlledTextArea } from '#/base/components/base-textarea.component';
 import { UserRole } from '../models/user.model';
+import {
+  studentUserBaseRoute,
+  teacherUserBaseRoute,
+  adminUserBaseRoute,
+} from '../route/current-user-handle.route';
 
 import type { FormProps } from '#/base/models/base.model';
 import type { User } from '../models/user.model';
@@ -119,11 +121,11 @@ export const CurrentUserUpdateForm = memo(function ({
   const [isTeacher, accountPath] = useMemo(() => {
     switch (role) {
       case UserRole.Student:
-        return [false, `/${studentBaseRoute}/${studentRoutes.account.to}`];
+        return [false, studentUserBaseRoute];
       case UserRole.Teacher:
-        return [true, `/${teacherBaseRoute}/${teacherRoutes.account.to}`];
+        return [true, teacherUserBaseRoute];
       case UserRole.Admin:
-        return [false, `/${adminBaseRoute}/${adminRoutes.account.to}`];
+        return [false, adminUserBaseRoute];
       default:
         return [false, null];
     }

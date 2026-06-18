@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import cx from 'classix';
 
 import { convertSecondsToDuration } from '#/utils/time.util';
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
+import { studentLessonBaseRoute } from '#/lesson/route/student-lesson-handle.route';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
@@ -24,12 +24,10 @@ type Props = ComponentProps<'div'> & {
   loading?: boolean;
 };
 
-const LESSON_LIST_PATH = `/${studentBaseRoute}/${studentRoutes.lesson.to}`;
-
 const LessonCompactCard = memo(function ({ lesson }: { lesson: Lesson }) {
   const [singleTo, orderNumber, title, isCompleted, duration] = useMemo(
     () => [
-      `${LESSON_LIST_PATH}/${lesson.slug}`,
+      `${studentLessonBaseRoute}/${lesson.slug}`,
       lesson.orderNumber,
       lesson.title,
       !!lesson.completions?.length,
@@ -110,7 +108,7 @@ export const StudentDashboardLessonList = memo(function ({
             <div className='flex items-center justify-between'>
               <h3 className='text-lg'>Latest Lessons</h3>
               <BaseLink
-                to={LESSON_LIST_PATH}
+                to={studentLessonBaseRoute}
                 rightIconName='arrow-circle-right'
                 size='xs'
               >

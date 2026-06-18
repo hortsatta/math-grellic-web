@@ -4,11 +4,17 @@ import cx from 'classix';
 
 import dayjs from '#/config/dayjs.config';
 import { convertSecondsToDuration, getDayJsDuration } from '#/utils/time.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { studentRoutes } from '#/app/routes/student-routes';
+import { studentLessonBaseRoute } from '#/lesson/route/student-lesson-handle.route';
+import { teacherLessonBaseRoute } from '#/lesson/route/teacher-lesson-handle.route';
+import { studentExamBaseRoute } from '#/exam/route/student-exam-handle.route';
+import { teacherExamBaseRoute } from '#/exam/route/teacher-exam-handle.route';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { ScheduleType } from '../models/schedule.model';
+import { studentScheduleBaseRoute } from '../route/student-schedule-handle.route';
+import { teacherScheduleBaseRoute } from '../route/teacher-schedule-handle.route';
 
 import type { ComponentProps } from 'react';
 import type { IconName } from '#/base/models/base.model';
@@ -58,20 +64,18 @@ export const ScheduleDailyCard = memo(function ({
 
     if (scheduleType === ScheduleType.Lesson) {
       const basePath = isStudent
-        ? `/${studentBaseRoute}/${studentRoutes.lesson.to}`
-        : `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
+        ? studentLessonBaseRoute
+        : teacherLessonBaseRoute;
 
       return `${basePath}/${(schedule as LessonSchedule).lesson.slug}`;
     } else if (scheduleType === ScheduleType.Exam) {
-      const basePath = isStudent
-        ? `/${studentBaseRoute}/${studentRoutes.exam.to}`
-        : `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
+      const basePath = isStudent ? studentExamBaseRoute : teacherExamBaseRoute;
 
       return `${basePath}/${(schedule as ExamSchedule).exam.slug}`;
     } else {
       const basePath = isStudent
-        ? `/${studentBaseRoute}/${studentRoutes.schedule.to}/${teacherRoutes.schedule.meeting.to}`
-        : `/${teacherBaseRoute}/${teacherRoutes.schedule.to}/${teacherRoutes.schedule.meeting.to}`;
+        ? `${studentScheduleBaseRoute}/${studentRoutes.schedule.meeting.to}`
+        : `${teacherScheduleBaseRoute}/${teacherRoutes.schedule.meeting.to}`;
 
       return `${basePath}/${(schedule as MeetingSchedule).id}`;
     }

@@ -2,12 +2,12 @@ import { memo, useMemo } from 'react';
 import cx from 'classix';
 
 import { generateOrdinalSuffix } from '#/utils/string.util';
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseProgressCircle } from '#/base/components/base-progress-circle.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { studentPerformanceBaseRoute } from '../route/student-performance-handle.route';
 import { StudentPerformanceType } from '../models/performance.model';
 import { PerformanceRankAwardImg } from './performance-rank-award-img.component';
 
@@ -18,8 +18,6 @@ type Props = ComponentProps<'div'> & {
   studentPerformance?: StudentPerformance | null;
   loading?: boolean;
 };
-
-const PERFORMANCE_PATH = `/${studentBaseRoute}/${studentRoutes.performance.to}`;
 
 const EXAM_WRAPPER_CLASSNAME = 'flex flex-col items-center';
 const EXAM_WRAPPER_SM_CLASSNAME = 'flex flex-col items-center flex-1';
@@ -158,7 +156,7 @@ export const StudentExamPerformanceOverviewBoard = memo(function ({
       )}
       <div className='flex flex-1 items-center justify-center'>
         <BaseLink
-          to={PERFORMANCE_PATH}
+          to={studentPerformanceBaseRoute}
           rightIconName='arrow-circle-right'
           size='xs'
         >

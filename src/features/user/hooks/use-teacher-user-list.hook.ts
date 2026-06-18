@@ -5,12 +5,13 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryClient } from '#/config/react-query-client.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import { PAGINATION_TAKE } from '#/utils/api.util';
-import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
+import { adminRoutes } from '#/app/routes/admin-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
 import { setTeacherApprovalStatus as setTeacherApprovalStatusApi } from '#/school-year/api/admin-school-year-enrollment.api';
 import { UserApprovalStatus } from '../models/user.model';
 import { transformToTeacherUserAccount } from '../helpers/user-transform.helper';
+import { adminTeacherUserBaseRoute } from '../route/teacher-user-handle.route';
 import {
   getPaginatedTeachersByCurrentAdminUser,
   deleteTeacher as deleteTeacherApi,
@@ -43,8 +44,6 @@ type Result = {
   ) => Promise<any>;
   deleteTeacher: (id: number) => Promise<boolean | undefined>;
 };
-
-const TEACHER_LIST_PATH = `/${adminBaseRoute}/${adminRoutes.teacher.to}`;
 
 export const defaultSort = {
   field: 'name',
@@ -164,14 +163,16 @@ export function useTeacherUserList(): Result {
 
   const handleTeacherDetails = useCallback(
     (id: number) => {
-      navigate(`${TEACHER_LIST_PATH}/${id}`);
+      navigate(`${adminTeacherUserBaseRoute}/${id}`);
     },
     [navigate],
   );
 
   const handleTeacherEdit = useCallback(
     (id: number) => {
-      navigate(`${TEACHER_LIST_PATH}/${id}/${adminRoutes.teacher.editTo}`);
+      navigate(
+        `${adminTeacherUserBaseRoute}/${id}/${adminRoutes.teacher.editTo}`,
+      );
     },
     [navigate],
   );

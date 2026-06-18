@@ -1,12 +1,11 @@
 import { memo, useMemo } from 'react';
 import cx from 'classix';
 
-import {
-  superAdminBaseRoute,
-  superAdminRoutes,
-} from '#/app/routes/super-admin-routes';
+import { superAdminRoutes } from '#/app/routes/super-admin-routes';
 import { UserGender } from '#/user/models/user.model';
 import { ADMIN_NAME } from '#/user/helpers/user.helper';
+import { saAdminUserBaseRoute } from '#/user/route/admin-user-handle.route';
+import { superAdminUserBaseRoute } from '#/user/route/current-user-handle.route';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
@@ -22,11 +21,9 @@ type Props = ComponentProps<typeof BaseSurface> & {
   loading?: boolean;
 };
 
-const USER_ACCOUNT_PATH = `/${superAdminBaseRoute}/${superAdminRoutes.account.to}`;
-
 const links = [
   {
-    to: `/${superAdminBaseRoute}/${superAdminRoutes.admin.to}/${superAdminRoutes.admin.createTo}`,
+    to: `${saAdminUserBaseRoute}/${superAdminRoutes.admin.createTo}`,
     label: 'Register administrator',
     icons: [
       { name: 'plus', size: 16 },
@@ -34,7 +31,7 @@ const links = [
     ] as GroupLink['icons'],
   },
   {
-    to: `/${superAdminBaseRoute}/${superAdminRoutes.admin.to}`,
+    to: saAdminUserBaseRoute,
     label: 'View all administrator',
     icons: [{ name: 'users-four' }] as GroupLink['icons'],
   },
@@ -70,7 +67,7 @@ export const SuperAdminDashboardUserSummary = memo(function ({
           <div className='flex w-full animate-fastFadeIn flex-col gap-4 2xl:min-w-[400px]'>
             {user && (
               <DashboardUserWelcome
-                to={USER_ACCOUNT_PATH}
+                to={superAdminUserBaseRoute}
                 user={transformedUser as any}
               />
             )}

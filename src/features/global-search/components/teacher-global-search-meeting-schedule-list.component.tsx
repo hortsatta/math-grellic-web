@@ -2,7 +2,8 @@ import { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherScheduleBaseRoute } from '#/schedule/route/teacher-schedule-handle.route';
 import { BaseLink } from '#/base/components/base-link.component';
 import { TeacherMeetingScheduleSingleCard } from '#/schedule/components/teacher-meeting-schedule-single-card.component';
 
@@ -13,7 +14,7 @@ type Props = ComponentProps<'div'> & {
   meetingSchedules: MeetingSchedule[];
 };
 
-const MEETING_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.schedule.to}/${teacherRoutes.schedule.meeting.to}`;
+const MEETING_LIST_PATH = `${teacherScheduleBaseRoute}/${teacherRoutes.schedule.meeting.to}`;
 
 export const TeacherGlobalSearchMeetingScheduleList = memo(function ({
   className,

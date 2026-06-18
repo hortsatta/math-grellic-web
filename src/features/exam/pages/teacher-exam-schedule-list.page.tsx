@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Outlet, useLoaderData } from 'react-router-dom';
 
+import { teacherScheduleBaseRoute } from '#/schedule/route/teacher-schedule-handle.route';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
-import { useTeacherExamSingle } from '../hooks/use-teacher-exam-single.hook';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseScene } from '#/base/components/base-scene.component';
 import { BaseGroupLink } from '#/base/components/base-group-link.component';
+import { teacherExamBaseRoute } from '../route/teacher-exam-handle.route';
+import { useTeacherExamSingle } from '../hooks/use-teacher-exam-single.hook';
 import { TeacherExamScheduleListOverviewBoard } from '../components/teacher-exam-schedule-list-overview-board.component';
 
 import type { GroupLink } from '#/base/models/base.model';
@@ -21,12 +22,12 @@ export type OutletContextType = {
 const sceneTitle = 'Exam Schedule';
 const sceneLinks = [
   {
-    to: `/${teacherBaseRoute}/${teacherRoutes.exam.to}`,
+    to: teacherExamBaseRoute,
     label: 'Exam List',
     icons: [{ name: 'plus', size: 16 }, { name: 'exam' }],
   },
   {
-    to: `/${teacherBaseRoute}/${teacherRoutes.schedule.to}`,
+    to: teacherScheduleBaseRoute,
     label: 'Calendar',
     icons: [{ name: 'calendar' }],
   },

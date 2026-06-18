@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import cx from 'classix';
 
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
+import { studentHelpBaseRoute } from '#/help/route/student-help-handle.route';
 import { BaseSurface } from '#/base/components/base-surface.component';
 
 import helpBg from '#/assets/images/help-bg.png';
@@ -10,14 +10,12 @@ import helpTeacher from '#/assets/images/help-teacher.png';
 
 import type { ComponentProps } from 'react';
 
-const HELP_PATH = `/${studentBaseRoute}/${studentRoutes.help.to}`;
-
 export const StudentDashboardHelpCard = memo(function ({
   className,
   ...moreProps
 }: ComponentProps<typeof BaseSurface>) {
   return (
-    <Link to={HELP_PATH} className='group'>
+    <Link to={studentHelpBaseRoute} className='group'>
       <BaseSurface
         className={cx(
           'relative flex min-h-[310px] flex-col justify-between gap-4 overflow-hidden transition-[border] md:min-h-[341px] md:gap-0',

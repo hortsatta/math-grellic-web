@@ -1,11 +1,13 @@
 import { memo, useMemo } from 'react';
 import cx from 'classix';
 
+import { studentRoutes } from '#/app/routes/student-routes';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { generateFullName } from '../helpers/user.helper';
+import { studentUserBaseRoute } from '../route/current-user-handle.route';
 import { UserAvatarImg } from './user-avatar-img.component';
 import { UserMessengerLink } from './user-messenger-link.component';
 
@@ -15,14 +17,13 @@ import type {
   User,
   UserGender,
 } from '../models/user.model';
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 
 type Props = ComponentProps<'div'> & {
   userAccount: StudentUserAccount;
   assignedTeacher: User;
 };
 
-const TEACHER_ACCOUNT_PATH = `/${studentBaseRoute}/${studentRoutes.account.to}/${studentRoutes.account.teacherAccountTo}`;
+const TEACHER_ACCOUNT_PATH = `${studentUserBaseRoute}/${studentRoutes.account.teacherAccountTo}`;
 
 const FIELD_TITLE_CLASSNAME = 'mb-2.5 text-base';
 

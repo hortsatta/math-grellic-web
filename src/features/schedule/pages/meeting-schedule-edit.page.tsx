@@ -2,16 +2,17 @@ import { useState, useMemo, useCallback } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseModal } from '#/base/components/base-modal.component';
+import { teacherScheduleBaseRoute } from '../route/teacher-schedule-handle.route';
 import { useMeetingScheduleEdit } from '../hooks/use-meeting-schedule-edit.hook';
 import { MeetingScheduleUpsertForm } from '../components/meeting-schedule-upsert-form.component';
 
-const MEETING_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.schedule.to}/${teacherRoutes.schedule.meeting.to}`;
+const MEETING_LIST_PATH = `${teacherScheduleBaseRoute}/${teacherRoutes.schedule.meeting.to}`;
 
 function MeetingScheduleEditPage() {
   const { id } = useParams();

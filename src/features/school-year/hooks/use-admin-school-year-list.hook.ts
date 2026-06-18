@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 import { PAGINATION_TAKE } from '#/utils/api.util';
-import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
+import { adminRoutes } from '#/app/routes/admin-routes';
 import { transformToSchoolYear } from '../helpers/school-year-transform.helper';
+import { adminSchoolYearBaseRoute } from '../route/admin-school-year-handle.route';
 import { getPaginatedSchoolYearsByCurrentAdminUser } from '../api/admin-school-year.api';
 
 import type {
@@ -28,8 +29,6 @@ type Result = {
   handleSchoolYearEdit: (slug: string) => void;
   handleSchoolYearDetails: (slug: string) => void;
 };
-
-const SCHOOL_YEAR_LIST_PATH = `/${adminBaseRoute}/${adminRoutes.schoolYear.to}`;
 
 export const defaultSort = {
   field: 'startDate',
@@ -116,7 +115,7 @@ export function useAdminSchoolYearList(): Result {
 
   const handleSchoolYearDetails = useCallback(
     (slug: string) => {
-      navigate(`${SCHOOL_YEAR_LIST_PATH}/${slug}`);
+      navigate(`${adminSchoolYearBaseRoute}/${slug}`);
     },
     [navigate],
   );
@@ -124,7 +123,7 @@ export function useAdminSchoolYearList(): Result {
   const handleSchoolYearEdit = useCallback(
     (slug: string) => {
       navigate(
-        `${SCHOOL_YEAR_LIST_PATH}/${slug}/${adminRoutes.schoolYear.editTo}`,
+        `${adminSchoolYearBaseRoute}/${slug}/${adminRoutes.schoolYear.editTo}`,
       );
     },
     [navigate],

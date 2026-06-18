@@ -2,7 +2,8 @@ import { memo, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherLessonBaseRoute } from '#/lesson/route/teacher-lesson-handle.route';
 import { BaseDataEmptyMessage } from '#/base/components/base-data-empty-message.component';
 import {
   StudentLessonPerformanceSingleCard,
@@ -12,7 +13,7 @@ import {
 import type { ComponentProps } from 'react';
 import type { Lesson } from '#/lesson/models/lesson.model';
 
-const LESSON_CREATE_TO = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}/${teacherRoutes.exam.createTo}`;
+const LESSON_CREATE_TO = `${teacherLessonBaseRoute}/${teacherRoutes.lesson.createTo}`;
 
 type Props = ComponentProps<'div'> & {
   lessons: Lesson[];
@@ -30,8 +31,7 @@ export const TeacherStudentLessonPerformanceList = memo(function ({
   const isEmpty = useMemo(() => !lessons?.length, [lessons]);
 
   const handleClick = useCallback(
-    (slug: string) => () =>
-      navigate(`/${teacherBaseRoute}/${teacherRoutes.lesson.to}/${slug}`),
+    (slug: string) => () => navigate(`${teacherLessonBaseRoute}/${slug}`),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );

@@ -4,26 +4,17 @@ import { Menu } from '@headlessui/react';
 import cx from 'classix';
 
 import { UserRole } from '#/user/models/user.model';
+import { generateSuperAdminRouteLinks } from '#/app/routes/super-admin-routes';
+import { generateAdminRouteLinks } from '#/app/routes/admin-routes';
+import { generateTeacherRouteLinks } from '#/app/routes/teacher-routes';
+import { generateStudentRouteLinks } from '#/app/routes/student-routes';
 import {
-  generateSuperAdminRouteLinks,
-  superAdminBaseRoute,
-  superAdminRoutes,
-} from '#/app/routes/super-admin-routes';
-import {
-  generateAdminRouteLinks,
-  adminBaseRoute,
-  adminRoutes,
-} from '#/app/routes/admin-routes';
-import {
-  generateTeacherRouteLinks,
-  teacherBaseRoute,
-  teacherRoutes,
-} from '#/app/routes/teacher-routes';
-import {
-  generateStudentRouteLinks,
-  studentBaseRoute,
-  studentRoutes,
-} from '#/app/routes/student-routes';
+  studentUserBaseRoute,
+  teacherUserBaseRoute,
+  adminUserBaseRoute,
+  superAdminUserBaseRoute,
+} from '#/user/route/current-user-handle.route';
+import { teacherSearchBaseRoute } from '#/global-search/route/teacher-global-search-handle.route';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
@@ -88,16 +79,16 @@ export const CoreHeader = memo(function ({
 
     switch (role) {
       case UserRole.Student:
-        navigate(`/${studentBaseRoute}/${studentRoutes.account.to}`);
+        navigate(studentUserBaseRoute);
         break;
       case UserRole.Teacher:
-        navigate(`/${teacherBaseRoute}/${teacherRoutes.account.to}`);
+        navigate(teacherUserBaseRoute);
         break;
       case UserRole.Admin:
-        navigate(`/${adminBaseRoute}/${adminRoutes.account.to}`);
+        navigate(adminUserBaseRoute);
         break;
       case UserRole.SuperAdmin:
-        navigate(`/${superAdminBaseRoute}/${superAdminRoutes.account.to}`);
+        navigate(superAdminUserBaseRoute);
         break;
     }
   }, [role, navigate]);
@@ -115,13 +106,14 @@ export const CoreHeader = memo(function ({
 
       switch (role) {
         case UserRole.Student:
-          navigate(`/${studentBaseRoute}/${studentRoutes.search.to}`);
+          // navigate(studentSearchBaseRoute);
+          // navigate(`/${studentBaseRoute}/${studentRoutes.search.to}`);
           break;
         case UserRole.Teacher:
-          navigate(`/${teacherBaseRoute}/${teacherRoutes.search.to}`);
+          navigate(teacherSearchBaseRoute);
           break;
         // case UserRole.Admin:
-        //   navigate(`/${adminBaseRoute}/${adminRoutes.account.to}`);
+        // navigate(adminSearchBaseRoute);
         //   break;
         // case UserRole.SuperAdmin:
         //   navigate(`/${superAdminBaseRoute}/${superAdminRoutes.account.to}`);

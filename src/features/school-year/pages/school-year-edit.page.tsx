@@ -2,15 +2,13 @@ import { useState, useMemo, useCallback } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseModal } from '#/base/components/base-modal.component';
+import { adminSchoolYearBaseRoute } from '../route/admin-school-year-handle.route';
 import { useSchoolYearEdit } from '../hooks/use-school-year-edit.hook';
 import { SchoolYearUpsertForm } from '../components/school-year-upsert-form.component';
-
-const SCHOOL_YEAR_LIST_PATH = `/${adminBaseRoute}/${adminRoutes.schoolYear.to}`;
 
 function SchoolYearEditPage() {
   const { slug } = useParams();
@@ -48,7 +46,7 @@ function SchoolYearEditPage() {
     try {
       await deleteSchoolYear();
       toast.success(`Deleted school year ${schoolYearFormData.title}`);
-      navigate(SCHOOL_YEAR_LIST_PATH);
+      navigate(adminSchoolYearBaseRoute);
     } catch (error: any) {
       toast.error(error.message);
     }

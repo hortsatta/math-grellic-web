@@ -2,8 +2,8 @@ import { useMemo, memo } from 'react';
 import { Link } from 'react-router-dom';
 import cx from 'classix';
 
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { activityGameLabel } from '#/activity/models/activity.model';
+import { studentActivityBaseRoute } from '#/activity/route/student-activity-handle.route';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
@@ -22,8 +22,6 @@ type Props = ComponentProps<'div'> & {
   loading?: boolean;
 };
 
-const ACTIVITY_LIST_PATH = `/${studentBaseRoute}/${studentRoutes.activity.to}`;
-
 const ActivityCompactCard = memo(function ({
   activity,
 }: {
@@ -31,7 +29,7 @@ const ActivityCompactCard = memo(function ({
 }) {
   const [singleTo, orderNumber, title, gameName, score] = useMemo(
     () => [
-      `${ACTIVITY_LIST_PATH}/${activity.slug}`,
+      `${studentActivityBaseRoute}/${activity.slug}`,
       activity.orderNumber,
       activity.title,
       activityGameLabel[activity.game.name as ActivityGame],
@@ -112,7 +110,7 @@ export const StudentDashboardActivityList = memo(function ({
             <div className='flex items-center justify-between'>
               <h3 className='text-lg'>Latest Activities</h3>
               <BaseLink
-                to={ACTIVITY_LIST_PATH}
+                to={studentActivityBaseRoute}
                 rightIconName='arrow-circle-right'
                 size='xs'
               >

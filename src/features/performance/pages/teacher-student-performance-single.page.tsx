@@ -1,7 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherStudentUserBaseRoute } from '#/user/route/student-user-handle.route';
 import {
   formatPhoneNumber,
   generateFullName,
@@ -23,8 +24,6 @@ import { StudentPerformanceSingle } from '../components/student-performance-sing
 
 import type { UserGender } from '#/user/models/user.model';
 import type { ButtonVariant, IconName } from '#/base/models/base.model';
-
-const STUDENT_USER_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
 const academicProgressButtonProps = {
   className: 'h-[46px]',
@@ -65,7 +64,8 @@ function TeacherStudentPerformanceSinglePage() {
     );
 
   const editTo = useMemo(
-    () => `${STUDENT_USER_PATH}/${id}/${teacherRoutes.student.editTo}`,
+    () =>
+      `${teacherStudentUserBaseRoute}/${id}/${teacherRoutes.student.editTo}`,
     [id],
   );
 

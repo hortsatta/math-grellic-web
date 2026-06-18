@@ -10,7 +10,6 @@ import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { getErrorMessage } from '#/utils/string.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
@@ -22,6 +21,7 @@ import {
   createDefaultStageQuestion,
   defaultQuestion,
 } from '../helpers/activity-form.helper';
+import { teacherActivityBaseRoute } from '../route/teacher-activity-handle.route';
 import { ActivityUpsertFormStep1 } from './activity-upsert-form-step-1.component';
 import { ActivityUpsertFormStepPointTimeLevel } from './activity-upsert-form-step-point-time-level.component';
 import { ActivityUpsertFormStepStageLevel } from './activity-upsert-form-step-stage-level.component';
@@ -44,8 +44,6 @@ type Props = FormProps<
   ActivityUpsertFormData,
   Promise<Activity | undefined>
 > & { schoolYearId: number };
-
-const ACTIVITY_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
 
 const choiceSchema = z.object({
   id: z.number().optional(),
@@ -477,7 +475,7 @@ export const ActivityUpsertForm = memo(function ({
         );
 
         onDone && onDone(true);
-        navigate(ACTIVITY_LIST_PATH);
+        navigate(teacherActivityBaseRoute);
       } catch (error: any) {
         toast.error(error.message);
       }

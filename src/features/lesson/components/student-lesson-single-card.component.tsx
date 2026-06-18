@@ -7,11 +7,11 @@ import {
   convertSecondsToDuration,
   generateCountdownDate,
 } from '#/utils/time.util';
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { studentLessonBaseRoute } from '../route/student-lesson-handle.route';
 
 import type { ComponentProps } from 'react';
 import type { Duration } from 'dayjs/plugin/duration';
@@ -25,8 +25,6 @@ type Props = ComponentProps<typeof BaseSurface> & {
   isDashboard?: boolean;
 };
 
-const LESSON_LIST_PATH = `/${studentBaseRoute}/${studentRoutes.lesson.to}`;
-
 export const StudentLessonSingleCard = memo(function ({
   className,
   lesson,
@@ -39,7 +37,7 @@ export const StudentLessonSingleCard = memo(function ({
   const [singleTo, orderNumber, title, excerpt, isCompleted, duration] =
     useMemo(
       () => [
-        `${LESSON_LIST_PATH}/${lesson.slug}`,
+        `${studentLessonBaseRoute}/${lesson.slug}`,
         lesson.orderNumber,
         lesson.title,
         lesson.excerpt,

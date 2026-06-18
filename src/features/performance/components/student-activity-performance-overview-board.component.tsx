@@ -2,12 +2,12 @@ import { memo, useMemo } from 'react';
 import cx from 'classix';
 
 import { generateOrdinalSuffix } from '#/utils/string.util';
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseProgressCircle } from '#/base/components/base-progress-circle.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { StudentPerformanceType } from '../models/performance.model';
+import { studentPerformanceBaseRoute } from '../route/student-performance-handle.route';
 import { PerformanceRankAwardImg } from './performance-rank-award-img.component';
 
 import type { ComponentProps } from 'react';
@@ -17,8 +17,6 @@ type Props = ComponentProps<'div'> & {
   studentPerformance?: StudentPerformance | null;
   loading?: boolean;
 };
-
-const PERFORMANCE_PATH = `/${studentBaseRoute}/${studentRoutes.performance.to}`;
 
 const ACTIVITY_WRAPPER_CLASSNAME = 'flex flex-col items-center w-36';
 const ACTIVITY_VALUE_CLASSNAME = 'text-2xl font-bold text-primary-hue-teal';
@@ -33,6 +31,7 @@ export const StudentActivityPerformanceOverviewBoard = memo(function ({
   const [
     activityTotalCount,
     activityCompletedCount,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     activityIncompleteCount,
     overallActivityRank,
     overallActivityCompletionPercent,
@@ -123,7 +122,7 @@ export const StudentActivityPerformanceOverviewBoard = memo(function ({
       )}
       <div className='flex flex-1 items-center justify-center'>
         <BaseLink
-          to={PERFORMANCE_PATH}
+          to={studentPerformanceBaseRoute}
           rightIconName='arrow-circle-right'
           size='xs'
         >

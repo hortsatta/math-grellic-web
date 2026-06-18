@@ -2,7 +2,8 @@ import { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherActivityBaseRoute } from '#/activity/route/teacher-activity-handle.route';
 import { BaseLink } from '#/base/components/base-link.component';
 import { TeacherActivitySingleCard } from '#/activity/components/teacher-activity-single-card.component';
 
@@ -12,8 +13,6 @@ import type { Activity } from '#/activity/models/activity.model';
 type Props = ComponentProps<'div'> & {
   activities: Activity[];
 };
-
-const ACTIVITY_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
 
 export const TeacherGlobalSearchActivityList = memo(function ({
   className,
@@ -26,7 +25,7 @@ export const TeacherGlobalSearchActivityList = memo(function ({
     (slug: string) => () => {
       window
         .open(
-          `${ACTIVITY_LIST_PATH}/${slug}/${teacherRoutes.activity.previewTo}`,
+          `${teacherActivityBaseRoute}/${slug}/${teacherRoutes.activity.previewTo}`,
           '_blank',
         )
         ?.focus();
@@ -36,7 +35,7 @@ export const TeacherGlobalSearchActivityList = memo(function ({
 
   const handleActivityDetails = useCallback(
     (slug: string) => () => {
-      navigate(`${ACTIVITY_LIST_PATH}/${slug}`);
+      navigate(`${teacherActivityBaseRoute}/${slug}`);
     },
     [navigate],
   );
@@ -44,7 +43,7 @@ export const TeacherGlobalSearchActivityList = memo(function ({
   const handleActivityEdit = useCallback(
     (slug: string) => () => {
       navigate(
-        `${ACTIVITY_LIST_PATH}/${slug}/${teacherRoutes.activity.editTo}`,
+        `${teacherActivityBaseRoute}/${slug}/${teacherRoutes.activity.editTo}`,
       );
     },
     [navigate],
@@ -62,7 +61,7 @@ export const TeacherGlobalSearchActivityList = memo(function ({
       <div className='flex items-center justify-between'>
         <h3 className='text-lg leading-none'>Activities</h3>
         <BaseLink
-          to={ACTIVITY_LIST_PATH}
+          to={teacherActivityBaseRoute}
           rightIconName='arrow-circle-right'
           size='xs'
         >

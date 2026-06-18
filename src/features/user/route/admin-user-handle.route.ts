@@ -5,16 +5,16 @@ import {
 
 import type { GroupLink, SceneRouteHandle } from '#/base/models/base.model';
 
-const adminUserBaseRoute = `/${superAdminBaseRoute}/${superAdminRoutes.admin.to}`;
+export const saAdminUserBaseRoute = `/${superAdminBaseRoute}/${superAdminRoutes.admin.to}`;
 
 const adminUserListLink = {
-  to: adminUserBaseRoute,
+  to: saAdminUserBaseRoute,
   label: 'Admin List',
   icons: [{ name: 'users-four' }] as GroupLink['icons'],
 };
 
 const createAdminUserLink = {
-  to: `${adminUserBaseRoute}/${superAdminRoutes.admin.createTo}`,
+  to: `${saAdminUserBaseRoute}/${superAdminRoutes.admin.createTo}`,
   label: 'Register Admin',
   icons: [
     { name: 'plus', size: 16 },

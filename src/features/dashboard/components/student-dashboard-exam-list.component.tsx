@@ -2,7 +2,7 @@ import { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import cx from 'classix';
 
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
+import { studentExamBaseRoute } from '#/exam/route/student-exam-handle.route';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
@@ -24,12 +24,10 @@ type Props = ComponentProps<'div'> & {
   loading?: boolean;
 };
 
-const EXAM_LIST_PATH = `/${studentBaseRoute}/${studentRoutes.exam.to}`;
-
 const ExamCompactCard = memo(function ({ exam }: { exam: Exam }) {
   const [singleTo, orderNumber, title, totalPoints, score] = useMemo(
     () => [
-      `${EXAM_LIST_PATH}/${exam.slug}`,
+      `${studentExamBaseRoute}/${exam.slug}`,
       exam.orderNumber,
       exam.title,
       exam.pointsPerQuestion * exam.visibleQuestionsCount,
@@ -124,7 +122,7 @@ export const StudentDashboardExamList = memo(function ({
             <div className='flex items-center justify-between'>
               <h3 className='text-lg'>Latest Exams</h3>
               <BaseLink
-                to={EXAM_LIST_PATH}
+                to={studentExamBaseRoute}
                 rightIconName='arrow-circle-right'
                 size='xs'
               >

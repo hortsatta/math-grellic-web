@@ -1,16 +1,16 @@
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import type { GroupLink, SceneRouteHandle } from '#/base/models/base.model';
 
-export const activityBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
+export const teacherActivityBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
 
 const activityListLink = {
-  to: activityBaseRoute,
+  to: teacherActivityBaseRoute,
   label: 'Activity List',
   icons: [{ name: 'game-controller' }] as GroupLink['icons'],
 };
 
 const createActivityLink = {
-  to: `${activityBaseRoute}/${teacherRoutes.activity.createTo}`,
+  to: `${teacherActivityBaseRoute}/${teacherRoutes.activity.createTo}`,
   label: 'Create Activity',
   icons: [
     { name: 'plus', size: 16 },

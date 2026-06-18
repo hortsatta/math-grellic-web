@@ -3,12 +3,12 @@ import { useQuery } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 
 import { teacherRoutes } from '#/app/routes/teacher-routes';
-import { lessonBaseRoute } from '#/lesson/route/teacher-lesson-handle.route';
-import { examBaseRoute } from '#/exam/route/teacher-exam-handle.route';
-import { activityBaseRoute } from '#/activity/route/teacher-activity-handle.route';
-import { scheduleBaseRoute } from '#/schedule/route/teacher-schedule-handle.route';
-import { performanceBaseRoute } from '#/performance/route/teacher-performance-handle.route';
-import { studentUserBaseRoute } from '#/user/route/student-user-handle.route';
+import { teacherLessonBaseRoute } from '#/lesson/route/teacher-lesson-handle.route';
+import { teacherExamBaseRoute } from '#/exam/route/teacher-exam-handle.route';
+import { teacherActivityBaseRoute } from '#/activity/route/teacher-activity-handle.route';
+import { teacherScheduleBaseRoute } from '#/schedule/route/teacher-schedule-handle.route';
+import { teacherPerformanceBaseRoute } from '#/performance/route/teacher-performance-handle.route';
+import { teacherStudentUserBaseRoute } from '#/user/route/student-user-handle.route';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToLesson } from '#/lesson/helpers/lesson-transform.helper';
 import { transformToActivity } from '#/activity/helpers/activity-transform.helper';
@@ -47,73 +47,73 @@ const otherLinks = [
   {
     name: 'lesson-new',
     label: 'Create new lesson',
-    to: `${lessonBaseRoute}/${teacherRoutes.lesson.createTo}`,
+    to: `${teacherLessonBaseRoute}/${teacherRoutes.lesson.createTo}`,
     icon: 'plus' as IconName,
   },
   {
     name: 'lesson-list',
     label: 'View all lessons',
-    to: lessonBaseRoute,
+    to: teacherLessonBaseRoute,
     icon: 'chalkboard' as IconName,
   },
   {
     name: 'exam-new',
     label: 'Create new exam',
-    to: `${examBaseRoute}/${teacherRoutes.exam.createTo}`,
+    to: `${teacherExamBaseRoute}/${teacherRoutes.exam.createTo}`,
     icon: 'plus' as IconName,
   },
   {
     name: 'exam-list',
     label: 'View all exams',
-    to: examBaseRoute,
+    to: teacherExamBaseRoute,
     icon: 'exam' as IconName,
   },
   {
     name: 'activity-new',
     label: 'Create new activity',
-    to: `${activityBaseRoute}/${teacherRoutes.activity.createTo}`,
+    to: `${teacherActivityBaseRoute}/${teacherRoutes.activity.createTo}`,
     icon: 'plus' as IconName,
   },
   {
     name: 'activity-list',
     label: 'View all activities',
-    to: activityBaseRoute,
+    to: teacherActivityBaseRoute,
     icon: 'game-controller' as IconName,
   },
   {
     name: 'schedule-calendar',
     label: 'View calendar',
-    to: scheduleBaseRoute,
+    to: teacherScheduleBaseRoute,
     icon: 'calendar' as IconName,
   },
   {
     name: 'schedule-meeting-list',
     label: 'View all scheduled meetings',
-    to: `${scheduleBaseRoute}/${teacherRoutes.schedule.meeting.to}`,
+    to: `${teacherScheduleBaseRoute}/${teacherRoutes.schedule.meeting.to}`,
     icon: 'presentation' as IconName,
   },
   {
     name: 'schedule-meeting-new',
     label: 'Schedule a meeting',
-    to: `${scheduleBaseRoute}/${teacherRoutes.schedule.meeting.to}/${teacherRoutes.schedule.meeting.createTo}`,
+    to: `${teacherScheduleBaseRoute}/${teacherRoutes.schedule.meeting.to}/${teacherRoutes.schedule.meeting.createTo}`,
     icon: 'plus' as IconName,
   },
   {
     name: 'student-performance-list',
     label: "View learners' performance",
-    to: performanceBaseRoute,
+    to: teacherPerformanceBaseRoute,
     icon: 'chart-donut' as IconName,
   },
   {
     name: 'student-list',
     label: 'View all learners',
-    to: studentUserBaseRoute,
+    to: teacherStudentUserBaseRoute,
     icon: 'student' as IconName,
   },
   {
     name: 'student-new',
     label: 'Enroll a new learner',
-    to: `${studentUserBaseRoute}/${teacherRoutes.student.createTo}`,
+    to: `${teacherStudentUserBaseRoute}/${teacherRoutes.student.createTo}`,
     icon: 'plus' as IconName,
   },
 ];

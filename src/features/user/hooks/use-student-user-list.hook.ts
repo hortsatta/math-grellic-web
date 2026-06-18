@@ -5,12 +5,13 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryClient } from '#/config/react-query-client.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import { PAGINATION_TAKE } from '#/utils/api.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
 import { setStudentApprovalStatus as setStudentApprovalStatusApi } from '#/school-year/api/teacher-school-year-enrollment.api';
 import { UserApprovalStatus } from '../models/user.model';
 import { transformToStudentUserAccount } from '../helpers/user-transform.helper';
+import { teacherStudentUserBaseRoute } from '../route/student-user-handle.route';
 import {
   getPaginatedStudentsByCurrentTeacherUser,
   deleteStudent as deleteStudentApi,
@@ -43,8 +44,6 @@ type Result = {
   ) => Promise<any>;
   deleteStudent: (id: number) => Promise<boolean | undefined>;
 };
-
-const STUDENT_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
 export const defaultSort = {
   field: 'name',
@@ -164,14 +163,16 @@ export function useStudentUserList(): Result {
 
   const handleStudentDetails = useCallback(
     (id: number) => {
-      navigate(`${STUDENT_LIST_PATH}/${id}`);
+      navigate(`${teacherStudentUserBaseRoute}/${id}`);
     },
     [navigate],
   );
 
   const handleStudentEdit = useCallback(
     (id: number) => {
-      navigate(`${STUDENT_LIST_PATH}/${id}/${teacherRoutes.student.editTo}`);
+      navigate(
+        `${teacherStudentUserBaseRoute}/${id}/${teacherRoutes.student.editTo}`,
+      );
     },
     [navigate],
   );

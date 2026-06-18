@@ -2,7 +2,7 @@ import { memo, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
+import { studentLessonBaseRoute } from '#/lesson/route/student-lesson-handle.route';
 import {
   StudentLessonPerformanceSingleCardSkeleton,
   StudentLessonPerformanceSingleCard,
@@ -27,8 +27,7 @@ export const StudentLessonPerformanceList = memo(function ({
   const isEmpty = useMemo(() => !lessons?.length, [lessons]);
 
   const handleClick = useCallback(
-    (slug: string) => () =>
-      navigate(`/${studentBaseRoute}/${studentRoutes.lesson.to}/${slug}`),
+    (slug: string) => () => navigate(`${studentLessonBaseRoute}/${slug}`),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );

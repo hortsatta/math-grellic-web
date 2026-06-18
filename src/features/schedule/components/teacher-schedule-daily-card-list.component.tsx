@@ -1,9 +1,9 @@
 import { memo, useCallback, useMemo } from 'react';
 
 import dayjs from '#/config/dayjs.config';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';
+import { teacherScheduleBaseRoute } from '../route/teacher-schedule-handle.route';
 import { ScheduleDailyCardList } from './schedule-daily-card-list.component';
 
 import type { ComponentProps } from 'react';
@@ -19,8 +19,6 @@ type Props = ComponentProps<'div'> & {
   title?: string;
   loading?: boolean;
 };
-
-const SCHEDULE_PATH = `/${teacherBaseRoute}/${teacherRoutes.schedule.to}`;
 
 export const TeacherScheduleDailyCardList = memo(function ({
   loading,
@@ -90,7 +88,7 @@ export const TeacherScheduleDailyCardList = memo(function ({
       </div>
       <ScheduleDailyCardList
         schedules={schedules}
-        scheduleTo={SCHEDULE_PATH}
+        scheduleTo={teacherScheduleBaseRoute}
         scheduleCardWrapperClassName='pt-2.5'
         loading={loading}
       />

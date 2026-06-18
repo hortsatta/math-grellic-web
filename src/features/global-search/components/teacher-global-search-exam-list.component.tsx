@@ -2,7 +2,8 @@ import { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cx from 'classix';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherExamBaseRoute } from '#/exam/route/teacher-exam-handle.route';
 import { BaseLink } from '#/base/components/base-link.component';
 import { TeacherExamSingleCard } from '#/exam/components/teacher-exam-single-card.component';
 
@@ -12,8 +13,6 @@ import type { Exam } from '#/exam/models/exam.model';
 type Props = ComponentProps<'div'> & {
   exams: Exam[];
 };
-
-const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
 
 export const TeacherGlobalSearchExamList = memo(function ({
   className,
@@ -26,7 +25,7 @@ export const TeacherGlobalSearchExamList = memo(function ({
     (slug: string) => () => {
       window
         .open(
-          `${EXAM_LIST_PATH}/${slug}/${teacherRoutes.exam.previewTo}`,
+          `${teacherExamBaseRoute}/${slug}/${teacherRoutes.exam.previewTo}`,
           '_blank',
         )
         ?.focus();
@@ -36,21 +35,23 @@ export const TeacherGlobalSearchExamList = memo(function ({
 
   const handleExamDetails = useCallback(
     (slug: string) => () => {
-      navigate(`${EXAM_LIST_PATH}/${slug}`);
+      navigate(`${teacherExamBaseRoute}/${slug}`);
     },
     [navigate],
   );
 
   const handleExamEdit = useCallback(
     (slug: string) => () => {
-      navigate(`${EXAM_LIST_PATH}/${slug}/${teacherRoutes.exam.editTo}`);
+      navigate(`${teacherExamBaseRoute}/${slug}/${teacherRoutes.exam.editTo}`);
     },
     [navigate],
   );
 
   const handleExamSchedule = useCallback(
     (slug: string) => () => {
-      navigate(`${EXAM_LIST_PATH}/${slug}/${teacherRoutes.exam.schedule.to}`);
+      navigate(
+        `${teacherExamBaseRoute}/${slug}/${teacherRoutes.exam.schedule.to}`,
+      );
     },
     [navigate],
   );
@@ -67,7 +68,7 @@ export const TeacherGlobalSearchExamList = memo(function ({
       <div className='flex items-center justify-between'>
         <h3 className='text-lg leading-none'>Exams</h3>
         <BaseLink
-          to={EXAM_LIST_PATH}
+          to={teacherExamBaseRoute}
           rightIconName='arrow-circle-right'
           size='xs'
         >

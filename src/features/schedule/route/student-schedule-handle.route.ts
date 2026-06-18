@@ -1,16 +1,16 @@
 import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import type { GroupLink, SceneRouteHandle } from '#/base/models/base.model';
 
-const scheduleBaseRoute = `/${studentBaseRoute}/${studentRoutes.schedule.to}`;
+export const studentScheduleBaseRoute = `/${studentBaseRoute}/${studentRoutes.schedule.to}`;
 
 const calendarLink = {
-  to: scheduleBaseRoute,
+  to: studentScheduleBaseRoute,
   label: 'Calendar',
   icons: [{ name: 'calendar' }] as GroupLink['icons'],
 };
 
 const meetingListLink = {
-  to: `${scheduleBaseRoute}/${studentRoutes.schedule.meeting.to}`,
+  to: `${studentScheduleBaseRoute}/${studentRoutes.schedule.meeting.to}`,
   label: 'Meeting List',
   icons: [{ name: 'presentation' }] as GroupLink['icons'],
 };

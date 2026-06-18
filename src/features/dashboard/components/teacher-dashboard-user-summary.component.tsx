@@ -1,7 +1,13 @@
 import { memo } from 'react';
 import cx from 'classix';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherUserBaseRoute } from '#/user/route/current-user-handle.route';
+import { teacherLessonBaseRoute } from '#/lesson/route/teacher-lesson-handle.route';
+import { teacherExamBaseRoute } from '#/exam/route/teacher-exam-handle.route';
+import { teacherActivityBaseRoute } from '#/activity/route/teacher-activity-handle.route';
+import { teacherScheduleBaseRoute } from '#/schedule/route/teacher-schedule-handle.route';
+import { teacherStudentUserBaseRoute } from '#/user/route/student-user-handle.route';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
@@ -17,11 +23,9 @@ type Props = ComponentProps<typeof BaseSurface> & {
   loading?: boolean;
 };
 
-const USER_ACCOUNT_PATH = `/${teacherBaseRoute}/${teacherRoutes.account.to}`;
-
 const links = [
   {
-    to: `/${teacherBaseRoute}/${teacherRoutes.lesson.to}/${teacherRoutes.lesson.createTo}`,
+    to: `${teacherLessonBaseRoute}/${teacherRoutes.lesson.createTo}`,
     label: 'New lesson',
     icons: [
       { name: 'plus', size: 16 },
@@ -29,12 +33,12 @@ const links = [
     ] as GroupLink['icons'],
   },
   {
-    to: `/${teacherBaseRoute}/${teacherRoutes.exam.to}/${teacherRoutes.exam.createTo}`,
+    to: `${teacherExamBaseRoute}/${teacherRoutes.exam.createTo}`,
     label: 'New exam',
     icons: [{ name: 'plus', size: 16 }, { name: 'exam' }] as GroupLink['icons'],
   },
   {
-    to: `/${teacherBaseRoute}/${teacherRoutes.activity.to}/${teacherRoutes.activity.createTo}`,
+    to: `${teacherActivityBaseRoute}/${teacherRoutes.activity.createTo}`,
     label: 'New activity',
     icons: [
       { name: 'plus', size: 16 },
@@ -42,7 +46,7 @@ const links = [
     ] as GroupLink['icons'],
   },
   {
-    to: `/${teacherBaseRoute}/${teacherRoutes.schedule.to}/${teacherRoutes.schedule.meeting.to}/${teacherRoutes.schedule.meeting.createTo}`,
+    to: `${teacherScheduleBaseRoute}/${teacherRoutes.schedule.meeting.to}/${teacherRoutes.schedule.meeting.createTo}`,
     label: 'Schedule meeting',
     icons: [
       { name: 'plus', size: 16 },
@@ -50,7 +54,7 @@ const links = [
     ] as GroupLink['icons'],
   },
   {
-    to: `/${teacherBaseRoute}/${teacherRoutes.student.to}/${teacherRoutes.student.createTo}`,
+    to: `${teacherStudentUserBaseRoute}/${teacherRoutes.student.createTo}`,
     label: 'Enroll learner',
     icons: [
       { name: 'plus', size: 16 },
@@ -78,7 +82,9 @@ export const TeacherDashboardUserSummary = memo(function ({
         <BaseSpinner />
       ) : (
         <div className='flex w-full animate-fastFadeIn flex-col gap-4'>
-          {user && <DashboardUserWelcome to={USER_ACCOUNT_PATH} user={user} />}
+          {user && (
+            <DashboardUserWelcome to={teacherUserBaseRoute} user={user} />
+          )}
           <BaseDivider />
           <div className='flex h-full flex-col gap-2.5'>
             <span className='text-sm'>

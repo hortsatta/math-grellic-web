@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import cx from 'classix';
 
 import { generateOrdinalSuffix } from '#/utils/string.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { StudentPerformanceType } from '#/performance/models/performance.model';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseLink } from '#/base/components/base-link.component';
+import { teacherPerformanceBaseRoute } from '../route/teacher-performance-handle.route';
 import { PerformanceRankAwardImg } from './performance-rank-award-img.component';
 
 import type { ComponentProps } from 'react';
@@ -26,8 +26,6 @@ type StudentRankCardProps = {
   performance: StudentPerformanceType;
 };
 
-const PERFORMANCE_PATH = `/${teacherBaseRoute}/${teacherRoutes.performance.to}`;
-
 const StudentRankCard = memo(function ({
   student,
   performance,
@@ -35,7 +33,9 @@ const StudentRankCard = memo(function ({
   const [to, lastName, firstWithMiddleName, overallRank, overallScore] =
     useMemo(
       () => [
-        `${PERFORMANCE_PATH}/${student.publicId?.toLowerCase() || ''}`,
+        `${teacherPerformanceBaseRoute}/${
+          student.publicId?.toLowerCase() || ''
+        }`,
         `${student.lastName},`,
         `${student.firstName}${
           student.middleName ? ` ${student.middleName[0]}` : ''
@@ -142,7 +142,7 @@ export const TeacherStudentPerformanceLeaderboard = memo(function ({
       )}
       <div className='flex flex-1 items-center justify-center'>
         <BaseLink
-          to={PERFORMANCE_PATH}
+          to={teacherPerformanceBaseRoute}
           rightIconName='arrow-circle-right'
           size='xs'
         >

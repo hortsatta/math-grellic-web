@@ -1,10 +1,10 @@
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import type { GroupLink, SceneRouteHandle } from '#/base/models/base.model';
 
-export const performanceBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.performance.to}`;
+export const teacherPerformanceBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.performance.to}`;
 
 const performanceListLink = {
-  to: performanceBaseRoute,
+  to: teacherPerformanceBaseRoute,
   label: 'Learner Performance',
   icons: [{ name: 'chart-donut' }] as GroupLink['icons'],
 };

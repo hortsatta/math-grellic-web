@@ -3,8 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { PAGINATION_TAKE } from '#/utils/api.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
+import { teacherExamBaseRoute } from '../route/teacher-exam-handle.route';
 import { getPaginatedExamsByCurrentTeacherUser } from '../api/teacher-exam.api';
 import { transformToExam } from '../helpers/exam-transform.helper';
 
@@ -31,8 +32,6 @@ type Result = {
   handleExamPreview: (slug: string) => void;
   handleExamSchedule: (slug: string) => void;
 };
-
-const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
 
 export const defaultSort = {
   field: 'orderNumber',
@@ -138,7 +137,7 @@ export function useTeacherExamList(): Result {
   const handleExamPreview = useCallback((slug: string) => {
     window
       .open(
-        `${EXAM_LIST_PATH}/${slug}/${teacherRoutes.exam.previewTo}`,
+        `${teacherExamBaseRoute}/${slug}/${teacherRoutes.exam.previewTo}`,
         '_blank',
       )
       ?.focus();
@@ -146,21 +145,23 @@ export function useTeacherExamList(): Result {
 
   const handleExamDetails = useCallback(
     (slug: string) => {
-      navigate(`${EXAM_LIST_PATH}/${slug}`);
+      navigate(`${teacherExamBaseRoute}/${slug}`);
     },
     [navigate],
   );
 
   const handleExamEdit = useCallback(
     (slug: string) => {
-      navigate(`${EXAM_LIST_PATH}/${slug}/${teacherRoutes.exam.editTo}`);
+      navigate(`${teacherExamBaseRoute}/${slug}/${teacherRoutes.exam.editTo}`);
     },
     [navigate],
   );
 
   const handleExamSchedule = useCallback(
     (slug: string) => {
-      navigate(`${EXAM_LIST_PATH}/${slug}/${teacherRoutes.exam.schedule.to}`);
+      navigate(
+        `${teacherExamBaseRoute}/${slug}/${teacherRoutes.exam.schedule.to}`,
+      );
     },
     [navigate],
   );

@@ -2,7 +2,9 @@ import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherLessonBaseRoute } from '#/lesson/route/teacher-lesson-handle.route';
+import { teacherExamBaseRoute } from '#/exam/route/teacher-exam-handle.route';
+import { teacherActivityBaseRoute } from '#/activity/route/teacher-activity-handle.route';
 import { transformToLesson } from '#/lesson/helpers/lesson-transform.helper';
 import { transformToExam } from '#/exam/helpers/exam-transform.helper';
 import { transformToActivity } from '#/activity/helpers/activity-transform.helper';
@@ -27,10 +29,6 @@ type Result = {
   handleExamDetails: (slug: string) => void;
   handleActivityDetails: (slug: string) => void;
 };
-
-const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
-const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
-const ACTIVITY_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
 
 export function useTeacherCurriculumSnippets(): Result {
   const navigate = useNavigate();
@@ -113,21 +111,21 @@ export function useTeacherCurriculumSnippets(): Result {
 
   const handleLessonDetails = useCallback(
     (slug: string) => {
-      navigate(`${LESSON_LIST_PATH}/${slug}`);
+      navigate(`${teacherLessonBaseRoute}/${slug}`);
     },
     [navigate],
   );
 
   const handleExamDetails = useCallback(
     (slug: string) => {
-      navigate(`${EXAM_LIST_PATH}/${slug}`);
+      navigate(`${teacherExamBaseRoute}/${slug}`);
     },
     [navigate],
   );
 
   const handleActivityDetails = useCallback(
     (slug: string) => {
-      navigate(`${ACTIVITY_LIST_PATH}/${slug}`);
+      navigate(`${teacherActivityBaseRoute}/${slug}`);
     },
     [navigate],
   );

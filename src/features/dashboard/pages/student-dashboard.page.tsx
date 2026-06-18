@@ -1,6 +1,6 @@
 import cx from 'classix';
 
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
+import { studentScheduleBaseRoute } from '#/schedule/route/student-schedule-handle.route';
 import { SidebarMode } from '#/base/models/base.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { useStudentPerformanceSingle } from '#/performance/hooks/use-student-performance-single.hook';
@@ -16,8 +16,6 @@ import { StudentDashboardAnnouncementList } from '../components/student-dashboar
 import { StudentDashboardHelpCard } from '../components/student-dashboard-help-card.component';
 import { StudentDashboardSchoolYearSummary } from '../components/student-dashboard-school-year-summary.component';
 import { StudentDashboardOverallProgressChart } from '../components/student-dashboard-overall-progress-chart.component';
-
-const SCHEDULE_PATH = `/${studentBaseRoute}/${studentRoutes.schedule.to}`;
 
 function StudentDashboardPage() {
   const user = useBoundStore((state) => state.user || null);
@@ -92,7 +90,7 @@ function StudentDashboardPage() {
             <h3 className='mb-2.5 text-lg leading-none'>Today's Schedule</h3>
             <ScheduleDailyCardList
               schedules={schedules}
-              scheduleTo={SCHEDULE_PATH}
+              scheduleTo={studentScheduleBaseRoute}
               scheduleEmptyLabel='No schedule for today'
               loading={todayScheduleLoading}
               isStudent

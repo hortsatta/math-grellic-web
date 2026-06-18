@@ -75,7 +75,11 @@ import { coreRouteHandle } from '#/core/core-handle.route';
 import { currentUserRouteHandle } from '#/user/route/current-user-handle.route';
 import { adminUserRouteHandle } from '#/user/route/admin-user-handle.route';
 import { dashboardRouteHandle } from '#/dashboard/route/dashboard-handle.route';
-import { schoolYearEnrollmentHandle } from '#/school-year/route/school-year-enrollment-handle.route';
+import {
+  schoolYearEnrollmentHandle,
+  studentEnrollmentBaseRoute,
+  teacherEnrollmentBaseRoute,
+} from '#/school-year/route/school-year-enrollment-handle.route';
 import { adminSchoolYearRouteHandle } from '#/school-year/route/admin-school-year-handle.route';
 import { teacherUserRouteHandle } from '#/user/route/teacher-user-handle.route';
 import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.route';
@@ -364,7 +368,7 @@ const rootRoutes = createRoutesFromElements(
       <Route
         element={
           <SchoolYearEnrollmentProtectedRoute
-            redirectTo={`/${teacherBaseRoute}/${teacherRoutes.enrollment.to}`}
+            redirectTo={teacherEnrollmentBaseRoute}
           >
             <Outlet />
           </SchoolYearEnrollmentProtectedRoute>
@@ -803,7 +807,7 @@ const rootRoutes = createRoutesFromElements(
       <Route
         element={
           <SchoolYearEnrollmentProtectedRoute
-            redirectTo={`/${studentBaseRoute}/${studentRoutes.enrollment.to}`}
+            redirectTo={studentEnrollmentBaseRoute}
           >
             <Outlet />
           </SchoolYearEnrollmentProtectedRoute>

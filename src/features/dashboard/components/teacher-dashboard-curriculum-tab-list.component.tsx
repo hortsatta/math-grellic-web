@@ -2,7 +2,10 @@ import { memo, useCallback } from 'react';
 import { Tab } from '@headlessui/react';
 import cx from 'classix';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherLessonBaseRoute } from '#/lesson/route/teacher-lesson-handle.route';
+import { teacherExamBaseRoute } from '#/exam/route/teacher-exam-handle.route';
+import { teacherActivityBaseRoute } from '#/activity/route/teacher-activity-handle.route';
 import { BaseLink } from '#/base/components/base-link.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
@@ -37,12 +40,9 @@ type CurriculumListProps = {
   onActivityDetails?: (slug: string) => void;
 };
 
-const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
-const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
-const ACTIVITY_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.activity.to}`;
-const CREATE_LESSON_PATH = `${LESSON_LIST_PATH}/${teacherRoutes.lesson.createTo}`;
-const CREATE_EXAM_PATH = `${EXAM_LIST_PATH}/${teacherRoutes.exam.createTo}`;
-const CREATE_ACTIVITY_PATH = `${ACTIVITY_LIST_PATH}/${teacherRoutes.activity.createTo}`;
+const CREATE_LESSON_PATH = `${teacherLessonBaseRoute}/${teacherRoutes.lesson.createTo}`;
+const CREATE_EXAM_PATH = `${teacherExamBaseRoute}/${teacherRoutes.exam.createTo}`;
+const CREATE_ACTIVITY_PATH = `${teacherActivityBaseRoute}/${teacherRoutes.activity.createTo}`;
 
 const tabCategories = {
   lesson: {
@@ -199,11 +199,11 @@ export const TeacherDashboardCurriculumTabList = memo(function ({
 
     const getLink = () => {
       if (category === 'exam') {
-        return EXAM_LIST_PATH;
+        return teacherExamBaseRoute;
       } else if (category === 'activity') {
-        return ACTIVITY_LIST_PATH;
+        return teacherActivityBaseRoute;
       } else {
-        return LESSON_LIST_PATH;
+        return teacherLessonBaseRoute;
       }
     };
 

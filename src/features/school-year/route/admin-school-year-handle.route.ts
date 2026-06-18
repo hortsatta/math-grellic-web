@@ -2,16 +2,16 @@ import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
 
 import type { GroupLink, SceneRouteHandle } from '#/base/models/base.model';
 
-const schoolYearBaseRoute = `/${adminBaseRoute}/${adminRoutes.schoolYear.to}`;
+export const adminSchoolYearBaseRoute = `/${adminBaseRoute}/${adminRoutes.schoolYear.to}`;
 
 const schoolYearListLink = {
-  to: schoolYearBaseRoute,
+  to: adminSchoolYearBaseRoute,
   label: 'School Year List',
   icons: [{ name: 'graduation-cap' }] as GroupLink['icons'],
 };
 
 const createSchoolYearLink = {
-  to: `${schoolYearBaseRoute}/${adminRoutes.schoolYear.createTo}`,
+  to: `${adminSchoolYearBaseRoute}/${adminRoutes.schoolYear.createTo}`,
   label: 'Create School Year',
   icons: [
     { name: 'plus', size: 16 },

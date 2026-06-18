@@ -10,7 +10,7 @@ import cx from 'classix';
 
 import { getErrorMessage } from '#/utils/string.util';
 import { getVideoData } from '#/utils/video.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { RecordStatus } from '#/core/models/core.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseButton } from '#/base/components/base-button.components';
@@ -19,6 +19,7 @@ import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
+import { teacherLessonBaseRoute } from '../route/teacher-lesson-handle.route';
 import { LessonUpsertFormStep1 } from './lesson-upsert-form-step-1.component';
 import { LessonUpsertFormStep2 } from './lesson-upsert-form-step-2.component';
 import { LessonVideoPreviewModal } from './lesson-video-preview-modal.component';
@@ -34,8 +35,7 @@ type Props = FormProps<
   Promise<Lesson | undefined>
 > & { schoolYearId: number };
 
-const LESSON_PREVIEW_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}/${teacherRoutes.lesson.previewTo}`;
-const LESSON_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.lesson.to}`;
+const LESSON_PREVIEW_PATH = `${teacherLessonBaseRoute}/${teacherRoutes.lesson.previewTo}`;
 
 const schema = z
   .object({
@@ -232,7 +232,7 @@ export const LessonUpsertForm = memo(function ({
         );
 
         onDone && onDone(true);
-        navigate(LESSON_LIST_PATH);
+        navigate(teacherLessonBaseRoute);
       } catch (error: any) {
         toast.error(error.message);
       }

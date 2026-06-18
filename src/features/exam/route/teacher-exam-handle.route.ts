@@ -1,16 +1,16 @@
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import type { GroupLink, SceneRouteHandle } from '#/base/models/base.model';
 
-export const examBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
+export const teacherExamBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
 
 const examListLink = {
-  to: examBaseRoute,
+  to: teacherExamBaseRoute,
   label: 'Exam List',
   icons: [{ name: 'exam' }] as GroupLink['icons'],
 };
 
 const createExamLink = {
-  to: `${examBaseRoute}/${teacherRoutes.exam.createTo}`,
+  to: `${teacherExamBaseRoute}/${teacherRoutes.exam.createTo}`,
   label: 'Create Exam',
   icons: [{ name: 'plus', size: 16 }, { name: 'exam' }] as GroupLink['icons'],
 };

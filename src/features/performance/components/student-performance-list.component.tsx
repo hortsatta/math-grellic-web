@@ -1,18 +1,16 @@
 import { memo, useCallback, useMemo } from 'react';
 import cx from 'classix';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherStudentUserBaseRoute } from '#/user/route/student-user-handle.route';
 import { BaseDataEmptyMessage } from '#/base/components/base-data-empty-message.component';
 import {
   StudentPerformanceSingleCard,
   StudentPerformanceSingleCardSkeleton,
 } from './student-performance-single-card.component';
+import { StudentPerformanceAcademicProgressSingleCard } from './student-performance-academic-progress-single-card.component';
 
 import type { ComponentProps } from 'react';
 import type { StudentPerformance } from '../models/performance.model';
-import { StudentPerformanceAcademicProgressSingleCard } from './student-performance-academic-progress-single-card.component';
-
-const STUDENT_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
 type Props = ComponentProps<'div'> & {
   students: StudentPerformance[];
@@ -71,7 +69,7 @@ export const StudentPerformanceList = memo(function ({
       ) : isEmpty ? (
         <BaseDataEmptyMessage
           message='No learners available'
-          linkTo={STUDENT_LIST_PATH}
+          linkTo={teacherStudentUserBaseRoute}
           linkLabel='View All Learners'
         />
       ) : (

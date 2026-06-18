@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
@@ -11,6 +11,7 @@ import { BasePageSpinner } from '#/base/components/base-spinner.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { generateFullName } from '../helpers/user.helper';
 import { UserRole } from '../models/user.model';
+import { teacherUserBaseRoute } from '../route/current-user-handle.route';
 import { useCurrentUserSingle } from '../hooks/use-current-user-single.hook';
 import { UserAvatarImg } from '../components/user-avatar-img.component';
 import { UserMessengerLink } from '../components/user-messenger-link.component';
@@ -18,7 +19,7 @@ import { TeacherUserAccountSingle } from '../components/teacher-user-account-sin
 
 import type { TeacherUserAccount, UserGender } from '../models/user.model';
 
-const USER_ACCOUNT_PATH = `/${teacherBaseRoute}/${teacherRoutes.account.to}/${teacherRoutes.account.editTo}`;
+const USER_ACCOUNT_PATH = `${teacherUserBaseRoute}/${teacherRoutes.account.editTo}`;
 
 function TeacherCurrentUserSinglePage() {
   const { loading, user } = useCurrentUserSingle();

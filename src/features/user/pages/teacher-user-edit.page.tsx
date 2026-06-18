@@ -2,15 +2,13 @@ import { useCallback, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseModal } from '#/base/components/base-modal.component';
+import { adminTeacherUserBaseRoute } from '../route/teacher-user-handle.route';
 import { useTeacherUserEdit } from '../hooks/use-teacher-user-edit.hook';
 import { TeacherUserUpsertForm } from '../components/teacher-user-upsert-form.component';
-
-const TEACHER_LIST_PATH = `/${adminBaseRoute}/${adminRoutes.teacher.to}`;
 
 function TeacherUserEditPage() {
   const { id } = useParams();
@@ -43,7 +41,7 @@ function TeacherUserEditPage() {
     try {
       await deleteTeacher();
       toast.success(`Teacher deleted`);
-      navigate(TEACHER_LIST_PATH);
+      navigate(adminTeacherUserBaseRoute);
     } catch (error: any) {
       toast.error(error.message);
     }

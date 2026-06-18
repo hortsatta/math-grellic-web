@@ -2,16 +2,14 @@ import { useCallback, useMemo, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseDataSuspense } from '#/base/components/base-data-suspense.component';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseModal } from '#/base/components/base-modal.component';
+import { teacherExamBaseRoute } from '../route/teacher-exam-handle.route';
 import { useExamEdit } from '../hooks/use-exam-edit.hook';
 import { ExamUpsertForm } from '../components/exam-upsert-form.component';
-
-const EXAM_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.exam.to}`;
 
 function ExamEditPage() {
   const { slug } = useParams();
@@ -46,7 +44,7 @@ function ExamEditPage() {
       toast.success(
         `Deleted ${examFormData.title} (No. ${examFormData.orderNumber})`,
       );
-      navigate(EXAM_LIST_PATH);
+      navigate(teacherExamBaseRoute);
     } catch (error: any) {
       toast.error(error.message);
     }

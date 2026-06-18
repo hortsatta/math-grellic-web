@@ -4,13 +4,16 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import cx from 'classix';
 
 import { options } from '#/utils/scrollbar.util';
+import { superAdminBaseRoute } from '#/app/routes/super-admin-routes';
+import { studentBaseRoute } from '#/app/routes/student-routes';
+import { teacherBaseRoute } from '#/app/routes/teacher-routes';
+import { adminBaseRoute } from '#/app/routes/admin-routes';
 import {
-  superAdminBaseRoute,
-  superAdminRoutes,
-} from '#/app/routes/super-admin-routes';
-import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
-import { adminBaseRoute, adminRoutes } from '#/app/routes/admin-routes';
+  studentUserBaseRoute,
+  teacherUserBaseRoute,
+  adminUserBaseRoute,
+  superAdminUserBaseRoute,
+} from '#/user/route/current-user-handle.route';
 import { UserRole } from '#/user/models/user.model';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
@@ -86,13 +89,13 @@ export const CoreMobileNav = memo(function ({
   const userAccountTo = useMemo(() => {
     switch (role) {
       case UserRole.Student:
-        return `/${studentBaseRoute}/${studentRoutes.account.to}`;
+        return studentUserBaseRoute;
       case UserRole.Teacher:
-        return `/${teacherBaseRoute}/${teacherRoutes.account.to}`;
+        return teacherUserBaseRoute;
       case UserRole.Admin:
-        return `/${adminBaseRoute}/${adminRoutes.account.to}`;
+        return adminUserBaseRoute;
       case UserRole.SuperAdmin:
-        return `/${superAdminBaseRoute}/${superAdminRoutes.account.to}`;
+        return superAdminUserBaseRoute;
     }
   }, [role]);
 

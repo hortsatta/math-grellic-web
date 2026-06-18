@@ -10,7 +10,7 @@ import cx from 'classix';
 
 import dayjs from '#/config/dayjs.config';
 import { convertSecondsToDuration, getDayJsDuration } from '#/utils/time.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseControlledDatePicker } from '#/base/components/base-date-picker.component';
 import { BaseControlledInput } from '#/base/components/base-input.component';
@@ -20,6 +20,7 @@ import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
 import { StudentUserControlledPicker } from '#/user/components/student-user-picker.component';
+import { teacherScheduleBaseRoute } from '../route/teacher-schedule-handle.route';
 
 import type { FormProps, IconName } from '#/base/models/base.model';
 import type { MeetingScheduleUpsertFormData } from '../models/schedule-form-data.model';
@@ -31,7 +32,7 @@ type Props = FormProps<
   Promise<MeetingSchedule>
 > & { schoolYearId: number };
 
-const MEETING_CALENDAR_PATH = `/${teacherBaseRoute}/${teacherRoutes.schedule.to}/${teacherRoutes.schedule.meeting.to}`;
+const MEETING_CALENDAR_PATH = `${teacherScheduleBaseRoute}/${teacherRoutes.schedule.meeting.to}`;
 
 const calendarSelectorProps = {
   minDate: new Date(`${new Date().getFullYear() - 5}-01-01`),

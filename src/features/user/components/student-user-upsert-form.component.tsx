@@ -9,13 +9,13 @@ import toast from 'react-hot-toast';
 import cx from 'classix';
 
 import { getErrorMessage } from '#/utils/string.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
 import { BaseStepper } from '#/base/components/base-stepper.component';
 import { BaseStepperStep } from '#/base/components/base-stepper-step.component';
 import { UserApprovalStatus, UserGender } from '../models/user.model';
+import { teacherStudentUserBaseRoute } from '../route/student-user-handle.route';
 import { UserUpsertFormStep1 } from './user-upsert-form-step-1.component';
 
 import type { FieldErrors } from 'react-hook-form';
@@ -37,8 +37,6 @@ type Props = Omit<
   ) => Promise<User | SchoolYearEnrollmentNew | null>;
   schoolYearTitle?: string;
 };
-
-const STUDENT_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
 const stepWrapperProps = {
   className: '!overflow-visible',
@@ -157,7 +155,7 @@ export const StudentUserUpsertForm = memo(function ({
         );
 
         onDone && onDone(true);
-        navigate(STUDENT_LIST_PATH);
+        navigate(teacherStudentUserBaseRoute);
       } catch (error: any) {
         toast.error(error.message);
       }

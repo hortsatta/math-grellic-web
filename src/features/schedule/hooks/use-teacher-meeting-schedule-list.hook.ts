@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 import { PAGINATION_TAKE } from '#/utils/api.util';
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherRoutes } from '#/app/routes/teacher-routes';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { transformToMeetingSchedule } from '../helpers/schedule-transform.helper';
+import { teacherScheduleBaseRoute } from '../route/teacher-schedule-handle.route';
 import { getPaginatedMeetingSchedulesByCurrentTeacherUser } from '../api/teacher-schedule.api';
 
 import type { QueryPagination, QuerySort } from '#/base/models/base.model';
@@ -25,7 +26,7 @@ type Result = {
   handleMeetingScheduleDetails: (id: number) => void;
 };
 
-const MEETING_LIST_PATH = `/${teacherBaseRoute}/${teacherRoutes.schedule.to}/${teacherRoutes.schedule.meeting.to}`;
+const MEETING_LIST_PATH = `${teacherScheduleBaseRoute}/${teacherRoutes.schedule.meeting.to}`;
 
 export const defaultSort = {
   field: 'scheduleDate',

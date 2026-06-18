@@ -1,6 +1,6 @@
 import cx from 'classix';
 
-import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherScheduleBaseRoute } from '#/schedule/route/teacher-schedule-handle.route';
 import { SidebarMode } from '#/base/models/base.model';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { BaseSurface } from '#/base/components/base-surface.component';
@@ -19,8 +19,6 @@ import { TeacherDashboardAnnouncementList } from '../components/teacher-dashboar
 import { TeacherDashboardSchoolYearSummary } from '../components/teacher-dashboard-school-year-summary.component';
 import { BaseRightSidebar } from '#/base/components/base-right-sidebar.component';
 import { TeacherDashboardOverallProgressChart } from '../components/teacher-dashboard-overall-progress-chart.component';
-
-const SCHEDULE_PATH = `/${teacherBaseRoute}/${teacherRoutes.schedule.to}`;
 
 function TeacherDashboardPage() {
   const user = useBoundStore((state) => state.user || null);
@@ -118,7 +116,7 @@ function TeacherDashboardPage() {
             <h3 className='mb-2.5 text-lg leading-none'>Today's Schedule</h3>
             <ScheduleDailyCardList
               schedules={schedules}
-              scheduleTo={SCHEDULE_PATH}
+              scheduleTo={teacherScheduleBaseRoute}
               scheduleEmptyLabel='No schedule for today'
               loading={todayScheduleLoading}
             />
