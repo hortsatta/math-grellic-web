@@ -75,6 +75,12 @@ export const studentRoutes = {
     label: 'Enrollment',
     hidden: true,
   },
+  search: {
+    name: 'search',
+    to: 'search',
+    label: 'Search',
+    hidden: true,
+  },
 };
 
 export function generateStudentRouteLinks() {

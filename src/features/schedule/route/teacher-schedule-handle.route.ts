@@ -1,7 +1,7 @@
 import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 import type { GroupLink, SceneRouteHandle } from '#/base/models/base.model';
 
-const scheduleBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.schedule.to}`;
+export const scheduleBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.schedule.to}`;
 
 const calendarLink = {
   to: scheduleBaseRoute,

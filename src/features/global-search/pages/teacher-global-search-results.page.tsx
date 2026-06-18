@@ -15,6 +15,7 @@ import { TeacherGlobalSearchLessonList } from '../components/teacher-global-sear
 import { TeacherGlobalSearchExamList } from '../components/teacher-global-search-exam-list.component';
 import { TeacherGlobalSearchActivityList } from '../components/teacher-global-search-activity-list.component';
 import { TeacherGlobalSearchStudentPerformanceList } from '../components/teacher-global-search-student-performance-list.component';
+import { TeacherGlobalSearchOthersList } from '../components/teacher-global-search-others-list.component';
 
 const filterOptions = [
   {
@@ -41,6 +42,12 @@ const filterOptions = [
     value: SearchFilter.StudentPerformance,
     label: 'Learners',
   },
+  {
+    key: `filter-${SearchFilter.Others}`,
+    name: 'filter',
+    value: SearchFilter.Others,
+    label: capitalize(SearchFilter.Others),
+  },
 ];
 
 const sortOptions = [
@@ -58,6 +65,7 @@ function TeacherGlobalSearchResultsPage() {
     searchResults,
     loading,
     totalCount,
+    isSingleGroupResult,
     setKeyword,
     setFilters,
     setSort,
@@ -66,7 +74,7 @@ function TeacherGlobalSearchResultsPage() {
 
   const data: any = useLoaderData();
 
-  const { lessons, exams, activities, studentPerformances } = useMemo(
+  const { lessons, exams, activities, studentPerformances, others } = useMemo(
     () => searchResults,
     [searchResults],
   );
@@ -124,6 +132,13 @@ function TeacherGlobalSearchResultsPage() {
                   <TeacherGlobalSearchStudentPerformanceList
                     className='animate-fastFadeIn'
                     studentPerformances={studentPerformances}
+                  />
+                )}
+                {!!others.length && (
+                  <TeacherGlobalSearchOthersList
+                    className='animate-fastFadeIn'
+                    others={others}
+                    hideTitle={isSingleGroupResult}
                   />
                 )}
               </div>

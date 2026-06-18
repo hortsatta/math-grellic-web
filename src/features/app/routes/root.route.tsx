@@ -13,7 +13,7 @@ import { UserRole } from '#/user/models/user.model';
 import {
   getAdminUserByIdLoader,
   getPaginatedAdminUserLoader,
-} from '#/user/route/admin-user-loader';
+} from '#/user/route/admin-user-loader.route';
 import {
   getAdminPaginatedSchoolYearsLoader,
   getAdminSchoolYearBySlugLoader,
@@ -42,8 +42,8 @@ import {
   getTeacherPaginatedMeetingSchedulesLoader,
   getTeacherSchedulesByDateRangeLoader,
 } from '#/schedule/route/teacher-schedule-loader.route';
-import { getTeacherUserByIdLoader } from '#/user/route/teacher-user-loader';
-import { getStudentUserByIdLoader } from '#/user/route/student-user-loader';
+import { getTeacherUserByIdLoader } from '#/user/route/teacher-user-loader.route';
+import { getStudentUserByIdLoader } from '#/user/route/student-user-loader.route';
 import {
   getStudentLessonBySlugLoader,
   getStudentLessonsLoader,
@@ -63,7 +63,7 @@ import {
   getStudentExamsByCurrentStudentUserLoader,
   getStudentLessonsByCurrentStudentUserLoader,
   getStudentPerformanceByCurrentStudentUserLoader,
-} from '#/performance/route/student-performance-loader';
+} from '#/performance/route/student-performance-loader.route';
 import {
   getStudentMeetingScheduleByIdLoader,
   getStudentMeetingSchedulesLoader,
@@ -71,19 +71,19 @@ import {
 } from '#/schedule/route/student-schedule-loader.route';
 import { teacherSearchResultsLoader } from '#/global-search/route/teacher-global-search-loader.route';
 import { getStudentAssignedTeacherLoader } from '#/user/route/student-assigned-teacher-loader.route';
-import { coreRouteHandle } from '#/core/core-route-handle';
-import { currentUserRouteHandle } from '#/user/route/current-user-handle';
-import { adminUserRouteHandle } from '#/user/route/admin-user-handle';
+import { coreRouteHandle } from '#/core/core-handle.route';
+import { currentUserRouteHandle } from '#/user/route/current-user-handle.route';
+import { adminUserRouteHandle } from '#/user/route/admin-user-handle.route';
 import { dashboardRouteHandle } from '#/dashboard/route/dashboard-handle.route';
 import { schoolYearEnrollmentHandle } from '#/school-year/route/school-year-enrollment-handle.route';
 import { adminSchoolYearRouteHandle } from '#/school-year/route/admin-school-year-handle.route';
-import { teacherUserRouteHandle } from '#/user/route/teacher-user-handle';
+import { teacherUserRouteHandle } from '#/user/route/teacher-user-handle.route';
 import { teacherLessonRouteHandle } from '#/lesson/route/teacher-lesson-handle.route';
 import { teacherExamRouteHandle } from '#/exam/route/teacher-exam-handle.route';
 import { teacherActivityRouteHandle } from '#/activity/route/teacher-activity-handle.route';
 import { teacherStudentPerformanceRouteHandle } from '#/performance/route/teacher-performance-handle.route';
 import { teacherScheduleRouteHandle } from '#/schedule/route/teacher-schedule-handle.route';
-import { studentUserRouteHandle } from '#/user/route/student-user-handle';
+import { studentUserRouteHandle } from '#/user/route/student-user-handle.route';
 import { studentLessonRouteHandle } from '#/lesson/route/student-lesson-handle.route';
 import { studentPerformanceRouteHandle } from '#/performance/route/student-performance-handle.route';
 import { studentScheduleRouteHandle } from '#/schedule/route/student-schedule-handle.route';
