@@ -36,7 +36,8 @@
       "#/performance/*": ["./src/features/performance/*"],
       "#/help/*": ["./src/features/help/*"],
       "#/schedule/*": ["./src/features/schedule/*"],
-      "#/announcement/*": ["./src/features/announcement/*"]
+      "#/announcement/*": ["./src/features/announcement/*"],
+      "#/global-search/*": ["./src/features/global-search/*"]
     }
   },
   "include": ["src"],
