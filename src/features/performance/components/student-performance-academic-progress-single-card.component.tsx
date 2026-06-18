@@ -17,6 +17,7 @@ import type { IconName } from '#/base/models/base.model';
 type Props = ComponentProps<typeof BaseSurface> & {
   student: StudentPerformance;
   onDetails?: () => void;
+  onUserDetails?: () => void;
   onAcademicProgress?: () => void;
 };
 
@@ -24,6 +25,7 @@ export const StudentPerformanceAcademicProgressSingleCard = memo(function ({
   className,
   student,
   onDetails,
+  onUserDetails,
   onAcademicProgress,
   ...moreProps
 }: Props) {
@@ -97,6 +99,7 @@ export const StudentPerformanceAcademicProgressSingleCard = memo(function ({
             <ContextMenu
               className='block xs:hidden'
               onDetails={onDetails}
+              onUserDetails={onUserDetails}
               onAcademicProgress={onAcademicProgress}
             />
           </div>
@@ -120,6 +123,7 @@ export const StudentPerformanceAcademicProgressSingleCard = memo(function ({
       <ContextMenu
         className='hidden xs:block'
         onDetails={onDetails}
+        onUserDetails={onUserDetails}
         onAcademicProgress={onAcademicProgress}
       />
     </BaseSurface>

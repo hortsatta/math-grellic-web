@@ -21,11 +21,13 @@ type Props = ComponentProps<typeof BaseSurface> & {
   student: StudentPerformance;
   performance: string;
   onDetails?: () => void;
+  onUserDetails?: () => void;
   onAcademicProgress?: () => void;
 };
 
 type ContextMenuProps = ComponentProps<'div'> & {
   onDetails?: () => void;
+  onUserDetails?: () => void;
   onAcademicProgress?: () => void;
 };
 
@@ -36,6 +38,7 @@ const menuIconProps = { weight: 'bold', size: 48 } as ComponentProps<
 export const ContextMenu = memo(function ({
   className,
   onDetails,
+  onUserDetails,
   onAcademicProgress,
   ...moreProps
 }: ContextMenuProps) {
@@ -70,14 +73,24 @@ export const ContextMenu = memo(function ({
         >
           Details
         </Menu.Item>
+        <Menu.Item
+          as={BaseDropdownButton}
+          iconName='identification-badge'
+          onClick={onUserDetails}
+        >
+          Account Details
+        </Menu.Item>
         {onAcademicProgress && (
-          <Menu.Item
-            as={BaseDropdownButton}
-            iconName='flow-arrow'
-            onClick={onAcademicProgress}
-          >
-            Set Academic Progress
-          </Menu.Item>
+          <>
+            <BaseDivider className='my-1' />
+            <Menu.Item
+              as={BaseDropdownButton}
+              iconName='flow-arrow'
+              onClick={onAcademicProgress}
+            >
+              Set Academic Progress
+            </Menu.Item>
+          </>
         )}
       </BaseDropdownMenu>
     </div>
@@ -89,6 +102,7 @@ export const StudentPerformanceSingleCard = memo(function ({
   student,
   performance,
   onDetails,
+  onUserDetails,
   onAcademicProgress,
   ...moreProps
 }: Props) {
@@ -198,6 +212,7 @@ export const StudentPerformanceSingleCard = memo(function ({
             <ContextMenu
               className='block xs:hidden'
               onDetails={onDetails}
+              onUserDetails={onUserDetails}
               onAcademicProgress={onAcademicProgress}
             />
           </div>
@@ -240,6 +255,7 @@ export const StudentPerformanceSingleCard = memo(function ({
       <ContextMenu
         className='hidden xs:block'
         onDetails={onDetails}
+        onUserDetails={onUserDetails}
         onAcademicProgress={onAcademicProgress}
       />
     </BaseSurface>

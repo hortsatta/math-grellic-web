@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { PAGINATION_TAKE } from '#/utils/api.util';
 import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherStudentUserBaseRoute } from '#/user/route/student-user-handle.route';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { getPaginatedStudentPerformancesByCurrentTeacherUser } from '../api/teacher-performance.api';
 import { transformToStudentPerformance } from '../helpers/performance-transform.helper';
@@ -30,6 +31,7 @@ type Result = {
   nextPage: () => void;
   prevPage: () => void;
   handlePerformanceDetails: (publicId: string) => void;
+  handleUserDetails: (id: number) => void;
 };
 
 const PERFORMANCE_PATH = `${teacherPerformanceBaseRoute}/${teacherRoutes.performance.studentTo}`;
@@ -145,6 +147,13 @@ export function useStudentPerformanceList(): Result {
     [navigate],
   );
 
+  const handleUserDetails = useCallback(
+    (id: number) => {
+      navigate(`${teacherStudentUserBaseRoute}/${id}`);
+    },
+    [navigate],
+  );
+
   const refresh = useCallback(() => {
     setSkip(0);
     refetch();
@@ -163,5 +172,6 @@ export function useStudentPerformanceList(): Result {
     nextPage,
     prevPage,
     handlePerformanceDetails,
+    handleUserDetails,
   };
 }

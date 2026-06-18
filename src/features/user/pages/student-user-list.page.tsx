@@ -70,6 +70,7 @@ function StudentUserListPage() {
     nextPage,
     prevPage,
     handleStudentDetails,
+    handleStudentPerformanceDetails,
     handleStudentEdit,
     setStudentApprovalStatus,
   } = useStudentUserList();
@@ -161,6 +162,7 @@ function StudentUserListPage() {
               students={students}
               loading={loading}
               onStudentDetails={handleOpenDetails(true)}
+              onStudentPerformanceDetails={handleStudentPerformanceDetails}
               onStudentEdit={handleStudentEdit}
             />
             {!!totalCount && (

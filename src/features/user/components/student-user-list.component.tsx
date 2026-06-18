@@ -9,12 +9,17 @@ import {
 } from '../components/student-user-single-card.component';
 
 import type { ComponentProps } from 'react';
-import type { StudentUserAccount } from '../models/user.model';
+import {
+  UserApprovalStatus,
+  type StudentUserAccount,
+} from '../models/user.model';
+import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
 
 type Props = ComponentProps<'div'> & {
   students: StudentUserAccount[];
   loading?: boolean;
   onStudentDetails?: (student: StudentUserAccount) => void;
+  onStudentPerformanceDetails?: (publicId: string) => void;
   onStudentEdit?: (id: number) => void;
 };
 
@@ -23,6 +28,7 @@ export const StudentUserList = memo(function ({
   students,
   loading,
   onStudentDetails,
+  onStudentPerformanceDetails,
   onStudentEdit,
   ...moreProps
 }: Props) {
@@ -33,6 +39,23 @@ export const StudentUserList = memo(function ({
       onStudentDetails && onStudentDetails(student);
     },
     [onStudentDetails],
+  );
+
+  const handlePerformanceDetails = useCallback(
+    (student: StudentUserAccount) => () => {
+      if (
+        !!onStudentPerformanceDetails &&
+        student.publicId &&
+        student.approvalStatus === UserApprovalStatus.Approved &&
+        student.enrollment?.approvalStatus ===
+          SchoolYearEnrollmentApprovalStatus.Approved
+      ) {
+        return onStudentPerformanceDetails(student.publicId as string);
+      }
+
+      return undefined;
+    },
+    [onStudentPerformanceDetails],
   );
 
   const handleStudentEdit = useCallback(
@@ -67,6 +90,7 @@ export const StudentUserList = memo(function ({
             key={`s-${student.publicId?.toLowerCase() || index}`}
             student={student}
             onDetails={handleStudentDetails(student)}
+            onPerformanceDetails={handlePerformanceDetails(student)}
             onEdit={handleStudentEdit(student.id)}
             role='row'
           />

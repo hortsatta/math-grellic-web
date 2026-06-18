@@ -70,6 +70,7 @@ function StudentPerformanceListPage() {
     nextPage,
     prevPage,
     handlePerformanceDetails,
+    handleUserDetails,
   } = useStudentPerformanceList();
 
   const { classLoading, teacherClassPerformance } =
@@ -118,6 +119,7 @@ function StudentPerformanceListPage() {
             performance={performance}
             loading={loading}
             onPerformanceDetails={handlePerformanceDetails}
+            onUserDetails={handleUserDetails}
             onAcademicProgress={handleSetAcademicProgress}
           />
           {!!totalCount && (

@@ -17,6 +17,7 @@ type Props = ComponentProps<'div'> & {
   performance: string;
   loading?: boolean;
   onPerformanceDetails?: (publicId: string) => void;
+  onUserDetails?: (id: number) => void;
   onAcademicProgress?: (publicId: string) => void;
 };
 
@@ -26,6 +27,7 @@ export const StudentPerformanceList = memo(function ({
   students,
   performance,
   onPerformanceDetails,
+  onUserDetails,
   onAcademicProgress,
   ...moreProps
 }: Props) {
@@ -40,6 +42,13 @@ export const StudentPerformanceList = memo(function ({
       onPerformanceDetails && onPerformanceDetails(publicId);
     },
     [onPerformanceDetails],
+  );
+
+  const handleUserDetails = useCallback(
+    (id: number) => () => {
+      onUserDetails && onUserDetails(id);
+    },
+    [onUserDetails],
   );
 
   const handleAcademicProgress = useCallback(
@@ -80,6 +89,7 @@ export const StudentPerformanceList = memo(function ({
               student={student}
               performance={performance}
               onDetails={handlePerformanceDetails(student.publicId)}
+              onUserDetails={handleUserDetails(student.id)}
               onAcademicProgress={handleAcademicProgress(student.publicId)}
               role='row'
             />
@@ -88,6 +98,7 @@ export const StudentPerformanceList = memo(function ({
               key={student.publicId?.toLowerCase()}
               student={student}
               onDetails={handlePerformanceDetails(student.publicId)}
+              onUserDetails={handleUserDetails(student.id)}
               onAcademicProgress={handleAcademicProgress(student.publicId)}
               role='row'
             />

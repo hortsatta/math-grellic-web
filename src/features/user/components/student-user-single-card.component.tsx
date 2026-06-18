@@ -22,12 +22,14 @@ import type { IconName } from '#/base/models/base.model';
 type Props = ComponentProps<typeof BaseSurface> & {
   student: StudentUserAccount;
   onDetails?: () => void;
+  onPerformanceDetails?: () => void;
   onEdit?: () => void;
 };
 
 type ContextMenuProps = ComponentProps<'div'> & {
   isDraft?: boolean;
   onDetails?: () => void;
+  onPerformanceDetails?: () => void;
   onEdit?: () => void;
 };
 
@@ -38,6 +40,7 @@ const menuIconProps = { weight: 'bold', size: 48 } as ComponentProps<
 const ContextMenu = memo(function ({
   className,
   onDetails,
+  onPerformanceDetails,
   onEdit,
   ...moreProps
 }: ContextMenuProps) {
@@ -71,6 +74,15 @@ const ContextMenu = memo(function ({
         >
           Details
         </Menu.Item>
+        {onPerformanceDetails && (
+          <Menu.Item
+            as={BaseDropdownButton}
+            iconName='chart-donut'
+            onClick={onPerformanceDetails}
+          >
+            Performance Details
+          </Menu.Item>
+        )}
         <BaseDivider className='my-1' />
         <Menu.Item as={BaseDropdownButton} iconName='pencil' onClick={onEdit}>
           Update
@@ -84,6 +96,7 @@ export const StudentUserSingleCard = memo(function ({
   className,
   student,
   onDetails,
+  onPerformanceDetails,
   onEdit,
   ...moreProps
 }: Props) {
@@ -156,6 +169,7 @@ export const StudentUserSingleCard = memo(function ({
             <ContextMenu
               className='block sm:hidden'
               onDetails={onDetails}
+              onPerformanceDetails={onPerformanceDetails}
               onEdit={onEdit}
             />
           </div>
@@ -163,6 +177,7 @@ export const StudentUserSingleCard = memo(function ({
         <ContextMenu
           className='hidden sm:block'
           onDetails={onDetails}
+          onPerformanceDetails={onPerformanceDetails}
           onEdit={onEdit}
         />
       </div>

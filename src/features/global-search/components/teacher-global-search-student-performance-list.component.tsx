@@ -4,12 +4,13 @@ import cx from 'classix';
 
 import { StudentPerformanceType } from '#/performance/models/performance.model';
 import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherStudentUserBaseRoute } from '#/user/route/student-user-handle.route';
+import { teacherPerformanceBaseRoute } from '#/performance/route/teacher-performance-handle.route';
 import { BaseLink } from '#/base/components/base-link.component';
 import { StudentPerformanceSingleCard } from '#/performance/components/student-performance-single-card.component';
 
 import type { ComponentProps } from 'react';
 import type { StudentPerformance } from '#/performance/models/performance.model';
-import { teacherPerformanceBaseRoute } from '#/performance/route/teacher-performance-handle.route';
 
 type Props = ComponentProps<'div'> & {
   studentPerformances: StudentPerformance[];
@@ -27,6 +28,13 @@ export const TeacherGlobalSearchStudentPerformanceList = memo(function ({
   const handlePerformanceDetails = useCallback(
     (publicId?: string) => () => {
       publicId && navigate(`${PERFORMANCE_PATH}/${publicId.toLowerCase()}`);
+    },
+    [navigate],
+  );
+
+  const handleUserDetails = useCallback(
+    (id: number) => () => {
+      navigate(`${teacherStudentUserBaseRoute}/${id}`);
     },
     [navigate],
   );
@@ -57,6 +65,7 @@ export const TeacherGlobalSearchStudentPerformanceList = memo(function ({
             student={student}
             performance={StudentPerformanceType.Exam}
             onDetails={handlePerformanceDetails(student.publicId)}
+            onUserDetails={handleUserDetails(student.id)}
             role='row'
           />
         ))}

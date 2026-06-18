@@ -6,6 +6,7 @@ import { queryClient } from '#/config/react-query-client.config';
 import { queryUserKey } from '#/config/react-query-keys.config';
 import { PAGINATION_TAKE } from '#/utils/api.util';
 import { teacherRoutes } from '#/app/routes/teacher-routes';
+import { teacherPerformanceBaseRoute } from '#/performance/route/teacher-performance-handle.route';
 import { useBoundStore } from '#/core/hooks/use-store.hook';
 import { SchoolYearEnrollmentApprovalStatus } from '#/school-year/models/school-year-enrollment.model';
 import { setStudentApprovalStatus as setStudentApprovalStatusApi } from '#/school-year/api/teacher-school-year-enrollment.api';
@@ -38,6 +39,7 @@ type Result = {
   prevPage: () => void;
   handleStudentEdit: (id: number) => void;
   handleStudentDetails: (id: number) => void;
+  handleStudentPerformanceDetails: (publicId: string) => void;
   setStudentApprovalStatus: (
     id: number,
     approvalStatus: SchoolYearEnrollmentApprovalStatus,
@@ -168,6 +170,17 @@ export function useStudentUserList(): Result {
     [navigate],
   );
 
+  const handleStudentPerformanceDetails = useCallback(
+    (publicId: string) => {
+      navigate(
+        `${teacherPerformanceBaseRoute}/${
+          teacherRoutes.student.to
+        }/${publicId.toLocaleLowerCase()}`,
+      );
+    },
+    [navigate],
+  );
+
   const handleStudentEdit = useCallback(
     (id: number) => {
       navigate(
@@ -227,6 +240,7 @@ export function useStudentUserList(): Result {
     nextPage,
     prevPage,
     handleStudentDetails,
+    handleStudentPerformanceDetails,
     handleStudentEdit,
     setStudentApprovalStatus,
     deleteStudent,
