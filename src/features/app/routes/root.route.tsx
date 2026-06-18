@@ -69,6 +69,7 @@ import {
   getStudentMeetingSchedulesLoader,
   getStudentSchedulesByDateRangeLoader,
 } from '#/schedule/route/student-schedule-loader.route';
+import { teacherSearchResultsLoader } from '#/global-search/route/teacher-global-search-loader.route';
 import { getStudentAssignedTeacherLoader } from '#/user/route/student-assigned-teacher-loader.route';
 import { coreRouteHandle } from '#/core/core-route-handle';
 import { currentUserRouteHandle } from '#/user/route/current-user-handle';
@@ -86,6 +87,7 @@ import { studentUserRouteHandle } from '#/user/route/student-user-handle';
 import { studentLessonRouteHandle } from '#/lesson/route/student-lesson-handle.route';
 import { studentPerformanceRouteHandle } from '#/performance/route/student-performance-handle.route';
 import { studentScheduleRouteHandle } from '#/schedule/route/student-schedule-handle.route';
+import { teacherSearchRouteHandle } from '#/global-search/route/teacher-global-search-handle.route';
 import { studentHelpRouteHandle } from '#/help/route/student-help-handle.route';
 import { CorePageNotFound } from '#/core/components/core-page-not-found.component';
 import { CoreStaticLayout } from '#/core/components/core-static-layout.component';
@@ -740,6 +742,20 @@ const rootRoutes = createRoutesFromElements(
               () => import('#/user/pages/student-user-create.page'),
             )}
             handle={studentUserRouteHandle.create}
+          />
+        </Route>
+        {/* TEACHER SEARCH */}
+        <Route path={teacherRoutes.search.to} element={<Outlet />}>
+          <Route
+            index
+            element={withSuspense(
+              () =>
+                import(
+                  '#/global-search/pages/teacher-global-search-results.page'
+                ),
+            )}
+            handle={teacherSearchRouteHandle.searchResults}
+            loader={teacherSearchResultsLoader(queryClient)}
           />
         </Route>
       </Route>

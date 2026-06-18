@@ -78,3 +78,7 @@ export const queryAnnouncementKey = {
   list: ['announcement', 'list'],
   single: ['announcement', 'single'],
 };
+
+export const queryGlobalSearchKey = {
+  results: ['global-search', 'results'],
+};
