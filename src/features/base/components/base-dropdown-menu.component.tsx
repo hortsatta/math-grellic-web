@@ -30,7 +30,7 @@ export const BaseDropdownMenu = memo(function ({
       {...moreProps}
     >
       <div>
-        {<Menu.Button as={Fragment}>{customMenuButton}</Menu.Button> || (
+        {customMenuButton || (
           <Menu.Button
             as={BaseIconButton}
             name='caret-down'
