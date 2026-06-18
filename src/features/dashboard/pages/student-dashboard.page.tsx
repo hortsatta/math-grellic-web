@@ -60,7 +60,7 @@ function StudentDashboardPage() {
         isRightSidebarExpanded && 'rsb-expanded',
       )}
     >
-      <div className='mx-auto flex w-full max-w-[900px] flex-1 shrink-0 flex-col gap-5 self-stretch pb-8'>
+      <div className='mx-auto flex w-full max-w-[900px] flex-1 shrink-0 flex-col gap-5 self-stretch pb-12'>
         <div className='flex flex-col justify-stretch gap-5 md:flex-row lg:[.rsb-expanded_&]:flex-col xl:[.rsb-expanded_&]:flex-row'>
           <StudentDashboardUserSummary
             className='min-h-[262px] min-w-0 1.5xl:min-w-[442px]'
@@ -100,7 +100,6 @@ function StudentDashboardPage() {
           </BaseSurface>
           <StudentDashboardHelpCard />
         </div>
-        <div className='bg-gradient sticky bottom-0 z-50 h-20 w-full bg-gradient-to-t from-backdrop from-60% to-transparent' />
       </div>
       <BaseRightSidebar>
         <div className='flex w-full flex-col gap-4'>

@@ -27,6 +27,8 @@ import type { QueryFilterOption } from '../models/base.model';
 type Props = ComponentProps<typeof Popover> & {
   options: QueryFilterOption[];
   defaulSelectedtOptions?: QueryFilterOption[];
+  // Set button label to "All" if all filters are enabled
+  buttonLabelAsAll?: boolean;
   submitButtonLabel?: string;
   allowNoFilters?: boolean;
   singleFilterOnly?: boolean;
@@ -38,6 +40,7 @@ export const BaseDataToolbarFilterMenu = memo(function ({
   className,
   options,
   defaulSelectedtOptions,
+  buttonLabelAsAll = false,
   submitButtonLabel = 'Apply',
   allowNoFilters,
   singleFilterOnly,
@@ -69,8 +72,10 @@ export const BaseDataToolbarFilterMenu = memo(function ({
       return '';
     }
 
-    return currentSelectedOptions.map((option) => option.label).join(', ');
-  }, [currentSelectedOptions]);
+    return buttonLabelAsAll && currentSelectedOptions.length === options.length
+      ? 'All'
+      : currentSelectedOptions.map((option) => option.label).join(', ');
+  }, [buttonLabelAsAll, options, currentSelectedOptions]);
 
   const isChecked = useCallback(
     (option: QueryFilterOption) => {

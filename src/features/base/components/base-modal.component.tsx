@@ -15,6 +15,7 @@ import type { ModalSize } from '../models/base.model';
 type Props = Omit<ComponentProps<typeof BaseSurface>, 'children'> & {
   open: boolean;
   onClose?: () => void;
+  initialFocus?: any;
   size?: ModalSize;
   children?: ReactNode;
 };
@@ -22,6 +23,7 @@ type Props = Omit<ComponentProps<typeof BaseSurface>, 'children'> & {
 export function BaseModal({
   className,
   open,
+  initialFocus,
   size = 'base',
   children,
   onClose,
@@ -33,7 +35,7 @@ export function BaseModal({
 
   return (
     <Transition appear show={open} as={Fragment}>
-      <Dialog as='div' onClose={handleClose}>
+      <Dialog as='div' initialFocus={initialFocus} onClose={handleClose}>
         <Transition.Child as={Fragment} {...dialogBackdropTransition}>
           <div className='fixed inset-0 z-max bg-black/20 backdrop-blur-none xs:backdrop-blur-lg' />
         </Transition.Child>

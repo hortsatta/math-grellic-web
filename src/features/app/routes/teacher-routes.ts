@@ -105,6 +105,12 @@ export const teacherRoutes = {
     label: 'Enrollment',
     hidden: true,
   },
+  search: {
+    name: 'search',
+    to: 'search',
+    label: 'Search',
+    hidden: true,
+  },
 };
 
 export function generateTeacherRouteLinks() {

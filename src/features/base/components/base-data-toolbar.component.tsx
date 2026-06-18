@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import cx from 'classix';
 
 import { BaseButton } from './base-button.components';
@@ -8,7 +8,7 @@ import { BaseTooltip } from './base-tooltip.component';
 import { BaseDataToolbarFilterMenu } from './base-data-toolbar-filter-menu.component';
 import { BaseDataToolbarSorterMenu } from './base-data-toolbar-sorter-menu.component';
 
-import type { ComponentProps } from 'react';
+import type { ComponentProps, RefObject } from 'react';
 import type {
   QueryFilterOption,
   QuerySort,
@@ -21,7 +21,10 @@ type Props = ComponentProps<'div'> & {
   defaulSelectedtFilterOptions?: QueryFilterOption[];
   defaultSelectedSort?: QuerySort;
   singleFilterOnly?: boolean;
+  filterButtonLabelAsAll?: boolean;
   searchInputPlaceholder?: string;
+  searchInputDefaultValue?: string;
+  setSearchInputRef?: (ref: RefObject<HTMLInputElement>) => void;
   onSearchChange?: (value: string | null) => void;
   onRefresh?: () => void;
   onFilter?: (value: QueryFilterOption[]) => void;
@@ -44,18 +47,27 @@ export const BaseDataToolbar = memo(
   ({
     className,
     filterOptions,
+    sortOptions,
     defaulSelectedtFilterOptions,
     defaultSelectedSort,
     singleFilterOnly,
-    sortOptions,
+    filterButtonLabelAsAll,
     searchInputPlaceholder,
+    searchInputDefaultValue,
+    setSearchInputRef,
     onSearchChange,
     onRefresh,
     onFilter,
     onSort,
     ...moreProps
   }: Props) => {
+    const searchInputRef = useRef<HTMLInputElement>(null);
+
     useEffect(() => {
+      if (setSearchInputRef) {
+        setSearchInputRef(searchInputRef);
+      }
+
       if (onFilter && defaulSelectedtFilterOptions) {
         onFilter(defaulSelectedtFilterOptions);
       }
@@ -75,8 +87,10 @@ export const BaseDataToolbar = memo(
         {...moreProps}
       >
         <BaseSearchInput
-          className='w-full md:w-auto'
+          ref={searchInputRef}
+          className='w-full'
           placeholder={searchInputPlaceholder || 'Find'}
+          defaultValue={searchInputDefaultValue}
           wrapperProps={searchWrapperProps}
           onChange={onSearchChange}
         />
@@ -86,6 +100,7 @@ export const BaseDataToolbar = memo(
               <BaseDataToolbarFilterMenu
                 options={filterOptions}
                 defaulSelectedtOptions={defaulSelectedtFilterOptions}
+                buttonLabelAsAll={filterButtonLabelAsAll}
                 submitButtonLabel='Apply Filter'
                 singleFilterOnly={singleFilterOnly}
                 buttonProps={filterButtonProps}

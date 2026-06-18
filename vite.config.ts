@@ -116,6 +116,12 @@ export default defineConfig({
           new URL('./src/features/announcement', import.meta.url),
         ),
       },
+      {
+        find: '#/global-search',
+        replacement: fileURLToPath(
+          new URL('./src/features/global-search', import.meta.url),
+        ),
+      },
     ],
   },
 });

@@ -2,7 +2,7 @@ import { teacherBaseRoute, teacherRoutes } from '#/app/routes/teacher-routes';
 
 import type { GroupLink, SceneRouteHandle } from '#/base/models/base.model';
 
-const studentUserBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
+export const studentUserBaseRoute = `/${teacherBaseRoute}/${teacherRoutes.student.to}`;
 
 const studentUserListLink = {
   to: studentUserBaseRoute,

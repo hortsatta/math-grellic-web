@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { Fragment, memo, useCallback, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Menu } from '@headlessui/react';
 import cx from 'classix';
@@ -28,6 +28,7 @@ import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
+import { GlobalSearchBarModal } from '#/global-search/components/global-search-bar-modal.component';
 import { SchoolYearPickerModal } from '#/school-year/components/school-year-picker-modal.component';
 import { useAuth } from '#/auth/hooks/use-auth.hook';
 import { useBoundStore } from '../hooks/use-store.hook';
@@ -48,8 +49,11 @@ export const CoreHeader = memo(function ({
   const { logout } = useAuth();
   const user = useBoundStore((state) => state.user);
   const schoolYear = useBoundStore((state) => state.schoolYear);
+  const searchInputRef = useBoundStore((state) => state.searchInputRef);
   const setSchoolYear = useBoundStore((state) => state.setSchoolYear);
+  const setSearchKeyword = useBoundStore((state) => state.setSearchKeyword);
   const [openSchoolYearModal, setOpenSchoolYearModal] = useState(false);
+  const [openGlobalSearchModal, setOpenGlobalSearchModal] = useState(false);
 
   // TODO notification
 
@@ -102,9 +106,45 @@ export const CoreHeader = memo(function ({
     logout();
   }, [logout]);
 
+  const handleSearchSubmit = useCallback(
+    (keyword: string | null) => {
+      if (!keyword?.trim().length || !role) return;
+
+      setSearchKeyword(keyword);
+      setOpenGlobalSearchModal(false);
+
+      switch (role) {
+        case UserRole.Student:
+          navigate(`/${studentBaseRoute}/${studentRoutes.search.to}`);
+          break;
+        case UserRole.Teacher:
+          navigate(`/${teacherBaseRoute}/${teacherRoutes.search.to}`);
+          break;
+        // case UserRole.Admin:
+        //   navigate(`/${adminBaseRoute}/${adminRoutes.account.to}`);
+        //   break;
+        // case UserRole.SuperAdmin:
+        //   navigate(`/${superAdminBaseRoute}/${superAdminRoutes.account.to}`);
+        //   break;
+      }
+    },
+    [role, setSearchKeyword, navigate],
+  );
+
+  const showGlobalSearch = useCallback(() => {
+    if (pathname.includes('/search')) {
+      searchInputRef?.current?.focus();
+      return;
+    }
+
+    setOpenGlobalSearchModal(true);
+    setOpenSchoolYearModal(false);
+  }, [pathname, searchInputRef]);
+
   const switchSchoolYear = useCallback(() => {
     setOpenSchoolYearModal(true);
-  }, [setOpenSchoolYearModal]);
+    setOpenGlobalSearchModal(false);
+  }, []);
 
   const handleSchoolYearModalChange = useCallback(
     (schoolYear: SchoolYear) => {
@@ -116,6 +156,10 @@ export const CoreHeader = memo(function ({
 
   const handleSchoolYearModalClose = useCallback(() => {
     setOpenSchoolYearModal(false);
+  }, []);
+
+  const handleGlobalSearchModalClose = useCallback(() => {
+    setOpenGlobalSearchModal(false);
   }, []);
 
   return (
@@ -141,17 +185,19 @@ export const CoreHeader = memo(function ({
           />
         )}
         <div className='hidden h-[48px] items-center justify-center gap-2.5 lg:flex'>
-          <div className='items-center gap-1.5'>
-            {/* <BaseIconButton name='bell' variant='solid' size='sm' /> */}
+          <div className='flex items-center'>
             <BaseDropdownMenu
               customMenuButton={
                 <div>
-                  <Menu.Button
-                    as={BaseIconButton}
-                    name='list'
-                    variant={isScrollTop ? 'solid' : 'link'}
-                    size='sm'
-                  />
+                  <Menu.Button as={Fragment}>
+                    <Menu.Button
+                      as={BaseIconButton}
+                      name='list'
+                      className='rounded-r-none'
+                      variant={isScrollTop ? 'solid' : 'link'}
+                      size='sm'
+                    />
+                  </Menu.Button>
                 </div>
               }
             >
@@ -190,6 +236,13 @@ export const CoreHeader = memo(function ({
                 Logout
               </Menu.Item>
             </BaseDropdownMenu>
+            <BaseIconButton
+              name='magnifying-glass'
+              className='rounded-l-none border-l-transparent'
+              variant={isScrollTop ? 'solid' : 'link'}
+              size='sm'
+              onClick={showGlobalSearch}
+            />
           </div>
           <BaseDivider className='hidden lg:block' vertical />
           <CoreClock className='h-full' isCompact={!isScrollTop} />
@@ -200,6 +253,11 @@ export const CoreHeader = memo(function ({
         open={openSchoolYearModal}
         onChange={handleSchoolYearModalChange}
         onClose={handleSchoolYearModalClose}
+      />
+      <GlobalSearchBarModal
+        open={openGlobalSearchModal}
+        onSubmit={handleSearchSubmit}
+        onClose={handleGlobalSearchModalClose}
       />
     </>
   );
