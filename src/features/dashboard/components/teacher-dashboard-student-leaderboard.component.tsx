@@ -91,7 +91,7 @@ const StudentRankCard = memo(function ({
 
 export const TeacherDashboardStudentLeaderboard = memo(function ({
   className,
-  title = 'Student Rankings',
+  title = 'Learner Rankings',
   loading,
   performance,
   students,
