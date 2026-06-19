@@ -4,17 +4,20 @@ import cx from 'classix';
 import dayjs from '#/config/dayjs.config';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { BaseSpinner } from '#/base/components/base-spinner.component';
 
-import type { SchoolYear } from '#/school-year/models/school-year.model';
 import type { ComponentProps } from 'react';
+import type { SchoolYear } from '#/school-year/models/school-year.model';
 
 type Props = ComponentProps<'div'> & {
-  schoolYear: SchoolYear;
+  schoolYear: SchoolYear | null;
+  loading?: boolean;
 };
 
 export const StudentDashboardSchoolYearSummary = memo(function ({
-  schoolYear,
   className,
+  loading,
+  schoolYear,
   ...moreProps
 }: Props) {
   const [
@@ -24,12 +27,12 @@ export const StudentDashboardSchoolYearSummary = memo(function ({
     schoolYearIsDone,
   ] = useMemo(
     () => [
-      schoolYear.title,
-      `${dayjs(schoolYear.startDate).format('MMM DD, YYYY')} — ${dayjs(
-        schoolYear.endDate,
+      schoolYear?.title,
+      `${dayjs(schoolYear?.startDate).format('MMM DD, YYYY')} — ${dayjs(
+        schoolYear?.endDate,
       ).format('MMM DD, YYYY')}`,
-      schoolYear.isActive,
-      schoolYear.isDone,
+      schoolYear?.isActive,
+      schoolYear?.isDone,
     ],
     [schoolYear],
   );
@@ -48,7 +51,11 @@ export const StudentDashboardSchoolYearSummary = memo(function ({
     ];
   }, [schoolYearIsActive, schoolYearIsDone]);
 
-  return (
+  return loading || !schoolYear ? (
+    <div className='flex min-h-[170px] flex-col items-center justify-center gap-5'>
+      <BaseSpinner />
+    </div>
+  ) : (
     <div
       className={cx('flex w-full flex-col gap-2.5', className)}
       {...moreProps}

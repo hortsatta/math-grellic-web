@@ -109,9 +109,10 @@ function StudentDashboardPage() {
               !user || !syEnrollment || !schoolYear || performanceLoading
             }
           />
-          {schoolYear && (
-            <StudentDashboardSchoolYearSummary schoolYear={schoolYear} />
-          )}
+          <StudentDashboardSchoolYearSummary
+            loading={!user || !syEnrollment || !schoolYear}
+            schoolYear={schoolYear}
+          />
         </div>
       </BaseRightSidebar>
     </div>

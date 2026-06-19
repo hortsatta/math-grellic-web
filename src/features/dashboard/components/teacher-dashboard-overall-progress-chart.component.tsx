@@ -58,7 +58,7 @@ export const TeacherDashboardOverallProgressChart = memo(function ({
     >
       <h3 className='text-lg leading-none'>Overall Class Progress</h3>
       {!performance || loading ? (
-        <div className='flex w-full items-center justify-center'>
+        <div className='flex min-h-[200px] w-full items-center justify-center'>
           <BaseSpinner />
         </div>
       ) : (

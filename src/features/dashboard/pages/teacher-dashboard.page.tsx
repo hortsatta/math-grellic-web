@@ -131,13 +131,10 @@ function TeacherDashboardPage() {
             studentsAcademicProgress={studentsAcademicProgress}
             loading={!user || classLoading}
           />
-          {schoolYear && (
-            <TeacherDashboardSchoolYearSummary
-              schoolYear={schoolYear}
-              studentsAcademicProgress={studentsAcademicProgress}
-              loading={academicProgressLoading}
-            />
-          )}
+          <TeacherDashboardSchoolYearSummary
+            schoolYear={schoolYear}
+            loading={academicProgressLoading || !schoolYear}
+          />
         </div>
       </BaseRightSidebar>
     </div>
@@ -145,61 +142,3 @@ function TeacherDashboardPage() {
 }
 
 export default TeacherDashboardPage;
-
-//  <div className='max-w-auto mx-auto flex w-full flex-col items-center justify-center gap-5 pb-8 sm:max-w-[592px] -2lg:max-w-[835px] xl:flex-row xl:items-start'>
-//         <div className='xl:max-w-auto flex w-full shrink-0 flex-col gap-5 xl:w-[592px] xl:pb-8 2xl:w-auto 2xl:max-w-[835px]'>
-//           <TeacherDashboardUserSummary
-//             className='min-h-[262px]'
-//             user={user}
-//             classPerformance={teacherClassPerformance}
-//             loading={!user || classLoading}
-//           />
-//           <TeacherDashboardCurriculumTabList
-//             lessons={lessons}
-//             exams={exams}
-//             activities={activities}
-//             loading={curriculumLoading}
-//             onLessonDetails={handleLessonDetails}
-//             onExamDetails={handleExamDetails}
-//             onActivityDetails={handleActivityDetails}
-//           />
-//           <TeacherDashboardStudentLeaderboard
-//             className='min-h-[224px]'
-//             performance={currentRankingsPerformance}
-//             students={studentRankingsPerformances}
-//             loading={rankingsLoading}
-//             onTabChange={setCurrentRankingsPerformance}
-//           />
-//           {schoolYear && (
-//             <TeacherDashboardSchoolYearSummary
-//               schoolYear={schoolYear}
-//               studentsAcademicProgress={studentsAcademicProgress}
-//               loading={academicProgressLoading}
-//             />
-//           )}
-//         </div>
-//         <div className='flex w-full flex-col gap-5 -2lg:w-fit'>
-//           <TeacherDashboardAnnouncementList
-//             loading={
-//               announcementListLoading ||
-//               announcementCreateLoading ||
-//               announcemenEditLoading
-//             }
-//             teacherAnnouncements={teacherAnnouncements}
-//             onCreate={createAnnouncement}
-//             onEdit={editAnnouncement}
-//             onDelete={deleteAnnouncement}
-//             onRefresh={refresh}
-//           />
-//           <BaseSurface className='!px-4 pb-3'>
-//             <h3 className='mb-2.5 text-lg leading-none'>Today's Schedule</h3>
-//             <ScheduleDailyCardList
-//               schedules={schedules}
-//               scheduleTo={SCHEDULE_PATH}
-//               scheduleEmptyLabel='No schedule for today'
-//               loading={todayScheduleLoading}
-//               fixedWidth
-//             />
-//           </BaseSurface>
-//         </div>
-//       </div>
