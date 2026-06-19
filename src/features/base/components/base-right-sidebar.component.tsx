@@ -103,7 +103,7 @@ export const BaseRightSidebar = memo(function ({
         {rightSidebarMode === SidebarMode.Expanded && (
           <div
             className={cx(
-              'h-full w-full overflow-hidden opacity-100 transition-[padding,opacity]',
+              'h-full w-full overflow-hidden pb-8 opacity-100 transition-[padding,opacity]',
               isScrollTop ? 'pt-0' : 'pt-16',
             )}
           >
