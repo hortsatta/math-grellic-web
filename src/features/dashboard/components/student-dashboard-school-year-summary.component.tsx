@@ -2,7 +2,9 @@ import { memo, useMemo } from 'react';
 import cx from 'classix';
 
 import dayjs from '#/config/dayjs.config';
+import { studentPerformanceBaseRoute } from '#/performance/route/student-performance-handle.route';
 import { BaseChip } from '#/base/components/base-chip.component';
+import { BaseLink } from '#/base/components/base-link.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
 import { BaseSpinner } from '#/base/components/base-spinner.component';
 
@@ -85,6 +87,15 @@ export const StudentDashboardSchoolYearSummary = memo(function ({
           </div>
         </div>
       </BaseSurface>
+      <div className='flex flex-1 items-center justify-center'>
+        <BaseLink
+          to={studentPerformanceBaseRoute}
+          rightIconName='arrow-circle-right'
+          size='xs'
+        >
+          View Performance
+        </BaseLink>
+      </div>
     </div>
   );
 });
