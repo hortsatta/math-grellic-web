@@ -5,21 +5,14 @@ import cx from 'classix';
 
 import { options } from '#/utils/scrollbar.util';
 import { superAdminBaseRoute } from '#/app/routes/super-admin-routes';
-import { studentBaseRoute } from '#/app/routes/student-routes';
+import { studentBaseRoute, studentRoutes } from '#/app/routes/student-routes';
 import { teacherBaseRoute } from '#/app/routes/teacher-routes';
 import { adminBaseRoute } from '#/app/routes/admin-routes';
-import {
-  studentUserBaseRoute,
-  teacherUserBaseRoute,
-  adminUserBaseRoute,
-  superAdminUserBaseRoute,
-} from '#/user/route/current-user-handle.route';
 import { UserRole } from '#/user/models/user.model';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
-import { BaseLink } from '#/base/components/base-link.component';
 import { BaseModal } from '#/base/components/base-modal.component';
 import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { useBoundStore } from '../hooks/use-store.hook';
@@ -40,6 +33,7 @@ type Props = ComponentProps<'div'> & {
   onLogout: () => void;
   onUserAccount?: () => void;
   onSchoolYear?: () => void;
+  onSearch?: () => void;
 };
 
 const logoStyle = {
@@ -61,6 +55,7 @@ export const CoreMobileNav = memo(function ({
   onLogout,
   onUserAccount,
   onSchoolYear,
+  onSearch,
   ...moreProps
 }: Props) {
   const { pathname } = useLocation();
@@ -86,23 +81,21 @@ export const CoreMobileNav = memo(function ({
     }
   }, [role]);
 
-  const userAccountTo = useMemo(() => {
-    switch (role) {
-      case UserRole.Student:
-        return studentUserBaseRoute;
-      case UserRole.Teacher:
-        return teacherUserBaseRoute;
-      case UserRole.Admin:
-        return adminUserBaseRoute;
-      case UserRole.SuperAdmin:
-        return superAdminUserBaseRoute;
-    }
-  }, [role]);
-
   const handleSetModal = useCallback(
     (isOpen: boolean) => () => setOpenModal(isOpen),
     [],
   );
+
+  const handleUserAccount = useCallback(() => {
+    const partialAccountTo = `${studentRoutes.dashboard.name}/${studentRoutes.account.to}`;
+    // Only close modal if current page is already current user account
+    if (pathname.includes(partialAccountTo)) {
+      handleSetModal(false)();
+      return;
+    }
+
+    onUserAccount && onUserAccount();
+  }, [pathname, onUserAccount, handleSetModal]);
 
   useEffect(() => {
     handleSetModal(false)();
@@ -119,7 +112,7 @@ export const CoreMobileNav = memo(function ({
         {...moreProps}
       >
         <div>
-          <BaseTooltip content='Main menu'>
+          <BaseTooltip content='Menu'>
             <BaseIconButton
               className='box-content !h-full !w-7 px-4'
               name='list'
@@ -128,14 +121,14 @@ export const CoreMobileNav = memo(function ({
               onClick={handleSetModal(true)}
             />
           </BaseTooltip>
-          {hasRightSidebar && (
-            <BaseTooltip content='Right sidebar'>
+          {!!onSearch && (
+            <BaseTooltip content='Search'>
               <BaseIconButton
                 className='box-content !h-full !w-7 px-2.5 -2xs:px-4'
-                name='cards'
+                name='magnifying-glass'
                 variant='link'
                 iconProps={buttonIconProps}
-                onClick={toggleRightSidebarMode}
+                onClick={onSearch}
               />
             </BaseTooltip>
           )}
@@ -147,14 +140,17 @@ export const CoreMobileNav = memo(function ({
           <div style={logoStyle} className='h-full w-[30px]' />
         </Link>
         <div>
-          <BaseTooltip content='Account'>
-            <BaseLink
-              to={userAccountTo}
-              className='box-content flex h-full w-7 items-center justify-center px-2.5 -2xs:px-4'
-              leftIconName='user'
-              iconWeight='bold'
-            />
-          </BaseTooltip>
+          {hasRightSidebar && (
+            <BaseTooltip content='Sidebar'>
+              <BaseIconButton
+                className='box-content !h-full !w-7 px-2.5 -2xs:px-4'
+                name='cards'
+                variant='link'
+                iconProps={buttonIconProps}
+                onClick={toggleRightSidebarMode}
+              />
+            </BaseTooltip>
+          )}
           <BaseTooltip content='School year'>
             <BaseIconButton
               className='box-content !h-full !w-7 px-4'
@@ -173,18 +169,21 @@ export const CoreMobileNav = memo(function ({
             options={options}
             defer
           >
-            <div className='flex h-12 w-full items-center justify-between py-2'>
+            <div className='flex w-full flex-col items-start justify-between gap-2.5 pb-2 -3xs:flex-row -3xs:items-center'>
               <button
                 className={cx(
-                  'flex items-center gap-1 overflow-hidden rounded-4px border border-accent/50 px-1.5 py-1',
+                  'flex items-center gap-1 overflow-hidden rounded-4px border border-accent/50 p-1.5 pr-2',
                   'text-sm leading-none transition-all hover:border-primary-focus hover:text-primary-focus',
                 )}
-                onClick={onUserAccount}
+                onClick={handleUserAccount}
               >
-                <BaseIcon name='identification-badge' size={18} />
-                <span>{publicId}</span>
+                <BaseIcon name='identification-badge' size={20} />
+                <div className='flex flex-col items-start gap-0.5'>
+                  <span>{publicId}</span>
+                  <small className='text-[12px] opacity-70'>Account</small>
+                </div>
               </button>
-              <CoreClock className='h-full' />
+              <CoreClock className='order-first h-full w-full justify-between -3xs:order-none -3xs:w-auto -3xs:justify-center' />
             </div>
             <BaseDivider />
             <ul className='flex w-full flex-col'>
