@@ -23,7 +23,6 @@ export const TeacherGlobalSearchOthersList = memo(function ({
         'flex w-full flex-1 flex-col gap-2.5 self-stretch',
         className,
       )}
-      role='table'
       {...moreProps}
     >
       {!hideTitle && <h3 className='text-lg leading-none'>Others</h3>}

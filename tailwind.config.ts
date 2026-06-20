@@ -2,7 +2,7 @@
 /*eslint-env node*/
 /** @type {import('tailwindcss').Config} */
 
-import plugin from 'tailwindcss/plugin';
+import plugin = require('tailwindcss/plugin');
 
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],

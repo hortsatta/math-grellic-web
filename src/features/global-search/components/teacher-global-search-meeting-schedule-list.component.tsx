@@ -45,11 +45,10 @@ export const TeacherGlobalSearchMeetingScheduleList = memo(function ({
         'flex w-full flex-1 flex-col gap-2.5 self-stretch',
         className,
       )}
-      role='table'
       {...moreProps}
     >
       <div className='flex items-center justify-between'>
-        <h3 className='text-lg leading-none'>Lessons</h3>
+        <h3 className='text-lg leading-none'>Scheduled Meetings</h3>
         <BaseLink
           to={MEETING_LIST_PATH}
           rightIconName='arrow-circle-right'
@@ -58,7 +57,7 @@ export const TeacherGlobalSearchMeetingScheduleList = memo(function ({
           View All Scheduled Meetings
         </BaseLink>
       </div>
-      <div className='flex flex-col gap-2.5'>
+      <div className='flex flex-col gap-2.5' role='table'>
         {meetingSchedules.map((meetingSchedule) => (
           <TeacherMeetingScheduleSingleCard
             key={`ms-${meetingSchedule.id}`}

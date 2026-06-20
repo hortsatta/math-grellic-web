@@ -45,7 +45,6 @@ export const TeacherGlobalSearchStudentPerformanceList = memo(function ({
         'flex w-full flex-1 flex-col gap-2.5 self-stretch',
         className,
       )}
-      role='table'
       {...moreProps}
     >
       <div className='flex items-center justify-between'>
@@ -58,7 +57,7 @@ export const TeacherGlobalSearchStudentPerformanceList = memo(function ({
           View Performances
         </BaseLink>
       </div>
-      <div className='flex flex-col gap-2.5'>
+      <div className='flex flex-col gap-2.5' role='table'>
         {studentPerformances.map((student) => (
           <StudentPerformanceSingleCard
             key={student.publicId?.toLowerCase()}

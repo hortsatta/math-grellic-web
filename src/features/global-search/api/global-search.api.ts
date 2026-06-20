@@ -2,7 +2,10 @@ import { generateSearchParams, kyInstance } from '#/config/ky.config';
 import { queryGlobalSearchKey } from '#/config/react-query-keys.config';
 import { generateApiError } from '#/utils/api.util';
 
-import type { SearchResults } from '../models/global-search.model';
+import type {
+  StudentSearchResults,
+  TeacherSearchResults,
+} from '../models/global-search.model';
 import type { UseQueryOptions } from '@tanstack/react-query';
 
 const BASE_URL = 'global-search';
@@ -16,9 +19,9 @@ export function searchByCurrentTeacherUser(
   },
   options?: Omit<
     UseQueryOptions<
-      [SearchResults, number],
+      [TeacherSearchResults, number],
       Error,
-      [SearchResults, number],
+      [TeacherSearchResults, number],
       any
     >,
     'queryKey' | 'queryFn'
@@ -49,6 +52,48 @@ export function searchByCurrentTeacherUser(
       ...queryGlobalSearchKey.results,
       { q, filters, sort, schoolYearId },
     ],
+    queryFn,
+    ...options,
+  };
+}
+
+export function searchByCurrentStudentUser(
+  keys?: {
+    q: string | null;
+    filters?: string;
+    schoolYearId?: number;
+  },
+  options?: Omit<
+    UseQueryOptions<
+      [StudentSearchResults, number],
+      Error,
+      [StudentSearchResults, number],
+      any
+    >,
+    'queryKey' | 'queryFn'
+  >,
+) {
+  const { q, filters, schoolYearId } = keys || {};
+
+  const queryFn = async (): Promise<any> => {
+    const url = `${BASE_URL}/students`;
+    const searchParams = generateSearchParams({
+      q,
+      filters,
+      sy: schoolYearId?.toString(),
+    });
+
+    try {
+      const results = await kyInstance.get(url, { searchParams }).json();
+      return results;
+    } catch (error: any) {
+      const apiError = await generateApiError(error);
+      throw apiError;
+    }
+  };
+
+  return {
+    queryKey: [...queryGlobalSearchKey.results, { q, filters, schoolYearId }],
     queryFn,
     ...options,
   };

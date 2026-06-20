@@ -1,4 +1,4 @@
-import { Fragment, memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Menu } from '@headlessui/react';
 import cx from 'classix';
@@ -15,10 +15,12 @@ import {
   superAdminUserBaseRoute,
 } from '#/user/route/current-user-handle.route';
 import { teacherSearchBaseRoute } from '#/global-search/route/teacher-global-search-handle.route';
+import { studentSearchBaseRoute } from '#/global-search/route/student-global-search-handle.route';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
 import { BaseDropdownMenu } from '#/base/components/base-dropdown-menu.component';
+import { BaseTooltip } from '#/base/components/base-tooltip.component';
 import { GlobalSearchBarModal } from '#/global-search/components/global-search-bar-modal.component';
 import { SchoolYearPickerModal } from '#/school-year/components/school-year-picker-modal.component';
 import { useAuth } from '#/auth/hooks/use-auth.hook';
@@ -106,8 +108,7 @@ export const CoreHeader = memo(function ({
 
       switch (role) {
         case UserRole.Student:
-          // navigate(studentSearchBaseRoute);
-          // navigate(`/${studentBaseRoute}/${studentRoutes.search.to}`);
+          navigate(studentSearchBaseRoute);
           break;
         case UserRole.Teacher:
           navigate(teacherSearchBaseRoute);
@@ -174,6 +175,7 @@ export const CoreHeader = memo(function ({
             onLogout={handleLogout}
             onUserAccount={handleUserAccount}
             onSchoolYear={switchSchoolYear}
+            onSearch={showGlobalSearch}
           />
         )}
         <div className='hidden h-[48px] items-center justify-center gap-2.5 lg:flex'>
@@ -181,7 +183,7 @@ export const CoreHeader = memo(function ({
             <BaseDropdownMenu
               customMenuButton={
                 <div>
-                  <Menu.Button as={Fragment}>
+                  <BaseTooltip content='Menu'>
                     <Menu.Button
                       as={BaseIconButton}
                       name='list'
@@ -189,7 +191,7 @@ export const CoreHeader = memo(function ({
                       variant={isScrollTop ? 'solid' : 'link'}
                       size='sm'
                     />
-                  </Menu.Button>
+                  </BaseTooltip>
                 </div>
               }
             >
@@ -228,13 +230,15 @@ export const CoreHeader = memo(function ({
                 Logout
               </Menu.Item>
             </BaseDropdownMenu>
-            <BaseIconButton
-              name='magnifying-glass'
-              className='rounded-l-none border-l-transparent'
-              variant={isScrollTop ? 'solid' : 'link'}
-              size='sm'
-              onClick={showGlobalSearch}
-            />
+            <BaseTooltip content='Search'>
+              <BaseIconButton
+                name='magnifying-glass'
+                className='rounded-l-none border-l-transparent'
+                variant={isScrollTop ? 'solid' : 'link'}
+                size='sm'
+                onClick={showGlobalSearch}
+              />
+            </BaseTooltip>
           </div>
           <BaseDivider className='hidden lg:block' vertical />
           <CoreClock className='h-full' isCompact={!isScrollTop} />

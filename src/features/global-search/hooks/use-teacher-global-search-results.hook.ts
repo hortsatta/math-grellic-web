@@ -23,10 +23,13 @@ import type {
   QueryFilterOption,
   QuerySort,
 } from '#/base/models/base.model';
-import type { OtherLink, SearchResults } from '../models/global-search.model';
+import type {
+  OtherLink,
+  TeacherSearchResults,
+} from '../models/global-search.model';
 
 type Result = {
-  searchResults: SearchResults;
+  searchResults: TeacherSearchResults;
   loading: boolean;
   totalCount: number;
   isSingleGroupResult: boolean;
@@ -231,7 +234,7 @@ export function useTeacherGlobalSearchResults(): Result {
 
     const dataCount = (data ? data[1] : 0) + others.length;
 
-    return [{ ...searchResults, others } as SearchResults, dataCount];
+    return [{ ...searchResults, others } as TeacherSearchResults, dataCount];
   }, [data, searchKeyword, currentFilters]);
 
   const isSingleGroupResult = useMemo(
