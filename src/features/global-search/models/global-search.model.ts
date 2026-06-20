@@ -22,13 +22,35 @@ export type OtherLink = {
   icon?: IconName;
 };
 
-export type SearchResults = {
+export type TeacherSearchResults = {
   lessons: Lesson[];
   exams: Exam[];
   activities: Activity[];
   studentPerformances: StudentPerformance[];
   meetingSchedules: MeetingSchedule[];
   others: OtherLink[];
+};
+
+type StudentLessons = {
+  upcomingLesson: Lesson | null;
+  moreLessons: Lesson[];
+};
+
+type StudentExams = {
+  upcomingExam: Exam | null;
+  ongoingExams: Exam[];
+  moreExams: Exam[];
+};
+type StudentMeetingSchedules = {
+  upcomingMeetingSchedules: MeetingSchedule[];
+  moreMeetingSchedules: MeetingSchedule[];
+};
+
+export type StudentSearchResults = {
+  lessons: StudentLessons | null;
+  exams: StudentExams | null;
+  activities: Activity[];
+  meetingSchedules: StudentMeetingSchedules | null;
 };
 
 export type GlobalSearchSlice = {

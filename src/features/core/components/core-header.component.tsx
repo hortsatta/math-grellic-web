@@ -15,6 +15,7 @@ import {
   superAdminUserBaseRoute,
 } from '#/user/route/current-user-handle.route';
 import { teacherSearchBaseRoute } from '#/global-search/route/teacher-global-search-handle.route';
+import { studentSearchBaseRoute } from '#/global-search/route/student-global-search-handle.route';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIconButton } from '#/base/components/base-icon-button.component';
 import { BaseDropdownButton } from '#/base/components/base-dropdown-button.component';
@@ -106,8 +107,7 @@ export const CoreHeader = memo(function ({
 
       switch (role) {
         case UserRole.Student:
-          // navigate(studentSearchBaseRoute);
-          // navigate(`/${studentBaseRoute}/${studentRoutes.search.to}`);
+          navigate(studentSearchBaseRoute);
           break;
         case UserRole.Teacher:
           navigate(teacherSearchBaseRoute);
