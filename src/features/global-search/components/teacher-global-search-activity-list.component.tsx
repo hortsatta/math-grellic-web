@@ -55,7 +55,6 @@ export const TeacherGlobalSearchActivityList = memo(function ({
         'flex w-full flex-1 flex-col gap-2.5 self-stretch',
         className,
       )}
-      role='table'
       {...moreProps}
     >
       <div className='flex items-center justify-between'>
@@ -68,7 +67,7 @@ export const TeacherGlobalSearchActivityList = memo(function ({
           View All Activities
         </BaseLink>
       </div>
-      <div className='flex flex-col gap-2.5'>
+      <div className='flex flex-col gap-2.5' role='table'>
         {activities.map((activity) => (
           <TeacherActivitySingleCard
             key={`act-${activity.id}`}

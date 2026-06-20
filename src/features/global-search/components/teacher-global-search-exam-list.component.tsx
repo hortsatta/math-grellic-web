@@ -62,7 +62,6 @@ export const TeacherGlobalSearchExamList = memo(function ({
         'flex w-full flex-1 flex-col gap-2.5 self-stretch',
         className,
       )}
-      role='table'
       {...moreProps}
     >
       <div className='flex items-center justify-between'>
@@ -75,7 +74,7 @@ export const TeacherGlobalSearchExamList = memo(function ({
           View All Exams
         </BaseLink>
       </div>
-      <div className='flex flex-col gap-2.5'>
+      <div className='flex flex-col gap-2.5' role='table'>
         {exams.map((exam) => (
           <TeacherExamSingleCard
             key={exam.id}
