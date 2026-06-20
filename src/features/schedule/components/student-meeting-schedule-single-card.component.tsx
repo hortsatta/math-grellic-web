@@ -4,11 +4,13 @@ import cx from 'classix';
 
 import dayjs from '#/config/dayjs.config';
 import { getDayJsDuration, convertSecondsToDuration } from '#/utils/time.util';
+import { studentRoutes } from '#/app/routes/student-routes';
 import { BaseButton } from '#/base/components/base-button.components';
 import { BaseChip } from '#/base/components/base-chip.component';
 import { BaseDivider } from '#/base/components/base-divider.component';
 import { BaseIcon } from '#/base/components/base-icon.component';
 import { BaseSurface } from '#/base/components/base-surface.component';
+import { studentScheduleBaseRoute } from '../route/student-schedule-handle.route';
 
 import type { ComponentProps, MouseEvent } from 'react';
 import type { MeetingSchedule } from '../models/schedule.model';
@@ -26,7 +28,9 @@ export const StudentMeetingScheduleSingleCard = memo(function ({
 }: Props) {
   const [to, title, meetingUrl] = useMemo(
     () => [
-      meetingSchedule.id.toString(),
+      `${studentScheduleBaseRoute}/${
+        studentRoutes.schedule.meeting.to
+      }/${meetingSchedule.id.toString()}`,
       meetingSchedule.title,
       meetingSchedule.meetingUrl,
     ],
