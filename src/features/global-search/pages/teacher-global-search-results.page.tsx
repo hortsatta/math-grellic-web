@@ -92,7 +92,10 @@ function TeacherGlobalSearchResultsPage() {
 
   return (
     <BaseDataSuspense resolve={data?.main}>
-      <div id='scene-content' className='flex w-full flex-1 items-start pt-5'>
+      <div
+        id='scene-content'
+        className='flex w-full flex-1 items-start pb-12 pt-5'
+      >
         <div className='flex w-full flex-1 flex-col self-stretch'>
           <BaseDataToolbar
             className='mb-5'
